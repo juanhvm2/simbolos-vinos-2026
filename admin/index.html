@@ -33,6 +33,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-0.02em}
 input,select,textarea{width:100%;padding:13px 16px;background:var(--card2);border:1px solid var(--linea);
   border-radius:var(--radius-sm);color:var(--texto);font-family:var(--font);font-size:15px;
   transition:border .2s, background .2s;margin-bottom:10px}
+input[type=date]{color-scheme:dark}
 textarea{min-height:96px;resize:vertical}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);background:var(--bg2);
   box-shadow:0 0 0 3px rgba(0,122,255,.15)}
@@ -104,14 +105,15 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .qr-zone{display:flex;gap:14px;align-items:center;margin-top:14px;padding:14px;background:var(--bg2);border-radius:var(--radius-sm)}
 .qr-zone .qr{background:#fff;padding:8px;border-radius:8px;width:120px;height:120px;display:grid;place-items:center;flex:none}
 .qr-zone .qr:empty::after{content:"Sin código";color:#999;font-size:11px}
-.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
 .form-grid input,.form-grid select{margin:0}
 .titulo-sec{font-size:24px;font-weight:600;margin-bottom:6px;letter-spacing:-0.02em}
 .sub-sec{color:var(--texto2);font-size:14px;margin-bottom:22px}
 .item-prog{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--linea);
   border-radius:var(--radius);margin-bottom:8px;background:var(--card);flex-wrap:wrap;transition:border .2s}
 .item-prog:hover{border-color:var(--linea2)}
-.item-prog .hora{font-weight:600;color:var(--accent);font-size:15px;min-width:58px}
+.item-prog .hora{font-weight:600;color:var(--accent);font-size:15px;min-width:64px}
+.item-prog .hora .fch{display:block;font-size:10px;font-weight:500;color:var(--texto2);margin-top:4px;letter-spacing:.04em}
 .item-prog .det{flex:1;min-width:180px}
 .item-prog .det b{display:block;font-weight:500;margin-bottom:2px}
 .item-prog .det span{color:var(--texto2);font-size:13px}
@@ -199,6 +201,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <h2 class="titulo-sec">Programa de actividades</h2>
     <p class="sub-sec">Los participantes verán esto en vivo y recibirán aviso 5 minutos antes de cada actividad.</p>
     <div class="form-grid" style="margin-bottom:14px">
+      <div><label>FECHA</label><input id="pg-fecha" type="date"></div>
       <div><label>HORA</label><input id="pg-hora" type="time"></div>
       <div><label>TEMA</label><input id="pg-tema" placeholder="Ej: Cata de Malbec"></div>
       <div><label>DISERTANTE</label><input id="pg-dis" placeholder="Ej: María Pérez"></div>
@@ -240,7 +243,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <div class="form-grid">
         <div><label>NOMBRE DEL ORÁCULO (quien habla y notifica)</label><input id="pf-nombre" placeholder="El Oráculo de la Bodega"></div>
         <div><label>TÍTULO DE LA APP</label><input id="pf-titulo" placeholder="Símbolos & Vinos"></div>
-        <div><label>SUBTÍTULO DE LA APP</label><input id="pf-sub" placeholder="MMXXVI · Los Siete Sellos"></div>
+        <div><label>SUBTÍTULO DE LA APP</label><input id="pf-sub" placeholder="Edición Masónica · MMXXVI"></div>
       </div>
       <div class="form-grid" style="margin-top:14px">
         <div>
@@ -339,6 +342,9 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
 const toast = m => { const d=document.createElement('div'); d.className='toast'; d.textContent=m;
   $('toasts').appendChild(d); setTimeout(()=>d.remove(),5000); };
+const hoyISO = () => { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const fmtF = f => { if(!f) return 'HOY'; const d=new Date(f+'T12:00:00');
+  return d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'}); };
 
 let yo=null, miRol=null, PART={}, filtroAct='todos', FAQ=[], fqEdit=null, PERFIL={}, perfilLoaded=false;
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
@@ -382,7 +388,8 @@ function escuchar(){
     pintarTabla(); });
   onSnapshot(collection(db,'simbolos'), ()=>pintarSellos());
   onSnapshot(collection(db,'programa'), s=>{ window.PROG=[]; s.forEach(d=>PROG.push({id:d.id,...d.data()}));
-    PROG.sort((a,b)=>(a.hora||'').localeCompare(b.hora||'')); pintarProg(); });
+    PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));
+    pintarProg(); });
   onSnapshot(collection(db,'anuncios'), s=>{ window.ANUN=[]; s.forEach(d=>ANUN.push({id:d.id,...d.data()}));
     ANUN.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')); pintarAnun(); });
   onSnapshot(collection(db,'faq'), s=>{ FAQ=[]; s.forEach(d=>FAQ.push({id:d.id,...d.data()}));
@@ -462,14 +469,15 @@ window.imprimirQRs=async()=>{
   const w=window.open(''); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),600);
 };
 
-/* ── PROGRAMA ── */
+/* ── PROGRAMA (con fecha) ── */
 window.guardarProg=async()=>{ const h=$('pg-hora').value;
   if(!h||!$('pg-tema').value) return toast('Completa hora y tema');
-  await addDoc(collection(db,'programa'),{hora:h,tema:$('pg-tema').value.trim(),
-   disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim()});
-  ['pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value=''); toast('✓ Actividad agregada'); };
+  await addDoc(collection(db,'programa'),{fecha:$('pg-fecha').value||'',hora:h,
+   tema:$('pg-tema').value.trim(),disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim()});
+  ['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value=''); toast('✓ Actividad agregada'); };
 function pintarProg(){ $('lista-prog').innerHTML = PROG.length? PROG.map(a=>
-  '<div class="item-prog"><span class="hora">'+esc(a.hora)+'</span><div class="det"><b>'+esc(a.tema)+'</b>'+
+  '<div class="item-prog"><span class="hora">'+esc(a.hora)+'<span class="fch">'+fmtF(a.fecha)+'</span></span>'+
+  '<div class="det"><b>'+esc(a.tema)+'</b>'+
   '<span>'+esc(a.disertante)+(a.lugar?' · '+esc(a.lugar):'')+'</span></div>'+
   '<button class="btn mini peligro" onclick="borrarProg(\''+a.id+'\')">Eliminar</button></div>').join('')
   : '<div class="vacio">Aún no hay actividades en el programa</div>'; }
