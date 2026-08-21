@@ -3,121 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#111113">
-<title>S&V · Torre de Control</title>
+<meta name="theme-color" content="#000000">
+<title>S&V · Panel de Control</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --negro:#111113; --vino:#1c1c1e; --vino2:#2c2c2e;
-  --oro:#ff7849; --oro2:#ff8a5f; --oro3:#8e8e93;
-  --per:#f5f5f7; --humo:rgba(235,235,245,.62);
-  --glow:rgba(255,120,73,.22); --linea:rgba(255,255,255,.07);
-  --rojo:#ff453a; --rojoSoft:rgba(255,69,58,.14);
-  --radio:20px;
+  --bg:#000000;
+  --bg2:#0a0a0b;
+  --card:#1c1c1e;
+  --card2:#2c2c2e;
+  --card-hover:#3a3a3c;
+  --linea:rgba(255,255,255,0.08);
+  --linea2:rgba(255,255,255,0.14);
+  --texto:#ffffff;
+  --texto2:#8e8e93;
+  --texto3:#636366;
+  --accent:#007aff;
+  --accent2:#0a84ff;
+  --verde:#30d158;
+  --amarillo:#ffd60a;
+  --rojo:#ff453a;
+  --radius:14px;
+  --radius-sm:10px;
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:var(--negro);color:var(--per);font-size:15px;
-  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter','Segoe UI',Roboto,sans-serif;
-  -webkit-font-smoothing:antialiased}
-h1,h2,h3,.cinzel{font-family:inherit;letter-spacing:-.02em}
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--texto);
+  font-family:var(--font);
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  letter-spacing:-0.01em;
+}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+   radial-gradient(ellipse 80% 50% at 50% -10%,rgba(0,122,255,.08),transparent),
+   radial-gradient(ellipse 60% 40% at 100% 100%,rgba(48,209,88,.04),transparent);
+}
+h1,h2,h3{font-weight:600;letter-spacing:-0.02em}
 .oculto{display:none!important}
-/* login */
-#s-login{min-height:100dvh;display:grid;place-items:center;padding:24px;
-  background:radial-gradient(1000px 500px at 50% -10%, rgba(255,120,73,.08), transparent)}
-.caja-login{width:100%;max-width:400px;background:var(--vino);border-radius:28px;padding:36px 28px;
-  box-shadow:0 24px 60px rgba(0,0,0,.5);text-align:center}
-.caja-login .escudo{width:64px;height:64px;margin:0 auto 14px;border-radius:18px;display:grid;place-items:center;
-  font-size:30px;background:linear-gradient(135deg,var(--oro),#e04e1f);box-shadow:0 8px 24px var(--glow)}
-input,select{width:100%;padding:13px 16px;background:var(--vino2);border:1px solid transparent;
-  border-radius:14px;color:var(--per);font-family:inherit;font-size:15px;margin-bottom:10px;transition:.2s}
-input[type=checkbox]{width:auto;margin:0;accent-color:var(--oro)}
-input::placeholder{color:var(--oro3)}
-input:focus,select:focus{outline:none;border-color:var(--oro);box-shadow:0 0 0 3px var(--glow)}
-label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--oro3);
-  display:block;margin:10px 0 6px;text-align:left}
-.btn{display:inline-block;padding:13px 20px;cursor:pointer;font-family:inherit;font-weight:600;
-  font-size:13px;letter-spacing:.01em;color:var(--per);background:var(--vino2);border:none;
-  border-radius:14px;transition:.2s}
-.btn:hover{filter:brightness(1.15)}
+
+/* ── LOGIN ── */
+#s-login{min-height:100dvh;display:grid;place-items:center;padding:24px}
+.caja-login{width:100%;max-width:400px;text-align:center;
+  background:var(--card);border:1px solid var(--linea);
+  border-radius:20px;padding:44px 32px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.caja-login .escudo{font-size:48px;margin-bottom:10px}
+.caja-login h1{font-size:24px;font-weight:600;margin-bottom:4px}
+.caja-login p{color:var(--texto2);font-size:14px;margin-bottom:28px}
+input,select{width:100%;padding:13px 16px;background:var(--card2);
+  border:1px solid var(--linea);border-radius:var(--radius-sm);
+  color:var(--texto);font-family:var(--font);font-size:15px;
+  transition:border .2s, background .2s;margin-bottom:10px}
+input:focus,select:focus{outline:none;border-color:var(--accent);
+  background:var(--bg2);box-shadow:0 0 0 3px rgba(0,122,255,.15)}
+input::placeholder{color:var(--texto3)}
+input[type=checkbox]{width:auto;margin:0;accent-color:var(--accent)}
+label{font-size:12px;font-weight:500;color:var(--texto2);
+  display:block;margin:10px 0 6px;text-align:left;letter-spacing:0}
+
+/* ── BOTONES ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:11px 18px;cursor:pointer;font-family:var(--font);font-weight:500;
+  font-size:14px;color:var(--texto);background:var(--card2);
+  border:1px solid var(--linea2);border-radius:var(--radius-sm);
+  transition:all .18s ease;letter-spacing:0}
+.btn:hover{background:var(--card-hover);border-color:rgba(255,255,255,.2)}
 .btn:active{transform:scale(.97)}
-.btn.solido{background:linear-gradient(135deg,var(--oro),#e85a28);color:#fff;box-shadow:0 6px 18px var(--glow)}
-.btn.peligro{background:var(--rojoSoft);color:var(--rojo)}
-.btn.mini{padding:8px 14px;font-size:12px;border-radius:10px}
-.err{color:var(--rojo);font-size:13px;min-height:18px;margin-top:8px}
-/* layout */
-header{position:sticky;top:0;z-index:30;background:rgba(17,17,19,.8);backdrop-filter:blur(20px) saturate(1.6);
-  border-bottom:1px solid var(--linea);padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-header .marca{font-weight:800;font-size:16px;letter-spacing:-.02em}
-header .marca b{color:var(--oro)}
-header .rol{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  background:var(--vino2);padding:6px 12px;border-radius:20px;color:var(--oro2)}
+.btn.solido{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn.solido:hover{background:var(--accent2);border-color:var(--accent2)}
+.btn.peligro{background:rgba(255,69,58,.1);border-color:rgba(255,69,58,.3);color:var(--rojo)}
+.btn.peligro:hover{background:rgba(255,69,58,.18)}
+.btn.mini{padding:7px 12px;font-size:12px}
+.err{color:var(--rojo);font-size:13px;min-height:18px;margin-top:10px}
+
+/* ── HEADER ── */
+header{position:sticky;top:0;z-index:30;
+  background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--linea);
+  padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header .marca{font-weight:600;font-size:16px;letter-spacing:-0.01em}
+header .rol{font-size:11px;font-weight:500;letter-spacing:.04em;
+  padding:5px 11px;border-radius:20px;background:var(--card2);color:var(--texto2);
+  border:1px solid var(--linea)}
 header .esp{flex:1}
-.tabs{display:flex;gap:4px;overflow-x:auto;padding:6px;margin:14px 16px 0;background:var(--vino);
-  border-radius:16px;position:sticky;top:64px;z-index:29;backdrop-filter:blur(20px)}
-.tabs button{flex:none;padding:10px 18px;background:none;border:none;border-radius:12px;
-  color:var(--oro3);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:.2s}
-.tabs button.act{background:var(--vino2);color:var(--per);box-shadow:0 2px 8px rgba(0,0,0,.3)}
-main{max-width:1100px;margin:0 auto;padding:22px 16px 90px}
+header #h-user{color:var(--texto2);font-size:13px}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:12px 20px;
+  border-bottom:1px solid var(--linea);position:sticky;top:57px;z-index:29;
+  background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;padding:8px 15px;background:transparent;border:none;
+  border-radius:8px;color:var(--texto2);font-family:var(--font);
+  font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;
+  white-space:nowrap;letter-spacing:0}
+.tabs button:hover{background:var(--card);color:var(--texto)}
+.tabs button.act{background:var(--accent);color:#fff}
+
+main{max-width:1200px;margin:0 auto;padding:24px 20px 100px}
+
 .sec{display:none}.sec.act{display:block;animation:ap .35s ease}
 @keyframes ap{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-/* métricas */
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:22px}
-.metric{border-radius:var(--radio);padding:22px;background:var(--vino);box-shadow:0 8px 24px rgba(0,0,0,.25)}
-.metric .n{font-size:46px;font-weight:200;letter-spacing:-.03em;color:#fff;line-height:1}
-.metric.apto .n{color:var(--oro2)}
-.metric .t{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--oro3);margin-top:8px}
-/* búsqueda + tabla */
-.buscador{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+
+/* ── MÉTRICAS ── */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:26px}
+.metric{background:var(--card);border:1px solid var(--linea);border-radius:16px;
+  padding:20px;text-align:center;transition:border .2s}
+.metric:hover{border-color:var(--linea2)}
+.metric .n{font-size:42px;font-weight:700;letter-spacing:-0.03em;
+  color:var(--texto);line-height:1}
+.metric .t{font-size:11px;font-weight:500;letter-spacing:.08em;
+  color:var(--texto2);margin-top:8px;text-transform:uppercase}
+.metric.apto .n{color:var(--verde)}
+
+/* ── BUSCADOR ── */
+.buscador{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .buscador input{flex:1;min-width:200px;margin:0}
-.chip{padding:9px 16px;border:none;border-radius:20px;background:var(--vino);color:var(--oro3);
-  font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.2s}
-.chip.act{background:var(--vino2);color:var(--per)}
-.tabla-wrap{overflow-x:auto;border-radius:var(--radio);background:var(--vino);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.chip{padding:8px 14px;border:1px solid var(--linea);border-radius:20px;
+  background:transparent;color:var(--texto2);font-size:12px;font-weight:500;
+  cursor:pointer;font-family:var(--font);transition:all .15s;letter-spacing:0}
+.chip:hover{border-color:var(--linea2);color:var(--texto)}
+.chip.act{background:var(--texto);color:#000;border-color:var(--texto)}
+
+/* ── TABLA ── */
+.tabla-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--linea);
+  border-radius:16px}
 table{width:100%;border-collapse:collapse;min-width:640px}
-th{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--oro3);
-  text-align:left;padding:16px 16px 12px;border-bottom:1px solid var(--linea)}
+th{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--texto2);
+  text-align:left;padding:14px 16px;border-bottom:1px solid var(--linea);
+  text-transform:uppercase;background:rgba(255,255,255,.02)}
 td{padding:14px 16px;border-bottom:1px solid var(--linea);font-size:14px;vertical-align:middle}
 tr:last-child td{border-bottom:none}
-tbody tr{transition:background .15s}
-tbody tr:hover{background:rgba(255,255,255,.03)}
-.barra{width:90px;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;
-  display:inline-block;vertical-align:middle}
-.barra i{display:block;height:100%;background:linear-gradient(90deg,var(--oro),var(--oro2));border-radius:3px}
-.tag{font-size:11px;font-weight:600;padding:5px 11px;border-radius:12px;background:var(--vino2);
-  color:var(--humo);white-space:nowrap}
-.tag.apto{background:linear-gradient(135deg,var(--oro),#e85a28);color:#fff}
-/* sellos */
-.grid-sellos{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px}
-.sello-card{border-radius:var(--radio);padding:22px;background:var(--vino);box-shadow:0 8px 24px rgba(0,0,0,.25)}
-.sello-card .cab{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.sello-card .glifo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:22px;
-  background:linear-gradient(135deg,var(--oro),#e04e1f);box-shadow:0 6px 16px var(--glow)}
-.sello-card .num{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--oro3)}
-.sello-card input{margin-bottom:8px}
-.qr-zone{display:flex;gap:14px;align-items:center;margin-top:12px}
-.qr-zone .qr{background:#fff;padding:8px;border-radius:12px;width:120px;height:120px;display:grid;place-items:center}
-.qr-zone .qr:empty::after{content:"sin código";color:#999;font-size:11px}
-/* varios */
-.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+tr:hover td{background:rgba(255,255,255,.02)}
+.barra{width:90px;height:4px;background:var(--card2);border-radius:2px;
+  overflow:hidden;display:inline-block;vertical-align:middle}
+.barra i{display:block;height:100%;background:var(--accent);border-radius:2px}
+.tag{font-size:10px;font-weight:600;letter-spacing:.04em;padding:4px 10px;
+  border-radius:6px;border:1px solid var(--linea);color:var(--texto2);
+  white-space:nowrap;text-transform:uppercase}
+.tag.apto{background:rgba(48,209,88,.15);border-color:rgba(48,209,88,.3);color:var(--verde)}
+
+/* ── SELLOS ── */
+.grid-sellos{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.sello-card{background:var(--card);border:1px solid var(--linea);
+  border-radius:16px;padding:20px;transition:border .2s}
+.sello-card:hover{border-color:var(--linea2)}
+.sello-card .cab{display:flex;align-items:center;gap:12px;margin-bottom:14px;
+  padding-bottom:14px;border-bottom:1px solid var(--linea)}
+.sello-card .glifo{font-size:28px;width:48px;height:48px;display:grid;place-items:center;
+  background:var(--card2);border-radius:12px}
+.sello-card .num{font-size:14px;font-weight:600;flex:1}
+.sello-card input{margin-bottom:10px}
+.qr-zone{display:flex;gap:14px;align-items:center;margin-top:14px;
+  padding:14px;background:var(--bg2);border-radius:var(--radius-sm)}
+.qr-zone .qr{background:#fff;padding:8px;border-radius:8px;
+  width:120px;height:120px;display:grid;place-items:center;flex:none}
+.qr-zone .qr:empty::after{content:"Sin código";color:#999;font-size:11px}
+
+/* ── FORMS ── */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
 .form-grid input,.form-grid select{margin:0}
-.titulo-sec{color:var(--per);font-size:26px;font-weight:800;margin-bottom:4px}
-.sub-sec{color:var(--oro3);font-size:14px;margin-bottom:20px}
-.item-prog{display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:16px;
-  margin-bottom:8px;background:var(--vino);flex-wrap:wrap;transition:.2s}
-.item-prog:hover{background:#232326}
-.item-prog .hora{font-weight:700;color:var(--oro2);font-size:16px;min-width:56px;font-variant-numeric:tabular-nums}
+.titulo-sec{font-size:24px;font-weight:600;margin-bottom:6px;letter-spacing:-0.02em}
+.sub-sec{color:var(--texto2);font-size:14px;margin-bottom:22px}
+
+/* ── ITEMS ── */
+.item-prog{display:flex;gap:14px;align-items:center;padding:14px 16px;
+  border:1px solid var(--linea);border-radius:var(--radius);
+  margin-bottom:8px;background:var(--card);flex-wrap:wrap;transition:border .2s}
+.item-prog:hover{border-color:var(--linea2)}
+.item-prog .hora{font-weight:600;color:var(--accent);font-size:15px;min-width:58px}
 .item-prog .det{flex:1;min-width:180px}
-.item-prog .det b{display:block;font-weight:600}
-.item-prog .det span{color:var(--oro3);font-size:13px}
-.ganador{border-radius:var(--radio);padding:20px;margin-top:10px;text-align:center;
-  background:linear-gradient(160deg,rgba(255,120,73,.18),var(--vino));box-shadow:0 8px 24px rgba(0,0,0,.3);animation:ap .5s ease}
-.ganador .n{font-size:20px;font-weight:700;color:var(--oro2)}
-.ganador .d{color:var(--oro3);font-size:13px;margin-top:4px}
-#toasts{position:fixed;top:14px;right:14px;left:14px;z-index:80;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--vino);border-left:3px solid var(--oro);border-radius:16px;padding:14px 16px;
-  box-shadow:0 12px 32px rgba(0,0,0,.5);animation:ap .35s ease;font-size:14px}
-.vacio{color:var(--oro3);text-align:center;padding:34px}
-.rz-check{display:flex;gap:12px;align-items:center;font-size:14px;color:var(--per);
-  margin:12px 0;text-align:left;font-weight:500}
+.item-prog .det b{display:block;font-weight:500;margin-bottom:2px}
+.item-prog .det span{color:var(--texto2);font-size:13px}
+
+/* ── GANADORES ── */
+.ganador{border:1px solid rgba(48,209,88,.3);border-radius:16px;padding:18px;
+  margin-top:10px;text-align:center;background:rgba(48,209,88,.05);
+  animation:ap .5s ease}
+.ganador .n{font-size:18px;font-weight:600;color:var(--verde)}
+.ganador .d{color:var(--texto2);font-size:13px;margin-top:4px}
+
+/* ── TOASTS ── */
+#toasts{position:fixed;top:14px;right:14px;left:14px;z-index:80;
+  display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--card);border:1px solid var(--linea2);border-radius:14px;
+  padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.5);
+  animation:ap .35s ease;font-size:14px;
+  backdrop-filter:saturate(180%) blur(20px)}
+.vacio{color:var(--texto3);text-align:center;padding:40px;font-size:14px}
+.rz-check{display:flex;gap:10px;align-items:center;font-size:14px;
+  color:var(--texto);margin:12px 0;text-align:left;cursor:pointer}
+.rz-check:hover{color:var(--texto2)}
+
+/* ── RESPONSIVE ── */
+@media (max-width:640px){
+  header{padding:12px 16px}
+  main{padding:18px 14px 100px}
+  .metric .n{font-size:34px}
+  .titulo-sec{font-size:20px}
+}
 </style>
 </head>
 <body>
@@ -125,31 +217,31 @@ tbody tr:hover{background:rgba(255,255,255,.03)}
 
 <section id="s-login">
   <div class="caja-login">
-    <div class="escudo">🜔</div>
-    <h1 style="font-size:22px;font-weight:800;margin:0 0 4px">Torre de Control</h1>
-    <p style="color:var(--oro3);font-size:13px;margin-bottom:24px">Símbolos &amp; Vinos · MMXXVI · acceso reservado</p>
-    <label>Correo</label><input id="l-email" type="email" placeholder="tu@correo.com">
-    <label>Clave</label><input id="l-clave" type="password" placeholder="••••••••">
-    <button class="btn solido" style="width:100%;margin-top:6px" onclick="login()">Entrar</button>
+    <div class="escudo">⚙️</div>
+    <h1>Panel de Control</h1>
+    <p>Símbolos &amp; Vinos · MMXXVI · Acceso reservado</p>
+    <label>CORREO</label><input id="l-email" type="email" placeholder="tu@correo.com">
+    <label>CLAVE</label><input id="l-clave" type="password" placeholder="••••••••">
+    <button class="btn solido" style="width:100%;margin-top:14px" onclick="login()">Iniciar sesión</button>
     <div class="err" id="l-err"></div>
   </div>
 </section>
 
 <section id="s-noperm" class="oculto" style="min-height:100dvh;display:grid;place-items:center;padding:24px">
-  <div style="text-align:center;max-width:360px;background:var(--vino);border-radius:28px;padding:36px 28px">
-    <div style="font-size:44px">🔒</div>
-    <h2 style="font-size:20px;font-weight:800;margin:14px 0 8px">Sin rango en el círculo</h2>
-    <p style="color:var(--oro3);font-size:14px">Tu cuenta no posee investidura de administrador. Consulta al Maestro.</p>
+  <div style="text-align:center;max-width:380px;background:var(--card);padding:40px 32px;border-radius:20px;border:1px solid var(--linea)">
+    <div style="font-size:48px">🔒</div>
+    <h2 style="margin:14px 0 8px">Acceso restringido</h2>
+    <p style="color:var(--texto2);font-size:14px">Tu cuenta no tiene permisos de administrador. Contacta al organizador.</p>
     <button class="btn" style="margin-top:20px" onclick="salir()">Salir</button>
   </div>
 </section>
 
 <div id="s-app" class="oculto">
 <header>
-  <span class="marca">🜔 Símbolos &amp; Vinos <b>· Torre</b></span>
+  <span class="marca">S&amp;V Panel</span>
   <span class="rol" id="h-rol">—</span>
   <span class="esp"></span>
-  <span id="h-user" style="color:var(--oro3);font-size:13px;font-weight:500"></span>
+  <span id="h-user"></span>
   <button class="btn mini" onclick="salir()">Salir</button>
 </header>
 <div class="tabs" id="tabs"></div>
@@ -175,77 +267,77 @@ tbody tr:hover{background:rgba(255,255,255,.03)}
   </section>
 
   <section class="sec" id="sec-sellos">
-    <h2 class="titulo-sec">Los siete sellos</h2>
-    <p class="sub-sec">Define nombre, salón, el fragmento que revela cada sello y genera su QR para imprimir.</p>
+    <h2 class="titulo-sec">Los 7 Sellos</h2>
+    <p class="sub-sec">Define nombre, salón y el fragmento que revela cada sello. Genera los QR para imprimir.</p>
     <div class="grid-sellos" id="grid-sellos"></div>
   </section>
 
   <section class="sec" id="sec-programa">
-    <h2 class="titulo-sec">Pergamino del programa</h2>
+    <h2 class="titulo-sec">Programa de actividades</h2>
     <p class="sub-sec">Los participantes verán esto en vivo y recibirán aviso 5 minutos antes de cada actividad.</p>
     <div class="form-grid" style="margin-bottom:14px">
-      <div><label>Hora</label><input id="pg-hora" type="time"></div>
-      <div><label>Tema</label><input id="pg-tema" placeholder="Cata de reserva"></div>
-      <div><label>Disertante</label><input id="pg-dis" placeholder="Sommelier…"></div>
-      <div><label>Lugar</label><input id="pg-lugar" placeholder="Salón Barrica"></div>
+      <div><label>HORA</label><input id="pg-hora" type="time"></div>
+      <div><label>TEMA</label><input id="pg-tema" placeholder="Ej: Cata de Malbec"></div>
+      <div><label>DISERTANTE</label><input id="pg-dis" placeholder="Ej: María Pérez"></div>
+      <div><label>LUGAR</label><input id="pg-lugar" placeholder="Ej: Salón Barrica"></div>
     </div>
-    <button class="btn solido" onclick="guardarProg()">＋ Agregar al programa</button>
-    <div id="lista-prog" style="margin-top:18px"></div>
+    <button class="btn solido" onclick="guardarProg()">+ Agregar al programa</button>
+    <div id="lista-prog" style="margin-top:20px"></div>
   </section>
 
   <section class="sec" id="sec-oraculo">
-    <h2 class="titulo-sec">La voz del Oráculo</h2>
-    <p class="sub-sec">El mensaje aparecerá al instante en la app de todos los buscadores.</p>
-    <label>Título</label><input id="an-titulo" placeholder="El Oráculo anuncia…">
-    <label>Mensaje</label><input id="an-msg" placeholder="La cata de reserva comienza en 5 minutos en el Salón Barrica…">
-    <button class="btn solido" style="margin-top:6px" onclick="enviarAnuncio()">🜂 Enviar a los buscadores</button>
-    <div id="lista-anun" style="margin-top:22px"></div>
+    <h2 class="titulo-sec">Mensajes a participantes</h2>
+    <p class="sub-sec">El mensaje aparecerá al instante en la app de todos los participantes, con sonido y vibración.</p>
+    <label>TÍTULO</label><input id="an-titulo" placeholder="Ej: Recordatorio importante">
+    <label>MENSAJE</label><input id="an-msg" placeholder="Ej: La cata comienza en 5 minutos en el Salón Barrica…">
+    <button class="btn solido" onclick="enviarAnuncio()">Enviar mensaje</button>
+    <div id="lista-anun" style="margin-top:24px"></div>
   </section>
 
   <section class="sec" id="sec-sorteo">
-    <h2 class="titulo-sec">El cáliz del sorteo</h2>
-    <p class="sub-sec">Solo los APTOS participan. El azar elige sin repetir, y todo queda registrado.</p>
+    <h2 class="titulo-sec">Sorteo final</h2>
+    <p class="sub-sec">Solo los participantes APTOS entran al sorteo. El azar elige sin repetir y queda registrado.</p>
     <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
-      <div style="width:150px"><label>Cantidad de ganadores</label><input id="so-n" type="number" min="1" value="3"></div>
-      <button class="btn solido" onclick="sortear()">🜛 Ejecutar el sorteo</button>
+      <div style="width:180px"><label>CANTIDAD DE GANADORES</label><input id="so-n" type="number" min="1" value="3"></div>
+      <button class="btn solido" onclick="sortear()">Ejecutar sorteo</button>
     </div>
     <div id="res-sorteo"></div>
-    <div id="hist-sorteo" style="margin-top:24px"></div>
+    <div id="hist-sorteo" style="margin-top:28px"></div>
   </section>
 
   <section class="sec" id="sec-equipo">
-    <h2 class="titulo-sec">El círculo de administradores</h2>
-    <p class="sub-sec">Crea cuentas personales y asigna rangos: maestro, configurador o monitor.</p>
-    <div class="form-grid" style="margin-bottom:6px">
-      <div><label>Nombre</label><input id="eq-nombre" placeholder="Nombre"></div>
-      <div><label>Correo</label><input id="eq-email" type="email" placeholder="correo@…"></div>
-      <div><label>Clave temporal</label><input id="eq-clave" placeholder="mínimo 6"></div>
-      <div><label>Rango</label><select id="eq-rol">
-        <option value="monitor">Monitor</option>
+    <h2 class="titulo-sec">Equipo de administradores</h2>
+    <p class="sub-sec">Crea cuentas y asigna roles: Maestro, Configurador o Monitor.</p>
+    <div class="form-grid" style="margin-bottom:8px">
+      <div><label>NOMBRE</label><input id="eq-nombre" placeholder="Nombre completo"></div>
+      <div><label>CORREO</label><input id="eq-email" type="email" placeholder="correo@..."></div>
+      <div><label>CLAVE TEMPORAL</label><input id="eq-clave" type="password" placeholder="Mínimo 6 caracteres"></div>
+      <div><label>ROL</label><select id="eq-rol">
+        <option value="monitor">Monitor (solo ve)</option>
         <option value="configurador">Configurador</option>
         <option value="maestro">Maestro</option>
       </select></div>
     </div>
-    <button class="btn solido" onclick="crearAdmin()">✦ Investir nuevo admin</button>
+    <button class="btn solido" onclick="crearAdmin()">Crear administrador</button>
     <div class="err" id="eq-err"></div>
-    <div id="lista-admins" style="margin-top:22px"></div>
+    <div id="lista-admins" style="margin-top:24px"></div>
   </section>
 
   <section class="sec" id="sec-reinicio">
-    <h2 class="titulo-sec">Reinicio total del evento</h2>
-    <p class="sub-sec">Pone el evento en cero para un ensayo o una nueva edición. Requiere doble confirmación y es irreversible.</p>
-    <div style="border:1px solid rgba(255,69,58,.35);border-radius:var(--radio);padding:22px;background:var(--rojoSoft)">
+    <h2 class="titulo-sec">Reinicio del evento</h2>
+    <p class="sub-sec">Pone el evento en cero para un ensayo o nueva edición. Requiere doble confirmación y es irreversible.</p>
+    <div style="background:var(--card);border:1px solid rgba(255,69,58,.25);border-radius:16px;padding:22px">
       <label class="rz-check"><input type="checkbox" id="rz-prog" checked> Progreso de participantes (sellos → 0/7; las cuentas se conservan)</label>
-      <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones del Oráculo (campanita de todos → 0)</label>
+      <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones del Oráculo</label>
       <label class="rz-check"><input type="checkbox" id="rz-sort" checked> Sorteos realizados</label>
       <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa de actividades</label>
-      <label class="rz-check"><input type="checkbox" id="rz-sellos"> Configuración de sellos y códigos QR</label>
+      <label class="rz-check"><input type="checkbox" id="rz-sellos"> Configuración de sellos y QRs</label>
       <div style="margin-top:18px">
-        <button class="btn peligro" onclick="rzPaso1()">🜛 Reiniciar evento</button>
+        <button class="btn peligro" onclick="rzPaso1()">Reiniciar evento</button>
       </div>
-      <div id="rz-paso2" class="oculto" style="margin-top:16px;border-top:1px solid rgba(255,69,58,.35);padding-top:16px">
-        <p style="color:var(--rojo);font-size:14px;font-weight:600">⚠ Confirmación 1 de 2 registrada. Lo marcado se borrará definitivamente. No existe deshacer.</p>
-        <button class="btn peligro" style="margin-top:12px" onclick="rzPaso2()">⚠ Confirmación 2 de 2 — Ejecutar</button>
+      <div id="rz-paso2" class="oculto" style="margin-top:16px;border-top:1px solid rgba(255,69,58,.25);padding-top:16px">
+        <p style="color:var(--rojo);font-size:14px">⚠ <b>Confirmación 1 de 2 registrada.</b> Lo marcado se borrará definitivamente. No hay deshacer.</p>
+        <button class="btn peligro" style="margin-top:12px" onclick="rzPaso2()">Confirmación 2 de 2 — Ejecutar</button>
         <button class="btn mini" style="margin-left:8px" onclick="rzCancelar()">Cancelar</button>
       </div>
     </div>
@@ -283,7 +375,7 @@ const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],sellos:['maestro','configurador'],
  programa:['maestro','configurador'],oraculo:['maestro','configurador'],sorteo:['maestro'],
  equipo:['maestro'],reinicio:['maestro']};
-const TABS=[['torre','Torre'],['sellos','Sellos'],['programa','Programa'],['oraculo','Oráculo'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
+const TABS=[['torre','Dashboard'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
 
 window.login = async ()=>{ try{
   await signInWithEmailAndPassword(auth,$('l-email').value.trim(),$('l-clave').value);
@@ -296,7 +388,7 @@ onAuthStateChanged(auth, async u=>{
   const s = await getDoc(doc(db,'admins',yo));
   if(!s.exists()){ $('s-noperm').classList.remove('oculto'); return; }
   miRol = s.data().rol;
-  $('h-rol').textContent = miRol;
+  $('h-rol').textContent = miRol.charAt(0).toUpperCase()+miRol.slice(1);
   $('h-user').textContent = s.data().nombre||s.data().email;
   $('s-app').classList.remove('oculto');
   const tabs=$('tabs'); tabs.innerHTML='';
@@ -328,7 +420,6 @@ function escuchar(){
   if(miRol==='maestro') onSnapshot(collection(db,'admins'), s=>{ window.ADM={}; s.forEach(d=>ADM[d.id]=d.data()); pintarAdmins(); });
 }
 
-/* ── TORRE ── */
 window.filtro=(f,btn)=>{ filtroAct=f; document.querySelectorAll('.chip').forEach(c=>c.classList.remove('act')); btn.classList.add('act'); pintarTabla(); };
 window.pintarTabla=()=>{
   const q=($('q').value||'').toLowerCase();
@@ -341,11 +432,11 @@ window.pintarTabla=()=>{
   $('tb').innerHTML = rows.length? rows.map(p=>{
     const n=(p.simbolos||[]).length;
     return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td>'+
-    '<td style="color:var(--oro3);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono)+'</td>'+
+    '<td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono)+'</td>'+
     '<td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td>'+
-    '<td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✦ APTO':'BUSCANDO')+'</span></td>'+
-    '<td style="color:var(--oro3);font-size:12px">'+new Date(p.registro||Date.now()).toLocaleString()+'</td></tr>';
-  }).join('') : '<tr><td colspan="5" class="vacio">Aún no hay buscadores registrados…</td></tr>';
+    '<td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'En búsqueda')+'</span></td>'+
+    '<td style="color:var(--texto2);font-size:12px">'+new Date(p.registro||Date.now()).toLocaleString()+'</td></tr>';
+  }).join('') : '<tr><td colspan="5" class="vacio">Aún no hay participantes registrados</td></tr>';
 };
 window.exportar=()=>{
   const rows=Object.values(PART).map(p=>({Nombre:p.nombre,Apellido:p.apellido,Email:p.email,
@@ -353,111 +444,105 @@ window.exportar=()=>{
    Registro:new Date(p.registro||Date.now()).toLocaleString()}));
   const ws=XLSX.utils.json_to_sheet(rows); const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Participantes'); XLSX.writeFile(wb,'participantes-simbolos-vinos.xlsx');
-  toast('📜 Excel exportado, Maestro.');
+  toast('✓ Excel exportado');
 };
 
-/* ── SELLOS ── */
 async function pintarSellos(){
   const g=$('grid-sellos'); g.innerHTML='';
   for(let n=1;n<=7;n++){
     const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};
     const c=document.createElement('div'); c.className='sello-card';
-    c.innerHTML='<div class="cab"><span class="glifo">'+GLIFOS[n]+'</span><span class="num">Sello '+n+' · '+esc(s.nombre||'sin nombre')+'</span></div>'+
-    '<label>Nombre</label><input id="sn-'+n+'" value="'+esc(s.nombre||'')+'" placeholder="Sol, Luna…">'+
-    '<label>Salón</label><input id="ss-'+n+'" value="'+esc(s.salon||'')+'" placeholder="Salón Barrica…">'+
-    '<label>Fragmento que revela</label><input id="sf-'+n+'" value="'+esc(s.fragmento||'')+'" placeholder="“El oro”…">'+
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="btn mini solido" onclick="guardarSello('+n+')">Guardar</button>'+
-    '<button class="btn mini" onclick="genToken('+n+')">🜚 Generar QR</button>'+
-    '<button class="btn mini" onclick="imprimirQRs()">🖨 Imprimir todos</button></div>'+
-    '<div class="qr-zone"><div class="qr" id="qr-'+n+'"></div><div style="font-size:12px;color:var(--oro3)">Código:<br><b id="tk-'+n+'" style="color:var(--oro2)">'+esc(s.token||'— sin generar —')+'</b></div></div>';
+    c.innerHTML='<div class="cab"><span class="glifo">'+GLIFOS[n]+'</span><span class="num">Sello '+n+' · '+(s.nombre||'Sin nombre')+'</span></div>'+
+    '<label>NOMBRE</label><input id="sn-'+n+'" value="'+esc(s.nombre||'')+'" placeholder="Ej: Sol">'+
+    '<label>SALÓN</label><input id="ss-'+n+'" value="'+esc(s.salon||'')+'" placeholder="Ej: Salón Barrica">'+
+    '<label>FRAGMENTO QUE REVELA</label><input id="sf-'+n+'" value="'+esc(s.fragmento||'')+'" placeholder="Ej: El oro">'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn mini solido" onclick="guardarSello('+n+')">Guardar</button>'+
+    '<button class="btn mini" onclick="genToken('+n+')">Generar QR</button>'+
+    '<button class="btn mini" onclick="imprimirQRs()">Imprimir todos</button></div>'+
+    '<div class="qr-zone"><div class="qr" id="qr-'+n+'"></div><div style="font-size:12px;color:var(--texto2)"><div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">Código</div><b id="tk-'+n+'" style="color:var(--texto);font-family:monospace;font-size:12px">'+esc(s.token||'Sin generar')+'</b></div></div>';
     g.appendChild(c);
-    if(s.token) new QRCode($('qr-'+n),{text:s.token,width:104,height:104,colorDark:'#1a1a1a',colorLight:'#ffffff'});
+    if(s.token) new QRCode($('qr-'+n),{text:s.token,width:104,height:104,colorDark:'#000',colorLight:'#fff'});
   }
 }
 window.guardarSello=async n=>{ await setDoc(doc(db,'simbolos',String(n)),{numero:n,
   nombre:$('sn-'+n).value.trim(), salon:$('ss-'+n).value.trim(), fragmento:$('sf-'+n).value.trim(),
   token:(await getDoc(doc(db,'simbolos',String(n)))).data()?.token||'', activo:true},{merge:true});
-  toast('✦ Sello '+n+' configurado.'); };
+  toast('✓ Sello '+n+' guardado'); };
 window.genToken=async n=>{
   const t='SV2026-S'+n+'-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');
   await setDoc(doc(db,'simbolos',String(n)),{numero:n,token:t},{merge:true});
-  toast('🜚 Nuevo código generado para el sello '+n+'.'); };
+  toast('✓ QR generado para sello '+n); };
 window.imprimirQRs=async()=>{
   let html='<html><head><title>QRs Símbolos & Vinos</title><style>body{font-family:sans-serif;display:flex;flex-wrap:wrap;gap:30px;padding:30px}'+
   '.c{text-align:center}.c img{width:180px;height:180px}.c b{display:block;margin-top:8px}</style></head><body>';
   for(let n=1;n<=7;n++){ const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};
     const el=document.createElement('div'); if(s.token) new QRCode(el,{text:s.token,width:180,height:180,colorDark:'#000',colorLight:'#fff'});
     const img=el.querySelector('canvas')?el.querySelector('canvas').toDataURL(): (el.querySelector('img')?el.querySelector('img').src:'');
-    html+='<div class="c"><img src="'+img+'"><b>SELLO '+n+' · '+esc(s.nombre||'')+'</b><span>'+esc(s.salon||'')+'</span><br><small>'+esc(s.token||'')+'</small></div>'; }
+    html+='<div class="c"><img src="'+img+'"><b>Sello '+n+' · '+esc(s.nombre||'')+'</b><span>'+esc(s.salon||'')+'</span><br><small>'+esc(s.token||'')+'</small></div>'; }
   html+='</body></html>';
   const w=window.open(''); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),600);
 };
 
-/* ── PROGRAMA ── */
 window.guardarProg=async()=>{ const h=$('pg-hora').value;
-  if(!h||!$('pg-tema').value) return toast('⚠ Completa hora y tema.');
+  if(!h||!$('pg-tema').value) return toast('Completa hora y tema');
   await addDoc(collection(db,'programa'),{hora:h,tema:$('pg-tema').value.trim(),
    disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim()});
-  ['pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value=''); toast('📜 Actividad agregada al programa.'); };
+  ['pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value=''); toast('✓ Actividad agregada'); };
 function pintarProg(){ $('lista-prog').innerHTML = PROG.length? PROG.map(a=>
   '<div class="item-prog"><span class="hora">'+esc(a.hora)+'</span><div class="det"><b>'+esc(a.tema)+'</b>'+
   '<span>'+esc(a.disertante)+(a.lugar?' · '+esc(a.lugar):'')+'</span></div>'+
-  '<button class="btn mini peligro" onclick="borrarProg(\''+a.id+'\')">✕</button></div>').join('')
-  : '<div class="vacio">El programa está vacío.</div>'; }
-window.borrarProg=async id=>{ await deleteDoc(doc(db,'programa',id)); toast('Actividad retirada.'); };
+  '<button class="btn mini peligro" onclick="borrarProg(\''+a.id+'\')">Eliminar</button></div>').join('')
+  : '<div class="vacio">Aún no hay actividades en el programa</div>'; }
+window.borrarProg=async id=>{ await deleteDoc(doc(db,'programa',id)); toast('Actividad eliminada'); };
 
-/* ── ORÁCULO ── */
 window.enviarAnuncio=async()=>{ const t=$('an-titulo').value.trim(), m=$('an-msg').value.trim();
-  if(!m) return toast('⚠ Escribe el mensaje.');
+  if(!m) return toast('Escribe el mensaje');
   await addDoc(collection(db,'anuncios'),{titulo:t,mensaje:m,fecha:new Date().toISOString()});
-  $('an-titulo').value=''; $('an-msg').value=''; toast('🜂 La voz del Oráculo resuena en todos los buscadores.'); };
-function pintarAnun(){ $('lista-anun').innerHTML = ANUN.length? '<h3 style="color:var(--oro3);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Historial</h3>'+
-  ANUN.map(a=>'<div class="item-prog"><div class="det"><b>'+esc(a.titulo||'Anuncio')+'</b><span>'+esc(a.mensaje)+
+  $('an-titulo').value=''; $('an-msg').value=''; toast('✓ Mensaje enviado a todos los participantes'); };
+function pintarAnun(){ $('lista-anun').innerHTML = ANUN.length? '<h3 style="color:var(--texto2);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Historial</h3>'+
+  ANUN.map(a=>'<div class="item-prog"><div class="det"><b>'+esc(a.titulo||'Mensaje')+'</b><span>'+esc(a.mensaje)+
   ' · '+new Date(a.fecha).toLocaleString()+'</span></div></div>').join('') : ''; }
 
-/* ── SORTEO ── */
 window.sortear=async()=>{
   const aptos=Object.values(PART).filter(p=>p.estado==='apto');
   const n=parseInt($('so-n').value)||1;
-  if(!aptos.length) return toast('⚠ No hay buscadores APTOS todavía.');
-  if(n>aptos.length) return toast('⚠ Solo hay '+aptos.length+' aptos.');
+  if(!aptos.length) return toast('No hay participantes aptos aún');
+  if(n>aptos.length) return toast('Solo hay '+aptos.length+' aptos');
   const pool=[...aptos]; const gan=[];
   for(let i=0;i<n;i++){ const r=crypto.getRandomValues(new Uint32Array(1))[0]%pool.length; gan.push(pool.splice(r,1)[0]); }
   await addDoc(collection(db,'sorteos'),{fecha:new Date().toISOString(),n,
     ganadores:gan.map(g=>({nombre:g.nombre+' '+g.apellido,email:g.email,telefono:g.telefono}))});
-  toast('🜛 El cáliz ha hablado.'); };
+  toast('✓ Sorteo ejecutado'); };
 function pintarHistSorteo(){ const r=$('res-sorteo');
-  $('hist-sorteo').innerHTML = SORT.length? '<h3 style="color:var(--oro3);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Sorteos realizados</h3>'+
-  SORT.map(s=>'<div style="border-radius:16px;background:var(--vino);padding:16px;margin-bottom:10px">'+
-  '<b style="color:var(--oro2)">Sorteo · '+new Date(s.fecha).toLocaleString()+'</b>'+
-  (s.ganadores||[]).map(g=>'<div style="margin-top:6px">🏆 '+esc(g.nombre)+' <span style="color:var(--oro3);font-size:13px">'+esc(g.telefono)+'</span></div>').join('')+'</div>').join('') : '';
-  if(SORT[0]) r.innerHTML='<div style="margin-top:18px">'+SORT[0].ganadores.map(g=>
-   '<div class="ganador"><div class="n">🏆 '+esc(g.nombre)+'</div><div class="d">'+esc(g.email)+' · '+esc(g.telefono)+'</div></div>').join('')+'</div>';
+  $('hist-sorteo').innerHTML = SORT.length? '<h3 style="color:var(--texto2);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Sorteos realizados</h3>'+
+  SORT.map(s=>'<div style="background:var(--card);border:1px solid var(--linea);border-radius:14px;padding:16px;margin-bottom:10px">'+
+  '<b style="color:var(--texto)">Sorteo · '+new Date(s.fecha).toLocaleString()+'</b>'+
+  (s.ganadores||[]).map(g=>'<div style="margin-top:8px;color:var(--verde)">🏆 '+esc(g.nombre)+' <span style="color:var(--texto2);font-size:13px">'+esc(g.telefono)+'</span></div>').join('')+'</div>').join('') : '';
+  if(SORT[0]) r.innerHTML='<div style="margin-top:20px">'+SORT[0].ganadores.map((g,i)=>
+   '<div class="ganador" style="animation-delay:'+(i*.15)+'s"><div class="n">🏆 '+esc(g.nombre)+'</div><div class="d">'+esc(g.email)+' · '+esc(g.telefono)+'</div></div>').join('')+'</div>';
 }
 
-/* ── EQUIPO ── */
 window.crearAdmin=async()=>{ $('eq-err').textContent='';
   const n=$('eq-nombre').value.trim(), e=$('eq-email').value.trim(), c=$('eq-clave').value, r=$('eq-rol').value;
-  if(!n||!e||c.length<6) return $('eq-err').textContent='Completa nombre, correo y clave (mín. 6).';
+  if(!n||!e||c.length<6) return $('eq-err').textContent='Completa nombre, correo y clave (mín. 6)';
   try{
     const sec=initializeApp(CFG,'sec'+Date.now()); const secAuth=getAuth(sec);
     const cred=await createUserWithEmailAndPassword(secAuth,e,c);
     await setDoc(doc(db,'admins',cred.user.uid),{nombre:n,email:e,rol:r});
     await signOut(secAuth);
     $('eq-nombre').value=$('eq-email').value=$('eq-clave').value='';
-    toast('✦ '+n+' investido como '+r+'.');
-  }catch(err){ $('eq-err').textContent = err.code==='auth/email-already-in-use'?'Ese correo ya existe.':'Error: '+err.code; } };
+    toast('✓ '+n+' creado como '+r);
+  }catch(err){ $('eq-err').textContent = err.code==='auth/email-already-in-use'?'Ese correo ya existe':'Error: '+err.code; } };
 function pintarAdmins(){ $('lista-admins').innerHTML = Object.entries(ADM).map(([id,a])=>
   '<div class="item-prog"><div class="det"><b>'+esc(a.nombre)+'</b><span>'+esc(a.email)+'</span></div>'+
   (id===yo? '<span class="tag apto">Tú · '+esc(a.rol)+'</span>' :
   '<select style="width:auto;margin:0" onchange="cambiarRol(\''+id+'\',this.value)">'+
   ['maestro','configurador','monitor'].map(r=>'<option'+(r===a.rol?' selected':'')+'>'+r+'</option>').join('')+'</select>'+
-  '<button class="btn mini peligro" onclick="revocar(\''+id+'\')">✕</button>')+'</div>').join(''); }
-window.cambiarRol=async(id,r)=>{ await updateDoc(doc(db,'admins',id),{rol:r}); toast('Rango actualizado.'); };
-window.revocar=async id=>{ if(confirm('¿Revocar el rango de este admin?')){ await deleteDoc(doc(db,'admins',id)); toast('Rango revocado.'); } };
+  '<button class="btn mini peligro" onclick="revocar(\''+id+'\')">Eliminar</button>')+'</div>').join(''); }
+window.cambiarRol=async(id,r)=>{ await updateDoc(doc(db,'admins',id),{rol:r}); toast('Rol actualizado'); };
+window.revocar=async id=>{ if(confirm('¿Eliminar este administrador?')){ await deleteDoc(doc(db,'admins',id)); toast('Administrador eliminado'); } };
 
-/* ── REINICIO ── */
-window.rzPaso1=()=>{ $('rz-paso2').classList.remove('oculto'); toast('⚠ Confirmación 1 de 2 registrada.'); };
+window.rzPaso1=()=>{ $('rz-paso2').classList.remove('oculto'); toast('Confirmación 1 de 2 registrada'); };
 window.rzCancelar=()=>{ $('rz-paso2').classList.add('oculto'); };
 window.rzPaso2=async()=>{
   const ops=[];
@@ -474,7 +559,7 @@ window.rzPaso2=async()=>{
     await b.commit();
   }
   $('rz-paso2').classList.add('oculto');
-  toast('🜛 El evento ha renacido desde el cero. Operaciones: '+ops.length);
+  toast('✓ Evento reiniciado · '+ops.length+' operaciones');
 };
 </script>
 </body>
