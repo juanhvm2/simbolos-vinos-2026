@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0709">
+<title>Símbolos & Vinos · MMXXVI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --negro:#0b0709; --vino:#4a1220; --vino2:#6d1a2d;
+  --oro:#c9a227; --oro2:#e6c66a; --oro3:#a8842c;
+  --pergamino:#e9dcc3; --humo:rgba(233,220,195,.55);
+  --glow:rgba(230,198,106,.22);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:var(--negro); color:var(--pergamino);
+  font-family:'Jost',sans-serif; overflow-x:hidden;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+/* ── fondo por capas ─────────────────────────── */
+.capas{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.capas .vela{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:140vw;height:70vh;
+  background:radial-gradient(ellipse at center, rgba(230,198,106,.14), transparent 60%);
+  animation:parpadeo 7s ease-in-out infinite}
+.capas .vino{position:absolute;bottom:-30%;left:-20%;width:140vw;height:80vh;
+  background:radial-gradient(ellipse at center, rgba(109,26,45,.35), transparent 65%)}
+.capas .vino2{position:absolute;bottom:-10%;right:-30%;width:100vw;height:60vh;
+  background:radial-gradient(ellipse at center, rgba(74,18,32,.4), transparent 60%)}
+.capas .polvo span{position:absolute;width:3px;height:3px;border-radius:50%;
+  background:var(--oro2);opacity:.35;filter:blur(.5px);animation:flotar linear infinite}
+.capas .polvo span:nth-child(1){left:12%;top:80%;animation-duration:16s}
+.capas .polvo span:nth-child(2){left:30%;top:95%;animation-duration:22s;animation-delay:-6s}
+.capas .polvo span:nth-child(3){left:55%;top:88%;animation-duration:19s;animation-delay:-11s}
+.capas .polvo span:nth-child(4){left:72%;top:92%;animation-duration:25s;animation-delay:-3s}
+.capas .polvo span:nth-child(5){left:88%;top:85%;animation-duration:17s;animation-delay:-9s}
+.capas .polvo span:nth-child(6){left:44%;top:99%;animation-duration:21s;animation-delay:-14s}
+.capas .vineta{position:absolute;inset:0;background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.75))}
+@keyframes parpadeo{0%,100%{opacity:.8}42%{opacity:1}58%{opacity:.65}}
+@keyframes flotar{from{transform:translateY(0);opacity:0}12%{opacity:.4}88%{opacity:.3}to{transform:translateY(-105vh);opacity:0}}
+/* ── pantallas ───────────────────────────────── */
+.pantalla{display:none;min-height:100dvh;padding:24px 20px 110px;
+  padding-top:calc(24px + env(safe-area-inset-top));max-width:560px;margin:0 auto}
+.pantalla.activa{display:block;animation:aparecer .5s ease}
+@keyframes aparecer{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* ── tipografía ritual ───────────────────────── */
+h1,h2,h3,.cinzel{font-family:'Cinzel',serif;letter-spacing:.08em}
+.mistica{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--humo)}
+.orn{display:flex;align-items:center;gap:12px;color:var(--oro3);margin:18px 0;font-size:13px}
+.orn::before,.orn::after{content:"";height:1px;flex:1;
+  background:linear-gradient(90deg,transparent,var(--oro3),transparent)}
+/* ── landing ─────────────────────────────────── */
+#p-landing{display:none;place-items:center;text-align:center}
+#p-landing.activa{display:grid}
+.emblema{width:130px;height:130px;margin:0 auto 26px;position:relative;
+  border:1px solid var(--oro3);border-radius:50%;display:grid;place-items:center;
+  box-shadow:0 0 40px var(--glow), inset 0 0 30px rgba(0,0,0,.6)}
+.emblema::before{content:"";position:absolute;inset:8px;border:1px dashed var(--oro3);
+  border-radius:50%;animation:girar 40s linear infinite}
+.emblema .glyph{font-size:52px;color:var(--oro2);text-shadow:0 0 22px var(--glow)}
+@keyframes girar{to{transform:rotate(360deg)}}
+.titulo{font-size:clamp(26px,7vw,40px);font-weight:900;color:var(--oro2);
+  text-shadow:0 0 30px rgba(230,198,106,.25)}
+.sub{font-size:14px;letter-spacing:.35em;color:var(--humo);margin-top:6px}
+.lema{margin:22px auto;max-width:320px;font-size:19px;line-height:1.5}
+/* ── botones ─────────────────────────────────── */
+.btn{display:block;width:100%;padding:15px 18px;margin-top:12px;cursor:pointer;
+  font-family:'Cinzel',serif;font-weight:700;font-size:14px;letter-spacing:.18em;
+  color:var(--oro2);background:linear-gradient(180deg,rgba(201,162,39,.16),rgba(201,162,39,.05));
+  border:1px solid var(--oro3);border-radius:4px;transition:.25s;position:relative;overflow:hidden}
+.btn:active{transform:scale(.97)}
+.btn:hover{box-shadow:0 0 24px var(--glow);border-color:var(--oro2)}
+.btn.solido{background:linear-gradient(180deg,var(--oro),var(--oro3));color:#1a0d05}
+.btn.fantasma{background:transparent;border-color:rgba(233,220,195,.25);color:var(--humo)}
+/* ── formularios ─────────────────────────────── */
+.campo{margin-bottom:14px;text-align:left}
+.campo label{display:block;font-size:11px;letter-spacing:.25em;color:var(--oro3);margin-bottom:6px}
+.campo input{width:100%;padding:14px;background:rgba(233,220,195,.05);
+  border:1px solid rgba(201,162,39,.3);border-radius:4px;color:var(--pergamino);
+  font-family:'Jost',sans-serif;font-size:16px}
+.campo input:focus{outline:none;border-color:var(--oro2);box-shadow:0 0 14px var(--glow)}
+.error{color:#e08a8a;font-size:14px;margin-top:10px;min-height:20px;text-align:center}
+.enlace{background:none;border:none;color:var(--oro2);font-size:14px;cursor:pointer;
+  text-decoration:underline;margin-top:14px}
+/* ── home ────────────────────────────────────── */
+.cab{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cab .nombre{font-size:15px;color:var(--pergamino)}
+.estado{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;padding:7px 12px;
+  border:1px solid var(--oro3);color:var(--oro2);border-radius:20px;white-space:nowrap}
+.estado.apto{background:linear-gradient(180deg,var(--oro),var(--oro3));color:#1a0d05;
+  box-shadow:0 0 24px var(--glow);animation:latir 2.4s ease-in-out infinite}
+@keyframes latir{0%,100%{box-shadow:0 0 14px var(--glow)}50%{box-shadow:0 0 34px var(--glow)}}
+.progreso{display:flex;align-items:center;gap:20px;margin:26px 0 8px}
+.anillo{position:relative;width:96px;height:96px;flex:none}
+.anillo svg{transform:rotate(-90deg)}
+.anillo .fondo{stroke:rgba(233,220,195,.12)}
+.anillo .barra{stroke:var(--oro2);stroke-linecap:round;transition:stroke-dashoffset 1s ease;
+  filter:drop-shadow(0 0 6px var(--glow))}
+.anillo .num{position:absolute;inset:0;display:grid;place-items:center;
+  font-family:'Cinzel',serif;font-size:20px;color:var(--oro2)}
+.progreso .txt{font-size:15px;line-height:1.5}
+/* ── los 7 sellos ────────────────────────────── */
+.sellos{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:10px}
+.sello{aspect-ratio:1;border:1px solid rgba(233,220,195,.15);border-radius:50%;
+  display:grid;place-items:center;position:relative;background:rgba(0,0,0,.35);transition:.4s}
+.sello .g{font-size:26px;color:rgba(233,220,195,.22);filter:grayscale(1);transition:.4s}
+.sello .n{position:absolute;bottom:-20px;font-size:9px;letter-spacing:.18em;color:var(--humo);
+  font-family:'Cinzel',serif;text-align:center;width:140%}
+.sello.abierto{border-color:var(--oro2);background:radial-gradient(circle,rgba(201,162,39,.2),rgba(0,0,0,.4));
+  box-shadow:0 0 22px var(--glow);animation:abrir .8s ease}
+.sello.abierto .g{color:var(--oro2);filter:none;text-shadow:0 0 16px var(--glow)}
+.sello.abierto::after{content:"";position:absolute;inset:-6px;border:1px dashed var(--oro3);
+  border-radius:50%;animation:girar 24s linear infinite}
+@keyframes abrir{0%{transform:scale(.6);box-shadow:0 0 60px var(--glow)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.frase-caja{margin-top:34px;padding:20px;border:1px solid rgba(201,162,39,.25);
+  background:rgba(74,18,32,.18);text-align:center;min-height:90px}
+.frase-caja .frag{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:19px;color:var(--oro2);letter-spacing:.06em;word-spacing:.2em}
+.frase-caja .pista{font-size:12px;letter-spacing:.25em;color:var(--humo)}
+/* ── navegación inferior ─────────────────────── */
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;
+  background:rgba(11,7,9,.92);backdrop-filter:blur(12px);
+  border-top:1px solid rgba(201,162,39,.3);padding-bottom:env(safe-area-inset-bottom)}
+.nav button{flex:1;padding:14px 4px 12px;background:none;border:none;cursor:pointer;
+  color:var(--humo);font-family:'Cinzel',serif;font-size:10px;letter-spacing:.15em}
+.nav button .i{display:block;font-size:20px;margin-bottom:4px}
+.nav button.act{color:var(--oro2);text-shadow:0 0 12px var(--glow)}
+/* ── escáner ─────────────────────────────────── */
+#qr-reader{width:100%;max-width:420px;margin:16px auto;border-radius:8px;overflow:hidden;
+  border:1px solid var(--oro3);box-shadow:0 0 30px rgba(0,0,0,.6)}
+#qr-reader video{border-radius:8px}
+.marco{position:relative;max-width:420px;margin:0 auto}
+.marco::before,.marco::after{content:"";position:absolute;width:34px;height:34px;z-index:5;
+  border:2px solid var(--oro2)}
+.marco::before{top:-6px;left:-6px;border-right:none;border-bottom:none}
+.marco::after{bottom:-6px;right:-6px;border-left:none;border-top:none}
+/* ── programa ───────────────────────────────── */
+.act-item{display:flex;gap:16px;padding:16px 4px;border-bottom:1px solid rgba(233,220,195,.1)}
+.act-item .hora{font-family:'Cinzel',serif;font-size:17px;color:var(--oro2);flex:none;width:64px}
+.act-item .tema{font-size:16px;font-weight:500}
+.act-item .meta{font-size:13px;color:var(--humo);margin-top:3px}
+.act-item.soon{background:linear-gradient(90deg,rgba(201,162,39,.12),transparent);
+  border-left:2px solid var(--oro2);padding-left:12px;animation:latir 2s infinite}
+/* ── revelación ──────────────────────────────── */
+#revelacion{position:fixed;inset:0;z-index:60;display:none;place-items:center;text-align:center;
+  background:radial-gradient(ellipse at center,rgba(74,18,32,.92),rgba(11,7,9,.97));padding:30px}
+#revelacion.activa{display:grid;animation:aparecer .4s ease}
+#rev-glyph{font-size:88px;color:var(--oro2);text-shadow:0 0 50px var(--glow);
+  animation:abrir 1s ease}
+#rev-nombre{font-family:'Cinzel',serif;font-size:22px;letter-spacing:.3em;color:var(--pergamino);margin-top:14px}
+#rev-salon{font-size:13px;letter-spacing:.2em;color:var(--humo);margin-top:6px}
+#rev-frag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;
+  color:var(--oro2);margin:26px 0;min-height:40px;text-shadow:0 0 20px var(--glow)}
+/* ── avisos ──────────────────────────────────── */
+#toasts{position:fixed;top:calc(14px + env(safe-area-inset-top));left:14px;right:14px;z-index:70;
+  display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{background:rgba(11,7,9,.95);border:1px solid var(--oro2);border-radius:6px;
+  padding:14px 16px;box-shadow:0 0 30px var(--glow);animation:bajar .5s ease;pointer-events:auto}
+.toast .t{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.2em;color:var(--oro2)}
+.toast .m{font-size:14px;margin-top:5px;color:var(--pergamino)}
+@keyframes bajar{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
+.carga{position:fixed;inset:0;background:var(--negro);z-index:90;display:grid;place-items:center;
+  font-family:'Cinzel',serif;color:var(--oro2);letter-spacing:.3em;font-size:13px;transition:opacity .6s}
+.carga.fin{opacity:0;pointer-events:none}
+.salir{background:none;border:none;color:var(--humo);font-size:12px;text-decoration:underline;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="capas">
+  <div class="vela"></div><div class="vino"></div><div class="vino2"></div>
+  <div class="polvo"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="vineta"></div>
+</div>
+
+<div class="carga" id="carga">✦ &nbsp;ABRIENDO EL GRIMORIO&nbsp; ✦</div>
+<div id="toasts"></div>
+
+<!-- ══ LANDING ══ -->
+<section class="pantalla" id="p-landing">
+  <div>
+    <div class="emblema"><span class="glyph">🜔</span></div>
+    <h1 class="titulo">SÍMBOLOS &amp; VINOS</h1>
+    <div class="sub">MMXXVI · LA BÚSQUEDA DE LOS SIETE SELLOS</div>
+    <p class="lema mistica">Siete sellos guardan la frase oculta. Recorre los salones, descifra sus marcas y demuestra que eres digno del sorteo final.</p>
+    <div class="orn">✦  ✦</div>
+    <button class="btn solido" onclick="irAuth('registro')">INICIAR EL RITO</button>
+    <button class="btn fantasma" onclick="irAuth('ingreso')">YA PORTO LA MARCA</button>
+  </div>
+</section>
+
+<!-- ══ REGISTRO / INGRESO ══ -->
+<section class="pantalla" id="p-auth">
+  <h2 class="cinzel" style="color:var(--oro2);font-size:22px;text-align:center" id="auth-titulo">EL PACTO DEL BUSCADOR</h2>
+  <p class="mistica" style="text-align:center;margin:10px 0 24px;font-size:17px" id="auth-sub">Deja tu nombre en el registro eterno.</p>
+
+  <div id="form-registro">
+    <div class="campo"><label>NOMBRE</label><input id="r-nombre" autocomplete="given-name"></div>
+    <div class="campo"><label>APELLIDO</label><input id="r-apellido" autocomplete="family-name"></div>
+    <div class="campo"><label>CORREO ELECTRÓNICO</label><input id="r-email" type="email" autocomplete="email"></div>
+    <div class="campo"><label>TELÉFONO</label><input id="r-telefono" type="tel" autocomplete="tel"></div>
+    <div class="campo"><label>CLAVE SECRETA (mínimo 6)</label><input id="r-clave" type="password" autocomplete="new-password"></div>
+    <button class="btn solido" onclick="registrar()">SELLAR EL PACTO</button>
+  </div>
+
+  <div id="form-ingreso" style="display:none">
+    <div class="campo"><label>CORREO ELECTRÓNICO</label><input id="i-email" type="email"></div>
+    <div class="campo"><label>CLAVE SECRETA</label><input id="i-clave" type="password"></div>
+    <button class="btn solido" onclick="ingresar()">RETOMAR LA BÚSQUEDA</button>
+  </div>
+
+  <div class="error" id="auth-error"></div>
+  <div style="text-align:center">
+    <button class="enlace" id="auth-cambio" onclick="cambiarModo()">Ya tengo marca — ingresar</button>
+    <br><button class="enlace" onclick="ver('p-landing')">← volver</button>
+  </div>
+</section>
+
+<!-- ══ HOME: LOS SELLOS ══ -->
+<section class="pantalla" id="p-home">
+  <div class="cab">
+    <div>
+      <div class="nombre cinzel" id="h-nombre">Buscador</div>
+      <button class="salir" onclick="salir()">cerrar sesión</button>
+    </div>
+    <div class="estado" id="h-estado">BUSCADOR INICIADO</div>
+  </div>
+
+  <div class="progreso">
+    <div class="anillo">
+      <svg width="96" height="96">
+        <circle class="fondo" cx="48" cy="48" r="42" fill="none" stroke-width="4"/>
+        <circle class="barra" id="h-barra" cx="48" cy="48" r="42" fill="none" stroke-width="4"
+          stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
+      </svg>
+      <div class="num" id="h-num">0/7</div>
+    </div>
+    <div class="txt mistica" id="h-lema">Los sellos duermen.<br>Ve y despiértalos.</div>
+  </div>
+
+  <div class="orn">LOS SIETE SELLOS</div>
+  <div class="sellos" id="h-sellos"></div>
+
+  <div class="frase-caja">
+    <div class="pista" id="h-frase-titulo">LA FRASE OCULTA</div>
+    <div class="frag" id="h-frase">· · · &nbsp; · · · &nbsp; · · ·</div>
+  </div>
+</section>
+
+<!-- ══ ESCÁNER ══ -->
+<section class="pantalla" id="p-scan">
+  <h2 class="cinzel" style="color:var(--oro2);font-size:20px;text-align:center">EL OJO QUE TODO LO VE</h2>
+  <p class="mistica" style="text-align:center;margin:8px 0 18px;font-size:16px">Apunta al grabado del sello hallado en el salón.</p>
+  <div class="marco"><div id="qr-reader"></div></div>
+  <div class="campo" style="margin-top:22px"><label>O ESCRIBE EL CÓDIGO DEL SELLO</label>
+    <input id="s-manual" placeholder="SV2026-…"></div>
+  <button class="btn" onclick="procesar(document.getElementById('s-manual').value)">VALIDAR CÓDIGO</button>
+</section>
+
+<!-- ══ PROGRAMA ══ -->
+<section class="pantalla" id="p-prog">
+  <h2 class="cinzel" style="color:var(--oro2);font-size:20px;text-align:center">PERGAMINO DEL PROGRAMA</h2>
+  <p class="mistica" style="text-align:center;margin:8px 0 14px;font-size:16px">Te avisaremos 5 minutos antes de cada rito.</p>
+  <div id="prog-lista"></div>
+</section>
+
+<!-- ══ REVELACIÓN ══ -->
+<div id="revelacion">
+  <div>
+    <div id="rev-glyph">☉</div>
+    <div id="rev-nombre">SOL</div>
+    <div id="rev-salon">SALÓN · —</div>
+    <div class="orn">EL SELLO REVELA</div>
+    <div id="rev-frag"></div>
+    <button class="btn solido" style="max-width:300px;margin:0 auto" onclick="cerrarRevelacion()">SELLAR Y CONTINUAR</button>
+  </div>
+</div>
+
+<!-- ══ NAV ══ -->
+<nav class="nav" id="nav" style="display:none">
+  <button class="act" data-p="p-home" onclick="navegar('p-home',this)"><span class="i">🜚</span>SELLOS</button>
+  <button data-p="p-scan" onclick="navegar('p-scan',this)"><span class="i"></span>ESCANEAR</button>
+  <button data-p="p-prog" onclick="navegar('p-prog',this)"><span class="i">🜃</span>PROGRAMA</button>
+</nav>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+         onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, updateDoc, onSnapshot, collection, arrayUnion, getDoc }
+         from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyA-1VBoP1hTjzbLSsMvqXYea1szI1u0y66g",
+  authDomain: "simbolos-vinos-2026.firebaseapp.com",
+  projectId: "simbolos-vinos-2026",
+  storageBucket: "simbolos-vinos-2026.firebasestorage.app",
+  messagingSenderId: "1055775891853",
+  appId: "1:1055775891853:web:ba134c84b0c33905aa5dc4"
+});
+const auth = getAuth(app), db = getFirestore(app);
+
+/* ── estado global ── */
+let yo = null, parte = null, simbolos = {}, programa = [], vistos = new Set(JSON.parse(localStorage.getItem('sv-avisos')||'[]'));
+const GLIFOS = {1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
+const NOMBRES = {1:'SOL',2:'LUNA',3:'MERCURIO',4:'VENUS',5:'MARTE',6:'JÚPITER',7:'SATURNO'};
+
+/* ── utilidades ── */
+const $ = id => document.getElementById(id);
+window.ver = id => { document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa')); $(id).classList.add('activa'); };
+window.irAuth = modo => { modoAuth(modo); ver('p-auth'); };
+window.cambiarModo = () => modoAuth($('form-registro').style.display==='none'?'registro':'ingreso');
+function modoAuth(m){
+  const reg = m==='registro';
+  $('form-registro').style.display = reg?'block':'none';
+  $('form-ingreso').style.display  = reg?'none':'block';
+  $('auth-titulo').textContent = reg?'EL PACTO DEL BUSCADOR':'EL RETORNO';
+  $('auth-sub').textContent = reg?'Deja tu nombre en el registro eterno.':'El grimorio recuerda tu marca.';
+  $('auth-cambio').textContent = reg?'Ya tengo marca — ingresar':'Aún no tengo marca — registrarme';
+  $('auth-error').textContent='';
+}
+window.toast = (t,m)=>{
+  const d=document.createElement('div'); d.className='toast';
+  d.innerHTML='<div class="t"></div><div class="m"></div>';
+  d.querySelector('.t').textContent=t; d.querySelector('.m').textContent=m;
+  $('toasts').appendChild(d); setTimeout(()=>d.remove(),6000);
+};
+let audioCtx=null;
+function chime(){ try{
+  audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+  [659.25,880].forEach((f,i)=>{ const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.frequency.value=f; o.type='sine';
+    g.gain.setValueAtTime(0,audioCtx.currentTime+i*.18);
+    g.gain.linearRampToValueAtTime(.18,audioCtx.currentTime+i*.18+.02);
+    g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+i*.18+.7);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(audioCtx.currentTime+i*.18); o.stop(audioCtx.currentTime+i*.18+.8); });
+  navigator.vibrate && navigator.vibrate([90,60,90]);
+}catch(e){} }
+document.addEventListener('touchstart',()=>{ try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();}catch(e){} },{once:true});
+function scramble(el,txt){ let i=0; const gl='✦✧☽☉♄♃⚚';
+  const int=setInterval(()=>{ el.textContent=txt.split('').map((c,j)=> j<i?c : (c===' '?' ':gl[Math.floor(Math.random()*gl.length)])).join('');
+  i+=.6; if(i>=txt.length+1){el.textContent=txt;clearInterval(int);} },34); }
+
+/* ── autenticación ── */
+const ERR={'auth/email-already-in-use':'Ese correo ya porta marca. Usa “ingresar”.',
+ 'auth/invalid-credential':'Correo o clave incorrectos.','auth/wrong-password':'Correo o clave incorrectos.',
+ 'auth/weak-password':'La clave debe tener al menos 6 caracteres.','auth/invalid-email':'Correo inválido.',
+ 'auth/missing-password':'Falta la clave.','auth/network-request-failed':'Sin conexión. Intenta de nuevo.'};
+window.registrar = async ()=>{
+  const n=$('r-nombre').value.trim(),a=$('r-apellido').value.trim(),e=$('r-email').value.trim(),
+        t=$('r-telefono').value.trim(),c=$('r-clave').value;
+  if(!n||!a||!e||!t) return $('auth-error').textContent='Completa todos los campos, buscador.';
+  try{
+    const cred = await createUserWithEmailAndPassword(auth,e,c);
+    await setDoc(doc(db,'participantes',cred.user.uid),{
+      nombre:n,apellido:a,email:e,telefono:t,
+      simbolos:[],estado:'iniciado',registro:new Date().toISOString()
+    });
+  }catch(err){ $('auth-error').textContent = ERR[err.code]||('Error: '+err.code); }
+};
+window.ingresar = async ()=>{
+  try{ await signInWithEmailAndPassword(auth,$('i-email').value.trim(),$('i-clave').value); }
+  catch(err){ $('auth-error').textContent = ERR[err.code]||('Error: '+err.code); }
+};
+window.salir = ()=>{ pararScanner(); signOut(auth); };
+
+onAuthStateChanged(auth, u=>{
+  $('carga').classList.add('fin');
+  if(u){ yo=u.uid; escucharParte(); escucharDatos(); $('nav').style.display='flex'; navegar('p-home',document.querySelector('[data-p="p-home"]')); }
+  else { yo=null; parte=null; $('nav').style.display='none'; ver('p-landing'); }
+});
+
+/* ── datos en tiempo real ── */
+function escucharParte(){ onSnapshot(doc(db,'participantes',yo), s=>{ if(s.exists()){ parte=s.data(); pintarHome(); } }); }
+function escucharDatos(){
+  onSnapshot(collection(db,'simbolos'), s=>{ s.forEach(d=>{ simbolos[d.id]={...d.data(),id:d.id}; }); pintarHome(); });
+  onSnapshot(collection(db,'programa'),  s=>{ programa=[]; s.forEach(d=>programa.push({id:d.id,...d.data()}));
+    programa.sort((x,y)=>(x.hora||'').localeCompare(y||'')); pintarPrograma(); });
+  onSnapshot(collection(db,'anuncios'),  s=>{ s.forEach(d=>{ const a={id:d.id,...d.data()};
+    if(!vistos.has(a.id)){ vistos.add(a.id); localStorage.setItem('sv-avisos',JSON.stringify([...vistos]));
+      toast('🜂 EL ORÁCULO HA HABLADO · '+(a.titulo||''), a.mensaje||''); chime(); } }); });
+}
+
+/* ── home ── */
+function pintarHome(){
+  if(!parte) return;
+  $('h-nombre').textContent = parte.nombre+' '+parte.apellido;
+  const n=(parte.simbolos||[]).length, apto=n>=7;
+  $('h-num').textContent=n+'/7';
+  $('h-barra').style.strokeDashoffset = 263.9*(1-n/7);
+  const est=$('h-estado');
+  est.textContent = apto?'✦ APTO PARA EL SORTEO ✦':'BUSCADOR INICIADO';
+  est.classList.toggle('apto',apto);
+  $('h-lema').innerHTML = apto ? 'Has demostrado ser digno.<br>El sorteo te aguarda.' :
+    n===0 ? 'Los sellos duermen.<br>Ve y despiértalos.' : 'La frase comienza a susurrar…<br>Sigue buscando.';
+  const caja=$('h-sellos'); caja.innerHTML='';
+  for(let i=1;i<=7;i++){
+    const ab=(parte.simbolos||[]).includes(i), s=simbolos[i];
+    const d=document.createElement('div'); d.className='sello'+(ab?' abierto':'');
+    d.innerHTML='<span class="g">'+(GLIFOS[i])+'</span><span class="n">'+((s&&s.nombre)||NOMBRES[i])+'</span>';
+    caja.appendChild(d);
+  }
+  const frags=[]; for(let i=1;i<=7;i++){ if((parte.simbolos||[]).includes(i)){
+    const s=simbolos[i]; frags.push(s&&s.fragmento ? s.fragmento : '· · ·'); } else frags.push('· · ·'); }
+  $('h-frase').textContent = frags.join('  ');
+  if(apto && simbolos[1] && simbolos[1].fragmento) $('h-frase-titulo').textContent='✦ LA FRASE HA SIDO REVELADA ✦';
+}
+
+/* ── programa + alertas ── */
+function pintarPrograma(){
+  const c=$('prog-lista'); c.innerHTML = programa.length? '' :
+    '<p class="mistica" style="text-align:center;margin-top:30px">El Oráculo aún no publica los ritos del día.</p>';
+  const ahora=new Date(), hh=String(ahora.getHours()).padStart(2,'0')+':'+String(ahora.getMinutes()).padStart(2,'0');
+  programa.forEach(a=>{
+    const d=document.createElement('div'); d.className='act-item';
+    const [H,M]=(a.hora||'00:00').split(':').map(Number);
+    const diff=(H*60+M)-(ahora.getHours()*60+ahora.getMinutes());
+    if(diff>=0&&diff<=5) d.classList.add('soon');
+    d.innerHTML='<div class="hora">'+(a.hora||'—')+'</div><div><div class="tema"></div><div class="meta"></div></div>';
+    d.querySelector('.tema').textContent=a.tema||'';
+    d.querySelector('.meta').textContent=(a.disertante||'')+(a.lugar?' · '+a.lugar:'');
+    c.appendChild(d);
+  });
+  void hh;
+}
+setInterval(()=>{ const ahora=new Date();
+  programa.forEach(a=>{ const [H,M]=(a.hora||'0:0').split(':').map(Number);
+    const diff=(H*60+M)-(ahora.getHours()*60+ahora.getMinutes());
+    const key='sv-alerta-'+a.id;
+    if(diff>=0&&diff<=5&&!localStorage.getItem(key)){ localStorage.setItem(key,'1');
+      toast('🜃 COMIENZA PRONTO · '+(a.hora||''), (a.tema||'')+' — '+(a.lugar||'')); chime(); } });
+  pintarPrograma();
+},20000);
+
+/* ── escáner ── */
+let hq=null, escaneando=false;
+window.navegar = (id,btn)=>{
+  ver(id); document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('act')); btn&&btn.classList.add('act');
+  if(id==='p-scan') iniciarScanner(); else pararScanner();
+};
+async function iniciarScanner(){
+  if(escaneando) return; escaneando=true;
+  try{
+    hq = hq || new Html5Qrcode("qr-reader");
+    await hq.start({facingMode:"environment"},{fps:10,qrbox:{width:220,height:220}},
+      txt=>{ pararScanner(); procesar(txt); }, ()=>{});
+  }catch(e){ toast('🜄 LA CÁMARA NO RESPONDE','Usa el código manual debajo del marco.'); }
+}
+function pararScanner(){ escaneando=false; if(hq&&hq.isScanning){ hq.stop().catch(()=>{}); } }
+
+window.procesar = async raw=>{
+  if(!raw) return;
+  const token=raw.trim();
+  const entrada=Object.values(simbolos).find(s=>s.token&&s.token.toUpperCase()===token.toUpperCase());
+  if(!entrada) return toast('🜁 SELLO FALSO','Ese código no pertenece a ninguno de los siete sellos.');
+  const n=entrada.numero;
+  if((parte.simbolos||[]).includes(n)) return toast('☽ SELLO YA MARCADO','Este símbolo ya porta tu marca. Sigue buscando.');
+  await updateDoc(doc(db,'participantes',yo),{ simbolos:arrayUnion(n), estado:( (parte.simbolos||[]).length+1>=7 ?'apto':'iniciado') });
+  chime(); revelar(entrada);
+  $('s-manual').value='';
+};
+
+function revelar(s){
+  $('rev-glyph').textContent=GLIFOS[s.numero]||'✦';
+  $('rev-nombre').textContent=(s.nombre||NOMBRES[s.numero]||'SELLO');
+  $('rev-salon').textContent='SALÓN · '+((s.salon)||'—');
+  ver('p-home');
+  $('revelacion').classList.add('activa');
+  scramble($('rev-frag'), s.fragmento||'· · ·');
+}
+window.cerrarRevelacion = ()=>{
+  $('revelacion').classList.remove('activa');
+  if((parte.simbolos||[]).length>=7){
+    toast('✦ HAS SIDO HALLADO DIGNO ✦','Tu nombre entra en el cáliz del sorteo final.');
+    chime();
+  }
+};
+</script>
+</body>
+</html>
