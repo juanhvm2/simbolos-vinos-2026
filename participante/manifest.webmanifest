@@ -1,11 +1,11 @@
 {
-  "name": "Símbolos & Vinos MMXXVI",
-  "short_name": "Símbolos&Vinos",
+  "name": "Símbolos & Vinos · Edición Masónica",
+  "short_name": "S&Vinos",
   "description": "La Búsqueda de los Siete Sellos",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#0b0709",
-  "theme_color": "#0b0709",
+  "background_color": "#f0e9dd",
+  "theme_color": "#7a1034",
   "icons": [
     { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
