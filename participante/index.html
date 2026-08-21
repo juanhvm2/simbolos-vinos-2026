@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b0709">
+<meta name="theme-color" content="#0e0718">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,241 +12,277 @@
 <link rel="apple-touch-icon" href="icon.svg">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --negro:#0b0709; --vino:#4a1220; --vino2:#6d1a2d;
-  --oro:#c9a227; --oro2:#e6c66a; --oro3:#a8842c;
-  --pergamino:#e9dcc3; --humo:rgba(233,220,195,.55);
-  --glow:rgba(230,198,106,.22);
+  --bg:#0e0718; --bg2:#150b26;
+  --card:rgba(255,255,255,.06); --card2:rgba(255,255,255,.1);
+  --linea:rgba(255,255,255,.09); --linea2:rgba(255,255,255,.16);
+  --violet:#8b5cf6; --violet2:#a78bfa; --mag:#d946ef; --pink:#ec4899;
+  --yellow:#fde047;
+  --texto:#ffffff; --texto2:rgba(255,255,255,.62); --texto3:rgba(255,255,255,.38);
+  --grad:linear-gradient(135deg,#7c3aed 0%,#c026d3 55%,#ec4899 100%);
+  --glow:0 8px 32px rgba(139,92,246,.35);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
-body{background:var(--negro);color:var(--pergamino);font-family:'Jost',sans-serif;overflow-x:hidden;
-  padding-bottom:env(safe-area-inset-bottom)}
+body{background:var(--bg);color:var(--texto);font-family:'Inter',sans-serif;
+  overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom);
+  -webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+h1,h2,h3,.display{font-family:'Sora',sans-serif;letter-spacing:-.02em}
 .oculto{display:none!important}
-.capas{position:fixed;inset:0;z-index:-1;overflow:hidden}
-.capas .vela{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:140vw;height:70vh;
-  background:radial-gradient(ellipse at center, rgba(230,198,106,.14), transparent 60%);animation:parpadeo 7s ease-in-out infinite}
-.capas .vino{position:absolute;bottom:-30%;left:-20%;width:140vw;height:80vh;
-  background:radial-gradient(ellipse at center, rgba(109,26,45,.35), transparent 65%)}
-.capas .vino2{position:absolute;bottom:-10%;right:-30%;width:100vw;height:60vh;
-  background:radial-gradient(ellipse at center, rgba(74,18,32,.4), transparent 60%)}
-.capas .polvo span{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--oro2);
-  opacity:.35;filter:blur(.5px);animation:flotar linear infinite}
-.capas .polvo span:nth-child(1){left:12%;top:80%;animation-duration:16s}
-.capas .polvo span:nth-child(2){left:30%;top:95%;animation-duration:22s;animation-delay:-6s}
-.capas .polvo span:nth-child(3){left:55%;top:88%;animation-duration:19s;animation-delay:-11s}
-.capas .polvo span:nth-child(4){left:72%;top:92%;animation-duration:25s;animation-delay:-3s}
-.capas .polvo span:nth-child(5){left:88%;top:85%;animation-duration:17s;animation-delay:-9s}
-.capas .polvo span:nth-child(6){left:44%;top:99%;animation-duration:21s;animation-delay:-14s}
-.capas .vineta{position:absolute;inset:0;background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.75))}
-@keyframes parpadeo{0%,100%{opacity:.8}42%{opacity:1}58%{opacity:.65}}
-@keyframes flotar{from{transform:translateY(0);opacity:0}12%{opacity:.4}88%{opacity:.3}to{transform:translateY(-105vh);opacity:0}}
-.pantalla{display:none;min-height:100dvh;padding:24px 20px 110px;
+/* ── blobs de luz ── */
+.blob{position:fixed;border-radius:50%;filter:blur(80px);z-index:-1;
+  animation:flotarB 20s ease-in-out infinite alternate}
+.b1{width:70vw;height:70vw;top:-30vw;left:-25vw;background:#5b21b6;opacity:.5}
+.b2{width:55vw;height:55vw;bottom:-22vw;right:-18vw;background:#be185d;opacity:.4;animation-delay:-7s}
+.b3{width:45vw;height:45vw;top:35vh;right:-28vw;background:#1d4ed8;opacity:.28;animation-delay:-13s}
+@keyframes flotarB{from{transform:translate(0,0) scale(1)}to{transform:translate(6vw,5vh) scale(1.18)}}
+/* ── pantallas ── */
+.pantalla{display:none;min-height:100dvh;padding:24px 20px 120px;
   padding-top:calc(24px + env(safe-area-inset-top));max-width:560px;margin:0 auto}
-.pantalla.activa{display:block;animation:aparecer .5s ease}
-@keyframes aparecer{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-h1,h2,h3,.cinzel{font-family:'Cinzel',serif;letter-spacing:.08em}
-.mistica{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--humo)}
-.orn{display:flex;align-items:center;gap:12px;color:var(--oro3);margin:18px 0;font-size:13px}
-.orn::before,.orn::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--oro3),transparent)}
+.pantalla.activa{display:block;animation:aparecer .45s ease}
+@keyframes aparecer{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.mistica{font-style:italic;color:var(--texto2)}
+/* ── landing ── */
 #p-landing{display:none;place-items:center;text-align:center}
 #p-landing.activa{display:grid}
-.emblema{width:130px;height:130px;margin:0 auto 26px;position:relative;border:1px solid var(--oro3);
-  border-radius:50%;display:grid;place-items:center;box-shadow:0 0 40px var(--glow), inset 0 0 30px rgba(0,0,0,.6)}
-.emblema::before{content:"";position:absolute;inset:8px;border:1px dashed var(--oro3);border-radius:50%;animation:girar 40s linear infinite}
-.emblema .glyph{font-size:52px;color:var(--oro2);text-shadow:0 0 22px var(--glow)}
+.orb{width:150px;height:150px;margin:0 auto 30px;border-radius:50%;background:var(--grad);
+  display:grid;place-items:center;font-size:58px;position:relative;
+  box-shadow:0 0 70px rgba(168,85,247,.55), inset 0 0 40px rgba(255,255,255,.18);
+  animation:pulso 3.5s ease-in-out infinite}
+.orb::before{content:"";position:absolute;inset:-14px;border-radius:50%;
+  border:1.5px dashed rgba(255,255,255,.25);animation:girar 30s linear infinite}
+@keyframes pulso{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 @keyframes girar{to{transform:rotate(360deg)}}
-.titulo{font-size:clamp(26px,7vw,40px);font-weight:900;color:var(--oro2);text-shadow:0 0 30px rgba(230,198,106,.25)}
-.sub{font-size:14px;letter-spacing:.35em;color:var(--humo);margin-top:6px}
-.lema{margin:22px auto;max-width:320px;font-size:19px;line-height:1.5}
-.btn{display:block;width:100%;padding:15px 18px;margin-top:12px;cursor:pointer;font-family:'Cinzel',serif;
-  font-weight:700;font-size:14px;letter-spacing:.18em;color:var(--oro2);
-  background:linear-gradient(180deg,rgba(201,162,39,.16),rgba(201,162,39,.05));
-  border:1px solid var(--oro3);border-radius:4px;transition:.25s}
+.titulo{font-size:clamp(34px,10vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.05}
+.titulo .amp{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:12px;font-weight:600;letter-spacing:.32em;color:var(--texto2);margin-top:10px;text-transform:uppercase}
+.lema{margin:26px auto;max-width:330px;font-size:17px;line-height:1.6;color:var(--texto2)}
+/* ── botones pill ── */
+.btn{display:block;width:100%;padding:16px 20px;margin-top:12px;cursor:pointer;
+  font-family:'Sora',sans-serif;font-weight:600;font-size:15px;letter-spacing:-.01em;
+  color:var(--texto);background:var(--card);border:1px solid var(--linea2);
+  border-radius:999px;transition:.2s;backdrop-filter:blur(8px)}
 .btn:active{transform:scale(.97)}
-.btn:hover{box-shadow:0 0 24px var(--glow);border-color:var(--oro2)}
-.btn.solido{background:linear-gradient(180deg,var(--oro),var(--oro3));color:#1a0d05}
-.btn.fantasma{background:transparent;border-color:rgba(233,220,195,.25);color:var(--humo)}
+.btn:hover{border-color:rgba(255,255,255,.3);background:var(--card2)}
+.btn.solido{background:var(--grad);border:none;box-shadow:var(--glow);color:#fff}
+.btn.solido:hover{filter:brightness(1.1)}
+.btn.fantasma{background:transparent;color:var(--texto2)}
+/* ── auth ── */
+.auth-card{background:rgba(21,11,38,.6);backdrop-filter:blur(20px);
+  border:1px solid var(--linea);border-radius:28px;padding:28px 22px}
 .campo{margin-bottom:14px;text-align:left}
-.campo label{display:block;font-size:11px;letter-spacing:.25em;color:var(--oro3);margin-bottom:6px}
-.campo input{width:100%;padding:14px;background:rgba(233,220,195,.05);border:1px solid rgba(201,162,39,.3);
-  border-radius:4px;color:var(--pergamino);font-family:'Jost',sans-serif;font-size:16px}
-.campo input:focus{outline:none;border-color:var(--oro2);box-shadow:0 0 14px var(--glow)}
-.error{color:#e08a8a;font-size:14px;margin-top:10px;min-height:20px;text-align:center}
-.enlace{background:none;border:none;color:var(--oro2);font-size:14px;cursor:pointer;text-decoration:underline;margin-top:14px}
+.campo label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;
+  color:var(--texto2);margin-bottom:6px;text-transform:uppercase}
+.campo input{width:100%;padding:15px 16px;background:var(--card);border:1px solid var(--linea);
+  border-radius:16px;color:var(--texto);font-family:'Inter',sans-serif;font-size:16px;transition:.2s}
+.campo input:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px rgba(139,92,246,.2)}
+.error{color:#fb7185;font-size:14px;margin-top:10px;min-height:20px;text-align:center}
+.enlace{background:none;border:none;color:var(--violet2);font-size:14px;font-weight:500;
+  cursor:pointer;text-decoration:none;margin-top:14px}
+/* ── home ── */
 .cab{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.cab .nombre{font-size:15px;color:var(--pergamino)}
-.estado{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;padding:7px 12px;
-  border:1px solid var(--oro3);color:var(--oro2);border-radius:20px;white-space:nowrap}
-.estado.apto{background:linear-gradient(180deg,var(--oro),var(--oro3));color:#1a0d05;
-  box-shadow:0 0 24px var(--glow);animation:latir 2.4s ease-in-out infinite}
-@keyframes latir{0%,100%{box-shadow:0 0 14px var(--glow)}50%{box-shadow:0 0 34px var(--glow)}}
-.progreso{display:flex;align-items:center;gap:20px;margin:26px 0 8px}
-.anillo{position:relative;width:96px;height:96px;flex:none}
+.cab .hola{font-size:13px;color:var(--texto2)}
+.cab .nombre{font-family:'Sora';font-size:19px;font-weight:700;letter-spacing:-.02em}
+.salir{background:none;border:none;color:var(--texto3);font-size:12px;cursor:pointer;margin-top:2px}
+.estado{font-family:'Sora';font-size:10px;font-weight:600;letter-spacing:.14em;padding:9px 14px;
+  border:1px solid var(--linea2);color:var(--texto2);border-radius:999px;white-space:nowrap;text-transform:uppercase}
+.estado.apto{background:var(--grad);border:none;color:#fff;box-shadow:var(--glow);
+  animation:latir 2.4s ease-in-out infinite}
+@keyframes latir{0%,100%{box-shadow:0 8px 24px rgba(139,92,246,.3)}50%{box-shadow:0 8px 44px rgba(236,72,153,.55)}}
+.progreso{display:flex;align-items:center;gap:22px;margin:28px 0 10px;
+  background:var(--card);border:1px solid var(--linea);border-radius:24px;padding:20px;
+  backdrop-filter:blur(12px)}
+.anillo{position:relative;width:104px;height:104px;flex:none}
 .anillo svg{transform:rotate(-90deg)}
-.anillo .fondo{stroke:rgba(233,220,195,.12)}
-.anillo .barra{stroke:var(--oro2);stroke-linecap:round;transition:stroke-dashoffset 1s ease;filter:drop-shadow(0 0 6px var(--glow))}
-.anillo .num{position:absolute;inset:0;display:grid;place-items:center;font-family:'Cinzel',serif;font-size:20px;color:var(--oro2)}
-.progreso .txt{font-size:15px;line-height:1.5}
-.sellos{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:10px}
-.sello{aspect-ratio:1;border:1px solid rgba(233,220,195,.15);border-radius:50%;display:grid;place-items:center;
-  position:relative;background:rgba(0,0,0,.35);transition:.4s}
-.sello .g{font-size:26px;color:rgba(233,220,195,.22);filter:grayscale(1);transition:.4s}
-.sello .n{position:absolute;bottom:-20px;font-size:9px;letter-spacing:.18em;color:var(--humo);
-  font-family:'Cinzel',serif;text-align:center;width:140%}
-.sello.abierto{border-color:var(--oro2);background:radial-gradient(circle,rgba(201,162,39,.2),rgba(0,0,0,.4));
-  box-shadow:0 0 22px var(--glow);animation:abrir .8s ease}
-.sello.abierto .g{color:var(--oro2);filter:none;text-shadow:0 0 16px var(--glow)}
-.sello.abierto::after{content:"";position:absolute;inset:-6px;border:1px dashed var(--oro3);border-radius:50%;animation:girar 24s linear infinite}
-@keyframes abrir{0%{transform:scale(.6);box-shadow:0 0 60px var(--glow)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
-.frase-caja{margin-top:34px;padding:20px;border:1px solid rgba(201,162,39,.25);background:rgba(74,18,32,.18);
-  text-align:center;min-height:90px}
-.frase-caja .frag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--oro2);
-  letter-spacing:.06em;word-spacing:.2em}
-.frase-caja .pista{font-size:12px;letter-spacing:.25em;color:var(--humo)}
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;background:rgba(11,7,9,.92);
-  backdrop-filter:blur(12px);border-top:1px solid rgba(201,162,39,.3);padding-bottom:env(safe-area-inset-bottom)}
-.nav button{flex:1;padding:14px 4px 12px;background:none;border:none;cursor:pointer;color:var(--humo);
-  font-family:'Cinzel',serif;font-size:10px;letter-spacing:.15em}
-.nav button .i{display:block;font-size:20px;margin-bottom:4px;position:relative;width:max-content;margin-left:auto;margin-right:auto}
-.nav button.act{color:var(--oro2);text-shadow:0 0 12px var(--glow)}
-.badge{position:absolute;top:-6px;right:-14px;min-width:17px;height:17px;border-radius:9px;
-  background:var(--vino2);border:1px solid var(--oro2);color:var(--oro2);font-size:10px;
-  display:grid;place-items:center;padding:0 4px;font-family:'Jost',sans-serif}
-#qr-reader{width:100%;max-width:420px;margin:16px auto;border-radius:8px;overflow:hidden;
-  border:1px solid var(--oro3);box-shadow:0 0 30px rgba(0,0,0,.6)}
-#qr-reader video{border-radius:8px}
+.anillo .fondo{stroke:rgba(255,255,255,.1)}
+.anillo .barra{stroke:url(#gradRing);stroke-linecap:round;transition:stroke-dashoffset 1s ease;
+  filter:drop-shadow(0 0 8px rgba(168,85,247,.6))}
+.anillo .num{position:absolute;inset:0;display:grid;place-items:center;
+  font-family:'Sora';font-size:22px;font-weight:700}
+.progreso .txt{font-size:15px;line-height:1.55;color:var(--texto2)}
+.progreso .txt b{color:var(--texto)}
+/* ── sellos ── */
+.sec-titulo{font-size:13px;font-weight:600;letter-spacing:.2em;color:var(--texto2);
+  text-transform:uppercase;margin:26px 0 12px}
+.sellos{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sello{aspect-ratio:1;border:1px solid var(--linea);border-radius:20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+  background:var(--card);transition:.35s;padding:6px}
+.sello .g{font-size:24px;color:var(--texto3);filter:grayscale(1);transition:.35s}
+.sello .n{font-size:8px;font-weight:600;letter-spacing:.14em;color:var(--texto3);
+  text-transform:uppercase;text-align:center}
+.sello.abierto{background:var(--grad);border-color:transparent;box-shadow:var(--glow);
+  animation:abrir .7s cubic-bezier(.34,1.56,.64,1)}
+.sello.abierto .g{color:#fff;filter:none;text-shadow:0 0 18px rgba(255,255,255,.5)}
+.sello.abierto .n{color:rgba(255,255,255,.85)}
+@keyframes abrir{0%{transform:scale(.5) rotate(-8deg)}100%{transform:scale(1) rotate(0)}}
+/* ── frase ── */
+.frase-caja{margin-top:26px;padding:22px;border:1px solid var(--linea);border-radius:24px;
+  background:linear-gradient(160deg,rgba(124,58,237,.18),rgba(236,72,153,.1));
+  text-align:center;min-height:100px;backdrop-filter:blur(12px)}
+.frase-caja .frag{font-family:'Sora';font-weight:600;font-size:18px;color:var(--yellow);
+  letter-spacing:.02em;line-height:1.6;text-shadow:0 0 24px rgba(253,224,71,.3)}
+.frase-caja .pista{font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--texto2);text-transform:uppercase}
+/* ── nav inferior ── */
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;gap:4px;
+  background:rgba(14,7,24,.82);backdrop-filter:saturate(180%) blur(20px);
+  border-top:1px solid var(--linea);padding:8px 10px calc(8px + env(safe-area-inset-bottom))}
+.nav button{flex:1;padding:10px 4px 8px;background:none;border:none;cursor:pointer;
+  color:var(--texto3);font-family:'Inter';font-size:9.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;border-radius:18px;transition:.25s}
+.nav button .i{display:block;margin:0 auto 5px;width:max-content;position:relative}
+.nav button .i svg{width:22px;height:22px}
+.nav button.act{background:var(--grad);color:#fff;box-shadow:var(--glow)}
+.badge{position:absolute;top:-7px;right:-16px;min-width:17px;height:17px;border-radius:9px;
+  background:var(--yellow);color:#1a1023;font-size:10px;font-weight:700;
+  display:grid;place-items:center;padding:0 4px;font-family:'Inter'}
+/* ── scanner ── */
+#qr-reader{width:100%;max-width:420px;margin:16px auto;border-radius:24px;overflow:hidden;
+  border:1px solid var(--linea2);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#qr-reader video{border-radius:24px}
 .marco{position:relative;max-width:420px;margin:0 auto}
-.marco::before,.marco::after{content:"";position:absolute;width:34px;height:34px;z-index:5;border:2px solid var(--oro2)}
-.marco::before{top:-6px;left:-6px;border-right:none;border-bottom:none}
-.marco::after{bottom:-6px;right:-6px;border-left:none;border-top:none}
-.act-item{display:flex;gap:16px;padding:16px 4px;border-bottom:1px solid rgba(233,220,195,.1)}
-.act-item .hora{font-family:'Cinzel',serif;font-size:17px;color:var(--oro2);flex:none;width:64px}
-.act-item .tema{font-size:16px;font-weight:500}
-.act-item .meta{font-size:13px;color:var(--humo);margin-top:3px}
-.act-item.soon{background:linear-gradient(90deg,rgba(201,162,39,.12),transparent);border-left:2px solid var(--oro2);
-  padding-left:12px;animation:latir 2s infinite}
-.aviso{border:1px solid rgba(201,162,39,.25);border-radius:6px;padding:14px 16px;margin-bottom:10px;
-  background:rgba(74,18,32,.15);animation:aparecer .4s ease}
-.aviso .t{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.2em;color:var(--oro2)}
-.aviso .m{margin-top:6px;font-size:15px;line-height:1.45}
-.aviso .f{margin-top:8px;font-size:11px;color:var(--humo);letter-spacing:.1em}
-.aviso.nuevo{border-color:var(--oro2);box-shadow:0 0 16px var(--glow)}
+.marco::before,.marco::after{content:"";position:absolute;width:38px;height:38px;z-index:5;
+  border:3px solid var(--violet2);filter:drop-shadow(0 0 8px rgba(139,92,246,.6))}
+.marco::before{top:-8px;left:-8px;border-right:none;border-bottom:none;border-radius:14px 0 0 0}
+.marco::after{bottom:-8px;right:-8px;border-left:none;border-top:none;border-radius:0 0 14px 0}
+/* ── listas (programa / avisos) ── */
+.act-item{display:flex;gap:16px;padding:16px;border:1px solid var(--linea);border-radius:18px;
+  margin-bottom:10px;background:var(--card);backdrop-filter:blur(10px)}
+.act-item .hora{font-family:'Sora';font-weight:700;font-size:15px;color:var(--violet2);
+  flex:none;width:60px}
+.act-item .tema{font-size:15px;font-weight:600}
+.act-item .meta{font-size:13px;color:var(--texto2);margin-top:3px}
+.act-item.soon{border-color:var(--pink);box-shadow:0 0 24px rgba(236,72,153,.25);
+  animation:latir 2s infinite}
+.aviso{border:1px solid var(--linea);border-radius:18px;padding:16px 18px;margin-bottom:10px;
+  background:var(--card);animation:aparecer .4s ease;backdrop-filter:blur(10px)}
+.aviso .t{font-family:'Sora';font-size:12px;font-weight:600;letter-spacing:.14em;
+  color:var(--violet2);text-transform:uppercase}
+.aviso .m{margin-top:6px;font-size:15px;line-height:1.5}
+.aviso .f{margin-top:8px;font-size:11px;color:var(--texto3);letter-spacing:.08em}
+.aviso.nuevo{border-color:var(--yellow);box-shadow:0 0 20px rgba(253,224,71,.15)}
+/* ── revelación ── */
 #revelacion{position:fixed;inset:0;z-index:60;display:none;place-items:center;text-align:center;
-  background:radial-gradient(ellipse at center,rgba(74,18,32,.92),rgba(11,7,9,.97));padding:30px}
+  background:radial-gradient(ellipse at 30% 20%,rgba(124,58,237,.5),transparent 60%),
+  radial-gradient(ellipse at 70% 80%,rgba(236,72,153,.4),transparent 60%),rgba(14,7,24,.96);
+  padding:30px;backdrop-filter:blur(10px)}
 #revelacion.activa{display:grid;animation:aparecer .4s ease}
-#rev-glyph{font-size:88px;color:var(--oro2);text-shadow:0 0 50px var(--glow);animation:abrir 1s ease}
-#rev-nombre{font-family:'Cinzel',serif;font-size:22px;letter-spacing:.3em;color:var(--pergamino);margin-top:14px}
-#rev-salon{font-size:13px;letter-spacing:.2em;color:var(--humo);margin-top:6px}
-#rev-frag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;color:var(--oro2);
-  margin:26px 0;min-height:40px;text-shadow:0 0 20px var(--glow)}
+#rev-glyph{font-size:96px;color:var(--yellow);text-shadow:0 0 60px rgba(253,224,71,.5);
+  animation:abrir .8s cubic-bezier(.34,1.56,.64,1)}
+#rev-nombre{font-family:'Sora';font-size:24px;font-weight:700;letter-spacing:.24em;margin-top:16px}
+#rev-salon{font-size:12px;letter-spacing:.2em;color:var(--texto2);margin-top:8px;text-transform:uppercase}
+#rev-frag{font-family:'Sora';font-weight:600;font-size:26px;color:var(--yellow);
+  margin:28px 0;min-height:40px;text-shadow:0 0 30px rgba(253,224,71,.4)}
+/* ── toasts ── */
 #toasts{position:fixed;top:calc(14px + env(safe-area-inset-top));left:14px;right:14px;z-index:70;
   display:flex;flex-direction:column;gap:10px;pointer-events:none}
-.toast{background:rgba(11,7,9,.95);border:1px solid var(--oro2);border-radius:6px;padding:14px 16px;
-  box-shadow:0 0 30px var(--glow);animation:bajar .5s ease;pointer-events:auto}
-.toast .t{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.2em;color:var(--oro2)}
-.toast .m{font-size:14px;margin-top:5px;color:var(--pergamino)}
+.toast{background:rgba(21,11,38,.92);border:1px solid var(--linea2);border-left:3px solid var(--violet);
+  border-radius:18px;padding:14px 18px;box-shadow:0 12px 40px rgba(0,0,0,.5);
+  animation:bajar .45s ease;pointer-events:auto;backdrop-filter:blur(16px)}
+.toast .t{font-family:'Sora';font-size:11px;font-weight:600;letter-spacing:.14em;
+  color:var(--violet2);text-transform:uppercase}
+.toast .m{font-size:14px;margin-top:5px;color:var(--texto)}
 @keyframes bajar{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
-.carga{position:fixed;inset:0;background:var(--negro);z-index:90;display:grid;place-items:center;
-  font-family:'Cinzel',serif;color:var(--oro2);letter-spacing:.3em;font-size:13px;transition:opacity .6s}
+.carga{position:fixed;inset:0;background:var(--bg);z-index:90;display:grid;place-items:center;
+  font-family:'Sora';color:var(--violet2);letter-spacing:.3em;font-size:13px;font-weight:600;
+  transition:opacity .6s;animation:pulso 2s infinite}
 .carga.fin{opacity:0;pointer-events:none}
-.salir{background:none;border:none;color:var(--humo);font-size:12px;text-decoration:underline;cursor:pointer}
 </style>
 </head>
 <body>
 
-<div class="capas">
-  <div class="vela"></div><div class="vino"></div><div class="vino2"></div>
-  <div class="polvo"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-  <div class="vineta"></div>
-</div>
-
-<div class="carga" id="carga">✦ &nbsp;ABRIENDO EL GRIMORIO&nbsp; ✦</div>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<div class="carga" id="carga">✦ ABRIENDO EL GRIMORIO ✦</div>
 <div id="toasts"></div>
 
 <section class="pantalla" id="p-landing">
   <div>
-    <div class="emblema"><span class="glyph">🜔</span></div>
-    <h1 class="titulo">SÍMBOLOS &amp; VINOS</h1>
-    <div class="sub">MMXXVI · LA BÚSQUEDA DE LOS SIETE SELLOS</div>
-    <p class="lema mistica">Siete sellos guardan la frase oculta. Recorre los salones, descifra sus marcas y demuestra que eres digno del sorteo final.</p>
-    <div class="orn">✦  ✦</div>
-    <button class="btn solido" onclick="irAuth('registro')">INICIAR EL RITO</button>
-    <button class="btn fantasma" onclick="irAuth('ingreso')">YA PORTO LA MARCA</button>
+    <div class="orb">🜔</div>
+    <h1 class="titulo">SÍMBOLOS <span class="amp">&amp;</span> VINOS</h1>
+    <div class="sub">MMXXVI · Los Siete Sellos</div>
+    <p class="lema">Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno del sorteo final.</p>
+    <button class="btn solido" onclick="irAuth('registro')">Iniciar el rito</button>
+    <button class="btn fantasma" onclick="irAuth('ingreso')">Ya porto la marca</button>
   </div>
 </section>
 
 <section class="pantalla" id="p-auth">
-  <h2 class="cinzel" style="color:var(--oro2);font-size:22px;text-align:center" id="auth-titulo">EL PACTO DEL BUSCADOR</h2>
-  <p class="mistica" style="text-align:center;margin:10px 0 24px;font-size:17px" id="auth-sub">Deja tu nombre en el registro eterno.</p>
-  <div id="form-registro">
-    <div class="campo"><label>NOMBRE</label><input id="r-nombre" autocomplete="given-name"></div>
-    <div class="campo"><label>APELLIDO</label><input id="r-apellido" autocomplete="family-name"></div>
-    <div class="campo"><label>CORREO ELECTRÓNICO</label><input id="r-email" type="email" autocomplete="email"></div>
-    <div class="campo"><label>TELÉFONO</label><input id="r-telefono" type="tel" autocomplete="tel"></div>
-    <div class="campo"><label>CLAVE SECRETA (mínimo 6)</label><input id="r-clave" type="password" autocomplete="new-password"></div>
-    <button class="btn solido" onclick="registrar()">SELLAR EL PACTO</button>
-  </div>
-  <div id="form-ingreso" style="display:none">
-    <div class="campo"><label>CORREO ELECTRÓNICO</label><input id="i-email" type="email"></div>
-    <div class="campo"><label>CLAVE SECRETA</label><input id="i-clave" type="password"></div>
-    <button class="btn solido" onclick="ingresar()">RETOMAR LA BÚSQUEDA</button>
-  </div>
-  <div class="error" id="auth-error"></div>
-  <div style="text-align:center">
-    <button class="enlace" id="auth-cambio" onclick="cambiarModo()">Ya tengo marca — ingresar</button>
-    <br><button class="enlace" onclick="ver('p-landing')">← volver</button>
+  <div class="auth-card">
+    <h2 style="font-size:22px;font-weight:700;text-align:center" id="auth-titulo">El pacto del buscador</h2>
+    <p class="mistica" style="text-align:center;margin:8px 0 22px;font-size:15px" id="auth-sub">Deja tu nombre en el registro eterno.</p>
+    <div id="form-registro">
+      <div class="campo"><label>Nombre</label><input id="r-nombre" autocomplete="given-name"></div>
+      <div class="campo"><label>Apellido</label><input id="r-apellido" autocomplete="family-name"></div>
+      <div class="campo"><label>Correo electrónico</label><input id="r-email" type="email" autocomplete="email"></div>
+      <div class="campo"><label>Teléfono</label><input id="r-telefono" type="tel" autocomplete="tel"></div>
+      <div class="campo"><label>Clave secreta (mínimo 6)</label><input id="r-clave" type="password" autocomplete="new-password"></div>
+      <button class="btn solido" onclick="registrar()">Sellar el pacto</button>
+    </div>
+    <div id="form-ingreso" style="display:none">
+      <div class="campo"><label>Correo electrónico</label><input id="i-email" type="email"></div>
+      <div class="campo"><label>Clave secreta</label><input id="i-clave" type="password"></div>
+      <button class="btn solido" onclick="ingresar()">Retomar la búsqueda</button>
+    </div>
+    <div class="error" id="auth-error"></div>
+    <div style="text-align:center">
+      <button class="enlace" id="auth-cambio" onclick="cambiarModo()">Ya tengo marca — ingresar</button>
+      <br><button class="enlace" onclick="ver('p-landing')">← volver</button>
+    </div>
   </div>
 </section>
 
 <section class="pantalla" id="p-home">
   <div class="cab">
     <div>
-      <div class="nombre cinzel" id="h-nombre">Buscador</div>
+      <div class="hola">Hola, buscador</div>
+      <div class="nombre" id="h-nombre">—</div>
       <button class="salir" onclick="salir()">cerrar sesión</button>
     </div>
-    <div class="estado" id="h-estado">BUSCADOR INICIADO</div>
+    <div class="estado" id="h-estado">BUSCADOR</div>
   </div>
-  <button id="btn-push" class="btn oculto" onclick="activarPush()">🔔 ACTIVAR LA VOZ DEL ORÁCULO</button>
+  <button id="btn-push" class="btn solido oculto" style="margin-top:18px" onclick="activarPush()">🔔 Activar la voz del Oráculo</button>
   <div class="progreso">
     <div class="anillo">
-      <svg width="96" height="96">
-        <circle class="fondo" cx="48" cy="48" r="42" fill="none" stroke-width="4"/>
-        <circle class="barra" id="h-barra" cx="48" cy="48" r="42" fill="none" stroke-width="4"
-          stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
+      <svg width="104" height="104">
+        <defs><linearGradient id="gradRing" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#7c3aed"/><stop offset="55%" stop-color="#c026d3"/>
+          <stop offset="100%" stop-color="#ec4899"/></linearGradient></defs>
+        <circle class="fondo" cx="52" cy="52" r="45" fill="none" stroke-width="7"/>
+        <circle class="barra" id="h-barra" cx="52" cy="52" r="45" fill="none" stroke-width="7"
+          stroke-dasharray="282.7" stroke-dashoffset="282.7"/>
       </svg>
       <div class="num" id="h-num">0/7</div>
     </div>
-    <div class="txt mistica" id="h-lema">Los sellos duermen.<br>Ve y despiértalos.</div>
+    <div class="txt" id="h-lema">Los sellos duermen.<br>Ve y despiértalos.</div>
   </div>
-  <div class="orn">LOS SIETE SELLOS</div>
+  <div class="sec-titulo">Los siete sellos</div>
   <div class="sellos" id="h-sellos"></div>
   <div class="frase-caja">
-    <div class="pista" id="h-frase-titulo">LA FRASE OCULTA</div>
-    <div class="frag" id="h-frase">· · · &nbsp; · · · &nbsp; · · ·</div>
+    <div class="pista" id="h-frase-titulo">La frase oculta</div>
+    <div class="frag" id="h-frase" style="margin-top:10px">· · · &nbsp; · · · &nbsp; · · ·</div>
   </div>
 </section>
 
 <section class="pantalla" id="p-scan">
-  <h2 class="cinzel" style="color:var(--oro2);font-size:20px;text-align:center">EL OJO QUE TODO LO VE</h2>
-  <p class="mistica" style="text-align:center;margin:8px 0 18px;font-size:16px">Apunta al grabado del sello hallado en el salón.</p>
+  <h2 style="font-size:24px;font-weight:700;text-align:center">El ojo que todo lo ve</h2>
+  <p class="mistica" style="text-align:center;margin:8px 0 18px;font-size:15px">Apunta al grabado del sello hallado en el salón.</p>
   <div class="marco"><div id="qr-reader"></div></div>
-  <div class="campo" style="margin-top:22px"><label>O ESCRIBE EL CÓDIGO DEL SELLO</label>
+  <div class="campo" style="margin-top:24px"><label>O escribe el código del sello</label>
     <input id="s-manual" placeholder="SV2026-…"></div>
-  <button class="btn" onclick="procesar(document.getElementById('s-manual').value)">VALIDAR CÓDIGO</button>
+  <button class="btn solido" onclick="procesar(document.getElementById('s-manual').value)">Validar código</button>
 </section>
 
 <section class="pantalla" id="p-avisos">
-  <h2 class="cinzel" style="color:var(--oro2);font-size:20px;text-align:center">🔔 PERGAMINO DE AVISOS</h2>
-  <p class="mistica" style="text-align:center;margin:8px 0 18px;font-size:16px">Toda palabra del Oráculo queda grabada aquí, aun sin señal.</p>
+  <h2 style="font-size:24px;font-weight:700;text-align:center">Pergamino de avisos</h2>
+  <p class="mistica" style="text-align:center;margin:8px 0 18px;font-size:15px">Toda palabra del Oráculo queda grabada aquí, aun sin señal.</p>
   <div id="avisos-lista"></div>
 </section>
 
 <section class="pantalla" id="p-prog">
-  <h2 class="cinzel" style="color:var(--oro2);font-size:20px;text-align:center">PERGAMINO DEL PROGRAMA</h2>
-  <p class="mistica" style="text-align:center;margin:8px 0 14px;font-size:16px">Te avisaremos 5 minutos antes de cada rito.</p>
+  <h2 style="font-size:24px;font-weight:700;text-align:center">Programa del evento</h2>
+  <p class="mistica" style="text-align:center;margin:8px 0 14px;font-size:15px">Te avisaremos 5 minutos antes de cada actividad.</p>
   <div id="prog-lista"></div>
 </section>
 
@@ -255,17 +291,17 @@ h1,h2,h3,.cinzel{font-family:'Cinzel',serif;letter-spacing:.08em}
     <div id="rev-glyph">☉</div>
     <div id="rev-nombre">SOL</div>
     <div id="rev-salon">SALÓN · —</div>
-    <div class="orn">EL SELLO REVELA</div>
+    <div class="sec-titulo" style="color:var(--texto2)">El sello revela</div>
     <div id="rev-frag"></div>
-    <button class="btn solido" style="max-width:300px;margin:0 auto" onclick="cerrarRevelacion()">SELLAR Y CONTINUAR</button>
+    <button class="btn solido" style="max-width:300px;margin:0 auto" onclick="cerrarRevelacion()">Sellar y continuar</button>
   </div>
 </div>
 
 <nav class="nav" id="nav" style="display:none">
-  <button class="act" data-p="p-home" onclick="navegar('p-home',this)"><span class="i">🜚</span>SELLOS</button>
-  <button data-p="p-scan" onclick="navegar('p-scan',this)"><span class="i"></span>ESCANEAR</button>
-  <button data-p="p-avisos" onclick="navegar('p-avisos',this)"><span class="i">🔔<span class="badge oculto" id="badge">0</span></span>AVISOS</button>
-  <button data-p="p-prog" onclick="navegar('p-prog',this)"><span class="i">🜃</span>PROGRAMA</button>
+  <button class="act" data-p="p-home" onclick="navegar('p-home',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>Sellos</button>
+  <button data-p="p-scan" onclick="navegar('p-scan',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg></span>Escanear</button>
+  <button data-p="p-avisos" onclick="navegar('p-avisos',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge oculto" id="badge">0</span></span>Avisos</button>
+  <button data-p="p-prog" onclick="navegar('p-prog',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>Programa</button>
 </nav>
 
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -306,7 +342,7 @@ function modoAuth(m){
   const reg = m==='registro';
   $('form-registro').style.display = reg?'block':'none';
   $('form-ingreso').style.display  = reg?'none':'block';
-  $('auth-titulo').textContent = reg?'EL PACTO DEL BUSCADOR':'EL RETORNO';
+  $('auth-titulo').textContent = reg?'El pacto del buscador':'El retorno';
   $('auth-sub').textContent = reg?'Deja tu nombre en el registro eterno.':'El grimorio recuerda tu marca.';
   $('auth-cambio').textContent = reg?'Ya tengo marca — ingresar':'Aún no tengo marca — registrarme';
   $('auth-error').textContent='';
@@ -330,11 +366,11 @@ function chime(){ try{
   navigator.vibrate && navigator.vibrate([90,60,90]);
 }catch(e){} }
 document.addEventListener('touchstart',()=>{ try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();}catch(e){} },{once:true});
-function scramble(el,txt){ let i=0; const gl='✦✧☽☉♄♃⚚';
+function scramble(el,txt){ let i=0; const gl='✦✧☉♄♃⚚';
   const int=setInterval(()=>{ el.textContent=txt.split('').map((c,j)=> j<i?c : (c===' '?' ':gl[Math.floor(Math.random()*gl.length)])).join('');
   i+=.6; if(i>=txt.length+1){el.textContent=txt;clearInterval(int);} },34); }
 
-/* ── PUSH: la voz del Oráculo en el teléfono ── */
+/* ── PUSH ── */
 async function registrarToken(){
   try{
     const reg = await navigator.serviceWorker.ready;
@@ -343,13 +379,13 @@ async function registrarToken(){
   }catch(e){}
 }
 window.activarPush = async ()=>{
-  if(!('Notification' in window)) return toast('🜄 TU NAVEGADOR NO SOPORTA AVISOS','');
+  if(!('Notification' in window)) return toast('Tu navegador no soporta avisos','');
   const p = await Notification.requestPermission();
   if(p==='granted'){
     await registrarToken(); $('btn-push').classList.add('oculto');
-    toast('🔔 EL ORÁCULO TE SUSURRARÁ','Avisos activados en este dispositivo.');
-    if(esIOS) toast('🍎 EN IPHONE, UN PASO MÁS','Toca Compartir → “Agregar a pantalla de inicio” para recibirlos con la app cerrada.');
-  } else toast('🜁 AVISOS SILENCIADOS','Puedes activarlos luego desde tu navegador.');
+    toast('El Oráculo te susurrará','Avisos activados en este dispositivo.');
+    if(esIOS) toast('En iPhone, un paso más','Compartir → “Agregar a pantalla de inicio” para recibirlos con la app cerrada.');
+  } else toast('Avisos silenciados','Puedes activarlos luego desde tu navegador.');
 };
 function revisarPush(){
   if(!('Notification' in window)) return;
@@ -435,12 +471,12 @@ function pintarHome(){
   $('h-nombre').textContent = parte.nombre+' '+parte.apellido;
   const n=(parte.simbolos||[]).length, apto=n>=7;
   $('h-num').textContent=n+'/7';
-  $('h-barra').style.strokeDashoffset = 263.9*(1-n/7);
+  $('h-barra').style.strokeDashoffset = 282.7*(1-n/7);
   const est=$('h-estado');
-  est.textContent = apto?'✦ APTO PARA EL SORTEO ✦':'BUSCADOR INICIADO';
+  est.textContent = apto?'✦ APTO AL SORTEO':'BUSCADOR';
   est.classList.toggle('apto',apto);
-  $('h-lema').innerHTML = apto ? 'Has demostrado ser digno.<br>El sorteo te aguarda.' :
-    n===0 ? 'Los sellos duermen.<br>Ve y despiértalos.' : 'La frase comienza a susurrar…<br>Sigue buscando.';
+  $('h-lema').innerHTML = apto ? '<b>Has demostrado ser digno.</b><br>El sorteo te aguarda.' :
+    n===0 ? 'Los sellos duermen.<br><b>Ve y despiértalos.</b>' : 'La frase comienza a susurrar…<br><b>Sigue buscando.</b>';
   const caja=$('h-sellos'); caja.innerHTML='';
   for(let i=1;i<=7;i++){
     const ab=(parte.simbolos||[]).includes(i), s=simbolos[i];
@@ -451,12 +487,12 @@ function pintarHome(){
   const frags=[]; for(let i=1;i<=7;i++){ if((parte.simbolos||[]).includes(i)){
     const s=simbolos[i]; frags.push(s&&s.fragmento ? s.fragmento : '· · ·'); } else frags.push('· · ·'); }
   $('h-frase').textContent = frags.join('  ');
-  if(apto && simbolos[1] && simbolos[1].fragmento) $('h-frase-titulo').textContent='✦ LA FRASE HA SIDO REVELADA ✦';
+  if(apto && simbolos[1] && simbolos[1].fragmento) $('h-frase-titulo').textContent='✦ La frase ha sido revelada ✦';
 }
 
 function pintarPrograma(){
   const c=$('prog-lista'); c.innerHTML = programa.length? '' :
-    '<p class="mistica" style="text-align:center;margin-top:30px">El Oráculo aún no publica los ritos del día.</p>';
+    '<p class="mistica" style="text-align:center;margin-top:30px">El Oráculo aún no publica las actividades del día.</p>';
   const ahora=new Date();
   programa.forEach(a=>{
     const d=document.createElement('div'); d.className='act-item';
@@ -474,7 +510,7 @@ setInterval(()=>{ const ahora=new Date();
     const diff=(H*60+M)-(ahora.getHours()*60+ahora.getMinutes());
     const key='sv-alerta-'+a.id;
     if(diff>=0&&diff<=5&&!localStorage.getItem(key)){ localStorage.setItem(key,'1');
-      toast('🜃 COMIENZA PRONTO · '+(a.hora||''), (a.tema||'')+' — '+(a.lugar||'')); chime(); } });
+      toast('COMIENZA PRONTO · '+(a.hora||''), (a.tema||'')+' — '+(a.lugar||'')); chime(); } });
 },20000);
 
 let hq=null, escaneando=false;
@@ -489,7 +525,7 @@ async function iniciarScanner(){
     hq = hq || new Html5Qrcode("qr-reader");
     await hq.start({facingMode:"environment"},{fps:10,qrbox:{width:220,height:220}},
       txt=>{ pararScanner(); procesar(txt); }, ()=>{});
-  }catch(e){ toast('🜄 LA CÁMARA NO RESPONDE','Usa el código manual debajo del marco.'); }
+  }catch(e){ toast('La cámara no responde','Usa el código manual debajo del marco.'); }
 }
 function pararScanner(){ escaneando=false; if(hq&&hq.isScanning){ hq.stop().catch(()=>{}); } }
 
@@ -497,9 +533,9 @@ window.procesar = async raw=>{
   if(!raw) return;
   const token=raw.trim();
   const entrada=Object.values(simbolos).find(s=>s.token&&s.token.toUpperCase()===token.toUpperCase());
-  if(!entrada) return toast('🜁 SELLO FALSO','Ese código no pertenece a ninguno de los siete sellos.');
+  if(!entrada) return toast('Sello falso','Ese código no pertenece a ninguno de los siete sellos.');
   const n=entrada.numero;
-  if((parte.simbolos||[]).includes(n)) return toast('☽ SELLO YA MARCADO','Este símbolo ya porta tu marca. Sigue buscando.');
+  if((parte.simbolos||[]).includes(n)) return toast('Sello ya marcado','Este símbolo ya porta tu marca. Sigue buscando.');
   await updateDoc(doc(db,'participantes',yo),{ simbolos:arrayUnion(n),
     estado:((parte.simbolos||[]).length+1>=7?'apto':'iniciado') });
   chime(); revelar(entrada);
@@ -517,7 +553,7 @@ function revelar(s){
 window.cerrarRevelacion = ()=>{
   $('revelacion').classList.remove('activa');
   if((parte.simbolos||[]).length>=7){
-    toast('✦ HAS SIDO HALLADO DIGNO ✦','Tu nombre entra en el cáliz del sorteo final.');
+    toast('✦ Has sido hallado digno ✦','Tu nombre entra en el cáliz del sorteo final.');
     chime();
   }
 };
