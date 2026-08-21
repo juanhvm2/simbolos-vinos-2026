@@ -16,12 +16,12 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;
  radial-gradient(ellipse at 90% 110%,rgba(109,26,45,.3),transparent 60%)}
 h1,h2,h3,.cinzel{font-family:'Cinzel',serif;letter-spacing:.08em}
 .oculto{display:none!important}
-/* login */
 #s-login{min-height:100dvh;display:grid;place-items:center;padding:24px}
 .caja-login{width:100%;max-width:380px;text-align:center}
 .caja-login .escudo{font-size:44px;color:var(--oro2);text-shadow:0 0 30px var(--glow)}
 input,select{width:100%;padding:12px;background:rgba(233,220,195,.05);border:1px solid var(--linea);
  border-radius:4px;color:var(--per);font-family:'Jost';font-size:15px;margin-bottom:10px}
+input[type=checkbox]{width:auto;margin:0}
 input:focus,select:focus{outline:none;border-color:var(--oro2)}
 label{font-size:10px;letter-spacing:.22em;color:var(--oro3);display:block;margin:8px 0 5px;text-align:left}
 .btn{display:inline-block;padding:12px 18px;cursor:pointer;font-family:'Cinzel';font-weight:700;
@@ -33,7 +33,6 @@ label{font-size:10px;letter-spacing:.22em;color:var(--oro3);display:block;margin
 .btn.peligro{border-color:#7a2a2a;color:#d98a8a;background:rgba(122,42,42,.12)}
 .btn.mini{padding:7px 12px;font-size:10px}
 .err{color:#e08a8a;font-size:13px;min-height:18px;margin-top:8px}
-/* layout */
 header{position:sticky;top:0;z-index:30;background:rgba(11,7,9,.94);backdrop-filter:blur(10px);
  border-bottom:1px solid var(--linea);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 header .marca{font-family:'Cinzel';font-weight:900;color:var(--oro2);font-size:16px}
@@ -47,13 +46,11 @@ header .esp{flex:1}
 main{max-width:1100px;margin:0 auto;padding:20px 16px 80px}
 .sec{display:none}.sec.act{display:block;animation:ap .4s ease}
 @keyframes ap{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-/* tarjetas métricas */
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
 .metric{border:1px solid var(--linea);border-radius:6px;padding:16px;text-align:center;background:rgba(74,18,32,.12)}
 .metric .n{font-family:'Cinzel';font-size:34px;color:var(--oro2);text-shadow:0 0 20px var(--glow)}
 .metric .t{font-size:10px;letter-spacing:.22em;color:var(--humo);margin-top:4px}
 .metric.apto .n{color:#e8d27a}
-/* tabla */
 .buscador{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .buscador input{flex:1;min-width:180px;margin:0}
 .chip{padding:8px 14px;border:1px solid var(--linea);border-radius:20px;background:none;color:var(--humo);
@@ -69,7 +66,6 @@ tr:last-child td{border-bottom:none}
 .barra i{display:block;height:100%;background:var(--oro2);box-shadow:0 0 8px var(--glow)}
 .tag{font-size:10px;letter-spacing:.12em;padding:4px 9px;border-radius:12px;border:1px solid var(--linea);color:var(--humo);white-space:nowrap}
 .tag.apto{background:linear-gradient(180deg,var(--oro),var(--oro3));color:#1a0d05;border:none;font-weight:600}
-/* sellos config */
 .grid-sellos{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
 .sello-card{border:1px solid var(--linea);border-radius:8px;padding:16px;background:rgba(74,18,32,.1)}
 .sello-card .cab{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -79,7 +75,6 @@ tr:last-child td{border-bottom:none}
 .qr-zone{display:flex;gap:12px;align-items:center;margin-top:10px}
 .qr-zone .qr{background:#fff;padding:6px;border-radius:4px;width:116px;height:116px;display:grid;place-items:center}
 .qr-zone .qr:empty::after{content:"— sin código —";color:#333;font-size:10px}
-/* varios */
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
 .form-grid input,.form-grid select{margin:0}
 .titulo-sec{color:var(--oro2);font-size:19px;margin-bottom:4px}
@@ -98,12 +93,13 @@ tr:last-child td{border-bottom:none}
 .toast{background:rgba(11,7,9,.96);border:1px solid var(--oro2);border-radius:6px;padding:12px 14px;
  box-shadow:0 0 24px var(--glow);animation:ap .4s ease;font-size:14px}
 .vacio{color:var(--humo);text-align:center;padding:30px;font-style:italic}
+.rz-check{display:flex;gap:10px;align-items:center;font-size:14px;letter-spacing:0;color:var(--per);
+ margin:10px 0;text-align:left}
 </style>
 </head>
 <body>
 <div id="toasts"></div>
 
-<!-- LOGIN -->
 <section id="s-login">
   <div class="caja-login">
     <div class="escudo">🜔</div>
@@ -116,7 +112,6 @@ tr:last-child td{border-bottom:none}
   </div>
 </section>
 
-<!-- SIN PERMISO -->
 <section id="s-noperm" class="oculto" style="min-height:100dvh;display:grid;place-items:center;padding:24px">
   <div style="text-align:center;max-width:340px">
     <div style="font-size:44px">🜁</div>
@@ -126,7 +121,6 @@ tr:last-child td{border-bottom:none}
   </div>
 </section>
 
-<!-- APP -->
 <div id="s-app" class="oculto">
 <header>
   <span class="marca">🜔 S&amp;V · TORRE</span>
@@ -138,7 +132,6 @@ tr:last-child td{border-bottom:none}
 <div class="tabs" id="tabs"></div>
 <main>
 
-  <!-- TORRE -->
   <section class="sec" id="sec-torre">
     <div class="metrics">
       <div class="metric"><div class="n" id="m-total">0</div><div class="t">PARTICIPANTES</div></div>
@@ -158,14 +151,12 @@ tr:last-child td{border-bottom:none}
     </table></div>
   </section>
 
-  <!-- SELLOS -->
   <section class="sec" id="sec-sellos">
     <h2 class="titulo-sec">LOS SIETE SELLOS</h2>
     <p class="sub-sec">Define nombre, salón, el fragmento que revela cada sello y genera su QR para imprimir.</p>
     <div class="grid-sellos" id="grid-sellos"></div>
   </section>
 
-  <!-- PROGRAMA -->
   <section class="sec" id="sec-programa">
     <h2 class="titulo-sec">PERGAMINO DEL PROGRAMA</h2>
     <p class="sub-sec">Los participantes verán esto en vivo y recibirán aviso 5 minutos antes de cada rito.</p>
@@ -179,7 +170,6 @@ tr:last-child td{border-bottom:none}
     <div id="lista-prog" style="margin-top:18px"></div>
   </section>
 
-  <!-- ORÁCULO -->
   <section class="sec" id="sec-oraculo">
     <h2 class="titulo-sec">LA VOZ DEL ORÁCULO</h2>
     <p class="sub-sec">El mensaje aparecerá al instante en la app de todos los buscadores, con sonido y vibración.</p>
@@ -189,7 +179,6 @@ tr:last-child td{border-bottom:none}
     <div id="lista-anun" style="margin-top:20px"></div>
   </section>
 
-  <!-- SORTEO -->
   <section class="sec" id="sec-sorteo">
     <h2 class="titulo-sec">EL CÁLIZ DEL SORTEO</h2>
     <p class="sub-sec">Solo los APTOS participan. El azar elige sin repetir, y todo queda registrado.</p>
@@ -201,7 +190,6 @@ tr:last-child td{border-bottom:none}
     <div id="hist-sorteo" style="margin-top:24px"></div>
   </section>
 
-  <!-- EQUIPO -->
   <section class="sec" id="sec-equipo">
     <h2 class="titulo-sec">EL CÍRCULO DE ADMINISTRADORES</h2>
     <p class="sub-sec">Crea cuentas personales y asigna rangos: maestro, configurador o monitor.</p>
@@ -220,6 +208,26 @@ tr:last-child td{border-bottom:none}
     <div id="lista-admins" style="margin-top:20px"></div>
   </section>
 
+  <section class="sec" id="sec-reinicio">
+    <h2 class="titulo-sec">🜛 REINICIO TOTAL DEL EVENTO</h2>
+    <p class="sub-sec">Pone el evento en cero para un ensayo o una nueva edición. Requiere doble confirmación y es irreversible.</p>
+    <div style="border:1px solid #7a2a2a;border-radius:8px;padding:18px;background:rgba(122,42,42,.08)">
+      <label class="rz-check"><input type="checkbox" id="rz-prog" checked> Progreso de participantes (sellos → 0/7, estado → BUSCANDO; las cuentas se conservan)</label>
+      <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones del Oráculo (campanita de todos → 0)</label>
+      <label class="rz-check"><input type="checkbox" id="rz-sort" checked> Sorteos realizados</label>
+      <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa de actividades</label>
+      <label class="rz-check"><input type="checkbox" id="rz-sellos"> Configuración de sellos y códigos QR</label>
+      <div style="margin-top:16px">
+        <button class="btn peligro" onclick="rzPaso1()">🜛 REINICIAR EVENTO</button>
+      </div>
+      <div id="rz-paso2" class="oculto" style="margin-top:14px;border-top:1px solid #7a2a2a;padding-top:14px">
+        <p style="color:#e08a8a;font-size:14px">⚠ <b>Confirmación 1 de 2 registrada.</b> Lo marcado arriba se borrará definitivamente. No existe deshacer.</p>
+        <button class="btn peligro" style="margin-top:10px" onclick="rzPaso2()">⚠ CONFIRMACIÓN 2 DE 2 — EJECUTAR REINICIO</button>
+        <button class="btn mini" style="margin-left:8px" onclick="rzCancelar()">Cancelar</button>
+      </div>
+    </div>
+  </section>
+
 </main>
 </div>
 
@@ -229,8 +237,8 @@ tr:last-child td{border-bottom:none}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, onSnapshot, collection }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, addDoc, writeBatch,
+         onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const CFG = {
   apiKey: "AIzaSyA-1VBoP1hTjzbLSsMvqXYealszIu0y66g",
@@ -250,8 +258,9 @@ const toast = m => { const d=document.createElement('div'); d.className='toast';
 let yo=null, miRol=null, PART={}, filtroAct='todos';
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],sellos:['maestro','configurador'],
- programa:['maestro','configurador'],oraculo:['maestro','configurador'],sorteo:['maestro'],equipo:['maestro']};
-const TABS=[['torre','TORRE'],['sellos','SELLOS'],['programa','PROGRAMA'],['oraculo','ORÁCULO'],['sorteo','SORTEO'],['equipo','EQUIPO']];
+ programa:['maestro','configurador'],oraculo:['maestro','configurador'],sorteo:['maestro'],
+ equipo:['maestro'],reinicio:['maestro']};
+const TABS=[['torre','TORRE'],['sellos','SELLOS'],['programa','PROGRAMA'],['oraculo','ORÁCULO'],['sorteo','SORTEO'],['equipo','EQUIPO'],['reinicio','REINICIO']];
 
 window.login = async ()=>{ try{
   await signInWithEmailAndPassword(auth,$('l-email').value.trim(),$('l-clave').value);
@@ -283,8 +292,7 @@ function irSec(k,btn){ document.querySelectorAll('.tabs button').forEach(b=>b.cl
 function escuchar(){
   onSnapshot(collection(db,'participantes'), s=>{ PART={}; s.forEach(d=>PART[d.id]={id:d.id,...d.data()});
     $('m-total').textContent=s.size;
-    const aptos=Object.values(PART).filter(p=>p.estado==='apto').length;
-    $('m-aptos').textContent=aptos;
+    $('m-aptos').textContent=Object.values(PART).filter(p=>p.estado==='apto').length;
     $('m-iniciados').textContent=Object.values(PART).filter(p=>(p.simbolos||[]).length>0).length;
     pintarTabla(); });
   onSnapshot(collection(db,'simbolos'), ()=>pintarSellos());
@@ -362,7 +370,7 @@ window.imprimirQRs=async()=>{
   const w=window.open(''); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),600);
 };
 
-/* ── PROGRAMA ─ */
+/* ── PROGRAMA ── */
 window.guardarProg=async()=>{ const h=$('pg-hora').value;
   if(!h||!$('pg-tema').value) return toast('⚠ Completa hora y tema.');
   await addDoc(collection(db,'programa'),{hora:h,tema:$('pg-tema').value.trim(),
@@ -401,7 +409,7 @@ function pintarHistSorteo(){ const r=$('res-sorteo');
   '<b style="color:var(--oro2)">Sorteo · '+new Date(s.fecha).toLocaleString()+'</b>'+
   (s.ganadores||[]).map(g=>'<div style="margin-top:6px">🏆 '+esc(g.nombre)+' <span style="color:var(--humo);font-size:13px">'+esc(g.telefono)+'</span></div>').join('')+'</div>').join('') : '';
   if(SORT[0]) r.innerHTML='<div style="margin-top:18px">'+SORT[0].ganadores.map((g,i)=>
-   '<div class="ganador" style="animation-delay:'+(i*.3)+'s"><div class="n">🏆 '+esc(g.nombre)+'</div><div class="d">'+esc(g.email)+' · '+esc(g.telefono)+'</div></div>').join('')+'</div>';
+   '<div class="ganador"><div class="n">🏆 '+esc(g.nombre)+'</div><div class="d">'+esc(g.email)+' · '+esc(g.telefono)+'</div></div>').join('')+'</div>';
 }
 
 /* ── EQUIPO ── */
@@ -424,6 +432,27 @@ function pintarAdmins(){ $('lista-admins').innerHTML = Object.entries(ADM).map((
   '<button class="btn mini peligro" onclick="revocar(\''+id+'\')">✕</button>')+'</div>').join(''); }
 window.cambiarRol=async(id,r)=>{ await updateDoc(doc(db,'admins',id),{rol:r}); toast('Rango actualizado.'); };
 window.revocar=async id=>{ if(confirm('¿Revocar el rango de este admin?')){ await deleteDoc(doc(db,'admins',id)); toast('Rango revocado.'); } };
+
+/* ── REINICIO (doble confirmación) ── */
+window.rzPaso1=()=>{ $('rz-paso2').classList.remove('oculto'); toast('⚠ Confirmación 1 de 2 registrada.'); };
+window.rzCancelar=()=>{ $('rz-paso2').classList.add('oculto'); };
+window.rzPaso2=async()=>{
+  const ops=[];
+  if($('rz-prog').checked) (await getDocs(collection(db,'participantes'))).forEach(d=>
+    ops.push({t:'u',ref:d.ref,d:{simbolos:[],estado:'iniciado'}}));
+  const marcarBorrado=col=>(getDocs(collection(db,col))).then(s=>s.forEach(d=>ops.push({t:'d',ref:d.ref})));
+  if($('rz-anun').checked) await marcarBorrado('anuncios');
+  if($('rz-sort').checked) await marcarBorrado('sorteos');
+  if($('rz-programa').checked) await marcarBorrado('programa');
+  if($('rz-sellos').checked) await marcarBorrado('simbolos');
+  for(let i=0;i<ops.length;i+=450){
+    const b=writeBatch(db);
+    ops.slice(i,i+450).forEach(o=> o.t==='u'? b.update(o.ref,o.d) : b.delete(o.ref));
+    await b.commit();
+  }
+  $('rz-paso2').classList.add('oculto');
+  toast('🜛 El evento ha renacido desde el cero. Operaciones: '+ops.length);
+};
 </script>
 </body>
 </html>
