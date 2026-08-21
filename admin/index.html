@@ -46,7 +46,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 h1,h2,h3{font-weight:600;letter-spacing:-0.02em}
 .oculto{display:none!important}
 
-/* ── LOGIN ── */
+/* ── LOGIN ─ */
 #s-login{min-height:100dvh;display:grid;place-items:center;padding:24px}
 .caja-login{width:100%;max-width:400px;text-align:center;
   background:var(--card);border:1px solid var(--linea);
@@ -55,13 +55,14 @@ h1,h2,h3{font-weight:600;letter-spacing:-0.02em}
 .caja-login .escudo{font-size:48px;margin-bottom:10px}
 .caja-login h1{font-size:24px;font-weight:600;margin-bottom:4px}
 .caja-login p{color:var(--texto2);font-size:14px;margin-bottom:28px}
-input,select{width:100%;padding:13px 16px;background:var(--card2);
+input,select,textarea{width:100%;padding:13px 16px;background:var(--card2);
   border:1px solid var(--linea);border-radius:var(--radius-sm);
   color:var(--texto);font-family:var(--font);font-size:15px;
   transition:border .2s, background .2s;margin-bottom:10px}
-input:focus,select:focus{outline:none;border-color:var(--accent);
+textarea{min-height:96px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
   background:var(--bg2);box-shadow:0 0 0 3px rgba(0,122,255,.15)}
-input::placeholder{color:var(--texto3)}
+input::placeholder,textarea::placeholder{color:var(--texto3)}
 input[type=checkbox]{width:auto;margin:0;accent-color:var(--accent)}
 label{font-size:12px;font-weight:500;color:var(--texto2);
   display:block;margin:10px 0 6px;text-align:left;letter-spacing:0}
@@ -81,7 +82,7 @@ label{font-size:12px;font-weight:500;color:var(--texto2);
 .btn.mini{padding:7px 12px;font-size:12px}
 .err{color:var(--rojo);font-size:13px;min-height:18px;margin-top:10px}
 
-/* ── HEADER ── */
+/* ── HEADER ─ */
 header{position:sticky;top:0;z-index:30;
   background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(20px);
   -webkit-backdrop-filter:saturate(180%) blur(20px);
@@ -294,6 +295,22 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <div id="lista-anun" style="margin-top:24px"></div>
   </section>
 
+  <section class="sec" id="sec-chat">
+    <h2 class="titulo-sec">Chat del Oráculo</h2>
+    <p class="sub-sec">Crea las preguntas sugeridas y sus respuestas automáticas. Los participantes las verán como botones en su chat.</p>
+    <div style="background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px">
+      <label>PREGUNTA (el botón que verá el participante)</label>
+      <input id="fq-p" placeholder="Ej: ¿Dónde está el primer sello?">
+      <label>RESPUESTA AUTOMÁTICA</label>
+      <textarea id="fq-r" placeholder="Ej: El primer sello duerme bajo la barrica más antigua del Salón Mayor…"></textarea>
+      <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+        <button class="btn solido" onclick="guardarFAQ()">Guardar pregunta</button>
+        <button class="btn oculto" id="fq-cancel" onclick="cancelarFAQ()">Cancelar edición</button>
+      </div>
+    </div>
+    <div id="lista-faq" style="margin-top:20px"></div>
+  </section>
+
   <section class="sec" id="sec-sorteo">
     <h2 class="titulo-sec">Sorteo final</h2>
     <p class="sub-sec">Solo los participantes APTOS entran al sorteo. El azar elige sin repetir y queda registrado.</p>
@@ -370,12 +387,12 @@ const esc = s => String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':
 const toast = m => { const d=document.createElement('div'); d.className='toast'; d.textContent=m;
   $('toasts').appendChild(d); setTimeout(()=>d.remove(),5000); };
 
-let yo=null, miRol=null, PART={}, filtroAct='todos';
+let yo=null, miRol=null, PART={}, filtroAct='todos', FAQ=[], fqEdit=null;
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],sellos:['maestro','configurador'],
- programa:['maestro','configurador'],oraculo:['maestro','configurador'],sorteo:['maestro'],
- equipo:['maestro'],reinicio:['maestro']};
-const TABS=[['torre','Dashboard'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
+ programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],
+ sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
+const TABS=[['torre','Dashboard'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
 
 window.login = async ()=>{ try{
   await signInWithEmailAndPassword(auth,$('l-email').value.trim(),$('l-clave').value);
@@ -415,11 +432,14 @@ function escuchar(){
     PROG.sort((a,b)=>(a.hora||'').localeCompare(b.hora||'')); pintarProg(); });
   onSnapshot(collection(db,'anuncios'), s=>{ window.ANUN=[]; s.forEach(d=>ANUN.push({id:d.id,...d.data()}));
     ANUN.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')); pintarAnun(); });
+  onSnapshot(collection(db,'faq'), s=>{ FAQ=[]; s.forEach(d=>FAQ.push({id:d.id,...d.data()}));
+    FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0)); pintarFAQ(); });
   onSnapshot(collection(db,'sorteos'), s=>{ window.SORT=[]; s.forEach(d=>SORT.push({id:d.id,...d.data()}));
     SORT.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')); pintarHistSorteo(); });
   if(miRol==='maestro') onSnapshot(collection(db,'admins'), s=>{ window.ADM={}; s.forEach(d=>ADM[d.id]=d.data()); pintarAdmins(); });
 }
 
+/* ── TORRE ── */
 window.filtro=(f,btn)=>{ filtroAct=f; document.querySelectorAll('.chip').forEach(c=>c.classList.remove('act')); btn.classList.add('act'); pintarTabla(); };
 window.pintarTabla=()=>{
   const q=($('q').value||'').toLowerCase();
@@ -447,6 +467,7 @@ window.exportar=()=>{
   toast('✓ Excel exportado');
 };
 
+/* ── SELLOS ── */
 async function pintarSellos(){
   const g=$('grid-sellos'); g.innerHTML='';
   for(let n=1;n<=7;n++){
@@ -483,6 +504,7 @@ window.imprimirQRs=async()=>{
   const w=window.open(''); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),600);
 };
 
+/* ── PROGRAMA ── */
 window.guardarProg=async()=>{ const h=$('pg-hora').value;
   if(!h||!$('pg-tema').value) return toast('Completa hora y tema');
   await addDoc(collection(db,'programa'),{hora:h,tema:$('pg-tema').value.trim(),
@@ -495,6 +517,7 @@ function pintarProg(){ $('lista-prog').innerHTML = PROG.length? PROG.map(a=>
   : '<div class="vacio">Aún no hay actividades en el programa</div>'; }
 window.borrarProg=async id=>{ await deleteDoc(doc(db,'programa',id)); toast('Actividad eliminada'); };
 
+/* ── ORÁCULO ── */
 window.enviarAnuncio=async()=>{ const t=$('an-titulo').value.trim(), m=$('an-msg').value.trim();
   if(!m) return toast('Escribe el mensaje');
   await addDoc(collection(db,'anuncios'),{titulo:t,mensaje:m,fecha:new Date().toISOString()});
@@ -503,6 +526,28 @@ function pintarAnun(){ $('lista-anun').innerHTML = ANUN.length? '<h3 style="colo
   ANUN.map(a=>'<div class="item-prog"><div class="det"><b>'+esc(a.titulo||'Mensaje')+'</b><span>'+esc(a.mensaje)+
   ' · '+new Date(a.fecha).toLocaleString()+'</span></div></div>').join('') : ''; }
 
+/* ── CHAT DEL ORÁCULO (solo Maestro) ── */
+window.guardarFAQ=async()=>{ const p=$('fq-p').value.trim(), r=$('fq-r').value.trim();
+  if(!p||!r) return toast('Completa pregunta y respuesta');
+  if(fqEdit){ await updateDoc(doc(db,'faq',fqEdit),{pregunta:p,respuesta:r}); toast('✓ Pregunta actualizada'); }
+  else{ const ord = FAQ.length? Math.max(...FAQ.map(f=>f.orden||0))+1 : 1;
+    await addDoc(collection(db,'faq'),{pregunta:p,respuesta:r,orden:ord});
+    toast('✓ Pregunta publicada en el chat'); }
+  $('fq-p').value=''; $('fq-r').value=''; fqEdit=null; $('fq-cancel').classList.add('oculto'); };
+window.cancelarFAQ=()=>{ fqEdit=null; $('fq-p').value=''; $('fq-r').value=''; $('fq-cancel').classList.add('oculto'); };
+window.editarFAQ=id=>{ const f=FAQ.find(x=>x.id===id); if(!f) return;
+  fqEdit=id; $('fq-p').value=f.pregunta||''; $('fq-r').value=f.respuesta||'';
+  $('fq-cancel').classList.remove('oculto'); window.scrollTo({top:0,behavior:'smooth'}); };
+window.borrarFAQ=async id=>{ if(confirm('¿Eliminar esta pregunta del chat?')){
+  await deleteDoc(doc(db,'faq',id)); toast('Pregunta eliminada'); } };
+function pintarFAQ(){ $('lista-faq').innerHTML = FAQ.length?
+  '<h3 style="color:var(--texto2);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Preguntas activas ('+FAQ.length+')</h3>'+
+  FAQ.map(f=>'<div class="item-prog"><div class="det"><b>'+esc(f.pregunta)+'</b><span>'+esc(f.respuesta)+'</span></div>'+
+  '<button class="btn mini" onclick="editarFAQ(\''+f.id+'\')">Editar</button>'+
+  '<button class="btn mini peligro" onclick="borrarFAQ(\''+f.id+'\')">Eliminar</button></div>').join('')
+  : '<div class="vacio">Aún no hay preguntas configuradas</div>'; }
+
+/* ── SORTEO ── */
 window.sortear=async()=>{
   const aptos=Object.values(PART).filter(p=>p.estado==='apto');
   const n=parseInt($('so-n').value)||1;
@@ -522,6 +567,7 @@ function pintarHistSorteo(){ const r=$('res-sorteo');
    '<div class="ganador" style="animation-delay:'+(i*.15)+'s"><div class="n">🏆 '+esc(g.nombre)+'</div><div class="d">'+esc(g.email)+' · '+esc(g.telefono)+'</div></div>').join('')+'</div>';
 }
 
+/* ── EQUIPO ── */
 window.crearAdmin=async()=>{ $('eq-err').textContent='';
   const n=$('eq-nombre').value.trim(), e=$('eq-email').value.trim(), c=$('eq-clave').value, r=$('eq-rol').value;
   if(!n||!e||c.length<6) return $('eq-err').textContent='Completa nombre, correo y clave (mín. 6)';
@@ -542,6 +588,7 @@ function pintarAdmins(){ $('lista-admins').innerHTML = Object.entries(ADM).map((
 window.cambiarRol=async(id,r)=>{ await updateDoc(doc(db,'admins',id),{rol:r}); toast('Rol actualizado'); };
 window.revocar=async id=>{ if(confirm('¿Eliminar este administrador?')){ await deleteDoc(doc(db,'admins',id)); toast('Administrador eliminado'); } };
 
+/* ── REINICIO ── */
 window.rzPaso1=()=>{ $('rz-paso2').classList.remove('oculto'); toast('Confirmación 1 de 2 registrada'); };
 window.rzCancelar=()=>{ $('rz-paso2').classList.add('oculto'); };
 window.rzPaso2=async()=>{
