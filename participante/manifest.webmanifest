@@ -1,1 +1,12 @@
-
+{
+  "name": "Símbolos & Vinos MMXXVI",
+  "short_name": "Símbolos&Vinos",
+  "description": "La Búsqueda de los Siete Sellos",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b0709",
+  "theme_color": "#0b0709",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
