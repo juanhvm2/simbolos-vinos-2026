@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0709">
+<title>S&V · Torre de Control</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--negro:#0b0709;--vino:#4a1220;--oro:#c9a227;--oro2:#e6c66a;--oro3:#a8842c;
+ --per:#e9dcc3;--humo:rgba(233,220,195,.55);--glow:rgba(230,198,106,.2);--linea:rgba(201,162,39,.25)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--negro);color:var(--per);font-family:'Jost',sans-serif;font-size:15px}
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+ background:radial-gradient(ellipse at 50% -10%,rgba(230,198,106,.08),transparent 55%),
+ radial-gradient(ellipse at 90% 110%,rgba(109,26,45,.3),transparent 60%)}
+h1,h2,h3,.cinzel{font-family:'Cinzel',serif;letter-spacing:.08em}
+.oculto{display:none!important}
+/* login */
+#s-login{min-height:100dvh;display:grid;place-items:center;padding:24px}
+.caja-login{width:100%;max-width:380px;text-align:center}
+.caja-login .escudo{font-size:44px;color:var(--oro2);text-shadow:0 0 30px var(--glow)}
+input,select{width:100%;padding:12px;background:rgba(233,220,195,.05);border:1px solid var(--linea);
+ border-radius:4px;color:var(--per);font-family:'Jost';font-size:15px;margin-bottom:10px}
+input:focus,select:focus{outline:none;border-color:var(--oro2)}
+label{font-size:10px;letter-spacing:.22em;color:var(--oro3);display:block;margin:8px 0 5px;text-align:left}
+.btn{display:inline-block;padding:12px 18px;cursor:pointer;font-family:'Cinzel';font-weight:700;
+ font-size:12px;letter-spacing:.15em;color:var(--oro2);background:rgba(201,162,39,.1);
+ border:1px solid var(--oro3);border-radius:4px;transition:.2s}
+.btn:hover{box-shadow:0 0 18px var(--glow)}
+.btn:active{transform:scale(.97)}
+.btn.solido{background:linear-gradient(180deg,var(--oro),var(--oro3));color:#1a0d05}
+.btn.peligro{border-color:#7a2a2a;color:#d98a8a;background:rgba(122,42,42,.12)}
+.btn.mini{padding:7px 12px;font-size:10px}
+.err{color:#e08a8a;font-size:13px;min-height:18px;margin-top:8px}
+/* layout */
+header{position:sticky;top:0;z-index:30;background:rgba(11,7,9,.94);backdrop-filter:blur(10px);
+ border-bottom:1px solid var(--linea);padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header .marca{font-family:'Cinzel';font-weight:900;color:var(--oro2);font-size:16px}
+header .rol{font-size:10px;letter-spacing:.2em;border:1px solid var(--oro3);padding:4px 10px;border-radius:20px;color:var(--oro2)}
+header .esp{flex:1}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;border-bottom:1px solid var(--linea);
+ position:sticky;top:57px;z-index:29;background:rgba(11,7,9,.92);backdrop-filter:blur(10px)}
+.tabs button{flex:none;padding:9px 16px;background:none;border:1px solid transparent;border-radius:20px;
+ color:var(--humo);font-family:'Cinzel';font-size:11px;letter-spacing:.15em;cursor:pointer}
+.tabs button.act{color:var(--oro2);border-color:var(--oro3);background:rgba(201,162,39,.08)}
+main{max-width:1100px;margin:0 auto;padding:20px 16px 80px}
+.sec{display:none}.sec.act{display:block;animation:ap .4s ease}
+@keyframes ap{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* tarjetas métricas */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
+.metric{border:1px solid var(--linea);border-radius:6px;padding:16px;text-align:center;background:rgba(74,18,32,.12)}
+.metric .n{font-family:'Cinzel';font-size:34px;color:var(--oro2);text-shadow:0 0 20px var(--glow)}
+.metric .t{font-size:10px;letter-spacing:.22em;color:var(--humo);margin-top:4px}
+.metric.apto .n{color:#e8d27a}
+/* tabla */
+.buscador{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.buscador input{flex:1;min-width:180px;margin:0}
+.chip{padding:8px 14px;border:1px solid var(--linea);border-radius:20px;background:none;color:var(--humo);
+ font-size:11px;letter-spacing:.12em;cursor:pointer;font-family:'Cinzel'}
+.chip.act{color:var(--oro2);border-color:var(--oro3)}
+.tabla-wrap{overflow-x:auto;border:1px solid var(--linea);border-radius:6px}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th{font-family:'Cinzel';font-size:10px;letter-spacing:.2em;color:var(--oro3);text-align:left;
+ padding:12px 12px;border-bottom:1px solid var(--linea);background:rgba(201,162,39,.05)}
+td{padding:11px 12px;border-bottom:1px solid rgba(233,220,195,.07);font-size:14px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.barra{width:90px;height:5px;background:rgba(233,220,195,.12);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle}
+.barra i{display:block;height:100%;background:var(--oro2);box-shadow:0 0 8px var(--glow)}
+.tag{font-size:10px;letter-spacing:.12em;padding:4px 9px;border-radius:12px;border:1px solid var(--linea);color:var(--humo);white-space:nowrap}
+.tag.apto{background:linear-gradient(180deg,var(--oro),var(--oro3));color:#1a0d05;border:none;font-weight:600}
+/* sellos config */
+.grid-sellos{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.sello-card{border:1px solid var(--linea);border-radius:8px;padding:16px;background:rgba(74,18,32,.1)}
+.sello-card .cab{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sello-card .glifo{font-size:26px;color:var(--oro2);text-shadow:0 0 14px var(--glow)}
+.sello-card .num{font-family:'Cinzel';font-size:11px;letter-spacing:.2em;color:var(--oro3)}
+.sello-card input{margin-bottom:8px}
+.qr-zone{display:flex;gap:12px;align-items:center;margin-top:10px}
+.qr-zone .qr{background:#fff;padding:6px;border-radius:4px;width:116px;height:116px;display:grid;place-items:center}
+.qr-zone .qr:empty::after{content:"— sin código —";color:#333;font-size:10px}
+/* varios */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.form-grid input,.form-grid select{margin:0}
+.titulo-sec{color:var(--oro2);font-size:19px;margin-bottom:4px}
+.sub-sec{color:var(--humo);font-size:14px;margin-bottom:18px}
+.item-prog{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--linea);
+ border-radius:6px;margin-bottom:8px;background:rgba(74,18,32,.08);flex-wrap:wrap}
+.item-prog .hora{font-family:'Cinzel';color:var(--oro2);font-size:16px;min-width:56px}
+.item-prog .det{flex:1;min-width:180px}
+.item-prog .det b{display:block}
+.item-prog .det span{color:var(--humo);font-size:13px}
+.ganador{border:1px solid var(--oro2);border-radius:8px;padding:16px;margin-top:10px;text-align:center;
+ background:radial-gradient(circle,rgba(201,162,39,.15),transparent);animation:ap .6s ease}
+.ganador .n{font-family:'Cinzel';font-size:19px;color:var(--oro2)}
+.ganador .d{color:var(--humo);font-size:13px}
+#toasts{position:fixed;top:14px;right:14px;left:14px;z-index:80;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:rgba(11,7,9,.96);border:1px solid var(--oro2);border-radius:6px;padding:12px 14px;
+ box-shadow:0 0 24px var(--glow);animation:ap .4s ease;font-size:14px}
+.vacio{color:var(--humo);text-align:center;padding:30px;font-style:italic}
+</style>
+</head>
+<body>
+<div id="toasts"></div>
+
+<!-- LOGIN -->
+<section id="s-login">
+  <div class="caja-login">
+    <div class="escudo">🜔</div>
+    <h1 style="color:var(--oro2);font-size:20px;margin:10px 0 4px">TORRE DE CONTROL</h1>
+    <p style="color:var(--humo);font-size:13px;margin-bottom:22px">Símbolos &amp; Vinos · MMXXVI · acceso reservado al círculo</p>
+    <label>CORREO</label><input id="l-email" type="email">
+    <label>CLAVE</label><input id="l-clave" type="password">
+    <button class="btn solido" style="width:100%" onclick="login()">ENTRAR AL SANTUARIO</button>
+    <div class="err" id="l-err"></div>
+  </div>
+</section>
+
+<!-- SIN PERMISO -->
+<section id="s-noperm" class="oculto" style="min-height:100dvh;display:grid;place-items:center;padding:24px">
+  <div style="text-align:center;max-width:340px">
+    <div style="font-size:44px">🜁</div>
+    <h2 style="color:var(--oro2);margin:12px 0 8px">SIN RANGO EN EL CÍRCULO</h2>
+    <p style="color:var(--humo);font-size:14px">Tu cuenta no posee investidura de administrador. Consulta al Maestro.</p>
+    <button class="btn" style="margin-top:18px" onclick="salir()">SALIR</button>
+  </div>
+</section>
+
+<!-- APP -->
+<div id="s-app" class="oculto">
+<header>
+  <span class="marca">🜔 S&amp;V · TORRE</span>
+  <span class="rol" id="h-rol">—</span>
+  <span class="esp"></span>
+  <span id="h-user" style="color:var(--humo);font-size:13px"></span>
+  <button class="btn mini" onclick="salir()">SALIR</button>
+</header>
+<div class="tabs" id="tabs"></div>
+<main>
+
+  <!-- TORRE -->
+  <section class="sec" id="sec-torre">
+    <div class="metrics">
+      <div class="metric"><div class="n" id="m-total">0</div><div class="t">PARTICIPANTES</div></div>
+      <div class="metric"><div class="n" id="m-iniciados">0</div><div class="t">INICIARON</div></div>
+      <div class="metric apto"><div class="n" id="m-aptos">0</div><div class="t">APTOS AL SORTEO</div></div>
+    </div>
+    <div class="buscador">
+      <input id="q" placeholder="Buscar por nombre, correo o teléfono…" oninput="pintarTabla()">
+      <button class="chip act" data-f="todos" onclick="filtro('todos',this)">TODOS</button>
+      <button class="chip" data-f="iniciado" onclick="filtro('iniciado',this)">INICIARON</button>
+      <button class="chip" data-f="apto" onclick="filtro('apto',this)">APTOS</button>
+      <button class="btn mini solido oculto" id="btn-xlsx" onclick="exportar()">⬇ EXCEL</button>
+    </div>
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>NOMBRE</th><th>CONTACTO</th><th>PROGRESO</th><th>ESTADO</th><th>REGISTRO</th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table></div>
+  </section>
+
+  <!-- SELLOS -->
+  <section class="sec" id="sec-sellos">
+    <h2 class="titulo-sec">LOS SIETE SELLOS</h2>
+    <p class="sub-sec">Define nombre, salón, el fragmento que revela cada sello y genera su QR para imprimir.</p>
+    <div class="grid-sellos" id="grid-sellos"></div>
+  </section>
+
+  <!-- PROGRAMA -->
+  <section class="sec" id="sec-programa">
+    <h2 class="titulo-sec">PERGAMINO DEL PROGRAMA</h2>
+    <p class="sub-sec">Los participantes verán esto en vivo y recibirán aviso 5 minutos antes de cada rito.</p>
+    <div class="form-grid" style="margin-bottom:14px">
+      <div><label>HORA</label><input id="pg-hora" type="time"></div>
+      <div><label>TEMA</label><input id="pg-tema"></div>
+      <div><label>DISERTANTE</label><input id="pg-dis"></div>
+      <div><label>LUGAR</label><input id="pg-lugar"></div>
+    </div>
+    <button class="btn solido" onclick="guardarProg()">＋ AGREGAR AL PERGAMINO</button>
+    <div id="lista-prog" style="margin-top:18px"></div>
+  </section>
+
+  <!-- ORÁCULO -->
+  <section class="sec" id="sec-oraculo">
+    <h2 class="titulo-sec">LA VOZ DEL ORÁCULO</h2>
+    <p class="sub-sec">El mensaje aparecerá al instante en la app de todos los buscadores, con sonido y vibración.</p>
+    <label>TÍTULO</label><input id="an-titulo" placeholder="El Oráculo anuncia…">
+    <label>MENSAJE</label><input id="an-msg" placeholder="La cata de reserva comienza en 5 minutos en el Salón Barrica…">
+    <button class="btn solido" onclick="enviarAnuncio()">🜂 ENVIAR A LOS BUSCADORES</button>
+    <div id="lista-anun" style="margin-top:20px"></div>
+  </section>
+
+  <!-- SORTEO -->
+  <section class="sec" id="sec-sorteo">
+    <h2 class="titulo-sec">EL CÁLIZ DEL SORTEO</h2>
+    <p class="sub-sec">Solo los APTOS participan. El azar elige sin repetir, y todo queda registrado.</p>
+    <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
+      <div style="width:140px"><label>CANTIDAD DE GANADORES</label><input id="so-n" type="number" min="1" value="3"></div>
+      <button class="btn solido" onclick="sortear()">🜛 EJECUTAR EL SORTEO</button>
+    </div>
+    <div id="res-sorteo"></div>
+    <div id="hist-sorteo" style="margin-top:24px"></div>
+  </section>
+
+  <!-- EQUIPO -->
+  <section class="sec" id="sec-equipo">
+    <h2 class="titulo-sec">EL CÍRCULO DE ADMINISTRADORES</h2>
+    <p class="sub-sec">Crea cuentas personales y asigna rangos: maestro, configurador o monitor.</p>
+    <div class="form-grid" style="margin-bottom:6px">
+      <div><label>NOMBRE</label><input id="eq-nombre"></div>
+      <div><label>CORREO</label><input id="eq-email" type="email"></div>
+      <div><label>CLAVE TEMPORAL</label><input id="eq-clave"></div>
+      <div><label>RANGO</label><select id="eq-rol">
+        <option value="monitor">Monitor</option>
+        <option value="configurador">Configurador</option>
+        <option value="maestro">Maestro</option>
+      </select></div>
+    </div>
+    <button class="btn solido" onclick="crearAdmin()">✦ INVESTIR NUEVO ADMIN</button>
+    <div class="err" id="eq-err"></div>
+    <div id="lista-admins" style="margin-top:20px"></div>
+  </section>
+
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, onSnapshot, collection }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const CFG = {
+  apiKey: "AIzaSyA-1VBoP1hTjzbLSsMvqXYealszIu0y66g",
+  authDomain: "simbolos-vinos-2026.firebaseapp.com",
+  projectId: "simbolos-vinos-2026",
+  storageBucket: "simbolos-vinos-2026.firebasestorage.app",
+  messagingSenderId: "1055775891853",
+  appId: "1:1055775891853:web:ba134c84b0c33905aa5dc4"
+};
+const app = initializeApp(CFG);
+const auth = getAuth(app), db = getFirestore(app);
+const $ = id => document.getElementById(id);
+const esc = s => String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+const toast = m => { const d=document.createElement('div'); d.className='toast'; d.textContent=m;
+  $('toasts').appendChild(d); setTimeout(()=>d.remove(),5000); };
+
+let yo=null, miRol=null, PART={}, filtroAct='todos';
+const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
+const PERM={torre:['maestro','configurador','monitor'],sellos:['maestro','configurador'],
+ programa:['maestro','configurador'],oraculo:['maestro','configurador'],sorteo:['maestro'],equipo:['maestro']};
+const TABS=[['torre','TORRE'],['sellos','SELLOS'],['programa','PROGRAMA'],['oraculo','ORÁCULO'],['sorteo','SORTEO'],['equipo','EQUIPO']];
+
+window.login = async ()=>{ try{
+  await signInWithEmailAndPassword(auth,$('l-email').value.trim(),$('l-clave').value);
+ }catch(e){ $('l-err').textContent = e.code==='auth/invalid-credential'?'Credenciales incorrectas.':'Error: '+e.code; } };
+window.salir = ()=> signOut(auth);
+
+onAuthStateChanged(auth, async u=>{
+  if(!u){ yo=null; miRol=null; $('s-app').classList.add('oculto'); $('s-noperm').classList.add('oculto'); $('s-login').style.display='grid'; return; }
+  yo=u.uid; $('s-login').style.display='none';
+  const s = await getDoc(doc(db,'admins',yo));
+  if(!s.exists()){ $('s-noperm').classList.remove('oculto'); return; }
+  miRol = s.data().rol;
+  $('h-rol').textContent = 'RANGO · '+miRol.toUpperCase();
+  $('h-user').textContent = s.data().nombre||s.data().email;
+  $('s-app').classList.remove('oculto');
+  const tabs=$('tabs'); tabs.innerHTML='';
+  TABS.filter(([k])=>PERM[k].includes(miRol)).forEach(([k,n],i)=>{
+    const b=document.createElement('button'); b.textContent=n; b.onclick=()=>irSec(k,b); tabs.appendChild(b);
+    if(i===0) irSec(k,b);
+  });
+  if(miRol==='maestro') $('btn-xlsx').classList.remove('oculto');
+  escuchar();
+});
+
+function irSec(k,btn){ document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('act'));
+  btn&&btn.classList.add('act');
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('act')); $('sec-'+k).classList.add('act'); }
+
+function escuchar(){
+  onSnapshot(collection(db,'participantes'), s=>{ PART={}; s.forEach(d=>PART[d.id]={id:d.id,...d.data()});
+    $('m-total').textContent=s.size;
+    const aptos=Object.values(PART).filter(p=>p.estado==='apto').length;
+    $('m-aptos').textContent=aptos;
+    $('m-iniciados').textContent=Object.values(PART).filter(p=>(p.simbolos||[]).length>0).length;
+    pintarTabla(); });
+  onSnapshot(collection(db,'simbolos'), ()=>pintarSellos());
+  onSnapshot(collection(db,'programa'), s=>{ window.PROG=[]; s.forEach(d=>PROG.push({id:d.id,...d.data()}));
+    PROG.sort((a,b)=>(a.hora||'').localeCompare(b.hora||'')); pintarProg(); });
+  onSnapshot(collection(db,'anuncios'), s=>{ window.ANUN=[]; s.forEach(d=>ANUN.push({id:d.id,...d.data()}));
+    ANUN.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')); pintarAnun(); });
+  onSnapshot(collection(db,'sorteos'), s=>{ window.SORT=[]; s.forEach(d=>SORT.push({id:d.id,...d.data()}));
+    SORT.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')); pintarHistSorteo(); });
+  if(miRol==='maestro') onSnapshot(collection(db,'admins'), s=>{ window.ADM={}; s.forEach(d=>ADM[d.id]=d.data()); pintarAdmins(); });
+}
+
+/* ── TORRE ── */
+window.filtro=(f,btn)=>{ filtroAct=f; document.querySelectorAll('.chip').forEach(c=>c.classList.remove('act')); btn.classList.add('act'); pintarTabla(); };
+window.pintarTabla=()=>{
+  const q=($('q').value||'').toLowerCase();
+  let rows=Object.values(PART).filter(p=>{
+    if(filtroAct==='apto'&&p.estado!=='apto') return false;
+    if(filtroAct==='iniciado'&&(p.simbolos||[]).length===0) return false;
+    const txt=((p.nombre||'')+' '+(p.apellido||'')+' '+(p.email||'')+' '+(p.telefono||'')).toLowerCase();
+    return txt.includes(q);
+  }).sort((a,b)=>(b.registro||'').localeCompare(a.registro||''));
+  $('tb').innerHTML = rows.length? rows.map(p=>{
+    const n=(p.simbolos||[]).length;
+    return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td>'+
+    '<td style="color:var(--humo);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono)+'</td>'+
+    '<td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td>'+
+    '<td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✦ APTO':'BUSCANDO')+'</span></td>'+
+    '<td style="color:var(--humo);font-size:12px">'+new Date(p.registro||Date.now()).toLocaleString()+'</td></tr>';
+  }).join('') : '<tr><td colspan="5" class="vacio">Aún no hay buscadores registrados…</td></tr>';
+};
+window.exportar=()=>{
+  const rows=Object.values(PART).map(p=>({Nombre:p.nombre,Apellido:p.apellido,Email:p.email,
+   Telefono:p.telefono,Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO SORTEO':'EN BUSQUEDA',
+   Registro:new Date(p.registro||Date.now()).toLocaleString()}));
+  const ws=XLSX.utils.json_to_sheet(rows); const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Participantes'); XLSX.writeFile(wb,'participantes-simbolos-vinos.xlsx');
+  toast('📜 Excel exportado, Maestro.');
+};
+
+/* ── SELLOS ── */
+async function pintarSellos(){
+  const g=$('grid-sellos'); g.innerHTML='';
+  for(let n=1;n<=7;n++){
+    const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};
+    const c=document.createElement('div'); c.className='sello-card';
+    c.innerHTML='<div class="cab"><span class="glifo">'+GLIFOS[n]+'</span><span class="num">SELLO '+n+' · '+(s.nombre||'SIN NOMBRE')+'</span></div>'+
+    '<label>NOMBRE</label><input id="sn-'+n+'" value="'+esc(s.nombre||'')+'" placeholder="Sol, Luna…">'+
+    '<label>SALÓN</label><input id="ss-'+n+'" value="'+esc(s.salon||'')+'" placeholder="Salón Barrica…">'+
+    '<label>FRAGMENTO QUE REVELA (palabra, letra o pista)</label><input id="sf-'+n+'" value="'+esc(s.fragmento||'')+'" placeholder="“El oro”…">'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn mini solido" onclick="guardarSello('+n+')">GUARDAR</button>'+
+    '<button class="btn mini" onclick="genToken('+n+')">🜚 GENERAR CÓDIGO QR</button>'+
+    '<button class="btn mini" onclick="imprimirQRs()">🖨 IMPRIMIR TODOS</button></div>'+
+    '<div class="qr-zone"><div class="qr" id="qr-'+n+'"></div><div style="font-size:12px;color:var(--humo)">CÓDIGO:<br><b id="tk-'+n+'" style="color:var(--oro2)">'+esc(s.token||'— sin generar —')+'</b></div></div>';
+    g.appendChild(c);
+    if(s.token) new QRCode($('qr-'+n),{text:s.token,width:104,height:104,colorDark:'#1a0d05',colorLight:'#ffffff'});
+  }
+}
+window.guardarSello=async n=>{ await setDoc(doc(db,'simbolos',String(n)),{numero:n,
+  nombre:$('sn-'+n).value.trim(), salon:$('ss-'+n).value.trim(), fragmento:$('sf-'+n).value.trim(),
+  token:(await getDoc(doc(db,'simbolos',String(n)))).data()?.token||'', activo:true},{merge:true});
+  toast('✦ Sello '+n+' configurado.'); };
+window.genToken=async n=>{
+  const t='SV2026-S'+n+'-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');
+  await setDoc(doc(db,'simbolos',String(n)),{numero:n,token:t},{merge:true});
+  toast('🜚 Nuevo código generado para el sello '+n+'.'); };
+window.imprimirQRs=async()=>{
+  let html='<html><head><title>QRs Símbolos & Vinos</title><style>body{font-family:sans-serif;display:flex;flex-wrap:wrap;gap:30px;padding:30px}'+
+  '.c{text-align:center}.c img{width:180px;height:180px}.c b{display:block;margin-top:8px}</style></head><body>';
+  for(let n=1;n<=7;n++){ const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};
+    const el=document.createElement('div'); if(s.token) new QRCode(el,{text:s.token,width:180,height:180,colorDark:'#000',colorLight:'#fff'});
+    const img=el.querySelector('canvas')?el.querySelector('canvas').toDataURL(): (el.querySelector('img')?el.querySelector('img').src:'');
+    html+='<div class="c"><img src="'+img+'"><b>SELLO '+n+' · '+esc(s.nombre||'')+'</b><span>'+esc(s.salon||'')+'</span><br><small>'+esc(s.token||'')+'</small></div>'; }
+  html+='</body></html>';
+  const w=window.open(''); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),600);
+};
+
+/* ── PROGRAMA ─ */
+window.guardarProg=async()=>{ const h=$('pg-hora').value;
+  if(!h||!$('pg-tema').value) return toast('⚠ Completa hora y tema.');
+  await addDoc(collection(db,'programa'),{hora:h,tema:$('pg-tema').value.trim(),
+   disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim()});
+  ['pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value=''); toast('📜 Rito agregado al pergamino.'); };
+function pintarProg(){ $('lista-prog').innerHTML = PROG.length? PROG.map(a=>
+  '<div class="item-prog"><span class="hora">'+esc(a.hora)+'</span><div class="det"><b>'+esc(a.tema)+'</b>'+
+  '<span>'+esc(a.disertante)+(a.lugar?' · '+esc(a.lugar):'')+'</span></div>'+
+  '<button class="btn mini peligro" onclick="borrarProg(\''+a.id+'\')">✕</button></div>').join('')
+  : '<div class="vacio">El pergamino está en blanco.</div>'; }
+window.borrarProg=async id=>{ await deleteDoc(doc(db,'programa',id)); toast('Rito retirado.'); };
+
+/* ── ORÁCULO ── */
+window.enviarAnuncio=async()=>{ const t=$('an-titulo').value.trim(), m=$('an-msg').value.trim();
+  if(!m) return toast('⚠ Escribe el mensaje.');
+  await addDoc(collection(db,'anuncios'),{titulo:t,mensaje:m,fecha:new Date().toISOString()});
+  $('an-titulo').value=''; $('an-msg').value=''; toast('🜂 La voz del Oráculo resuena en todos los buscadores.'); };
+function pintarAnun(){ $('lista-anun').innerHTML = ANUN.length? '<h3 style="color:var(--oro3);font-size:12px;letter-spacing:.2em;margin-bottom:10px">HISTORIAL</h3>'+
+  ANUN.map(a=>'<div class="item-prog"><div class="det"><b>'+esc(a.titulo||'Anuncio')+'</b><span>'+esc(a.mensaje)+
+  ' · '+new Date(a.fecha).toLocaleString()+'</span></div></div>').join('') : ''; }
+
+/* ── SORTEO ── */
+window.sortear=async()=>{
+  const aptos=Object.values(PART).filter(p=>p.estado==='apto');
+  const n=parseInt($('so-n').value)||1;
+  if(!aptos.length) return toast('⚠ No hay buscadores APTOS todavía.');
+  if(n>aptos.length) return toast('⚠ Solo hay '+aptos.length+' aptos.');
+  const pool=[...aptos]; const gan=[];
+  for(let i=0;i<n;i++){ const r=crypto.getRandomValues(new Uint32Array(1))[0]%pool.length; gan.push(pool.splice(r,1)[0]); }
+  await addDoc(collection(db,'sorteos'),{fecha:new Date().toISOString(),n,
+    ganadores:gan.map(g=>({nombre:g.nombre+' '+g.apellido,email:g.email,telefono:g.telefono}))});
+  toast('🜛 El cáliz ha hablado.'); };
+function pintarHistSorteo(){ const r=$('res-sorteo');
+  $('hist-sorteo').innerHTML = SORT.length? '<h3 style="color:var(--oro3);font-size:12px;letter-spacing:.2em;margin-bottom:10px">SORTEOS REALIZADOS</h3>'+
+  SORT.map(s=>'<div style="border:1px solid var(--linea);border-radius:6px;padding:12px;margin-bottom:10px">'+
+  '<b style="color:var(--oro2)">Sorteo · '+new Date(s.fecha).toLocaleString()+'</b>'+
+  (s.ganadores||[]).map(g=>'<div style="margin-top:6px">🏆 '+esc(g.nombre)+' <span style="color:var(--humo);font-size:13px">'+esc(g.telefono)+'</span></div>').join('')+'</div>').join('') : '';
+  if(SORT[0]) r.innerHTML='<div style="margin-top:18px">'+SORT[0].ganadores.map((g,i)=>
+   '<div class="ganador" style="animation-delay:'+(i*.3)+'s"><div class="n">🏆 '+esc(g.nombre)+'</div><div class="d">'+esc(g.email)+' · '+esc(g.telefono)+'</div></div>').join('')+'</div>';
+}
+
+/* ── EQUIPO ── */
+window.crearAdmin=async()=>{ $('eq-err').textContent='';
+  const n=$('eq-nombre').value.trim(), e=$('eq-email').value.trim(), c=$('eq-clave').value, r=$('eq-rol').value;
+  if(!n||!e||c.length<6) return $('eq-err').textContent='Completa nombre, correo y clave (mín. 6).';
+  try{
+    const sec=initializeApp(CFG,'sec'+Date.now()); const secAuth=getAuth(sec);
+    const cred=await createUserWithEmailAndPassword(secAuth,e,c);
+    await setDoc(doc(db,'admins',cred.user.uid),{nombre:n,email:e,rol:r});
+    await signOut(secAuth);
+    $('eq-nombre').value=$('eq-email').value=$('eq-clave').value='';
+    toast('✦ '+n+' investido como '+r+'.');
+  }catch(err){ $('eq-err').textContent = err.code==='auth/email-already-in-use'?'Ese correo ya existe.':'Error: '+err.code; } };
+function pintarAdmins(){ $('lista-admins').innerHTML = Object.entries(ADM).map(([id,a])=>
+  '<div class="item-prog"><div class="det"><b>'+esc(a.nombre)+'</b><span>'+esc(a.email)+'</span></div>'+
+  (id===yo? '<span class="tag apto">TÚ · '+esc(a.rol)+'</span>' :
+  '<select style="width:auto;margin:0" onchange="cambiarRol(\''+id+'\',this.value)">'+
+  ['maestro','configurador','monitor'].map(r=>'<option'+(r===a.rol?' selected':'')+'>'+r+'</option>').join('')+'</select>'+
+  '<button class="btn mini peligro" onclick="revocar(\''+id+'\')">✕</button>')+'</div>').join(''); }
+window.cambiarRol=async(id,r)=>{ await updateDoc(doc(db,'admins',id),{rol:r}); toast('Rango actualizado.'); };
+window.revocar=async id=>{ if(confirm('¿Revocar el rango de este admin?')){ await deleteDoc(doc(db,'admins',id)); toast('Rango revocado.'); } };
+</script>
+</body>
+</html>
