@@ -275,6 +275,11 @@ h1,h2,h3,.display{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;
     <div class="estado" id="h-estado">BUSCADOR</div>
   </div>
   <button id="btn-push" class="btn solido oculto" style="margin-top:18px" onclick="activarPush()">🔔 Activar la voz del Oráculo</button>
+  <button id="btn-quiz" class="btn oculto" style="margin-top:12px" onclick="abrirQuiz()">🜔 Descubre tu Arcano Enológico</button>
+  <div id="quiz-card" class="oculto" style="margin-top:14px;padding:14px 18px;border:1px solid var(--linea);border-radius:14px;background:var(--crema);box-shadow:var(--sombra);text-align:center">
+    <div style="font-size:10px;letter-spacing:.28em;color:var(--purpura);font-weight:600">TU ARCANO</div>
+    <div id="quiz-titulo" style="font-family:'Julius Sans One';color:var(--tinta);font-size:16px;margin-top:6px"></div>
+  </div>
   <div class="progreso">
     <div class="anillo">
       <svg width="104" height="104">
@@ -315,6 +320,23 @@ h1,h2,h3,.display{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;
   <div id="chat-ventana"></div>
   <div class="sec-titulo">· Preguntas sugeridas ·</div>
   <div id="chat-chips"></div>
+</section>
+
+<section class="pantalla" id="p-quiz">
+  <h2 style="font-size:21px;text-align:center">TU ARCANO ENOLÓGICO</h2>
+  <p class="mistica" style="text-align:center;margin:8px 0 16px;font-size:16px">Cuatro preguntas y el Oráculo revelará tu perfil de catador.</p>
+  <div id="quiz-dots" style="display:flex;gap:6px;justify-content:center;margin-bottom:18px"></div>
+  <div id="quiz-caja" class="auth-card">
+    <div id="quiz-pregunta" style="font-family:'Julius Sans One';color:var(--tinta);font-size:16px;text-align:center;margin-bottom:14px"></div>
+    <div id="quiz-ops"></div>
+  </div>
+  <div id="quiz-final" class="auth-card oculto" style="text-align:center">
+    <div style="font-size:10px;letter-spacing:.28em;color:var(--purpura);font-weight:600">EL ORÁCULO REVELA</div>
+    <div id="qf-titulo" style="font-family:'Julius Sans One';color:var(--tinta);font-size:22px;margin:12px 0"></div>
+    <div id="qf-det" class="mistica" style="font-size:15px"></div>
+    <p style="font-size:12px;color:var(--texto3);margin-top:14px">Tu perfil quedó sellado en tu grimorio.</p>
+    <button class="btn solido" style="margin-top:14px" onclick="cerrarQuiz()">Volver a mis sellos</button>
+  </div>
 </section>
 
 <section class="pantalla" id="p-prog">
@@ -369,12 +391,14 @@ const VAPID = "BBsxw3cT5Drw-ZyyCNzSjls056Mr6YS8gX-dUWyn6oqOZZkNalSc7iqUE4DYEIu0W
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-let yo = null, parte = null, simbolos = {}, programa = [], FAQ = [], PERFIL = {};
+let yo = null, parte = null, simbolos = {}, programa = [], FAQ = [], PERFIL = {}, QUIZ = null;
+let quizIdx = 0, quizResp = {};
 let vistos = JSON.parse(localStorage.getItem('sv-avisos')||'null');
 let avisosCache = []; const notificados = new Set();
 let chatHist = JSON.parse(localStorage.getItem('sv-chat')||'[]');
 const GLIFOS = {1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const NOMBRES = {1:'SOL',2:'LUNA',3:'MERCURIO',4:'VENUS',5:'MARTE',6:'JÚPITER',7:'SATURNO'};
+const TITULOS = {'Malbec':'Guardián del Malbec','Cabernet':'Caballero del Cabernet','Torrontés':'Alma de Torrontés','Blend':'Alquimista del Blend'};
 
 const $ = id => document.getElementById(id);
 const botName = () => PERFIL.nombreOraculo || 'El Oráculo';
@@ -417,7 +441,7 @@ function chime(){ try{
   navigator.vibrate && navigator.vibrate([90,60,90]);
 }catch(e){} }
 document.addEventListener('touchstart',()=>{ try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();}catch(e){} },{once:true});
-function scramble(el,txt){ let i=0; const gl='⚜✦♃';
+function scramble(el,txt){ let i=0; const gl='⚜✦';
   const int=setInterval(()=>{ el.textContent=txt.split('').map((c,j)=> j<i?c : (c===' '?' ':gl[Math.floor(Math.random()*gl.length)])).join('');
   i+=.6; if(i>=txt.length+1){el.textContent=txt;clearInterval(int);} },34); }
 
@@ -438,7 +462,47 @@ function escucharPerfil(){
   });
 }
 
-/* ── PUSH ── */
+/* ── QUIZ ARCANO ── */
+function escucharQuiz(){
+  onSnapshot(doc(db,'config','quiz'), s=>{ QUIZ = s.exists()? s.data() : null; revisarQuizBtn(); });
+}
+function revisarQuizBtn(){
+  const completo = parte && parte.quiz && parte.quiz.completado;
+  $('btn-quiz').classList.toggle('oculto', !(QUIZ && QUIZ.activo && !completo));
+  if(completo){ $('quiz-card').classList.remove('oculto'); $('quiz-titulo').textContent = parte.quiz.titulo||'—'; }
+  else $('quiz-card').classList.add('oculto');
+}
+window.abrirQuiz = ()=>{
+  if(!QUIZ || !(QUIZ.preguntas||[]).length) return toast('El Oráculo aún prepara el arcano','');
+  quizIdx=0; quizResp={};
+  $('quiz-final').classList.add('oculto'); $('quiz-caja').classList.remove('oculto');
+  navegar('p-quiz', document.querySelector('[data-p="p-home"]'));
+  pintarQuiz();
+};
+window.cerrarQuiz = ()=>{ navegar('p-home', document.querySelector('[data-p="p-home"]')); };
+function pintarQuiz(){
+  const qs=QUIZ.preguntas||[];
+  $('quiz-dots').innerHTML=qs.map((_,i)=>'<span style="width:8px;height:8px;border-radius:50%;background:'+(i<quizIdx?'var(--tinta)':'var(--linea)')+'"></span>').join('');
+  const q=qs[quizIdx]; if(!q) return;
+  $('quiz-pregunta').textContent=q.pregunta||'';
+  const c=$('quiz-ops'); c.innerHTML='';
+  (q.opciones||[]).forEach(o=>{
+    const b=document.createElement('button'); b.className='btn'; b.style.marginTop='10px'; b.textContent=o.t;
+    b.onclick=()=>responder(q,o); c.appendChild(b);
+  });
+}
+function responder(q,o){
+  quizResp[q.categoria]=o.v; quizIdx++;
+  if(quizIdx<(QUIZ.preguntas||[]).length) return pintarQuiz();
+  const titulo=TITULOS[quizResp.Varietal]||'Buscador de Arcanos';
+  updateDoc(doc(db,'participantes',yo),{ perfil:quizResp, quiz:{completado:true,fecha:new Date().toISOString(),titulo} });
+  $('quiz-caja').classList.add('oculto'); $('quiz-final').classList.remove('oculto');
+  $('qf-titulo').textContent=titulo;
+  $('qf-det').innerHTML=Object.entries(quizResp).map(([k,v])=>k+': <b>'+v+'</b>').join(' · ');
+  chime();
+}
+
+/* ── PUSH ─ */
 async function registrarToken(){
   try{
     const reg = await navigator.serviceWorker.ready;
@@ -540,14 +604,14 @@ window.salir = ()=>{ pararScanner(); signOut(auth); };
 
 onAuthStateChanged(auth, u=>{
   $('carga').classList.add('fin');
-  if(u){ yo=u.uid; escucharParte(); escucharDatos(); escucharAvisos(); escucharFAQ(); escucharPerfil(); revisarPush();
+  if(u){ yo=u.uid; escucharParte(); escucharDatos(); escucharAvisos(); escucharFAQ(); escucharPerfil(); escucharQuiz(); revisarPush();
     renderHist();
     $('nav').style.display='flex';
     navegar('p-home',document.querySelector('[data-p="p-home"]')); }
   else { yo=null; parte=null; $('nav').style.display='none'; ver('p-landing'); }
 });
 
-function escucharParte(){ onSnapshot(doc(db,'participantes',yo), s=>{ if(s.exists()){ parte=s.data(); pintarHome(); } }); }
+function escucharParte(){ onSnapshot(doc(db,'participantes',yo), s=>{ if(s.exists()){ parte=s.data(); pintarHome(); revisarQuizBtn(); } }); }
 function escucharDatos(){
   onSnapshot(collection(db,'simbolos'), s=>{ s.forEach(d=>{ simbolos[d.id]={...d.data(),id:d.id}; }); pintarHome(); });
   onSnapshot(collection(db,'programa'),  s=>{ programa=[]; s.forEach(d=>programa.push({id:d.id,...d.data()}));
