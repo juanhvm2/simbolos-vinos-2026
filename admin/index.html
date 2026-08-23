@@ -7,7 +7,7 @@
 <title>S&V · Panel de Control</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#000;--bg2:#0a0a0b;--card:#1c1c1e;--card2:#2c2c2e;--card-hover:#3a3a3c;--linea:rgba(255,255,255,.08);--linea2:rgba(255,255,255,.14);--texto:#fff;--texto2:#8e8e93;--texto3:#636366;--accent:#007aff;--verde:#30d158;--rojo:#ff453a;--corazon:#e0245e;--radius:14px;--radius-sm:10px;--font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',sans-serif}
+:root{--bg:#000;--bg2:#0a0a0b;--card:#1c1c1e;--card2:#2c2c2e;--card-hover:#3a3a3c;--linea:rgba(255,255,255,.08);--linea2:rgba(255,255,255,.14);--texto:#fff;--texto2:#8e8e93;--texto3:#636366;--accent:#007aff;--verde:#30d158;--rojo:#ff453a;--corazon:#e0245e;--oro:#ffd60a;--radius:14px;--radius-sm:10px;--font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',sans-serif}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--texto);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-weight:600;letter-spacing:-.02em}
@@ -43,11 +43,12 @@ header #h-user{color:var(--texto2);font-size:13px}
 main{max-width:1200px;margin:0 auto;padding:24px 20px 100px}
 .sec{display:none}.sec.act{display:block;animation:ap .35s}
 @keyframes ap{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:26px}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px}
 .metric{background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:18px;text-align:center}
-.metric .n{font-size:38px;font-weight:700;line-height:1}
+.metric .n{font-size:36px;font-weight:700;line-height:1}
 .metric .t{font-size:11px;color:var(--texto2);margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
 .metric.apto .n{color:var(--verde)}
+.metric.oro .n{color:var(--oro)}
 .buscador{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .buscador input{flex:1;min-width:200px;margin:0}
 .chip{padding:8px 14px;border:1px solid var(--linea);border-radius:20px;background:transparent;color:var(--texto2);font-size:12px;cursor:pointer}
@@ -83,7 +84,7 @@ tr:last-child td{border-bottom:none}
 .vacio{color:var(--texto3);text-align:center;padding:40px;font-size:14px}
 .rz-check{display:flex;gap:10px;align-items:center;font-size:14px;margin:12px 0;cursor:pointer}
 .avatar-prev{width:64px;height:64px;border-radius:50%;object-fit:cover;background:var(--card2);border:2px solid var(--linea2);display:block;margin-top:6px}
-@media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:32px}.titulo-sec{font-size:20px}}
+@media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:30px}.titulo-sec{font-size:20px}}
 </style>
 </head>
 <body>
@@ -104,6 +105,7 @@ tr:last-child td{border-bottom:none}
   <div class="metric"><div class="n" id="m-iniciados">0</div><div class="t">Iniciaron</div></div>
   <div class="metric apto"><div class="n" id="m-aptos">0</div><div class="t">Aptos</div></div>
   <div class="metric"><div class="n" id="m-circulo">0</div><div class="t">Círculo</div></div>
+  <div class="metric oro"><div class="n" id="m-quiz">0</div><div class="t">Arcano</div></div>
  </div>
  <div class="buscador"><input id="q" placeholder="Buscar…" oninput="pintarTabla()">
   <button class="chip act" onclick="filtro('todos',this)">Todos</button>
@@ -111,28 +113,27 @@ tr:last-child td{border-bottom:none}
   <button class="chip" onclick="filtro('apto',this)">Aptos</button>
   <button class="btn mini solido oculto" id="btn-xlsx" onclick="exportar()">⬇ Excel completo</button></div>
  <div class="tabla-wrap"><table><thead><tr><th>Nombre</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Perfil/Quiz</th><th>Consent.</th><th>Acciones</th></tr></thead><tbody id="tb"></tbody></table></div>
- <div class="card" style="margin-top:16px"><h3>⚜ Círculo de beneficios · miembros</h3><div id="lista-circulo"></div></div>
+ <div class="grid2" style="margin-top:16px">
+  <div class="card"><h3>⚜ Círculo de beneficios · miembros</h3><div id="lista-circulo"></div></div>
+  <div class="card"><h3>♥ Bodega favorita · votos y puntaje</h3><div id="jz-votores"></div></div>
+ </div>
 </section>
 
 <section class="sec" id="sec-juegos">
  <h2 class="titulo-sec">Salón de Juegos · Control</h2>
- <p class="sub-sec">Activa cada juego, configura contenidos y mira todo en tiempo real.</p>
+ <p class="sub-sec">Activa lo que está vivo y configura sus contenidos.</p>
  <div class="card"><h3>Activar / desactivar</h3><div id="jz-toggles"></div></div>
  <div class="card"><h3>Contenidos</h3>
   <label>Salones de auxilio (uno por línea)</label><textarea id="jz-salones"></textarea>
-  <label>Bodegas del pasaporte (una por línea)</label><textarea id="jz-bodegas"></textarea>
-  <label>Misiones del bingo (una por línea)</label><textarea id="jz-misiones"></textarea>
-  <label>Bodegas a votación (una por línea)</label><textarea id="jz-bvoto"></textarea>
+  <label>Bodegas para votar / puntuar (una por línea)</label><textarea id="jz-bvoto"></textarea>
   <label>Link del álbum (Google Fotos)</label><input id="jz-album" placeholder="https://photos.app.goo.gl/…">
   <label>Hora del sorteo (cuenta regresiva)</label><input id="jz-sorteo" type="datetime-local">
-  <button class="btn solido" style="margin-top:10px" onclick="guardarJuegos()">Guardar juegos y contenidos</button></div>
+  <button class="btn solido" style="margin-top:10px" onclick="guardarJuegos()">Guardar contenidos</button></div>
  <div class="grid2">
   <div class="card"><h3>♥ Corazones (me gusta) en vivo</h3><div style="font-size:40px;font-weight:700;color:var(--corazon)" id="jz-apl">0</div><button class="btn mini peligro" style="margin-top:10px" onclick="resetCorazones()">Reiniciar corazones</button></div>
-  <div class="card"><h3>Estadísticas</h3><div id="jz-stats" style="font-size:14px;color:var(--texto2)"></div></div>
+  <div class="card"><h3>Estadísticas en vivo</h3><div id="jz-stats" style="font-size:14px;color:var(--texto2)"></div></div>
  </div>
- <div class="card"><h3>Voto a bodega favorita</h3><div id="jz-votores"></div></div>
  <div class="card"><h3>Ranking en vivo</h3><div id="jz-rank"></div></div>
- <div class="card"><h3>Muro de susurros · moderación</h3><div id="jz-muro"></div></div>
  <div class="card"><h3>Botón de auxilio · en vivo</h3><div id="jz-aux"></div></div>
 </section>
 
@@ -183,8 +184,7 @@ tr:last-child td{border-bottom:none}
   <label class="rz-check"><input type="checkbox" id="rz-chats"> Chats del Oráculo (historial de todos)</label>
   <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones</label>
   <label class="rz-check"><input type="checkbox" id="rz-sort" checked> Sorteos</label>
-  <label class="rz-check"><input type="checkbox" id="rz-juegos"> Datos de juegos (pasaporte, bingo, voto, círculo)</label>
-  <label class="rz-check"><input type="checkbox" id="rz-muro"> Muro de susurros</label>
+  <label class="rz-check"><input type="checkbox" id="rz-juegos"> Datos de perfil de juegos (voto, círculo, me gusta)</label>
   <label class="rz-check"><input type="checkbox" id="rz-aux"> Pedidos de auxilio</label>
   <label class="rz-check"><input type="checkbox" id="rz-corazones"> Contador de corazones (me gusta)</label>
   <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa</label>
@@ -210,8 +210,9 @@ const hoyISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMont
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
-const JG_META=[['quiz','Arcano (quiz)'],['pasaporte','Pasaporte de cata'],['bingo','Bingo'],['ranking','Tabla de buscadores'],['marco','Marco de fotos'],['credencial','Credencial de Digno'],['muro','Muro de susurros'],['aplausos','Me gusta (corazones) en programa'],['progPersonal','Programa personal (★)'],['auxilio','Botón de auxilio (visible)'],['album','Álbum'],['circulo','Círculo de beneficios'],['voto','Voto bodega']];
-let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},MURO=[],AUX=[],VOTOS=[],PROG=[];
+/* Solo lo que está vivo en la app del participante */
+const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['credencial','Credencial de Digno'],['album','Álbum'],['aplausos','Me gusta (corazones) en programa'],['auxilio','Botón de auxilio (visible)']];
+let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},AUX=[],VOTOS=[],PROG=[];
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],quiz:['maestro','configurador'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
 const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['quiz','Quiz'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
@@ -229,7 +230,8 @@ function escuchar(){
   $('m-total').textContent=s.size;$('m-aptos').textContent=Object.values(PART).filter(p=>p.estado==='apto').length;
   $('m-iniciados').textContent=Object.values(PART).filter(p=>(p.simbolos||[]).length>0).length;
   $('m-circulo').textContent=Object.values(PART).filter(p=>p.circulo).length;
-  pintarTabla();pintarCirculo();pintarQuizRes();pintarStats();pintarRankAdmin();});
+  $('m-quiz').textContent=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado).length;
+  pintarTabla();pintarCirculo();pintarVotoAdmin();pintarQuizRes();pintarStats();pintarRankAdmin();});
  onSnapshot(collection(db,'simbolos'),()=>pintarSellos());
  onSnapshot(collection(db,'programa'),s=>{PROG=[];s.forEach(d=>PROG.push({id:d.id,...d.data()}));PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));pintarProg();});
  onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>ANUN.push({id:d.id,...d.data()}));pintarAnun();});
@@ -238,7 +240,6 @@ function escuchar(){
  onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;$('qz-activo').checked=!!(QUIZ&&QUIZ.activo);if(!quizFormLoaded){quizFormLoaded=true;renderQuizForm();}});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};if(!juegosLoaded){juegosLoaded=true;renderToggles();}syncToggles();});
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};if(juegosLoaded)fillExtra();});
- onSnapshot(collection(db,'muro'),s=>{MURO=[];s.forEach(d=>MURO.push({id:d.id,...d.data()}));pintarMuroAdmin();});
  onSnapshot(collection(db,'auxilios'),s=>{AUX=[];s.forEach(d=>AUX.push({id:d.id,...d.data()}));pintarAuxAdmin();});
  onSnapshot(collection(db,'votos'),s=>{VOTOS=[];s.forEach(d=>VOTOS.push({id:d.id,...d.data()}));pintarVotoAdmin();});
  onSnapshot(collection(db,'sorteos'),s=>{window.SORT=[];s.forEach(d=>SORT.push({id:d.id,...d.data()}));pintarHistSorteo();});
@@ -248,20 +249,19 @@ function escuchar(){
 /* TORRE */
 window.filtro=(f,b)=>{filtroAct=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('act'));b.classList.add('act');pintarTabla();};
 function pintarCirculo(){const m=Object.values(PART).filter(p=>p.circulo);
- $('lista-circulo').innerHTML=m.map(p=>'<div class="item-prog"><div class="det"><b>⚜ '+esc(p.nombre)+' '+esc(p.apellido||'')+'</b><span>'+esc(p.email||'')+' · '+esc(p.telefono||'')+'</span></div></div>').join('')||'<div class="vacio">Aún no hay miembros del Círculo</div>';}
+ $('lista-circulo').innerHTML=m.map(p=>'<div class="item-prog"><div class="det"><b>⚜ '+esc(p.nombre)+' '+esc(p.apellido||'')+'</b><span>'+esc(p.email||'')+' · '+esc(p.telefono||'')+'</span></div></div>').join('')||'<div class="vacio">Aún no hay miembros</div>';}
+function pintarVotoAdmin(){const c={};VOTOS.forEach(v=>{if(!c[v.bodega])c[v.bodega]={n:0,s:0};c[v.bodega].n++;c[v.bodega].s+=(v.puntaje||0);});
+ $('jz-votores').innerHTML=Object.entries(c).sort((a,b)=>b[1].n-a[1].n).map(([v,o])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px"><span style="flex:1;color:var(--texto2)">'+esc(v)+'</span><b>'+o.n+'</b><span style="color:var(--oro)">'+(o.n?(o.s/o.n).toFixed(1):'0')+'★</span></div>').join('')||'<div class="vacio">Sin votos aún</div>';}
 window.pintarTabla=()=>{const q=($('q').value||'').toLowerCase();
  let rows=Object.values(PART).filter(p=>{if(filtroAct==='apto'&&p.estado!=='apto')return false;if(filtroAct==='iniciado'&&(p.simbolos||[]).length===0)return false;return((p.nombre||'')+' '+(p.apellido||'')+' '+(p.email||'')).toLowerCase().includes(q);}).sort((a,b)=>(b.registro||'').localeCompare(a.registro||''));
  $('tb').innerHTML=rows.length?rows.map(p=>{const n=(p.simbolos||[]).length,pf=p.perfil||{},qh=p.quiz&&p.quiz.completado;
  return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td><td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono)+'</td><td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td><td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'Buscando')+'</span></td><td style="color:var(--texto2);font-size:12px">'+(qh?'⚜ '+esc(p.quiz.titulo)+'<br>'+esc(pf.Varietal||''):'—')+'</td><td style="font-size:11px;color:var(--texto2)">Priv:'+(p.consent&&p.consent.priv?'✓':'—')+'<br>Mkt:'+(p.consent&&p.consent.mkt?'✓':'—')+'</td><td>'+(qh?'<button class="btn mini peligro" onclick="resetearQuiz(\''+p.id+'\')">Reset quiz</button>':'—')+'</td></tr>';}).join(''):'<tr><td colspan="7" class="vacio">Sin participantes</td></tr>';};
 window.resetearQuiz=async id=>{if(!confirm('¿Resetear quiz de este participante?'))return;await updateDoc(doc(db,'participantes',id),{quiz:deleteField(),perfil:deleteField()});toast('✓ Quiz reseteado');};
 window.exportar=()=>{const wb=XLSX.utils.book_new();
- const rows=Object.values(PART).map(p=>{const pf=p.perfil||{},x=p.extra||{};return{Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO':'BUSCANDO',Varietal:pf.Varietal||'',Estilo:pf.Estilo||'',Frecuencia:pf.Frecuencia||'',Interes:pf.Interes||'',Arcano:(p.quiz&&p.quiz.titulo)||'',ConsentPriv:p.consent&&p.consent.priv?'SI':'NO',ConsentMkt:p.consent&&p.consent.mkt?'SI':'NO',Nacimiento:x.nac||'',Zona:x.zona||'',ComoEntero:x.como||'',Compania:x.comp||'',Catas:(p.pasaporte||[]).length,Bingo:(p.bingo||[]).length,Voto:p.voto||'',Circulo:p.circulo?'SI':'NO',MeGustaDados:(p.likes||[]).length,Registro:new Date(p.registro||Date.now()).toLocaleString()};});
+ const rows=Object.values(PART).map(p=>{const pf=p.perfil||{},x=p.extra||{};return{Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO':'BUSCANDO',Varietal:pf.Varietal||'',Estilo:pf.Estilo||'',Frecuencia:pf.Frecuencia||'',Interes:pf.Interes||'',Arcano:(p.quiz&&p.quiz.titulo)||'',ConsentPriv:p.consent&&p.consent.priv?'SI':'NO',ConsentMkt:p.consent&&p.consent.mkt?'SI':'NO',Nacimiento:x.nac||'',Zona:x.zona||'',ComoEntero:x.como||'',Compania:x.comp||'',BodegaFav:p.voto||'',PuntajeBodega:p.votoPuntaje||'',Circulo:p.circulo?'SI':'NO',MeGustaDados:(p.likes||[]).length,Registro:new Date(p.registro||Date.now()).toLocaleString()};});
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Participantes');
- const catas=[];Object.values(PART).forEach(p=>(p.pasaporte||[]).forEach(c=>catas.push({Nombre:p.nombre+' '+p.apellido,Bodega:c.b,Estrellas:c.e,Fecha:new Date(c.f).toLocaleString()})));
- XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(catas.length?catas:[{Info:'sin catas'}]),'Catas');
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(PROG.map(a=>({Fecha:fmtF(a.fecha),Hora:a.hora,Tema:a.tema,Corazones:a.likes||0}))),'MeGustaCharlas');
- XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(VOTOS.map(v=>({Nombre:v.nombre,Bodega:v.bodega,Fecha:new Date(v.fecha).toLocaleString()}))),'Votos');
- XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(MURO.map(m=>({Texto:m.texto,Nombre:m.nombre,Aprobado:m.aprobado?'SI':'NO'}))),'Muro');
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(VOTOS.map(v=>({Nombre:v.nombre,Bodega:v.bodega,Puntaje:v.puntaje||'',Fecha:new Date(v.fecha).toLocaleString()}))),'Votos');
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(AUX.map(a=>({Nombre:a.nombre,Salon:a.salon,Atendido:a.atendido?'SI':'NO'}))),'Auxilios');
  const circ=Object.values(PART).filter(p=>p.circulo).map(p=>({Nombre:p.nombre+' '+p.apellido,Email:p.email,Telefono:p.telefono}));
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(circ.length?circ:[{Info:'sin miembros'}]),'Circulo');
@@ -270,23 +270,17 @@ window.exportar=()=>{const wb=XLSX.utils.book_new();
 /* JUEGOS */
 function renderToggles(){$('jz-toggles').innerHTML=JG_META.map(([k,n])=>'<label class="tgl"><input type="checkbox" id="jz-'+k+'"> '+n+'</label>').join('');}
 function syncToggles(){JG_META.forEach(([k])=>{const e=$('jz-'+k);if(e)e.checked=!!JUEGOS[k];});}
-function fillExtra(){$('jz-salones').value=(EXTRA.salones||[]).join('\n');$('jz-bodegas').value=(EXTRA.bodegas||[]).join('\n');$('jz-misiones').value=(EXTRA.misiones||[]).join('\n');$('jz-bvoto').value=(EXTRA.bodegasVoto||[]).join('\n');$('jz-album').value=EXTRA.albumUrl||'';$('jz-sorteo').value=toLocal(EXTRA.sorteoHora);}
+function fillExtra(){$('jz-salones').value=(EXTRA.salones||[]).join('\n');$('jz-bvoto').value=(EXTRA.bodegasVoto||[]).join('\n');$('jz-album').value=EXTRA.albumUrl||'';$('jz-sorteo').value=toLocal(EXTRA.sorteoHora);}
 window.guardarJuegos=async()=>{const j={};JG_META.forEach(([k])=>j[k]=$('jz-'+k).checked);await setDoc(doc(db,'config','juegos'),j);
  const lines=v=>v.split('\n').map(x=>x.trim()).filter(Boolean);
- const extra={salones:lines($('jz-salones').value),bodegas:lines($('jz-bodegas').value),misiones:lines($('jz-misiones').value),bodegasVoto:lines($('jz-bvoto').value),albumUrl:$('jz-album').value.trim()};
+ const extra={salones:lines($('jz-salones').value),bodegasVoto:lines($('jz-bvoto').value),albumUrl:$('jz-album').value.trim()};
  if($('jz-sorteo').value)extra.sorteoHora=new Date($('jz-sorteo').value).toISOString();
- await setDoc(doc(db,'config','extra'),extra,{merge:true});toast('✓ Juegos y contenidos guardados');};
+ await setDoc(doc(db,'config','extra'),extra,{merge:true});toast('✓ Contenidos guardados');};
 window.resetCorazones=async()=>{if(!confirm('¿Poner en cero todos los corazones?'))return;const b=writeBatch(db);PROG.forEach(a=>b.update(doc(db,'programa',a.id),{likes:0}));await b.commit();toast('✓ Corazones reiniciados');};
-function pintarStats(){const P=Object.values(PART);const catas=P.reduce((a,p)=>a+(p.pasaporte||[]).length,0);
- $('jz-stats').innerHTML='Catas: <b>'+catas+'</b><br>Bingo iniciados: <b>'+P.filter(p=>(p.bingo||[]).length>0).length+'</b><br>Votos: <b>'+VOTOS.length+'</b><br>Susurros: <b>'+MURO.length+'</b><br>Auxilios: <b>'+AUX.length+'</b>';}
+function pintarStats(){const P=Object.values(PART);
+ $('jz-stats').innerHTML='Arcano completados: <b>'+P.filter(p=>p.quiz&&p.quiz.completado).length+'</b><br>Círculo: <b>'+P.filter(p=>p.circulo).length+'</b><br>Votos bodega: <b>'+VOTOS.length+'</b><br>Auxilios: <b>'+AUX.length+'</b>';}
 function pintarRankAdmin(){const r=[...Object.values(PART)].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,10);
  $('jz-rank').innerHTML=r.map((p,i)=>'<div class="item-prog"><span class="hora">#'+(i+1)+'</span><div class="det"><b>'+esc(p.nombre)+' '+esc(p.apellido||'')+'</b></div><span>'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<div class="vacio">Sin datos</div>';}
-function pintarVotoAdmin(){const c={};VOTOS.forEach(v=>c[v.bodega]=(c[v.bodega]||0)+1);const t=VOTOS.length||1;
- $('jz-votores').innerHTML=Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px"><span style="width:140px;color:var(--texto2)">'+esc(v)+'</span><span style="flex:1;height:6px;background:var(--card2);border-radius:3px"><i style="display:block;height:100%;width:'+Math.round(n/t*100)+'%;background:var(--accent)"></i></span><span>'+n+'</span></div>').join('')||'<div class="vacio">Sin votos</div>';}
-function pintarMuroAdmin(){$('jz-muro').innerHTML=MURO.map(m=>'<div class="item-prog"><div class="det"><b>'+esc(m.texto)+'</b><span>'+esc(m.nombre||'')+' · '+(m.aprobado?'✓ aprobado':'pendiente')+'</span></div>'+(m.aprobado?'<button class="btn mini" onclick="desMuro(\''+m.id+'\')">Ocultar</button>':'<button class="btn mini solido" onclick="okMuro(\''+m.id+'\')">Aprobar</button>')+'<button class="btn mini peligro" onclick="delMuro(\''+m.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin susurros</div>';}
-window.okMuro=async id=>{await updateDoc(doc(db,'muro',id),{aprobado:true});};
-window.desMuro=async id=>{await updateDoc(doc(db,'muro',id),{aprobado:false});};
-window.delMuro=async id=>{if(confirm('¿Eliminar susurro?'))await deleteDoc(doc(db,'muro',id));};
 function pintarAuxAdmin(){$('jz-aux').innerHTML=AUX.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')).map(a=>'<div class="item-prog"><div class="det"><b>🆘 '+esc(a.nombre)+'</b><span>Salón: '+esc(a.salon)+' · '+(a.atendido?'✓ atendido':'pendiente')+'</span></div>'+(a.atendido?'':'<button class="btn mini solido" onclick="okAux(\''+a.id+'\')">Atendido</button>')+'<button class="btn mini peligro" onclick="delAux(\''+a.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin pedidos</div>';}
 window.okAux=async id=>{await updateDoc(doc(db,'auxilios',id),{atendido:true});};
 window.delAux=async id=>{await deleteDoc(doc(db,'auxilios',id));};
@@ -334,15 +328,15 @@ function pintarAdmins(){$('lista-admins').innerHTML=Object.entries(ADM).map(([id
 window.cambiarRol=async(id,r)=>{await updateDoc(doc(db,'admins',id),{rol:r});};
 window.revocar=async id=>{if(confirm('¿Eliminar?'))await deleteDoc(doc(db,'admins',id));};
 
-/* REINICIO (todos los reinicios, incluidos chats) */
+/* REINICIO */
 window.rzPaso1=()=>{$('rz-paso2').classList.remove('oculto');};
 window.rzCancelar=()=>{$('rz-paso2').classList.add('oculto');};
 window.rzPaso2=async()=>{const ops=[];const del=col=>getDocs(collection(db,col)).then(s=>s.forEach(d=>ops.push({t:'d',ref:d.ref})));
  if($('rz-prog').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{simbolos:[],estado:'iniciado'}}));
- if($('rz-juegos').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{pasaporte:deleteField(),bingo:deleteField(),voto:deleteField(),circulo:deleteField(),progFav:deleteField(),likes:deleteField()}}));
+ if($('rz-juegos').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{voto:deleteField(),votoPuntaje:deleteField(),circulo:deleteField(),progFav:deleteField(),likes:deleteField()}}));
  if($('rz-corazones').checked)PROG.forEach(a=>ops.push({t:'u',ref:doc(db,'programa',a.id),d:{likes:0}}));
  if($('rz-chats').checked)await setDoc(doc(db,'config','perfil'),{chatReset:new Date().toISOString()},{merge:true});
- if($('rz-anun').checked)await del('anuncios');if($('rz-sort').checked)await del('sorteos');if($('rz-muro').checked)await del('muro');if($('rz-aux').checked)await del('auxilios');if($('rz-programa').checked)await del('programa');if($('rz-sellos').checked)await del('simbolos');
+ if($('rz-anun').checked)await del('anuncios');if($('rz-sort').checked)await del('sorteos');if($('rz-aux').checked)await del('auxilios');if($('rz-programa').checked)await del('programa');if($('rz-sellos').checked)await del('simbolos');
  for(let i=0;i<ops.length;i+=450){const b=writeBatch(db);ops.slice(i,i+450).forEach(o=>o.t==='u'?b.update(o.ref,o.d):b.delete(o.ref));await b.commit();}
  $('rz-paso2').classList.add('oculto');toast('✓ Evento reiniciado');};
 </script>
