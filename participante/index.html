@@ -189,7 +189,6 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
     <div class="estado" id="h-estado">BUSCADOR</div></div>
   <div class="mini-row">
     <button class="btn" onclick="ver('p-perfil')">👤 Mi perfil</button>
-    <button class="btn" id="btn-aux" onclick="ver('p-auxilio')">🆘 Auxilio</button>
   </div>
   <button id="btn-push" class="btn solido oculto" onclick="activarPush()">🔔 Activar avisos</button>
   <a class="btn-ig" href="https://www.instagram.com/simbolosyvinos/" target="_blank" rel="noopener">
@@ -251,12 +250,6 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
     <div id="qf-det" class="mistica"></div>
     <button class="btn solido" style="margin-top:14px" onclick="ver('p-juegos')">Volver</button></div></section>
 
-<section class="pantalla" id="p-auxilio"><h2 style="font-size:20px;text-align:center">BOTÓN DE AUXILIO</h2>
-  <div class="card" style="margin-top:12px">
-    <div class="campo"><label>¿En qué salón estás?</label><select id="aux-salon"></select></div>
-    <button class="btn solido" onclick="pedirAuxilio()">🆘 Necesito ayuda</button>
-  </div></section>
-
 <section class="pantalla" id="p-perfil">
   <h2 style="font-size:20px;text-align:center">MI PERFIL</h2>
   <div class="card perfil-hero" style="margin-top:14px">
@@ -310,7 +303,7 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 <nav class="nav" id="nav" style="display:none">
   <button class="act" data-p="p-home" onclick="navegar('p-home',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>Sellos</button>
   <button data-p="p-juegos" onclick="navegar('p-juegos',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>Juegos</button>
-  <button data-p="p-voto" onclick="navegar('p-voto',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M26 40 l8 8 16-16" transform="scale(.5) translate(12,12)"/><path d="M5 13l4 4L19 7"/></svg></span>Votar</button>
+  <button data-p="p-voto" onclick="navegar('p-voto',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></span>Votar</button>
   <button data-p="p-chat" onclick="navegar('p-chat',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/></svg></span>Chat</button>
   <button data-p="p-avisos" onclick="navegar('p-avisos',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge oculto" id="badge">0</span></span>Avisos</button>
   <button data-p="p-prog" onclick="navegar('p-prog',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>Programa</button>
@@ -329,7 +322,7 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
-let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},QUIZ=null,JUEGOS={},EXTRA=[],RANK=[];
+let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},QUIZ=null,JUEGOS={},EXTRA={},RANK=[];
 let quizIdx=0,quizResp={};
 let vistos=JSON.parse(localStorage.getItem('sv-avisos')||'null'),avisosCache=[],notificados=new Set();
 let chatHist=JSON.parse(localStorage.getItem('sv-chat')||'[]');
@@ -363,14 +356,9 @@ function responder(q,o){quizResp[q.categoria]=o.v;quizIdx++;if(quizIdx<(QUIZ.pre
 function pintarRanking(){const r=[...RANK].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,20);$('rank-lista').innerHTML=r.map((p,i)=>'<div class="rank"><span class="pos">'+(i+1)+'</span><span class="nm">'+esc(p.nombre)+' '+esc(p.apellido||'')+'</span><span class="sc">'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<p class="mistica" style="text-align:center">Sin datos aún.</p>';}
 function generarCredencial(){if(!(parte&&parte.estado==='apto'))return toast('Completa los 7 sellos','');const W=1080,H=1350;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#5c0c26');g.addColorStop(1,'#6d1f6e');x.fillStyle=g;x.fillRect(0,0,W,H);x.strokeStyle='#f3d27a';x.lineWidth=6;x.strokeRect(40,40,W-80,H-80);x.textAlign='center';x.fillStyle='#f3d27a';x.font='40px Georgia';x.fillText('⚜',W/2,180);x.fillStyle='#fbf7ef';x.font='700 70px Georgia';x.fillText('DIGNO',W/2,420);x.font='34px Georgia';x.fillText('DE LOS SIETE SELLOS',W/2,490);x.fillStyle='#f3d27a';x.font='52px Georgia';x.fillText((parte.nombre||'')+' '+(parte.apellido||''),W/2,760);x.fillStyle='#f0e9dd';x.font='30px Georgia';x.fillText('Símbolos & Vinos · MMXXVI',W/2,1180);const a=document.createElement('a');a.download='credencial-digno.png';a.href=cv.toDataURL('image/png');a.click();toast('⚜ Credencial descargada','');}
 window.unirCirculo=async()=>{await updateDoc(doc(db,'participantes',yo),{circulo:true});toast('⚜ Bienvenido al Círculo','');};
-/* VOTO */
 function pintarVoto(){const b=EXTRA.bodegasVoto||[];const sel=$('voto-sel');if(!sel)return;sel.innerHTML=b.map(x=>'<option>'+esc(x)+'</option>').join('')||'<option>—</option>';if(parte&&parte.voto)sel.value=parte.voto;
  $('voto-actual').innerHTML=parte&&parte.voto?'<div class="item" style="cursor:default"><div class="det"><b>Tu voto: '+esc(parte.voto)+'</b><span>Puedes cambiarlo votando de nuevo.</span></div></div>':'<p class="mistica" style="text-align:center">Aún no has votado.</p>';}
 window.guardarVoto=async()=>{const b=$('voto-sel').value;if(!b||b==='—')return toast('Elige una bodega','');await setDoc(doc(db,'votos',yo),{bodega:b,nombre:(parte.nombre||'')+' '+(parte.apellido||''),fecha:new Date().toISOString()});await updateDoc(doc(db,'participantes',yo),{voto:b});toast('✓ Voto registrado','');};
-/* AUXILIO */
-function pintarAux(){$('aux-salon').innerHTML=(EXTRA.salones||['—']).map(s=>'<option>'+esc(s)+'</option>').join('');}
-window.pedirAuxilio=async()=>{await addDoc(collection(db,'auxilios'),{nombre:(parte.nombre||'')+' '+(parte.apellido||''),salon:$('aux-salon').value,fecha:new Date().toISOString(),atendido:false});toast('🆘 Pedido enviado','');};
-/* PERFIL */
 function pintarPerfil(){
  $('pf-nom').textContent=parte.nombre+' '+parte.apellido;
  $('pf-mail').textContent=parte.email+' · '+parte.telefono;
@@ -385,10 +373,8 @@ function pintarPerfil(){
  const x=parte.extra||{};$('x-nac').value=x.nac||'';$('x-zona').value=x.zona||'';$('x-como').value=x.como||'';$('x-comp').value=x.comp||'';
  $('x-priv').checked=!!(parte.consent&&parte.consent.priv);$('x-mkt').checked=!!(parte.consent&&parte.consent.mkt);}
 window.guardarExtra=async()=>{await updateDoc(doc(db,'participantes',yo),{extra:{nac:$('x-nac').value,zona:$('x-zona').value.trim(),como:$('x-como').value,comp:$('x-comp').value},consent:{priv:$('x-priv').checked,mkt:$('x-mkt').checked}});toast('✓ Perfil actualizado','');};
-/* CHAT reset propio */
 window.resetMiChat=()=>{if(!confirm('¿Reiniciar tu chat? Se borrará tu historial.'))return;chatHist=[];localStorage.setItem('sv-chat','[]');renderHist();toast('↻ Chat reiniciado','');};
 setInterval(()=>{if(!EXTRA.sorteoHora)return;const d=new Date(EXTRA.sorteoHora)-new Date();$('cd-card').classList.remove('oculto');if(d<=0){$('cd-num').textContent='🏆 EL CÁLIZ HABLA…';return;}const s=Math.floor(d/1000);$('cd-num').textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s';},1000);
-/* ME GUSTA (1 por persona, toggle) */
 window.toggleLike=async id=>{const likes=(parte&&parte.likes)||[];const ref=doc(db,'programa',id);
  if(likes.includes(id)){await updateDoc(ref,{likes:increment(-1)}).catch(()=>{});await updateDoc(doc(db,'participantes',yo),{likes:arrayRemove(id)});}
  else{await updateDoc(ref,{likes:increment(1)}).catch(async()=>{await setDoc(ref,{likes:1},{merge:true});});await updateDoc(doc(db,'participantes',yo),{likes:arrayUnion(id)});}};
@@ -415,8 +401,8 @@ function escucharTodo(){
  onSnapshot(collection(db,'simbolos'),s=>{s.forEach(d=>simbolos[d.id]={...d.data(),id:d.id});pintarHome();});
  onSnapshot(collection(db,'programa'),s=>{programa=[];s.forEach(d=>programa.push({id:d.id,...d.data()}));programa.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarPrograma();});
  onSnapshot(collection(db,'participantes'),s=>{RANK=[];s.forEach(d=>RANK.push({id:d.id,...d.data()}));pintarRanking();});
- onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};pintarJuegos();$('btn-aux').style.display=JUEGOS.auxilio?'':'none';});
- onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};pintarVoto();pintarAux();});
+ onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};pintarJuegos();});
+ onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};pintarVoto();});
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};
   if(PERFIL.tituloApp)$('land-titulo').textContent=PERFIL.tituloApp;if(PERFIL.subApp)$('land-sub').textContent=PERFIL.subApp;if(PERFIL.avatarOraculo)$('orb').innerHTML='<img src="'+PERFIL.avatarOraculo+'">';$('chat-titulo').textContent=(botName()+' RESPONDE').toUpperCase();
   const lr=localStorage.getItem('sv-chat-reset');
