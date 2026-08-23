@@ -84,7 +84,7 @@ main{max-width:1200px;margin:0 auto;padding:24px 20px 100px}
 .chip:hover{border-color:var(--linea2);color:var(--texto)}
 .chip.act{background:var(--texto);color:#000;border-color:var(--texto)}
 .tabla-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--linea);border-radius:16px}
-table{width:100%;border-collapse:collapse;min-width:640px}
+table{width:100%;border-collapse:collapse;min-width:760px}
 th{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--texto2);text-align:left;padding:14px 16px;
   border-bottom:1px solid var(--linea);text-transform:uppercase;background:rgba(255,255,255,.02)}
 td{padding:14px 16px;border-bottom:1px solid var(--linea);font-size:14px;vertical-align:middle}
@@ -186,7 +186,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <button class="btn mini solido oculto" id="btn-xlsx" onclick="exportar()">⬇ Excel</button>
     </div>
     <div class="tabla-wrap"><table>
-      <thead><tr><th>Nombre</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Registro</th></tr></thead>
+      <thead><tr><th>Nombre</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Perfil (quiz)</th><th>Registro</th></tr></thead>
       <tbody id="tb"></tbody>
     </table></div>
   </section>
@@ -234,6 +234,20 @@ tr:hover td{background:rgba(255,255,255,.02)}
       </div>
     </div>
     <div id="lista-faq" style="margin-top:20px"></div>
+  </section>
+
+  <section class="sec" id="sec-quiz">
+    <h2 class="titulo-sec">Arcano Enológico · Quiz de leads</h2>
+    <p class="sub-sec">Activa el quiz, edita preguntas y el dato que captura cada opción. Los resultados caen en la ficha de cada participante, en vivo.</p>
+    <div style="background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px">
+      <label class="rz-check"><input type="checkbox" id="qz-activo" onchange="toggleQuiz()"> Quiz activo en la app de participantes</label>
+      <div id="qz-form"></div>
+      <button class="btn solido" style="margin-top:14px" onclick="guardarQuiz()">Guardar quiz</button>
+    </div>
+    <div style="margin-top:24px">
+      <h3 style="font-size:12px;color:var(--texto2);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Resultados en vivo</h3>
+      <div id="qz-res"></div>
+    </div>
   </section>
 
   <section class="sec" id="sec-perfil">
@@ -346,12 +360,24 @@ const hoyISO = () => { const d=new Date(); return d.getFullYear()+'-'+String(d.g
 const fmtF = f => { if(!f) return 'HOY'; const d=new Date(f+'T12:00:00');
   return d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'}); };
 
+const QUIZ_DEF={activo:false,preguntas:[
+ {categoria:'Varietal',pregunta:'¿Qué uva te llama en la noche?',opciones:[
+   {t:'Malbec profundo',v:'Malbec'},{t:'Cabernet firme',v:'Cabernet'},{t:'Torrontés luminoso',v:'Torrontés'},{t:'Blend misterioso',v:'Blend'}]},
+ {categoria:'Estilo',pregunta:'¿Cómo es tu copa ideal?',opciones:[
+   {t:'Joven y frutal',v:'Joven'},{t:'Con crianza en roble',v:'Crianza'},{t:'Espumante y vibrante',v:'Espumante'},{t:'Dulce y envolvente',v:'Dulce'}]},
+ {categoria:'Frecuencia',pregunta:'¿Cuándo sueles descorchar?',opciones:[
+   {t:'Cada semana',v:'Semanal'},{t:'Cada mes',v:'Mensual'},{t:'Ocasiones especiales',v:'Ocasiones'},{t:'Esta noche es mi estreno',v:'Primera vez'}]},
+ {categoria:'Interes',pregunta:'¿Qué te gustaría recibir en el futuro?',opciones:[
+   {t:'Invitaciones y catas',v:'Invitaciones'},{t:'Ofertas de vinos',v:'Ofertas'},{t:'Cursos de historia y simbolismo',v:'Cursos'},{t:'Todo lo anterior',v:'Todo'}]}
+]};
+
 let yo=null, miRol=null, PART={}, filtroAct='todos', FAQ=[], fqEdit=null, PERFIL={}, perfilLoaded=false;
+let QUIZ=null, quizFormLoaded=false;
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],sellos:['maestro','configurador'],
  programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],
- perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
-const TABS=[['torre','Dashboard'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
+ quiz:['maestro','configurador'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
+const TABS=[['torre','Dashboard'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['quiz','Quiz'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
 
 window.login = async ()=>{ try{
   await signInWithEmailAndPassword(auth,$('l-email').value.trim(),$('l-clave').value);
@@ -385,7 +411,7 @@ function escuchar(){
     $('m-total').textContent=s.size;
     $('m-aptos').textContent=Object.values(PART).filter(p=>p.estado==='apto').length;
     $('m-iniciados').textContent=Object.values(PART).filter(p=>(p.simbolos||[]).length>0).length;
-    pintarTabla(); });
+    pintarTabla(); pintarQuizRes(); });
   onSnapshot(collection(db,'simbolos'), ()=>pintarSellos());
   onSnapshot(collection(db,'programa'), s=>{ window.PROG=[]; s.forEach(d=>PROG.push({id:d.id,...d.data()}));
     PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));
@@ -399,6 +425,9 @@ function escuchar(){
     if(!perfilLoaded){ perfilLoaded=true;
       $('pf-nombre').value=PERFIL.nombreOraculo||''; $('pf-titulo').value=PERFIL.tituloApp||''; $('pf-sub').value=PERFIL.subApp||'';
       $('pf-url-oraculo').value=PERFIL.avatarOraculo||''; $('pf-url-usuario').value=PERFIL.avatarUsuario||''; } });
+  onSnapshot(doc(db,'config','quiz'), s=>{ QUIZ = s.exists()? s.data() : null;
+    $('qz-activo').checked = !!(QUIZ&&QUIZ.activo);
+    if(!quizFormLoaded){ quizFormLoaded=true; renderQuizForm(); } });
   onSnapshot(collection(db,'sorteos'), s=>{ window.SORT=[]; s.forEach(d=>SORT.push({id:d.id,...d.data()}));
     SORT.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')); pintarHistSorteo(); });
   if(miRol==='maestro') onSnapshot(collection(db,'admins'), s=>{ window.ADM={}; s.forEach(d=>ADM[d.id]=d.data()); pintarAdmins(); });
@@ -411,26 +440,75 @@ window.pintarTabla=()=>{
   let rows=Object.values(PART).filter(p=>{
     if(filtroAct==='apto'&&p.estado!=='apto') return false;
     if(filtroAct==='iniciado'&&(p.simbolos||[]).length===0) return false;
-    const txt=((p.nombre||'')+' '+(p.apellido||'')+' '+(p.email||'')+' '+(p.telefono||'')).toLowerCase();
+    const txt=((p.nombre||'')+' '+(p.apellido||'')+' '+(p.email||'')+' '+(p.telefono||'')+' '+(p.quiz&&p.quiz.titulo||'')).toLowerCase();
     return txt.includes(q);
   }).sort((a,b)=>(b.registro||'').localeCompare(a.registro||''));
   $('tb').innerHTML = rows.length? rows.map(p=>{
-    const n=(p.simbolos||[]).length;
+    const n=(p.simbolos||[]).length; const pf=p.perfil||{};
     return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td>'+
     '<td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono)+'</td>'+
     '<td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td>'+
     '<td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'En búsqueda')+'</span></td>'+
+    '<td style="color:var(--texto2);font-size:12px">'+(p.quiz&&p.quiz.completado? '⚜ '+esc(p.quiz.titulo||'')+'<br>'+esc(pf.Varietal||'')+' · '+esc(pf.Frecuencia||'') : '—')+'</td>'+
     '<td style="color:var(--texto2);font-size:12px">'+new Date(p.registro||Date.now()).toLocaleString()+'</td></tr>';
-  }).join('') : '<tr><td colspan="5" class="vacio">Aún no hay participantes registrados</td></tr>';
+  }).join('') : '<tr><td colspan="6" class="vacio">Aún no hay participantes registrados</td></tr>';
 };
 window.exportar=()=>{
-  const rows=Object.values(PART).map(p=>({Nombre:p.nombre,Apellido:p.apellido,Email:p.email,
-   Telefono:p.telefono,Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO SORTEO':'EN BUSQUEDA',
-   Registro:new Date(p.registro||Date.now()).toLocaleString()}));
+  const rows=Object.values(PART).map(p=>{ const pf=p.perfil||{};
+    return {Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,
+    Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO SORTEO':'EN BUSQUEDA',
+    Varietal:pf.Varietal||'',Estilo:pf.Estilo||'',Frecuencia:pf.Frecuencia||'',Interes:pf.Interes||'',
+    Arcano:(p.quiz&&p.quiz.titulo)||'',Quiz:(p.quiz&&p.quiz.completado)?'SI':'NO',
+    Registro:new Date(p.registro||Date.now()).toLocaleString()}; });
   const ws=XLSX.utils.json_to_sheet(rows); const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Participantes'); XLSX.writeFile(wb,'participantes-simbolos-vinos.xlsx');
-  toast('✓ Excel exportado');
+  toast('✓ Excel exportado con datos de leads');
 };
+
+/* ── QUIZ ── */
+function renderQuizForm(){
+  const qs=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;
+  $('qz-form').innerHTML=qs.map((q,i)=>
+   '<div style="border-top:1px solid var(--linea);margin-top:16px;padding-top:12px">'+
+   '<div class="form-grid"><div><label>CATEGORÍA (nombre del dato)</label><input id="qz-c'+i+'" value="'+esc(q.categoria)+'"></div>'+
+   '<div style="grid-column:1/-1"><label>PREGUNTA '+(i+1)+'</label><input id="qz-p'+i+'" value="'+esc(q.pregunta)+'"></div></div>'+
+   (q.opciones||[]).map((o,j)=>
+     '<div class="form-grid" style="margin-top:6px"><div><label>OPCIÓN '+(j+1)+' (texto)</label><input id="qz-o'+i+'-'+j+'t" value="'+esc(o.t)+'"></div>'+
+     '<div><label>DATO QUE CAPTURA</label><input id="qz-o'+i+'-'+j+'v" value="'+esc(o.v)+'"></div></div>').join('')+
+   '</div>').join('');
+}
+window.guardarQuiz=async()=>{
+  const base=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;
+  const qs=base.map((q,i)=>({
+    categoria:$('qz-c'+i).value.trim(), pregunta:$('qz-p'+i).value.trim(),
+    opciones:(q.opciones||[]).map((o,j)=>({t:$('qz-o'+i+'-'+j+'t').value.trim(), v:$('qz-o'+i+'-'+j+'v').value.trim()}))
+  }));
+  await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked,preguntas:qs},{merge:true});
+  toast('✓ Quiz guardado');
+};
+window.toggleQuiz=async()=>{
+  await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked},{merge:true});
+  toast($('qz-activo').checked?'✓ Quiz activado en la app':'Quiz desactivado');
+};
+function pintarQuizRes(){
+  const el=$('qz-res'); if(!el) return;
+  const qs=(QUIZ&&QUIZ.preguntas)||[];
+  const done=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado);
+  let html='<p style="color:var(--texto2);font-size:13px;margin-bottom:14px">Completaron el quiz: <b style="color:var(--verde)">'+done.length+'</b> de '+Object.keys(PART).length+' participantes</p>';
+  qs.forEach(q=>{
+    const counts={}; done.forEach(p=>{ const v=(p.perfil||{})[q.categoria]; if(v) counts[v]=(counts[v]||0)+1; });
+    const total=done.length||1;
+    html+='<div style="margin-bottom:16px"><b style="font-size:13px">'+esc(q.pregunta)+'</b>'+
+      Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([v,n])=>{
+        const pct=Math.round(n/total*100);
+        return '<div style="display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px">'+
+        '<span style="width:120px;color:var(--texto2)">'+esc(v)+'</span>'+
+        '<span style="flex:1;height:6px;background:var(--card2);border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:var(--accent)"></i></span>'+
+        '<span style="width:80px;text-align:right;color:var(--texto2)">'+n+' · '+pct+'%</span></div>';
+      }).join('')+'</div>';
+  });
+  el.innerHTML=html;
+}
 
 /* ── SELLOS ── */
 async function pintarSellos(){
@@ -469,7 +547,7 @@ window.imprimirQRs=async()=>{
   const w=window.open(''); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),600);
 };
 
-/* ── PROGRAMA (con fecha) ── */
+/* ── PROGRAMA ── */
 window.guardarProg=async()=>{ const h=$('pg-hora').value;
   if(!h||!$('pg-tema').value) return toast('Completa hora y tema');
   await addDoc(collection(db,'programa'),{fecha:$('pg-fecha').value||'',hora:h,
