@@ -115,7 +115,7 @@ tr:last-child td{border-bottom:none}
  <div class="tabla-wrap"><table><thead><tr><th>Nombre</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Perfil/Quiz</th><th>Consent.</th><th>Acciones</th></tr></thead><tbody id="tb"></tbody></table></div>
  <div class="grid2" style="margin-top:16px">
   <div class="card"><h3>⚜ Círculo de beneficios · miembros</h3><div id="lista-circulo"></div></div>
-  <div class="card"><h3>♥ Bodega favorita · votos</h3><div id="jz-votores"></div></div>
+  <div class="card"><h3>★ Ranking de bodegas · puntos</h3><div id="jz-votores"></div></div>
  </div>
 </section>
 
@@ -181,7 +181,7 @@ tr:last-child td{border-bottom:none}
   <label class="rz-check"><input type="checkbox" id="rz-chats"> Chats del Oráculo (historial de todos)</label>
   <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones</label>
   <label class="rz-check"><input type="checkbox" id="rz-sort" checked> Sorteos</label>
-  <label class="rz-check"><input type="checkbox" id="rz-juegos"> Datos de juegos (voto, círculo, me gusta)</label>
+  <label class="rz-check"><input type="checkbox" id="rz-juegos"> Datos de juegos (voto/ranking, círculo, me gusta)</label>
   <label class="rz-check"><input type="checkbox" id="rz-corazones"> Contador de corazones (me gusta)</label>
   <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa</label>
   <label class="rz-check"><input type="checkbox" id="rz-sellos"> Sellos y QRs</label>
@@ -206,9 +206,8 @@ const hoyISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMont
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
-/* Exactamente los juegos que lee la app del participante */
 const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['credencial','Credencial de Digno']];
-let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},VOTOS=[],PROG=[];
+let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[];
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],quiz:['maestro','configurador'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
 const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['quiz','Quiz'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
@@ -236,7 +235,6 @@ function escuchar(){
  onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;$('qz-activo').checked=!!(QUIZ&&QUIZ.activo);if(!quizFormLoaded){quizFormLoaded=true;renderQuizForm();}});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};if(!juegosLoaded){juegosLoaded=true;renderToggles();}syncToggles();});
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};if(juegosLoaded)fillExtra();});
- onSnapshot(collection(db,'votos'),s=>{VOTOS=[];s.forEach(d=>VOTOS.push({id:d.id,...d.data()}));pintarVotoAdmin();});
  onSnapshot(collection(db,'sorteos'),s=>{window.SORT=[];s.forEach(d=>SORT.push({id:d.id,...d.data()}));pintarHistSorteo();});
  if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>ADM[d.id]=d.data());pintarAdmins();});
 }
@@ -245,8 +243,9 @@ function escuchar(){
 window.filtro=(f,b)=>{filtroAct=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('act'));b.classList.add('act');pintarTabla();};
 function pintarCirculo(){const m=Object.values(PART).filter(p=>p.circulo);
  $('lista-circulo').innerHTML=m.map(p=>'<div class="item-prog"><div class="det"><b>⚜ '+esc(p.nombre)+' '+esc(p.apellido||'')+'</b><span>'+esc(p.email||'')+' · '+esc(p.telefono||'')+'</span></div></div>').join('')||'<div class="vacio">Aún no hay miembros</div>';}
-function pintarVotoAdmin(){const c={};VOTOS.forEach(v=>{c[v.bodega]=(c[v.bodega]||0)+1;});
- $('jz-votores').innerHTML=Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px"><span style="flex:1;color:var(--texto2)">'+esc(v)+'</span><b>'+n+'</b></div>').join('')||'<div class="vacio">Sin votos aún</div>';}
+function pintarVotoAdmin(){const pts={},cnt={};
+ Object.values(PART).forEach(p=>{const r=p.votoRank||[];r.forEach((b,i)=>{pts[b]=(pts[b]||0)+(r.length-i);cnt[b]=(cnt[b]||0)+1;});});
+ $('jz-votores').innerHTML=Object.entries(pts).sort((a,b)=>b[1]-a[1]).map(([b,p])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px"><span style="flex:1;color:var(--texto2)">'+esc(b)+'</span><b style="color:var(--oro)">'+p+' pts</b><span style="color:var(--texto3)">('+cnt[b]+' votos)</span></div>').join('')||'<div class="vacio">Sin votos aún</div>';}
 window.pintarTabla=()=>{const q=($('q').value||'').toLowerCase();
  let rows=Object.values(PART).filter(p=>{if(filtroAct==='apto'&&p.estado!=='apto')return false;if(filtroAct==='iniciado'&&(p.simbolos||[]).length===0)return false;return((p.nombre||'')+' '+(p.apellido||'')+' '+(p.email||'')).toLowerCase().includes(q);}).sort((a,b)=>(b.registro||'').localeCompare(a.registro||''));
  $('tb').innerHTML=rows.length?rows.map(p=>{const n=(p.simbolos||[]).length,pf=p.perfil||{},qh=p.quiz&&p.quiz.completado;
@@ -255,15 +254,19 @@ window.resetearQuiz=async id=>{if(!confirm('¿Resetear quiz de este participante
 window.exportar=()=>{const wb=XLSX.utils.book_new();
  const rows=Object.values(PART).map(p=>{const pf=p.perfil||{},x=p.extra||{};
   const likeNames=(p.likes||[]).map(id=>{const a=PROG.find(y=>y.id===id);return a?a.tema:'';}).filter(Boolean).join(' | ');
+  const rankStr=(p.votoRank||[]).map((b,i)=>(i+1)+'º '+b).join(' | ');
   return{Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO':'BUSCANDO',
   Varietal:pf.Varietal||'',Estilo:pf.Estilo||'',Frecuencia:pf.Frecuencia||'',Interes:pf.Interes||'',Arcano:(p.quiz&&p.quiz.titulo)||'',
   ConsentPriv:p.consent&&p.consent.priv?'SI':'NO',ConsentMkt:p.consent&&p.consent.mkt?'SI':'NO',
   Nacimiento:x.nac||'',Zona:x.zona||'',ComoEntero:x.como||'',Compania:x.comp||'',
-  BodegaFav:p.voto||'',Circulo:p.circulo?'SI':'NO',MeGustaDados:(p.likes||[]).length,MeGustaCharlas:likeNames,
+  BodegaFav:p.voto||'',RankingBodegas:rankStr,Circulo:p.circulo?'SI':'NO',MeGustaDados:(p.likes||[]).length,MeGustaCharlas:likeNames,
   Registro:new Date(p.registro||Date.now()).toLocaleString()};});
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Participantes');
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(PROG.map(a=>({Fecha:fmtF(a.fecha),Hora:a.hora,Tema:a.tema,Disertante:a.disertante||'',Lugar:a.lugar||'',Corazones:a.likes||0}))),'MeGustaCharlas');
- XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(VOTOS.map(v=>({Nombre:v.nombre,Bodega:v.bodega,Fecha:new Date(v.fecha).toLocaleString()}))),'Votos');
+ const agg={};Object.values(PART).forEach(p=>{(p.votoRank||[]).forEach((b,i)=>{if(!agg[b])agg[b]={pts:0,cnt:0};agg[b].pts+=(p.votoRank.length-i);agg[b].cnt++;});});
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(Object.entries(agg).sort((a,b)=>b[1].pts-a[1].pts).map(([b,o])=>({Bodega:b,Puntos:o.pts,VecesVotada:o.cnt}))),'RankingBodegas');
+ const votos=Object.values(PART).filter(p=>(p.votoRank||[]).length).map(p=>({Nombre:p.nombre+' '+p.apellido,BodegaFav:p.voto||'',Ranking:(p.votoRank||[]).map((b,i)=>(i+1)+'º '+b).join(' | ')}));
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(votos.length?votos:[{Info:'sin votos'}]),'Votos');
  const circ=Object.values(PART).filter(p=>p.circulo).map(p=>({Nombre:p.nombre+' '+p.apellido,Email:p.email,Telefono:p.telefono}));
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(circ.length?circ:[{Info:'sin miembros'}]),'Circulo');
  XLSX.writeFile(wb,'simbolos-vinos-datos.xlsx');toast('✓ Excel completo exportado');};
@@ -279,7 +282,7 @@ window.guardarJuegos=async()=>{const j={};JG_META.forEach(([k])=>j[k]=$('jz-'+k)
  await setDoc(doc(db,'config','extra'),extra,{merge:true});toast('✓ Contenidos guardados');};
 window.resetCorazones=async()=>{if(!confirm('¿Poner en cero todos los corazones?'))return;const b=writeBatch(db);PROG.forEach(a=>b.update(doc(db,'programa',a.id),{likes:0}));await b.commit();toast('✓ Corazones reiniciados');};
 function pintarStats(){const P=Object.values(PART);
- $('jz-stats').innerHTML='Arcano completados: <b>'+P.filter(p=>p.quiz&&p.quiz.completado).length+'</b><br>Círculo: <b>'+P.filter(p=>p.circulo).length+'</b><br>Votos bodega: <b>'+VOTOS.length+'</b>';}
+ $('jz-stats').innerHTML='Arcano completados: <b>'+P.filter(p=>p.quiz&&p.quiz.completado).length+'</b><br>Círculo: <b>'+P.filter(p=>p.circulo).length+'</b><br>Con ranking de bodegas: <b>'+P.filter(p=>(p.votoRank||[]).length>0).length+'</b>';}
 function pintarRankAdmin(){const r=[...Object.values(PART)].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,10);
  $('jz-rank').innerHTML=r.map((p,i)=>'<div class="item-prog"><span class="hora">#'+(i+1)+'</span><div class="det"><b>'+esc(p.nombre)+' '+esc(p.apellido||'')+'</b></div><span>'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<div class="vacio">Sin datos</div>';}
 
@@ -331,7 +334,7 @@ window.rzPaso1=()=>{$('rz-paso2').classList.remove('oculto');};
 window.rzCancelar=()=>{$('rz-paso2').classList.add('oculto');};
 window.rzPaso2=async()=>{const ops=[];const del=col=>getDocs(collection(db,col)).then(s=>s.forEach(d=>ops.push({t:'d',ref:d.ref})));
  if($('rz-prog').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{simbolos:[],estado:'iniciado'}}));
- if($('rz-juegos').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{voto:deleteField(),circulo:deleteField(),likes:deleteField()}}));
+ if($('rz-juegos').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{voto:deleteField(),votoRank:deleteField(),circulo:deleteField(),likes:deleteField()}}));
  if($('rz-corazones').checked)PROG.forEach(a=>ops.push({t:'u',ref:doc(db,'programa',a.id),d:{likes:0}}));
  if($('rz-chats').checked)await setDoc(doc(db,'config','perfil'),{chatReset:new Date().toISOString()},{merge:true});
  if($('rz-anun').checked)await del('anuncios');if($('rz-sort').checked)await del('sorteos');if($('rz-programa').checked)await del('programa');if($('rz-sellos').checked)await del('simbolos');
