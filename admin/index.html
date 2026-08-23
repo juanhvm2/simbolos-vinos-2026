@@ -43,12 +43,13 @@ header #h-user{color:var(--texto2);font-size:13px}
 main{max-width:1200px;margin:0 auto;padding:24px 20px 100px}
 .sec{display:none}.sec.act{display:block;animation:ap .35s}
 @keyframes ap{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:22px}
 .metric{background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:18px;text-align:center}
-.metric .n{font-size:36px;font-weight:700;line-height:1}
+.metric .n{font-size:34px;font-weight:700;line-height:1}
 .metric .t{font-size:11px;color:var(--texto2);margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
 .metric.apto .n{color:var(--verde)}
 .metric.oro .n{color:var(--oro)}
+.metric.cor .n{color:var(--corazon)}
 .buscador{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .buscador input{flex:1;min-width:200px;margin:0}
 .chip{padding:8px 14px;border:1px solid var(--linea);border-radius:20px;background:transparent;color:var(--texto2);font-size:12px;cursor:pointer}
@@ -84,7 +85,7 @@ tr:last-child td{border-bottom:none}
 .vacio{color:var(--texto3);text-align:center;padding:40px;font-size:14px}
 .rz-check{display:flex;gap:10px;align-items:center;font-size:14px;margin:12px 0;cursor:pointer}
 .avatar-prev{width:64px;height:64px;border-radius:50%;object-fit:cover;background:var(--card2);border:2px solid var(--linea2);display:block;margin-top:6px}
-@media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:30px}.titulo-sec{font-size:20px}}
+@media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:28px}.titulo-sec{font-size:20px}}
 </style>
 </head>
 <body>
@@ -106,6 +107,11 @@ tr:last-child td{border-bottom:none}
   <div class="metric apto"><div class="n" id="m-aptos">0</div><div class="t">Aptos</div></div>
   <div class="metric"><div class="n" id="m-circulo">0</div><div class="t">Círculo</div></div>
   <div class="metric oro"><div class="n" id="m-quiz">0</div><div class="t">Arcano</div></div>
+  <div class="metric cor"><div class="n" id="m-likes">0</div><div class="t">♥ Totales</div></div>
+ </div>
+ <div class="grid2">
+  <div class="card"><h3>Sellos por participante</h3><div id="ch-sellos"></div></div>
+  <div class="card"><h3>♥ Me gusta por charla</h3><div id="ch-likes"></div></div>
  </div>
  <div class="buscador"><input id="q" placeholder="Buscar…" oninput="pintarTabla()">
   <button class="chip act" onclick="filtro('todos',this)">Todos</button>
@@ -121,17 +127,22 @@ tr:last-child td{border-bottom:none}
 
 <section class="sec" id="sec-juegos">
  <h2 class="titulo-sec">Salón de Juegos · Control</h2>
- <p class="sub-sec">Activa lo que está vivo y configura sus contenidos.</p>
+ <p class="sub-sec">Activa los juegos, configura contenidos y edita el quiz, todo en un solo lugar.</p>
  <div class="card"><h3>Activar / desactivar</h3><div id="jz-toggles"></div></div>
  <div class="card"><h3>Contenidos</h3>
   <label>Bodegas para votar (una por línea)</label><textarea id="jz-bvoto"></textarea>
   <label>Hora del sorteo (cuenta regresiva)</label><input id="jz-sorteo" type="datetime-local">
   <button class="btn solido" style="margin-top:10px" onclick="guardarJuegos()">Guardar contenidos</button></div>
+ <div class="card"><h3>Quiz Arcano · editor</h3>
+  <label class="tgl"><input type="checkbox" id="qz-activo" onchange="toggleQuiz()"> Quiz activo</label>
+  <div id="qz-form"></div>
+  <button class="btn solido" style="margin-top:14px" onclick="guardarQuiz()">Guardar quiz</button></div>
+ <div class="card"><h3>Quiz · resultados en vivo</h3><div id="qz-res"></div></div>
  <div class="grid2">
-  <div class="card"><h3>♥ Corazones (me gusta) en vivo</h3><div style="font-size:40px;font-weight:700;color:var(--corazon)" id="jz-apl">0</div><button class="btn mini peligro" style="margin-top:10px" onclick="resetCorazones()">Reiniciar corazones</button></div>
+  <div class="card"><h3>♥ Corazones en vivo</h3><div style="font-size:40px;font-weight:700;color:var(--corazon)" id="jz-apl">0</div><button class="btn mini peligro" style="margin-top:10px" onclick="resetCorazones()">Reiniciar corazones</button></div>
   <div class="card"><h3>Estadísticas en vivo</h3><div id="jz-stats" style="font-size:14px;color:var(--texto2)"></div></div>
  </div>
- <div class="card"><h3>Ranking en vivo</h3><div id="jz-rank"></div></div>
+ <div class="card"><h3>Ranking de buscadores en vivo</h3><div id="jz-rank"></div></div>
 </section>
 
 <section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento y QR.</p><div class="grid2" id="grid-sellos"></div></section>
@@ -151,11 +162,6 @@ tr:last-child td{border-bottom:none}
  <button class="btn solido" onclick="guardarFAQ()">Guardar</button><button class="btn oculto" id="fq-cancel" onclick="cancelarFAQ()">Cancelar</button></div>
  <div id="lista-faq"></div></section>
 
-<section class="sec" id="sec-quiz"><h2 class="titulo-sec">Arcano Enológico</h2>
- <div class="card"><label class="tgl"><input type="checkbox" id="qz-activo" onchange="toggleQuiz()"> Quiz activo</label><div id="qz-form"></div>
- <button class="btn solido" style="margin-top:14px" onclick="guardarQuiz()">Guardar quiz</button></div>
- <div class="card"><h3>Resultados en vivo</h3><div id="qz-res"></div></div></section>
-
 <section class="sec" id="sec-perfil"><h2 class="titulo-sec">Perfil del Oráculo</h2>
  <div class="card"><div class="form-grid">
   <div><label>NOMBRE ORÁCULO</label><input id="pf-nombre"></div><div><label>TÍTULO APP</label><input id="pf-titulo"></div><div><label>SUBTÍTULO</label><input id="pf-sub"></div></div>
@@ -169,10 +175,11 @@ tr:last-child td{border-bottom:none}
  <button class="btn solido" onclick="sortear()">Ejecutar sorteo (notifica a todos)</button></div>
  <div id="res-sorteo"></div><div id="hist-sorteo" style="margin-top:20px"></div></section>
 
-<section class="sec" id="sec-equipo"><h2 class="titulo-sec">Equipo</h2>
- <div class="form-grid" style="margin-bottom:8px"><div><label>NOMBRE</label><input id="eq-nombre"></div><div><label>CORREO</label><input id="eq-email"></div><div><label>CLAVE</label><input id="eq-clave" type="password"></div>
+<section class="sec" id="sec-equipo"><h2 class="titulo-sec">Equipo · contraseñas</h2>
+ <div class="form-grid" style="margin-bottom:8px"><div><label>NOMBRE</label><input id="eq-nombre"></div><div><label>CORREO</label><input id="eq-email"></div><div><label>CLAVE TEMPORAL</label><input id="eq-clave" type="text"></div>
  <div><label>ROL</label><select id="eq-rol"><option value="monitor">Monitor</option><option value="configurador">Configurador</option><option value="maestro">Maestro</option></select></div></div>
- <button class="btn solido" onclick="crearAdmin()">Crear admin</button><div class="err" id="eq-err"></div><div id="lista-admins" style="margin-top:20px"></div></section>
+ <button class="btn solido" onclick="crearAdmin()">Crear admin</button><div class="err" id="eq-err"></div>
+ <div class="card" style="margin-top:16px"><h3>Admins y sus contraseñas</h3><div id="lista-admins"></div></div></section>
 
 <section class="sec" id="sec-reinicio"><h2 class="titulo-sec">Reinicio del evento</h2>
  <p class="sub-sec">Todos los reinicios se ejecutan desde aquí, con doble confirmación.</p>
@@ -206,11 +213,11 @@ const hoyISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMont
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
-const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['credencial','Credencial de Digno']];
+const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores']];
 let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[];
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
-const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],quiz:['maestro','configurador'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
-const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['quiz','Quiz'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
+const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
+const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
 window.login=async()=>{try{await signInWithEmailAndPassword(auth,$('l-email').value.trim(),$('l-clave').value);}catch(e){$('l-err').textContent='Credenciales incorrectas';}};
 window.salir=()=>signOut(auth);
 onAuthStateChanged(auth,async u=>{if(!u){yo=null;miRol=null;$('s-app').classList.add('oculto');$('s-noperm').classList.add('oculto');$('s-login').style.display='grid';return;}
@@ -219,16 +226,23 @@ onAuthStateChanged(auth,async u=>{if(!u){yo=null;miRol=null;$('s-app').classList
  const t=$('tabs');t.innerHTML='';TABS.filter(([k])=>PERM[k].includes(miRol)).forEach(([k,n],i)=>{const b=document.createElement('button');b.textContent=n;b.onclick=()=>irSec(k,b);t.appendChild(b);if(i===0)irSec(k,b);});
  if(miRol==='maestro')$('btn-xlsx').classList.remove('oculto');escuchar();});
 function irSec(k,b){document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');document.querySelectorAll('.sec').forEach(s=>s.classList.remove('act'));$('sec-'+k).classList.add('act');}
+function barChart(el,entries,color){const max=Math.max(1,...entries.map(e=>e[1]));
+ el.innerHTML=entries.filter(e=>e[1]>0).map(([l,v])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:12px"><span style="width:120px;color:var(--texto2)">'+esc(l)+'</span><span style="flex:1;height:8px;background:var(--card2);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(v/max*100)+'%;background:'+(color||'var(--accent)')+'"></i></span><b>'+v+'</b></div>').join('')||'<div class="vacio">Sin datos aún</div>';}
 
 function escuchar(){
  onSnapshot(collection(db,'participantes'),s=>{PART={};s.forEach(d=>PART[d.id]={id:d.id,...d.data()});
-  $('m-total').textContent=s.size;$('m-aptos').textContent=Object.values(PART).filter(p=>p.estado==='apto').length;
-  $('m-iniciados').textContent=Object.values(PART).filter(p=>(p.simbolos||[]).length>0).length;
-  $('m-circulo').textContent=Object.values(PART).filter(p=>p.circulo).length;
-  $('m-quiz').textContent=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado).length;
+  const P=Object.values(PART);
+  $('m-total').textContent=s.size;$('m-aptos').textContent=P.filter(p=>p.estado==='apto').length;
+  $('m-iniciados').textContent=P.filter(p=>(p.simbolos||[]).length>0).length;
+  $('m-circulo').textContent=P.filter(p=>p.circulo).length;
+  $('m-quiz').textContent=P.filter(p=>p.quiz&&p.quiz.completado).length;
+  $('m-likes').textContent=P.reduce((a,p)=>a+(p.likes||[]).length,0);
+  const dist=[0,0,0,0,0,0,0,0];P.forEach(p=>{dist[(p.simbolos||[]).length]++;});
+  barChart($('ch-sellos'),dist.map((v,i)=>[(i===7?'7 ⚜':i+' sellos'),v]));
   pintarTabla();pintarCirculo();pintarVotoAdmin();pintarQuizRes();pintarStats();pintarRankAdmin();});
  onSnapshot(collection(db,'simbolos'),()=>pintarSellos());
- onSnapshot(collection(db,'programa'),s=>{PROG=[];s.forEach(d=>PROG.push({id:d.id,...d.data()}));PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));pintarProg();});
+ onSnapshot(collection(db,'programa'),s=>{PROG=[];s.forEach(d=>PROG.push({id:d.id,...d.data()}));PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));pintarProg();
+  barChart($('ch-likes'),PROG.map(a=>[a.tema||a.hora,a.likes||0]),'var(--corazon)');});
  onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>ANUN.push({id:d.id,...d.data()}));pintarAnun();});
  onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>FAQ.push({id:d.id,...d.data()}));FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarFAQ();});
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};setPrev('oraculo',PERFIL.avatarOraculo);setPrev('usuario',PERFIL.avatarUsuario);if(!perfilLoaded){perfilLoaded=true;$('pf-nombre').value=PERFIL.nombreOraculo||'';$('pf-titulo').value=PERFIL.tituloApp||'';$('pf-sub').value=PERFIL.subApp||'';$('pf-url-oraculo').value=PERFIL.avatarOraculo||'';$('pf-url-usuario').value=PERFIL.avatarUsuario||'';}});
@@ -245,11 +259,11 @@ function pintarCirculo(){const m=Object.values(PART).filter(p=>p.circulo);
  $('lista-circulo').innerHTML=m.map(p=>'<div class="item-prog"><div class="det"><b>⚜ '+esc(p.nombre)+' '+esc(p.apellido||'')+'</b><span>'+esc(p.email||'')+' · '+esc(p.telefono||'')+'</span></div></div>').join('')||'<div class="vacio">Aún no hay miembros</div>';}
 function pintarVotoAdmin(){const pts={},cnt={};
  Object.values(PART).forEach(p=>{const r=p.votoRank||[];r.forEach((b,i)=>{pts[b]=(pts[b]||0)+(r.length-i);cnt[b]=(cnt[b]||0)+1;});});
- $('jz-votores').innerHTML=Object.entries(pts).sort((a,b)=>b[1]-a[1]).map(([b,p])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px"><span style="flex:1;color:var(--texto2)">'+esc(b)+'</span><b style="color:var(--oro)">'+p+' pts</b><span style="color:var(--texto3)">('+cnt[b]+' votos)</span></div>').join('')||'<div class="vacio">Sin votos aún</div>';}
+ $('jz-votores').innerHTML=Object.entries(pts).sort((a,b)=>b[1]-a[1]).map(([b,p])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px"><span style="flex:1;color:var(--texto2)">'+esc(b)+'</span><b style="color:var(--oro)">'+p+' pts</b><span style="color:var(--texto3)">('+cnt[b]+')</span></div>').join('')||'<div class="vacio">Sin votos aún</div>';}
 window.pintarTabla=()=>{const q=($('q').value||'').toLowerCase();
  let rows=Object.values(PART).filter(p=>{if(filtroAct==='apto'&&p.estado!=='apto')return false;if(filtroAct==='iniciado'&&(p.simbolos||[]).length===0)return false;return((p.nombre||'')+' '+(p.apellido||'')+' '+(p.email||'')).toLowerCase().includes(q);}).sort((a,b)=>(b.registro||'').localeCompare(a.registro||''));
  $('tb').innerHTML=rows.length?rows.map(p=>{const n=(p.simbolos||[]).length,pf=p.perfil||{},qh=p.quiz&&p.quiz.completado;
- return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td><td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono)+'</td><td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td><td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'Buscando')+'</span></td><td style="color:var(--texto2);font-size:12px">'+(qh?'⚜ '+esc(p.quiz.titulo)+'<br>'+esc(pf.Varietal||''):'—')+'</td><td style="font-size:11px;color:var(--texto2)">Priv:'+(p.consent&&p.consent.priv?'✓':'—')+'<br>Mkt:'+(p.consent&&p.consent.mkt?'✓':'—')+'</td><td>'+(qh?'<button class="btn mini peligro" onclick="resetearQuiz(\''+p.id+'\')">Reset quiz</button>':'—')+'</td></tr>';}).join(''):'<tr><td colspan="7" class="vacio">Sin participantes</td></tr>';};
+ return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td><td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono||'')+'</td><td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td><td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'Buscando')+'</span></td><td style="color:var(--texto2);font-size:12px">'+(qh?'⚜ '+esc(p.quiz.titulo)+'<br>'+esc(pf.Varietal||''):'—')+'</td><td style="font-size:11px;color:var(--texto2)">Priv:'+(p.consent&&p.consent.priv?'✓':'—')+'<br>Mkt:'+(p.consent&&p.consent.mkt?'✓':'—')+'</td><td>'+(qh?'<button class="btn mini peligro" onclick="resetearQuiz(\''+p.id+'\')">Reset quiz</button>':'—')+'</td></tr>';}).join(''):'<tr><td colspan="7" class="vacio">Sin participantes</td></tr>';};
 window.resetearQuiz=async id=>{if(!confirm('¿Resetear quiz de este participante?'))return;await updateDoc(doc(db,'participantes',id),{quiz:deleteField(),perfil:deleteField()});toast('✓ Quiz reseteado');};
 window.exportar=()=>{const wb=XLSX.utils.book_new();
  const rows=Object.values(PART).map(p=>{const pf=p.perfil||{},x=p.extra||{};
@@ -265,13 +279,11 @@ window.exportar=()=>{const wb=XLSX.utils.book_new();
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(PROG.map(a=>({Fecha:fmtF(a.fecha),Hora:a.hora,Tema:a.tema,Disertante:a.disertante||'',Lugar:a.lugar||'',Corazones:a.likes||0}))),'MeGustaCharlas');
  const agg={};Object.values(PART).forEach(p=>{(p.votoRank||[]).forEach((b,i)=>{if(!agg[b])agg[b]={pts:0,cnt:0};agg[b].pts+=(p.votoRank.length-i);agg[b].cnt++;});});
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(Object.entries(agg).sort((a,b)=>b[1].pts-a[1].pts).map(([b,o])=>({Bodega:b,Puntos:o.pts,VecesVotada:o.cnt}))),'RankingBodegas');
- const votos=Object.values(PART).filter(p=>(p.votoRank||[]).length).map(p=>({Nombre:p.nombre+' '+p.apellido,BodegaFav:p.voto||'',Ranking:(p.votoRank||[]).map((b,i)=>(i+1)+'º '+b).join(' | ')}));
- XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(votos.length?votos:[{Info:'sin votos'}]),'Votos');
  const circ=Object.values(PART).filter(p=>p.circulo).map(p=>({Nombre:p.nombre+' '+p.apellido,Email:p.email,Telefono:p.telefono}));
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(circ.length?circ:[{Info:'sin miembros'}]),'Circulo');
  XLSX.writeFile(wb,'simbolos-vinos-datos.xlsx');toast('✓ Excel completo exportado');};
 
-/* JUEGOS */
+/* JUEGOS (incluye quiz) */
 function renderToggles(){$('jz-toggles').innerHTML=JG_META.map(([k,n])=>'<label class="tgl"><input type="checkbox" id="jz-'+k+'"> '+n+'</label>').join('');}
 function syncToggles(){JG_META.forEach(([k])=>{const e=$('jz-'+k);if(e)e.checked=!!JUEGOS[k];});}
 function fillExtra(){$('jz-bvoto').value=(EXTRA.bodegasVoto||[]).join('\n');$('jz-sorteo').value=toLocal(EXTRA.sorteoHora);}
@@ -282,9 +294,13 @@ window.guardarJuegos=async()=>{const j={};JG_META.forEach(([k])=>j[k]=$('jz-'+k)
  await setDoc(doc(db,'config','extra'),extra,{merge:true});toast('✓ Contenidos guardados');};
 window.resetCorazones=async()=>{if(!confirm('¿Poner en cero todos los corazones?'))return;const b=writeBatch(db);PROG.forEach(a=>b.update(doc(db,'programa',a.id),{likes:0}));await b.commit();toast('✓ Corazones reiniciados');};
 function pintarStats(){const P=Object.values(PART);
- $('jz-stats').innerHTML='Arcano completados: <b>'+P.filter(p=>p.quiz&&p.quiz.completado).length+'</b><br>Círculo: <b>'+P.filter(p=>p.circulo).length+'</b><br>Con ranking de bodegas: <b>'+P.filter(p=>(p.votoRank||[]).length>0).length+'</b>';}
+ $('jz-stats').innerHTML='Arcano completados: <b>'+P.filter(p=>p.quiz&&p.quiz.completado).length+'</b><br>Círculo: <b>'+P.filter(p=>p.circulo).length+'</b><br>Con ranking de bodegas: <b>'+P.filter(p=>(p.votoRank||[]).length>0).length+'</b><br>♥ totales: <b>'+P.reduce((a,p)=>a+(p.likes||[]).length,0)+'</b>';}
 function pintarRankAdmin(){const r=[...Object.values(PART)].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,10);
  $('jz-rank').innerHTML=r.map((p,i)=>'<div class="item-prog"><span class="hora">#'+(i+1)+'</span><div class="det"><b>'+esc(p.nombre)+' '+esc(p.apellido||'')+'</b></div><span>'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<div class="vacio">Sin datos</div>';}
+function renderQuizForm(){const qs=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;$('qz-form').innerHTML=qs.map((q,i)=>'<div style="border-top:1px solid var(--linea);margin-top:14px;padding-top:10px"><div class="form-grid"><div><label>CATEGORÍA</label><input id="qz-c'+i+'" value="'+esc(q.categoria)+'"></div><div style="grid-column:1/-1"><label>PREGUNTA '+(i+1)+'</label><input id="qz-p'+i+'" value="'+esc(q.pregunta)+'"></div></div>'+(q.opciones||[]).map((o,j)=>'<div class="form-grid" style="margin-top:6px"><div><label>OPCIÓN '+(j+1)+'</label><input id="qz-o'+i+'-'+j+'t" value="'+esc(o.t)+'"></div><div><label>DATO</label><input id="qz-o'+i+'-'+j+'v" value="'+esc(o.v)+'"></div></div>').join('')+'</div>').join('');}
+window.guardarQuiz=async()=>{const b=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;const qs=b.map((q,i)=>({categoria:$('qz-c'+i).value.trim(),pregunta:$('qz-p'+i).value.trim(),opciones:(q.opciones||[]).map((o,j)=>({t:$('qz-o'+i+'-'+j+'t').value.trim(),v:$('qz-o'+i+'-'+j+'v').value.trim()}))}));await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked,preguntas:qs},{merge:true});toast('✓ Quiz guardado');};
+window.toggleQuiz=async()=>{await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked},{merge:true});};
+function pintarQuizRes(){const qs=(QUIZ&&QUIZ.preguntas)||[];const done=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado);let h='<p style="color:var(--texto2);font-size:13px">Completaron: <b style="color:var(--verde)">'+done.length+'</b></p>';qs.forEach(q=>{const c={};done.forEach(p=>{const v=(p.perfil||{})[q.categoria];if(v)c[v]=(c[v]||0)+1;});const t=done.length||1;h+='<b style="font-size:13px">'+esc(q.pregunta)+'</b>'+Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div style="display:flex;gap:8px;margin:5px 0;font-size:12px"><span style="width:110px;color:var(--texto2)">'+esc(v)+'</span><span style="flex:1;height:6px;background:var(--card2)"><i style="display:block;height:100%;width:'+Math.round(n/t*100)+'%;background:var(--accent)"></i></span><span>'+n+'</span></div>').join('');});$('qz-res').innerHTML=h;}
 
 /* SELLOS */
 async function pintarSellos(){const g=$('grid-sellos');g.innerHTML='';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const c=document.createElement('div');c.className='sello-card';
@@ -300,7 +316,7 @@ function pintarProg(){$('lista-prog').innerHTML=PROG.map(a=>'<div class="item-pr
  $('jz-apl').textContent=PROG.reduce((s,a)=>s+(a.likes||0),0);}
 window.borrarProg=async id=>{await deleteDoc(doc(db,'programa',id));};
 
-/* ORACULO/CHAT/QUIZ/PERFIL */
+/* ORACULO/CHAT/PERFIL */
 window.enviarAnuncio=async()=>{const t=$('an-titulo').value.trim(),m=$('an-msg').value.trim();if(!m)return toast('Escribe el mensaje');await addDoc(collection(db,'anuncios'),{titulo:t,mensaje:m,fecha:new Date().toISOString()});$('an-titulo').value='';$('an-msg').value='';toast('✓ Enviado');};
 function pintarAnun(){$('lista-anun').innerHTML=ANUN.map(a=>'<div class="item-prog"><div class="det"><b>'+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje)+'</span></div></div>').join('');}
 window.guardarFAQ=async()=>{const p=$('fq-p').value.trim(),r=$('fq-r').value.trim();if(!p||!r)return toast('Completa');if(fqEdit){await updateDoc(doc(db,'faq',fqEdit),{pregunta:p,respuesta:r});}else{await addDoc(collection(db,'faq'),{pregunta:p,respuesta:r,orden:FAQ.length+1});}$('fq-p').value='';$('fq-r').value='';fqEdit=null;$('fq-cancel').classList.add('oculto');toast('✓ Guardada');};
@@ -308,10 +324,6 @@ window.cancelarFAQ=()=>{fqEdit=null;$('fq-p').value='';$('fq-r').value='';$('fq-
 window.editarFAQ=id=>{const f=FAQ.find(x=>x.id===id);fqEdit=id;$('fq-p').value=f.pregunta;$('fq-r').value=f.respuesta;$('fq-cancel').classList.remove('oculto');};
 window.borrarFAQ=async id=>{if(confirm('¿Eliminar?'))await deleteDoc(doc(db,'faq',id));};
 function pintarFAQ(){$('lista-faq').innerHTML=FAQ.map(f=>'<div class="item-prog"><div class="det"><b>'+esc(f.pregunta)+'</b><span>'+esc(f.respuesta)+'</span></div><button class="btn mini" onclick="editarFAQ(\''+f.id+'\')">Editar</button><button class="btn mini peligro" onclick="borrarFAQ(\''+f.id+'\')">✕</button></div>').join('');}
-function renderQuizForm(){const qs=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;$('qz-form').innerHTML=qs.map((q,i)=>'<div style="border-top:1px solid var(--linea);margin-top:14px;padding-top:10px"><div class="form-grid"><div><label>CATEGORÍA</label><input id="qz-c'+i+'" value="'+esc(q.categoria)+'"></div><div style="grid-column:1/-1"><label>PREGUNTA '+(i+1)+'</label><input id="qz-p'+i+'" value="'+esc(q.pregunta)+'"></div></div>'+(q.opciones||[]).map((o,j)=>'<div class="form-grid" style="margin-top:6px"><div><label>OPCIÓN '+(j+1)+'</label><input id="qz-o'+i+'-'+j+'t" value="'+esc(o.t)+'"></div><div><label>DATO</label><input id="qz-o'+i+'-'+j+'v" value="'+esc(o.v)+'"></div></div>').join('')+'</div>').join('');}
-window.guardarQuiz=async()=>{const b=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;const qs=b.map((q,i)=>({categoria:$('qz-c'+i).value.trim(),pregunta:$('qz-p'+i).value.trim(),opciones:(q.opciones||[]).map((o,j)=>({t:$('qz-o'+i+'-'+j+'t').value.trim(),v:$('qz-o'+i+'-'+j+'v').value.trim()}))}));await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked,preguntas:qs},{merge:true});toast('✓ Quiz guardado');};
-window.toggleQuiz=async()=>{await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked},{merge:true});};
-function pintarQuizRes(){const qs=(QUIZ&&QUIZ.preguntas)||[];const done=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado);let h='<p style="color:var(--texto2);font-size:13px">Completaron: <b style="color:var(--verde)">'+done.length+'</b></p>';qs.forEach(q=>{const c={};done.forEach(p=>{const v=(p.perfil||{})[q.categoria];if(v)c[v]=(c[v]||0)+1;});const t=done.length||1;h+='<b style="font-size:13px">'+esc(q.pregunta)+'</b>'+Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div style="display:flex;gap:8px;margin:5px 0;font-size:12px"><span style="width:110px;color:var(--texto2)">'+esc(v)+'</span><span style="flex:1;height:6px;background:var(--card2)"><i style="display:block;height:100%;width:'+Math.round(n/t*100)+'%;background:var(--accent)"></i></span><span>'+n+'</span></div>').join('');});$('qz-res').innerHTML=h;}
 function setPrev(q,u){const i=$('pf-img-'+q);if(u){i.src=u;i.style.visibility='visible';}else i.style.visibility='hidden';}
 window.prevAvatar=q=>setPrev(q,$('pf-url-'+q).value.trim());
 window.guardarPerfil=async()=>{await setDoc(doc(db,'config','perfil'),{nombreOraculo:$('pf-nombre').value.trim()||'El Oráculo',tituloApp:$('pf-titulo').value.trim(),subApp:$('pf-sub').value.trim(),avatarOraculo:$('pf-url-oraculo').value.trim(),avatarUsuario:$('pf-url-usuario').value.trim()},{merge:true});toast('✓ Perfil');};
@@ -323,11 +335,11 @@ window.sortear=async()=>{const aptos=Object.values(PART).filter(p=>p.estado==='a
  toast('🏆 Sorteo ejecutado y notificado');};
 function pintarHistSorteo(){$('hist-sorteo').innerHTML=SORT.map(s=>'<div class="card"><b>Sorteo · '+new Date(s.fecha).toLocaleString()+'</b>'+(s.ganadores||[]).map(g=>'<div style="color:var(--verde);margin-top:6px">🏆 '+esc(g.nombre)+'</div>').join('')+'</div>').join('');}
 
-/* EQUIPO */
-window.crearAdmin=async()=>{$('eq-err').textContent='';const n=$('eq-nombre').value.trim(),e=$('eq-email').value.trim(),c=$('eq-clave').value,r=$('eq-rol').value;if(!n||!e||c.length<6)return $('eq-err').textContent='Completa todo';try{const sec=initializeApp(CFG,'sec'+Date.now());const sa=getAuth(sec);const cr=await createUserWithEmailAndPassword(sa,e,c);await setDoc(doc(db,'admins',cr.user.uid),{nombre:n,email:e,rol:r});await signOut(sa);toast('✓ '+n);}catch(err){$('eq-err').textContent='Error';}};
-function pintarAdmins(){$('lista-admins').innerHTML=Object.entries(ADM).map(([id,a])=>'<div class="item-prog"><div class="det"><b>'+esc(a.nombre)+'</b><span>'+esc(a.email)+'</span></div>'+(id===yo?'<span class="tag apto">Tú</span>':'<select style="width:auto" onchange="cambiarRol(\''+id+'\',this.value)">'+['maestro','configurador','monitor'].map(r=>'<option'+(r===a.rol?' selected':'')+'>'+r+'</option>').join('')+'</select><button class="btn mini peligro" onclick="revocar(\''+id+'\')">✕</button>')+'</div>').join('');}
-window.cambiarRol=async(id,r)=>{await updateDoc(doc(db,'admins',id),{rol:r});};
-window.revocar=async id=>{if(confirm('¿Eliminar?'))await deleteDoc(doc(db,'admins',id));};
+/* EQUIPO (con contraseñas) */
+window.crearAdmin=async()=>{$('eq-err').textContent='';const n=$('eq-nombre').value.trim(),e=$('eq-email').value.trim(),c=$('eq-clave').value,r=$('eq-rol').value;if(!n||!e||c.length<6)return $('eq-err').textContent='Completa todo y clave mín 6';try{const sec=initializeApp(CFG,'sec'+Date.now());const sa=getAuth(sec);const cr=await createUserWithEmailAndPassword(sa,e,c);await setDoc(doc(db,'admins',cr.user.uid),{nombre:n,email:e,rol:r,clave:c});await signOut(sa);$('eq-nombre').value=$('eq-email').value=$('eq-clave').value='';toast('✓ '+n+' creado');}catch(err){$('eq-err').textContent='Error: '+err.code;}};
+function pintarAdmins(){$('lista-admins').innerHTML=Object.entries(ADM).map(([id,a])=>'<div class="item-prog"><div class="det"><b>'+esc(a.nombre)+'</b><span>'+esc(a.email)+'</span></div>'+(id===yo?'<span class="tag apto">Tú</span>':'<span style="font-family:monospace;font-size:12px;color:var(--oro)">clave: '+esc(a.clave||'—')+'</span><select style="width:auto" onchange="cambiarRol(\''+id+'\',this.value)">'+['maestro','configurador','monitor'].map(r=>'<option'+(r===a.rol?' selected':'')+'>'+r+'</option>').join('')+'</select><button class="btn mini peligro" onclick="revocar(\''+id+'\')">✕</button>')+'</div>').join('');}
+window.cambiarRol=async(id,r)=>{await updateDoc(doc(db,'admins',id),{rol:r});toast('Rol actualizado');};
+window.revocar=async id=>{if(confirm('¿Eliminar este admin?'))await deleteDoc(doc(db,'admins',id));};
 
 /* REINICIO */
 window.rzPaso1=()=>{$('rz-paso2').classList.remove('oculto');};
