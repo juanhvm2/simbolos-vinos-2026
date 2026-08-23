@@ -117,6 +117,8 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 .rank .pos{font-family:'Julius Sans One';font-size:16px;color:var(--tinta);width:30px}
 .rank .nm{flex:1;font-weight:600}
 .rank .sc{font-family:'Julius Sans One';color:var(--purpura)}
+.rk-ctl{display:flex;gap:6px}
+.rk-ctl button{width:32px;height:32px;border-radius:10px;border:1px solid var(--linea);background:var(--papel);color:var(--tinta);font-size:13px;cursor:pointer}
 .paso{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
 .paso .num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--tinta);color:var(--crema);font-family:'Julius Sans One';display:grid;place-items:center;font-size:15px}
 .paso .txt b{display:block;font-size:15px}
@@ -187,9 +189,7 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
   <div class="cab"><div><div style="font-size:12px;color:var(--texto2)">Hola, buscador</div>
     <div class="nombre" id="h-nombre">—</div><button class="salir" onclick="salir()">cerrar sesión</button></div>
     <div class="estado" id="h-estado">BUSCADOR</div></div>
-  <div class="mini-row">
-    <button class="btn" onclick="ver('p-perfil')">👤 Mi perfil</button>
-  </div>
+  <div class="mini-row"><button class="btn" onclick="ver('p-perfil')">👤 Mi perfil</button></div>
   <button id="btn-push" class="btn solido oculto" onclick="activarPush()">🔔 Activar avisos</button>
   <a class="btn-ig" href="https://www.instagram.com/simbolosyvinos/" target="_blank" rel="noopener">
     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -219,7 +219,7 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
     <div class="paso"><div class="num">2</div><div class="txt"><b>Escanea el grabado</b><span>Usa el botón ESCANEAR (junto al contador) y apunta al código del sello.</span></div></div>
     <div class="paso"><div class="num">3</div><div class="txt"><b>Despierta el sello</b><span>Cada sello se dora y revela un fragmento de la frase. Tócalo para volver a ver su leyenda.</span></div></div>
     <div class="paso"><div class="num">4</div><div class="txt"><b>Completa la frase</b><span>Al reunir los siete, serás declarado APTO para el sorteo final.</span></div></div>
-    <div class="paso"><div class="num">5</div><div class="txt"><b>Participa</b><span>Vota tu bodega, da ♥ a las charlas y juega en el Salón de Juegos.</span></div></div>
+    <div class="paso"><div class="num">5</div><div class="txt"><b>Participa</b><span>Arma tu ranking de bodegas, da ♥ a las charlas y juega en el Salón de Juegos.</span></div></div>
   </div>
   <button class="btn solido" onclick="ver('p-home')">Entendido, a buscar</button>
 </section>
@@ -229,13 +229,10 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
   <div id="juegos-lista"></div></section>
 
 <section class="pantalla" id="p-voto">
-  <h2 style="font-size:20px;text-align:center">VOTA TU BODEGA FAVORITA</h2>
-  <p class="mistica" style="text-align:center;margin:6px 0 14px">Un voto por buscador · puedes cambiarlo.</p>
-  <div class="card">
-    <div class="campo"><label>Bodega</label><select id="voto-sel"></select></div>
-    <button class="btn solido" onclick="guardarVoto()">Votar</button>
-  </div>
-  <div id="voto-actual" style="margin-top:12px"></div>
+  <h2 style="font-size:20px;text-align:center">TU RANKING DE BODEGAS</h2>
+  <p class="mistica" style="text-align:center;margin:6px 0 14px">Vota por varias bodegas y ordénalas de tu favorita a la menos.</p>
+  <div class="card"><h3>⭐ Mi ranking</h3><div id="voto-rank"></div></div>
+  <div class="card"><h3>+ Agregar bodegas</h3><div id="voto-add"></div></div>
 </section>
 
 <section class="pantalla" id="p-ranking"><h2 style="font-size:20px;text-align:center">TABLA DE BUSCADORES</h2>
@@ -291,7 +288,7 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
   <div class="sec-titulo">· Preguntas ·</div><div id="chat-chips" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center"></div></section>
 
 <section class="pantalla" id="p-prog"><h2 style="font-size:20px;text-align:center">PROGRAMA DEL EVENTO</h2>
-  <p class="mistica" style="text-align:center;margin:6px 0 14px">Toca una actividad para dar ♥ me gusta (1 por persona).</p>
+  <p class="mistica" style="text-align:center;margin:6px 0 14px">Toca una actividad para dar ♥ me gusta (1 por persona, queda guardado).</p>
   <div id="prog-lista"></div></section>
 
 <div id="revelacion"><div style="width:100%;max-width:440px">
@@ -321,6 +318,7 @@ const VAPID="BBsxw3cT5Drw-ZyyCNzSjls056Mr6YS8gX-dUWyn6oqOZZkNalSc7iqUE4DYEIu0WRh
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+const qesc=s=>esc(s).replace(/'/g,'');
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
 let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},QUIZ=null,JUEGOS={},EXTRA={},RANK=[];
 let quizIdx=0,quizResp={};
@@ -356,9 +354,17 @@ function responder(q,o){quizResp[q.categoria]=o.v;quizIdx++;if(quizIdx<(QUIZ.pre
 function pintarRanking(){const r=[...RANK].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,20);$('rank-lista').innerHTML=r.map((p,i)=>'<div class="rank"><span class="pos">'+(i+1)+'</span><span class="nm">'+esc(p.nombre)+' '+esc(p.apellido||'')+'</span><span class="sc">'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<p class="mistica" style="text-align:center">Sin datos aún.</p>';}
 function generarCredencial(){if(!(parte&&parte.estado==='apto'))return toast('Completa los 7 sellos','');const W=1080,H=1350;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#5c0c26');g.addColorStop(1,'#6d1f6e');x.fillStyle=g;x.fillRect(0,0,W,H);x.strokeStyle='#f3d27a';x.lineWidth=6;x.strokeRect(40,40,W-80,H-80);x.textAlign='center';x.fillStyle='#f3d27a';x.font='40px Georgia';x.fillText('⚜',W/2,180);x.fillStyle='#fbf7ef';x.font='700 70px Georgia';x.fillText('DIGNO',W/2,420);x.font='34px Georgia';x.fillText('DE LOS SIETE SELLOS',W/2,490);x.fillStyle='#f3d27a';x.font='52px Georgia';x.fillText((parte.nombre||'')+' '+(parte.apellido||''),W/2,760);x.fillStyle='#f0e9dd';x.font='30px Georgia';x.fillText('Símbolos & Vinos · MMXXVI',W/2,1180);const a=document.createElement('a');a.download='credencial-digno.png';a.href=cv.toDataURL('image/png');a.click();toast('⚜ Credencial descargada','');}
 window.unirCirculo=async()=>{await updateDoc(doc(db,'participantes',yo),{circulo:true});toast('⚜ Bienvenido al Círculo','');};
-function pintarVoto(){const b=EXTRA.bodegasVoto||[];const sel=$('voto-sel');if(!sel)return;sel.innerHTML=b.map(x=>'<option>'+esc(x)+'</option>').join('')||'<option>—</option>';if(parte&&parte.voto)sel.value=parte.voto;
- $('voto-actual').innerHTML=parte&&parte.voto?'<div class="item" style="cursor:default"><div class="det"><b>Tu voto: '+esc(parte.voto)+'</b><span>Puedes cambiarlo votando de nuevo.</span></div></div>':'<p class="mistica" style="text-align:center">Aún no has votado.</p>';}
-window.guardarVoto=async()=>{const b=$('voto-sel').value;if(!b||b==='—')return toast('Elige una bodega','');await setDoc(doc(db,'votos',yo),{bodega:b,nombre:(parte.nombre||'')+' '+(parte.apellido||''),fecha:new Date().toISOString()});await updateDoc(doc(db,'participantes',yo),{voto:b});toast('✓ Voto registrado','');};
+/* RANKING DE BODEGAS (varias, ordenadas) */
+const miRank=()=> (parte&&parte.votoRank)||[];
+function setRank(arr){updateDoc(doc(db,'participantes',yo),{votoRank:arr,voto:arr[0]||''});}
+window.addRank=b=>{setRank([...miRank(),b]);};
+window.delRank=b=>{setRank(miRank().filter(x=>x!==b));};
+window.upRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>0){[r[i-1],r[i]]=[r[i],r[i-1]];setRank(r);}};
+window.downRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>-1&&i<r.length-1){[r[i+1],r[i]]=[r[i],r[i+1]];setRank(r);}};
+function pintarVoto(){const rank=miRank();const all=EXTRA.bodegasVoto||[];
+ $('voto-rank').innerHTML=rank.length?rank.map((b,i)=>'<div class="item" style="cursor:default"><span class="pos" style="font-family:\'Julius Sans One\';color:var(--tinta);width:26px">'+(i+1)+'</span><div class="det"><b>'+esc(b)+'</b></div><div class="rk-ctl"><button onclick="upRank(\''+qesc(b)+'\')">▲</button><button onclick="downRank(\''+qesc(b)+'\')">▼</button><button onclick="delRank(\''+qesc(b)+'\')">✕</button></div></div>').join(''):'<p class="mistica" style="text-align:center">Aún no has votado. Agrega bodegas abajo.</p>';
+ const rest=all.filter(b=>!rank.includes(b));
+ $('voto-add').innerHTML=rest.length?rest.map(b=>'<div class="item" onclick="addRank(\''+qesc(b)+'\')"><div class="det"><b>'+esc(b)+'</b></div><span style="color:var(--tinta);font-size:22px">+</span></div>').join(''):'<p class="mistica" style="text-align:center">Todas las bodegas están en tu ranking.</p>';}
 function pintarPerfil(){
  $('pf-nom').textContent=parte.nombre+' '+parte.apellido;
  $('pf-mail').textContent=parte.email+' · '+parte.telefono;
@@ -367,7 +373,7 @@ function pintarPerfil(){
  let chips='<span class="chipmini'+(parte.estado==='apto'?' on':'')+'">'+(parte.estado==='apto'?'⚜ APTO':'BUSCADOR')+'</span>';
  if(parte.quiz&&parte.quiz.completado)chips+='<span class="chipmini on">'+esc(parte.quiz.titulo)+'</span>';
  if(parte.circulo)chips+='<span class="chipmini on">⚜ Círculo</span>';
- if(parte.voto)chips+='<span class="chipmini">♥ '+esc(parte.voto)+'</span>';
+ if((parte.votoRank||[]).length)chips+='<span class="chipmini">★ '+(parte.votoRank.length)+' bodegas</span>';
  $('pf-chips').innerHTML=chips;
  if(parte.circulo)$('circulo-btn').textContent='⚜ Ya formas parte del Círculo';
  const x=parte.extra||{};$('x-nac').value=x.nac||'';$('x-zona').value=x.zona||'';$('x-como').value=x.como||'';$('x-comp').value=x.comp||'';
@@ -375,6 +381,7 @@ function pintarPerfil(){
 window.guardarExtra=async()=>{await updateDoc(doc(db,'participantes',yo),{extra:{nac:$('x-nac').value,zona:$('x-zona').value.trim(),como:$('x-como').value,comp:$('x-comp').value},consent:{priv:$('x-priv').checked,mkt:$('x-mkt').checked}});toast('✓ Perfil actualizado','');};
 window.resetMiChat=()=>{if(!confirm('¿Reiniciar tu chat? Se borrará tu historial.'))return;chatHist=[];localStorage.setItem('sv-chat','[]');renderHist();toast('↻ Chat reiniciado','');};
 setInterval(()=>{if(!EXTRA.sorteoHora)return;const d=new Date(EXTRA.sorteoHora)-new Date();$('cd-card').classList.remove('oculto');if(d<=0){$('cd-num').textContent='🏆 EL CÁLIZ HABLA…';return;}const s=Math.floor(d/1000);$('cd-num').textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s';},1000);
+/* ME GUSTA (1 por persona, queda guardado) */
 window.toggleLike=async id=>{const likes=(parte&&parte.likes)||[];const ref=doc(db,'programa',id);
  if(likes.includes(id)){await updateDoc(ref,{likes:increment(-1)}).catch(()=>{});await updateDoc(doc(db,'participantes',yo),{likes:arrayRemove(id)});}
  else{await updateDoc(ref,{likes:increment(1)}).catch(async()=>{await setDoc(ref,{likes:1},{merge:true});});await updateDoc(doc(db,'participantes',yo),{likes:arrayUnion(id)});}};
