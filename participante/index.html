@@ -209,6 +209,26 @@ h1,h2,h3,.display{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;
   font-family:'Julius Sans One';color:var(--tinta);letter-spacing:.3em;font-size:12px;
   transition:opacity .6s;animation:pulso 2s infinite}
 .carga.fin{opacity:0;pointer-events:none}
+
+/* ── BANNER QUIZ ARCANO ── */
+.banner-quiz{display:block;width:100%;margin-top:14px;cursor:pointer;border-radius:18px;overflow:hidden;
+  box-shadow:0 14px 34px rgba(92,12,38,.22);transition:transform .25s ease;
+  border:1px solid rgba(255,255,255,.25);position:relative}
+.banner-quiz:hover{transform:translateY(-2px)}
+.banner-quiz:active{transform:scale(.98)}
+.banner-quiz svg{display:block;width:100%;height:auto}
+.banner-quiz .shimmer{position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);
+  transform:translateX(-100%);animation:shine 4.5s ease-in-out infinite}
+@keyframes shine{0%{transform:translateX(-100%)}30%,100%{transform:translateX(100%)}}
+
+/* ── BOTÓN INSTAGRAM ── */
+.btn-ig{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px 18px;
+  margin-top:12px;background:var(--crema);border:1.5px solid var(--linea);border-radius:999px;
+  color:var(--tinta);font-family:'Jost';font-size:14px;font-weight:600;letter-spacing:.04em;
+  cursor:pointer;transition:.2s;text-decoration:none}
+.btn-ig:hover{background:var(--papel2);border-color:var(--tinta)}
+.btn-ig:active{transform:scale(.97)}
+.btn-ig svg{flex:none}
 </style>
 </head>
 <body>
@@ -274,12 +294,84 @@ h1,h2,h3,.display{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;
     </div>
     <div class="estado" id="h-estado">BUSCADOR</div>
   </div>
+
   <button id="btn-push" class="btn solido oculto" style="margin-top:18px" onclick="activarPush()">🔔 Activar la voz del Oráculo</button>
-  <button id="btn-quiz" class="btn oculto" style="margin-top:12px" onclick="abrirQuiz()">🜔 Descubre tu Arcano Enológico</button>
-  <div id="quiz-card" class="oculto" style="margin-top:14px;padding:14px 18px;border:1px solid var(--linea);border-radius:14px;background:var(--crema);box-shadow:var(--sombra);text-align:center">
-    <div style="font-size:10px;letter-spacing:.28em;color:var(--purpura);font-weight:600">TU ARCANO</div>
-    <div id="quiz-titulo" style="font-family:'Julius Sans One';color:var(--tinta);font-size:16px;margin-top:6px"></div>
+
+  <!-- INSTAGRAM -->
+  <a class="btn-ig" href="https://www.instagram.com/simbolosyvinos/" target="_blank" rel="noopener" id="btn-ig">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+    </svg>
+    <span>@simbolosyvinos · Síguenos</span>
+  </a>
+
+  <!-- BANNER QUIZ ARCANO -->
+  <div id="banner-quiz" class="banner-quiz oculto" onclick="abrirQuiz()">
+    <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="qzGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#5c0c26"/>
+          <stop offset="55%" stop-color="#7a1034"/>
+          <stop offset="100%" stop-color="#6d1f6e"/>
+        </linearGradient>
+        <linearGradient id="qzOro" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#d4a84b"/>
+          <stop offset="50%" stop-color="#f3d27a"/>
+          <stop offset="100%" stop-color="#d4a84b"/>
+        </linearGradient>
+        <radialGradient id="qzGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#f3d27a" stop-opacity=".45"/>
+          <stop offset="100%" stop-color="#f3d27a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <!-- fondo -->
+      <rect width="600" height="160" fill="url(#qzGrad)"/>
+      <!-- patrón geométrico sutil -->
+      <g opacity=".12" stroke="#f3d27a" stroke-width="1" fill="none">
+        <circle cx="540" cy="30" r="38"/>
+        <circle cx="540" cy="30" r="22"/>
+        <path d="M518 14 L562 14 L540 52 Z"/>
+        <path d="M60 130 Q90 100 120 130"/>
+        <circle cx="90" cy="115" r="3"/>
+        <line x1="0" y1="80" x2="600" y2="80" stroke-dasharray="4 8"/>
+      </g>
+      <!-- glow izquierdo -->
+      <circle cx="80" cy="80" r="90" fill="url(#qzGlow)"/>
+      <!-- borde dorado -->
+      <rect x="4" y="4" width="592" height="152" rx="14" fill="none" stroke="url(#qzOro)" stroke-width="1.5"/>
+      <!-- icono copa-estrella -->
+      <g transform="translate(40,40)">
+        <circle cx="40" cy="40" r="36" fill="rgba(0,0,0,.25)" stroke="url(#qzOro)" stroke-width="1.5"/>
+        <g stroke="#f3d27a" stroke-width="2.2" fill="none" stroke-linecap="round">
+          <path d="M26 22 H54 C54 40 46 48 40 49 C34 48 26 40 26 22 Z"/>
+          <path d="M40 49 C32 56 46 60 38 66 C32 71 34 77 40 80"/>
+        </g>
+        <path d="M40 8 L42 13 L47 13 L43 16 L44.5 21 L40 18 L35.5 21 L37 16 L33 13 L38 13 Z" fill="#f3d27a"/>
+      </g>
+      <!-- texto principal -->
+      <text x="140" y="55" font-family="Georgia, serif" font-size="11" fill="#f3d27a" letter-spacing="4" font-weight="600">DESCUBRE TU</text>
+      <text x="140" y="95" font-family="Georgia, serif" font-size="30" fill="#fbf7ef" font-weight="700" letter-spacing="1">ARCANO ENOLÓGICO</text>
+      <text x="140" y="122" font-family="Georgia, serif" font-size="13" fill="#f0e9dd" font-style="italic" opacity=".85">4 preguntas · 60 segundos · el Oráculo te revela</text>
+      <!-- flecha decorativa -->
+      <g transform="translate(545,70)" stroke="#f3d27a" stroke-width="2" fill="none" stroke-linecap="round">
+        <path d="M0 10 L18 10"/>
+        <path d="M12 4 L18 10 L12 16"/>
+      </g>
+    </svg>
+    <div class="shimmer"></div>
   </div>
+
+  <!-- TARJETA DE ARCANO COMPLETADO -->
+  <div id="quiz-card" class="oculto" style="margin-top:14px;padding:18px;border:1px solid var(--linea);border-radius:16px;background:var(--crema);box-shadow:var(--sombra);text-align:center;position:relative;overflow:hidden">
+    <div style="position:absolute;top:-20px;right:-20px;font-size:110px;opacity:.05;font-family:'Julius Sans One';color:var(--tinta)">⚜</div>
+    <div style="font-size:10px;letter-spacing:.28em;color:var(--purpura);font-weight:600">TU ARCANO</div>
+    <div id="quiz-titulo" style="font-family:'Julius Sans One';color:var(--tinta);font-size:17px;margin:8px 0 10px;letter-spacing:.04em"></div>
+    <div id="quiz-detalle" class="mistica" style="font-size:13px"></div>
+    <button class="btn" style="margin-top:14px;padding:10px 18px;font-size:11px" onclick="rehacerQuiz()">↻ Volver a descubrir</button>
+  </div>
+
   <div class="progreso">
     <div class="anillo">
       <svg width="104" height="104">
@@ -373,7 +465,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
          onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { initializeFirestore, persistentLocalCache, doc, setDoc, updateDoc, onSnapshot,
-         collection, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+         collection, arrayUnion, deleteField } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
 
 const app = initializeApp({
@@ -467,19 +559,34 @@ function escucharQuiz(){
   onSnapshot(doc(db,'config','quiz'), s=>{ QUIZ = s.exists()? s.data() : null; revisarQuizBtn(); });
 }
 function revisarQuizBtn(){
+  const activo = QUIZ && QUIZ.activo;
   const completo = parte && parte.quiz && parte.quiz.completado;
-  $('btn-quiz').classList.toggle('oculto', !(QUIZ && QUIZ.activo && !completo));
-  if(completo){ $('quiz-card').classList.remove('oculto'); $('quiz-titulo').textContent = parte.quiz.titulo||'—'; }
-  else $('quiz-card').classList.add('oculto');
+  // banner visible solo si quiz activo
+  $('banner-quiz').classList.toggle('oculto', !activo);
+  // tarjeta de completado visible si completó (o reseteado si admin lo borró)
+  if(completo){
+    $('quiz-card').classList.remove('oculto');
+    $('quiz-titulo').textContent = parte.quiz.titulo||'—';
+    const pf=parte.perfil||{};
+    const det = Object.entries(pf).map(([k,v])=>k+': '+v).join(' · ');
+    $('quiz-detalle').textContent = det;
+    // si está activo el quiz, ocultamos banner y mostramos tarjeta + botón rehacer
+  } else {
+    $('quiz-card').classList.add('oculto');
+  }
 }
 window.abrirQuiz = ()=>{
   if(!QUIZ || !(QUIZ.preguntas||[]).length) return toast('El Oráculo aún prepara el arcano','');
   quizIdx=0; quizResp={};
   $('quiz-final').classList.add('oculto'); $('quiz-caja').classList.remove('oculto');
-  navegar('p-quiz', document.querySelector('[data-p="p-home"]'));
+  ver('p-quiz');
   pintarQuiz();
 };
-window.cerrarQuiz = ()=>{ navegar('p-home', document.querySelector('[data-p="p-home"]')); };
+window.rehacerQuiz = ()=>{
+  if(!confirm('¿Quieres descubrir tu arcano de nuevo? Tu perfil actual se sobrescribirá.')) return;
+  abrirQuiz();
+};
+window.cerrarQuiz = ()=>{ ver('p-home'); };
 function pintarQuiz(){
   const qs=QUIZ.preguntas||[];
   $('quiz-dots').innerHTML=qs.map((_,i)=>'<span style="width:8px;height:8px;border-radius:50%;background:'+(i<quizIdx?'var(--tinta)':'var(--linea)')+'"></span>').join('');
@@ -502,7 +609,7 @@ function responder(q,o){
   chime();
 }
 
-/* ── PUSH ─ */
+/* ── PUSH ── */
 async function registrarToken(){
   try{
     const reg = await navigator.serviceWorker.ready;
@@ -607,7 +714,7 @@ onAuthStateChanged(auth, u=>{
   if(u){ yo=u.uid; escucharParte(); escucharDatos(); escucharAvisos(); escucharFAQ(); escucharPerfil(); escucharQuiz(); revisarPush();
     renderHist();
     $('nav').style.display='flex';
-    navegar('p-home',document.querySelector('[data-p="p-home"]')); }
+    ver('p-home'); }
   else { yo=null; parte=null; $('nav').style.display='none'; ver('p-landing'); }
 });
 
