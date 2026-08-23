@@ -7,699 +7,336 @@
 <title>S&V · Panel de Control</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#000000; --bg2:#0a0a0b; --card:#1c1c1e; --card2:#2c2c2e; --card-hover:#3a3a3c;
-  --linea:rgba(255,255,255,0.08); --linea2:rgba(255,255,255,0.14);
-  --texto:#ffffff; --texto2:#8e8e93; --texto3:#636366;
-  --accent:#007aff; --accent2:#0a84ff; --verde:#30d158; --amarillo:#ffd60a; --rojo:#ff453a;
-  --radius:14px; --radius-sm:10px;
-  --font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',sans-serif;
-}
+:root{--bg:#000;--bg2:#0a0a0b;--card:#1c1c1e;--card2:#2c2c2e;--card-hover:#3a3a3c;--linea:rgba(255,255,255,.08);--linea2:rgba(255,255,255,.14);--texto:#fff;--texto2:#8e8e93;--texto3:#636366;--accent:#007aff;--accent2:#0a84ff;--verde:#30d158;--amarillo:#ffd60a;--rojo:#ff453a;--radius:14px;--radius-sm:10px;--font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',sans-serif}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{background:var(--bg);color:var(--texto);font-family:var(--font);font-size:15px;line-height:1.5;
-  -webkit-font-smoothing:antialiased;letter-spacing:-0.01em}
-body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(0,122,255,.08),transparent),
-  radial-gradient(ellipse 60% 40% at 100% 100%,rgba(48,209,88,.04),transparent)}
-h1,h2,h3{font-weight:600;letter-spacing:-0.02em}
+body{background:var(--bg);color:var(--texto);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-weight:600;letter-spacing:-.02em}
 .oculto{display:none!important}
 #s-login{min-height:100dvh;display:grid;place-items:center;padding:24px}
-.caja-login{width:100%;max-width:400px;text-align:center;background:var(--card);border:1px solid var(--linea);
-  border-radius:20px;padding:44px 32px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.caja-login{width:100%;max-width:400px;text-align:center;background:var(--card);border:1px solid var(--linea);border-radius:20px;padding:44px 32px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 .caja-login .escudo{font-size:48px;margin-bottom:10px}
-.caja-login h1{font-size:24px;font-weight:600;margin-bottom:4px}
+.caja-login h1{font-size:24px;margin-bottom:4px}
 .caja-login p{color:var(--texto2);font-size:14px;margin-bottom:28px}
-input,select,textarea{width:100%;padding:13px 16px;background:var(--card2);border:1px solid var(--linea);
-  border-radius:var(--radius-sm);color:var(--texto);font-family:var(--font);font-size:15px;
-  transition:border .2s, background .2s;margin-bottom:10px}
-input[type=date]{color-scheme:dark}
-textarea{min-height:96px;resize:vertical}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);background:var(--bg2);
-  box-shadow:0 0 0 3px rgba(0,122,255,.15)}
+input,select,textarea{width:100%;padding:13px 16px;background:var(--card2);border:1px solid var(--linea);border-radius:var(--radius-sm);color:var(--texto);font-family:var(--font);font-size:15px;margin-bottom:10px}
+input[type=date],input[type=datetime-local]{color-scheme:dark}
+textarea{min-height:80px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
 input::placeholder,textarea::placeholder{color:var(--texto3)}
 input[type=checkbox]{width:auto;margin:0;accent-color:var(--accent)}
-label{font-size:12px;font-weight:500;color:var(--texto2);display:block;margin:10px 0 6px;text-align:left;letter-spacing:0}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 18px;cursor:pointer;
-  font-family:var(--font);font-weight:500;font-size:14px;color:var(--texto);background:var(--card2);
-  border:1px solid var(--linea2);border-radius:var(--radius-sm);transition:all .18s ease;letter-spacing:0}
-.btn:hover{background:var(--card-hover);border-color:rgba(255,255,255,.2)}
+label{font-size:12px;font-weight:500;color:var(--texto2);display:block;margin:10px 0 6px;text-align:left}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 18px;cursor:pointer;font-family:var(--font);font-weight:500;font-size:14px;color:var(--texto);background:var(--card2);border:1px solid var(--linea2);border-radius:var(--radius-sm);transition:.18s}
+.btn:hover{background:var(--card-hover)}
 .btn:active{transform:scale(.97)}
 .btn.solido{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
-.btn.solido:hover{background:var(--accent2);border-color:var(--accent2)}
 .btn.peligro{background:rgba(255,69,58,.1);border-color:rgba(255,69,58,.3);color:var(--rojo)}
-.btn.peligro:hover{background:rgba(255,69,58,.18)}
 .btn.mini{padding:7px 12px;font-size:12px}
 .err{color:var(--rojo);font-size:13px;min-height:18px;margin-top:10px}
-header{position:sticky;top:0;z-index:30;background:rgba(0,0,0,.72);
-  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
-  border-bottom:1px solid var(--linea);padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-header .marca{font-weight:600;font-size:16px;letter-spacing:-0.01em}
-header .rol{font-size:11px;font-weight:500;letter-spacing:.04em;padding:5px 11px;border-radius:20px;
-  background:var(--card2);color:var(--texto2);border:1px solid var(--linea)}
+header{position:sticky;top:0;z-index:30;background:rgba(0,0,0,.72);backdrop-filter:blur(20px);border-bottom:1px solid var(--linea);padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header .marca{font-weight:600;font-size:16px}
+header .rol{font-size:11px;padding:5px 11px;border-radius:20px;background:var(--card2);color:var(--texto2);border:1px solid var(--linea)}
 header .esp{flex:1}
 header #h-user{color:var(--texto2);font-size:13px}
-.tabs{display:flex;gap:4px;overflow-x:auto;padding:12px 20px;border-bottom:1px solid var(--linea);
-  position:sticky;top:57px;z-index:29;background:rgba(0,0,0,.72);
-  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);scrollbar-width:none}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:12px 20px;border-bottom:1px solid var(--linea);position:sticky;top:57px;z-index:29;background:rgba(0,0,0,.72);backdrop-filter:blur(20px);scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tabs button{flex:none;padding:8px 15px;background:transparent;border:none;border-radius:8px;
-  color:var(--texto2);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;
-  transition:all .15s;white-space:nowrap;letter-spacing:0}
-.tabs button:hover{background:var(--card);color:var(--texto)}
+.tabs button{flex:none;padding:8px 15px;background:transparent;border:none;border-radius:8px;color:var(--texto2);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}
 .tabs button.act{background:var(--accent);color:#fff}
 main{max-width:1200px;margin:0 auto;padding:24px 20px 100px}
-.sec{display:none}.sec.act{display:block;animation:ap .35s ease}
+.sec{display:none}.sec.act{display:block;animation:ap .35s}
 @keyframes ap{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:26px}
-.metric{background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px;text-align:center;transition:border .2s}
-.metric:hover{border-color:var(--linea2)}
-.metric .n{font-size:42px;font-weight:700;letter-spacing:-0.03em;color:var(--texto);line-height:1}
-.metric .t{font-size:11px;font-weight:500;letter-spacing:.08em;color:var(--texto2);margin-top:8px;text-transform:uppercase}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:26px}
+.metric{background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:18px;text-align:center}
+.metric .n{font-size:38px;font-weight:700;line-height:1}
+.metric .t{font-size:11px;color:var(--texto2);margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
 .metric.apto .n{color:var(--verde)}
 .buscador{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .buscador input{flex:1;min-width:200px;margin:0}
-.chip{padding:8px 14px;border:1px solid var(--linea);border-radius:20px;background:transparent;
-  color:var(--texto2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s;letter-spacing:0}
-.chip:hover{border-color:var(--linea2);color:var(--texto)}
-.chip.act{background:var(--texto);color:#000;border-color:var(--texto)}
+.chip{padding:8px 14px;border:1px solid var(--linea);border-radius:20px;background:transparent;color:var(--texto2);font-size:12px;cursor:pointer}
+.chip.act{background:var(--texto);color:#000}
 .tabla-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--linea);border-radius:16px}
 table{width:100%;border-collapse:collapse;min-width:880px}
-th{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--texto2);text-align:left;padding:14px 16px;
-  border-bottom:1px solid var(--linea);text-transform:uppercase;background:rgba(255,255,255,.02)}
+th{font-size:11px;font-weight:600;color:var(--texto2);text-align:left;padding:14px 16px;border-bottom:1px solid var(--linea);text-transform:uppercase;background:rgba(255,255,255,.02)}
 td{padding:14px 16px;border-bottom:1px solid var(--linea);font-size:14px;vertical-align:middle}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(255,255,255,.02)}
 .barra{width:90px;height:4px;background:var(--card2);border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle}
-.barra i{display:block;height:100%;background:var(--accent);border-radius:2px}
-.tag{font-size:10px;font-weight:600;letter-spacing:.04em;padding:4px 10px;border-radius:6px;
-  border:1px solid var(--linea);color:var(--texto2);white-space:nowrap;text-transform:uppercase}
+.barra i{display:block;height:100%;background:var(--accent)}
+.tag{font-size:10px;font-weight:600;padding:4px 10px;border-radius:6px;border:1px solid var(--linea);color:var(--texto2);white-space:nowrap;text-transform:uppercase}
 .tag.apto{background:rgba(48,209,88,.15);border-color:rgba(48,209,88,.3);color:var(--verde)}
-.grid-sellos{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.sello-card{background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px;transition:border .2s}
-.sello-card:hover{border-color:var(--linea2)}
-.sello-card .cab{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--linea)}
-.sello-card .glifo{font-size:28px;width:48px;height:48px;display:grid;place-items:center;background:var(--card2);border-radius:12px}
-.sello-card .num{font-size:14px;font-weight:600;flex:1}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px;margin-bottom:16px}
+.card h3{font-size:13px;color:var(--texto2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.sello-card{background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px}
 .sello-card input{margin-bottom:10px}
 .qr-zone{display:flex;gap:14px;align-items:center;margin-top:14px;padding:14px;background:var(--bg2);border-radius:var(--radius-sm)}
 .qr-zone .qr{background:#fff;padding:8px;border-radius:8px;width:120px;height:120px;display:grid;place-items:center;flex:none}
-.qr-zone .qr:empty::after{content:"Sin código";color:#999;font-size:11px}
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
 .form-grid input,.form-grid select{margin:0}
-.titulo-sec{font-size:24px;font-weight:600;margin-bottom:6px;letter-spacing:-0.02em}
+.titulo-sec{font-size:24px;margin-bottom:6px}
 .sub-sec{color:var(--texto2);font-size:14px;margin-bottom:22px}
-.item-prog{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--linea);
-  border-radius:var(--radius);margin-bottom:8px;background:var(--card);flex-wrap:wrap;transition:border .2s}
-.item-prog:hover{border-color:var(--linea2)}
+.item-prog{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--linea);border-radius:var(--radius);margin-bottom:8px;background:var(--card);flex-wrap:wrap}
 .item-prog .hora{font-weight:600;color:var(--accent);font-size:15px;min-width:64px}
-.item-prog .hora .fch{display:block;font-size:10px;font-weight:500;color:var(--texto2);margin-top:4px;letter-spacing:.04em}
 .item-prog .det{flex:1;min-width:180px}
-.item-prog .det b{display:block;font-weight:500;margin-bottom:2px}
+.item-prog .det b{display:block;margin-bottom:2px}
 .item-prog .det span{color:var(--texto2);font-size:13px}
-.ganador{border:1px solid rgba(48,209,88,.3);border-radius:16px;padding:18px;margin-top:10px;text-align:center;
-  background:rgba(48,209,88,.05);animation:ap .5s ease}
-.ganador .n{font-size:18px;font-weight:600;color:var(--verde)}
-.ganador .d{color:var(--texto2);font-size:13px;margin-top:4px}
+.tgl{display:flex;gap:10px;align-items:center;font-size:14px;margin:10px 0;cursor:pointer}
 #toasts{position:fixed;top:14px;right:14px;left:14px;z-index:80;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--card);border:1px solid var(--linea2);border-radius:14px;padding:14px 18px;
-  box-shadow:0 8px 32px rgba(0,0,0,.5);animation:ap .35s ease;font-size:14px;backdrop-filter:saturate(180%) blur(20px)}
+.toast{background:var(--card);border:1px solid var(--linea2);border-radius:14px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:ap .35s;font-size:14px}
 .vacio{color:var(--texto3);text-align:center;padding:40px;font-size:14px}
-.rz-check{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--texto);margin:12px 0;text-align:left;cursor:pointer}
-.rz-check:hover{color:var(--texto2)}
-.avatar-prev{width:64px;height:64px;border-radius:50%;object-fit:cover;background:var(--card2);
-  border:2px solid var(--linea2);display:block;margin-top:6px}
-@media (max-width:640px){
-  header{padding:12px 16px}
-  main{padding:18px 14px 100px}
-  .metric .n{font-size:34px}
-  .titulo-sec{font-size:20px}
-}
+.rz-check{display:flex;gap:10px;align-items:center;font-size:14px;margin:12px 0;cursor:pointer}
+.avatar-prev{width:64px;height:64px;border-radius:50%;object-fit:cover;background:var(--card2);border:2px solid var(--linea2);display:block;margin-top:6px}
+@media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:32px}.titulo-sec{font-size:20px}}
 </style>
 </head>
 <body>
 <div id="toasts"></div>
-
-<section id="s-login">
-  <div class="caja-login">
-    <div class="escudo">⚙️</div>
-    <h1>Panel de Control</h1>
-    <p>Símbolos &amp; Vinos · MMXXVI · Acceso reservado</p>
-    <label>CORREO</label><input id="l-email" type="email" placeholder="tu@correo.com">
-    <label>CLAVE</label><input id="l-clave" type="password" placeholder="••••••••">
-    <button class="btn solido" style="width:100%;margin-top:14px" onclick="login()">Iniciar sesión</button>
-    <div class="err" id="l-err"></div>
-  </div>
-</section>
-
-<section id="s-noperm" class="oculto" style="min-height:100dvh;display:grid;place-items:center;padding:24px">
-  <div style="text-align:center;max-width:380px;background:var(--card);padding:40px 32px;border-radius:20px;border:1px solid var(--linea)">
-    <div style="font-size:48px">🔒</div>
-    <h2 style="margin:14px 0 8px">Acceso restringido</h2>
-    <p style="color:var(--texto2);font-size:14px">Tu cuenta no tiene permisos de administrador. Contacta al organizador.</p>
-    <button class="btn" style="margin-top:20px" onclick="salir()">Salir</button>
-  </div>
-</section>
+<section id="s-login"><div class="caja-login"><div class="escudo">⚙️</div><h1>Panel de Control</h1><p>Símbolos &amp; Vinos · MMXXVI</p>
+<label>CORREO</label><input id="l-email" type="email"><label>CLAVE</label><input id="l-clave" type="password">
+<button class="btn solido" style="width:100%;margin-top:14px" onclick="login()">Iniciar sesión</button><div class="err" id="l-err"></div></div></section>
+<section id="s-noperm" class="oculto" style="min-height:100dvh;display:grid;place-items:center;padding:24px"><div style="text-align:center;max-width:380px;background:var(--card);padding:40px;border-radius:20px"><div style="font-size:48px">🔒</div><h2 style="margin:14px 0 8px">Acceso restringido</h2><button class="btn" style="margin-top:20px" onclick="salir()">Salir</button></div></section>
 
 <div id="s-app" class="oculto">
-<header>
-  <span class="marca">S&amp;V Panel</span>
-  <span class="rol" id="h-rol">—</span>
-  <span class="esp"></span>
-  <span id="h-user"></span>
-  <button class="btn mini" onclick="salir()">Salir</button>
-</header>
+<header><span class="marca">S&amp;V Panel</span><span class="rol" id="h-rol">—</span><span class="esp"></span><span id="h-user"></span><button class="btn mini" onclick="salir()">Salir</button></header>
 <div class="tabs" id="tabs"></div>
 <main>
 
-  <section class="sec" id="sec-torre">
-    <div class="metrics">
-      <div class="metric"><div class="n" id="m-total">0</div><div class="t">Participantes</div></div>
-      <div class="metric"><div class="n" id="m-iniciados">0</div><div class="t">Iniciaron</div></div>
-      <div class="metric apto"><div class="n" id="m-aptos">0</div><div class="t">Aptos al sorteo</div></div>
-    </div>
-    <div class="buscador">
-      <input id="q" placeholder="Buscar por nombre, correo o teléfono…" oninput="pintarTabla()">
-      <button class="chip act" data-f="todos" onclick="filtro('todos',this)">Todos</button>
-      <button class="chip" data-f="iniciado" onclick="filtro('iniciado',this)">Iniciaron</button>
-      <button class="chip" data-f="apto" onclick="filtro('apto',this)">Aptos</button>
-      <button class="btn mini solido oculto" id="btn-xlsx" onclick="exportar()">⬇ Excel</button>
-    </div>
-    <div class="tabla-wrap"><table>
-      <thead><tr><th>Nombre</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Perfil (quiz)</th><th>Registro</th><th>Acciones</th></tr></thead>
-      <tbody id="tb"></tbody>
-    </table></div>
-  </section>
+<section class="sec" id="sec-torre">
+ <div class="metrics">
+  <div class="metric"><div class="n" id="m-total">0</div><div class="t">Participantes</div></div>
+  <div class="metric"><div class="n" id="m-iniciados">0</div><div class="t">Iniciaron</div></div>
+  <div class="metric apto"><div class="n" id="m-aptos">0</div><div class="t">Aptos</div></div>
+  <div class="metric"><div class="n" id="m-circulo">0</div><div class="t">Círculo</div></div>
+ </div>
+ <div class="buscador"><input id="q" placeholder="Buscar…" oninput="pintarTabla()">
+  <button class="chip act" onclick="filtro('todos',this)">Todos</button>
+  <button class="chip" onclick="filtro('iniciado',this)">Iniciaron</button>
+  <button class="chip" onclick="filtro('apto',this)">Aptos</button>
+  <button class="btn mini solido oculto" id="btn-xlsx" onclick="exportar()">⬇ Excel completo</button></div>
+ <div class="tabla-wrap"><table><thead><tr><th>Nombre</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Perfil/Quiz</th><th>Consent.</th><th>Acciones</th></tr></thead><tbody id="tb"></tbody></table></div>
+</section>
 
-  <section class="sec" id="sec-sellos">
-    <h2 class="titulo-sec">Los 7 Sellos</h2>
-    <p class="sub-sec">Define nombre, salón y el fragmento que revela cada sello. Genera los QR para imprimir.</p>
-    <div class="grid-sellos" id="grid-sellos"></div>
-  </section>
+<section class="sec" id="sec-juegos">
+ <h2 class="titulo-sec">Salón de Juegos · Control</h2>
+ <p class="sub-sec">Activa cada juego, configura sus contenidos y mira los resultados en tiempo real.</p>
+ <div class="card"><h3>Activar / desactivar juegos</h3><div id="jz-toggles"></div></div>
+ <div class="card"><h3>Contenidos</h3>
+  <label>Salones de auxilio (uno por línea)</label><textarea id="jz-salones"></textarea>
+  <label>Bodegas del pasaporte (una por línea)</label><textarea id="jz-bodegas"></textarea>
+  <label>Misiones del bingo (una por línea)</label><textarea id="jz-misiones"></textarea>
+  <label>Bodegas a votación (una por línea)</label><textarea id="jz-bvoto"></textarea>
+  <label>Link del álbum (Google Fotos)</label><input id="jz-album" placeholder="https://photos.app.goo.gl/…">
+  <label>Hora del sorteo (cuenta regresiva)</label><input id="jz-sorteo" type="datetime-local">
+  <button class="btn solido" style="margin-top:10px" onclick="guardarJuegos()">Guardar juegos y contenidos</button></div>
+ <div class="grid2">
+  <div class="card"><h3>Aplausos en vivo</h3><div style="font-size:40px;font-weight:700" id="jz-apl">0</div><button class="btn mini peligro" style="margin-top:10px" onclick="resetAplausos()">Reiniciar contador</button></div>
+  <div class="card"><h3>Estadísticas</h3><div id="jz-stats" style="font-size:14px;color:var(--texto2)"></div></div>
+ </div>
+ <div class="card"><h3>Voto a bodega favorita</h3><div id="jz-votores"></div></div>
+ <div class="card"><h3>Ranking en vivo</h3><div id="jz-rank"></div></div>
+ <div class="card"><h3>Muro de susurros · moderación</h3><div id="jz-muro"></div></div>
+ <div class="card"><h3>Botón de auxilio · en vivo</h3><div id="jz-aux"></div></div>
+</section>
 
-  <section class="sec" id="sec-programa">
-    <h2 class="titulo-sec">Programa de actividades</h2>
-    <p class="sub-sec">Los participantes verán esto en vivo y recibirán aviso 5 minutos antes de cada actividad.</p>
-    <div class="form-grid" style="margin-bottom:14px">
-      <div><label>FECHA</label><input id="pg-fecha" type="date"></div>
-      <div><label>HORA</label><input id="pg-hora" type="time"></div>
-      <div><label>TEMA</label><input id="pg-tema" placeholder="Ej: Cata de Malbec"></div>
-      <div><label>DISERTANTE</label><input id="pg-dis" placeholder="Ej: María Pérez"></div>
-      <div><label>LUGAR</label><input id="pg-lugar" placeholder="Ej: Salón Barrica"></div>
-    </div>
-    <button class="btn solido" onclick="guardarProg()">+ Agregar al programa</button>
-    <div id="lista-prog" style="margin-top:20px"></div>
-  </section>
+<section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento y QR de cada sello.</p><div class="grid2" id="grid-sellos"></div></section>
 
-  <section class="sec" id="sec-oraculo">
-    <h2 class="titulo-sec">Mensajes a participantes</h2>
-    <p class="sub-sec">El mensaje aparecerá al instante en la app de todos los participantes, con sonido y vibración.</p>
-    <label>TÍTULO</label><input id="an-titulo" placeholder="Ej: Recordatorio importante">
-    <label>MENSAJE</label><input id="an-msg" placeholder="Ej: La cata comienza en 5 minutos en el Salón Barrica…">
-    <button class="btn solido" onclick="enviarAnuncio()">Enviar mensaje</button>
-    <div id="lista-anun" style="margin-top:24px"></div>
-  </section>
+<section class="sec" id="sec-programa"><h2 class="titulo-sec">Programa</h2>
+ <div class="form-grid" style="margin-bottom:14px">
+  <div><label>FECHA</label><input id="pg-fecha" type="date"></div><div><label>HORA</label><input id="pg-hora" type="time"></div>
+  <div><label>TEMA</label><input id="pg-tema"></div><div><label>DISERTANTE</label><input id="pg-dis"></div><div><label>LUGAR</label><input id="pg-lugar"></div></div>
+ <button class="btn solido" onclick="guardarProg()">+ Agregar</button><div id="lista-prog" style="margin-top:20px"></div></section>
 
-  <section class="sec" id="sec-chat">
-    <h2 class="titulo-sec">Chat del Oráculo</h2>
-    <p class="sub-sec">Crea las preguntas sugeridas y sus respuestas automáticas. Los participantes las verán como botones en su chat.</p>
-    <div style="background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px">
-      <label>PREGUNTA (el botón que verá el participante)</label>
-      <input id="fq-p" placeholder="Ej: ¿Dónde está el primer sello?">
-      <label>RESPUESTA AUTOMÁTICA</label>
-      <textarea id="fq-r" placeholder="Ej: El primer sello duerme bajo la barrica más antigua del Salón Mayor…"></textarea>
-      <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
-        <button class="btn solido" onclick="guardarFAQ()">Guardar pregunta</button>
-        <button class="btn oculto" id="fq-cancel" onclick="cancelarFAQ()">Cancelar edición</button>
-      </div>
-    </div>
-    <div id="lista-faq" style="margin-top:20px"></div>
-  </section>
+<section class="sec" id="sec-oraculo"><h2 class="titulo-sec">Mensajes</h2>
+ <label>TÍTULO</label><input id="an-titulo"><label>MENSAJE</label><input id="an-msg">
+ <button class="btn solido" onclick="enviarAnuncio()">Enviar</button><div id="lista-anun" style="margin-top:20px"></div></section>
 
-  <section class="sec" id="sec-quiz">
-    <h2 class="titulo-sec">Arcano Enológico · Quiz de leads</h2>
-    <p class="sub-sec">Activa el quiz, edita preguntas y el dato que captura cada opción. Los resultados caen en la ficha de cada participante, en vivo.</p>
-    <div style="background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px">
-      <label class="rz-check"><input type="checkbox" id="qz-activo" onchange="toggleQuiz()"> Quiz activo en la app de participantes</label>
-      <div id="qz-form"></div>
-      <button class="btn solido" style="margin-top:14px" onclick="guardarQuiz()">Guardar quiz</button>
-    </div>
-    <div style="margin-top:24px">
-      <h3 style="font-size:12px;color:var(--texto2);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Resultados en vivo</h3>
-      <div id="qz-res"></div>
-    </div>
-    <div style="margin-top:24px;background:var(--card);border:1px solid rgba(255,69,58,.25);border-radius:16px;padding:20px">
-      <b style="color:var(--rojo)">Resetear quiz de TODOS los participantes</b>
-      <p style="color:var(--texto2);font-size:13px;margin:8px 0 14px">Borra el quiz y el perfil enológico de todos los participantes, para que puedan descubrir su arcano de nuevo.</p>
-      <button class="btn peligro" onclick="resetQuizGlobal()">Resetear todos los quizzes</button>
-    </div>
-  </section>
+<section class="sec" id="sec-chat"><h2 class="titulo-sec">Chat del Oráculo</h2>
+ <div class="card"><label>PREGUNTA</label><input id="fq-p"><label>RESPUESTA</label><textarea id="fq-r"></textarea>
+ <button class="btn solido" onclick="guardarFAQ()">Guardar</button><button class="btn oculto" id="fq-cancel" onclick="cancelarFAQ()">Cancelar</button></div>
+ <div id="lista-faq"></div></section>
 
-  <section class="sec" id="sec-perfil">
-    <h2 class="titulo-sec">Perfil del Oráculo</h2>
-    <p class="sub-sec">Personaliza quién habla, quién notifica y cómo se presenta la app. Exclusivo del Maestro.</p>
-    <div style="background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px">
-      <div class="form-grid">
-        <div><label>NOMBRE DEL ORÁCULO (quien habla y notifica)</label><input id="pf-nombre" placeholder="El Oráculo de la Bodega"></div>
-        <div><label>TÍTULO DE LA APP</label><input id="pf-titulo" placeholder="Símbolos & Vinos"></div>
-        <div><label>SUBTÍTULO DE LA APP</label><input id="pf-sub" placeholder="Edición Masónica · MMXXVI"></div>
-      </div>
-      <div class="form-grid" style="margin-top:14px">
-        <div>
-          <label>LINK DEL AVATAR DEL ORÁCULO</label>
-          <input id="pf-url-oraculo" placeholder="https://…/oraculo.png" oninput="prevAvatar('oraculo')">
-          <img id="pf-img-oraculo" class="avatar-prev" alt="" style="visibility:hidden">
-        </div>
-        <div>
-          <label>LINK DEL AVATAR POR DEFECTO DEL PARTICIPANTE</label>
-          <input id="pf-url-usuario" placeholder="https://…/buscador.png" oninput="prevAvatar('usuario')">
-          <img id="pf-img-usuario" class="avatar-prev" alt="" style="visibility:hidden">
-        </div>
-      </div>
-      <p style="color:var(--texto3);font-size:12px;margin-top:10px">💡 Sube la imagen a tu repositorio de GitHub (Add file → Upload files) y pega aquí el link "Raw".</p>
-      <button class="btn solido" style="margin-top:14px" onclick="guardarPerfil()">Guardar perfil</button>
-    </div>
-    <div style="margin-top:20px;background:var(--card);border:1px solid rgba(255,69,58,.25);border-radius:16px;padding:20px">
-      <b style="color:var(--rojo)">Reinicio de chats</b>
-      <p style="color:var(--texto2);font-size:13px;margin:8px 0 14px">Borra el historial de conversación del chat en los teléfonos de todos los participantes, para comenzar de cero.</p>
-      <button class="btn peligro" onclick="resetChats()">Reiniciar chats de participantes</button>
-    </div>
-  </section>
+<section class="sec" id="sec-quiz"><h2 class="titulo-sec">Arcano Enológico</h2>
+ <div class="card"><label class="tgl"><input type="checkbox" id="qz-activo" onchange="toggleQuiz()"> Quiz activo</label><div id="qz-form"></div>
+ <button class="btn solido" style="margin-top:14px" onclick="guardarQuiz()">Guardar quiz</button></div>
+ <div class="card"><h3>Resultados en vivo</h3><div id="qz-res"></div></div></section>
 
-  <section class="sec" id="sec-sorteo">
-    <h2 class="titulo-sec">Sorteo final</h2>
-    <p class="sub-sec">Solo los participantes APTOS entran al sorteo. El azar elige sin repetir y queda registrado.</p>
-    <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
-      <div style="width:180px"><label>CANTIDAD DE GANADORES</label><input id="so-n" type="number" min="1" value="3"></div>
-      <button class="btn solido" onclick="sortear()">Ejecutar sorteo</button>
-    </div>
-    <div id="res-sorteo"></div>
-    <div id="hist-sorteo" style="margin-top:28px"></div>
-  </section>
+<section class="sec" id="sec-perfil"><h2 class="titulo-sec">Perfil del Oráculo</h2>
+ <div class="card"><div class="form-grid">
+  <div><label>NOMBRE ORÁCULO</label><input id="pf-nombre"></div><div><label>TÍTULO APP</label><input id="pf-titulo"></div><div><label>SUBTÍTULO</label><input id="pf-sub"></div></div>
+  <div class="form-grid" style="margin-top:12px">
+  <div><label>LINK AVATAR ORÁCULO</label><input id="pf-url-oraculo" oninput="prevAvatar('oraculo')"><img id="pf-img-oraculo" class="avatar-prev" style="visibility:hidden"></div>
+  <div><label>LINK AVATAR PARTICIPANTE</label><input id="pf-url-usuario" oninput="prevAvatar('usuario')"><img id="pf-img-usuario" class="avatar-prev" style="visibility:hidden"></div></div>
+ <button class="btn solido" style="margin-top:14px" onclick="guardarPerfil()">Guardar perfil</button></div>
+ <div class="card" style="border-color:rgba(255,69,58,.25)"><b style="color:var(--rojo)">Reiniciar chats</b><p style="color:var(--texto2);font-size:13px;margin:8px 0">Borra el historial de chat de todos.</p><button class="btn peligro" onclick="resetChats()">Reiniciar chats</button></div></section>
 
-  <section class="sec" id="sec-equipo">
-    <h2 class="titulo-sec">Equipo de administradores</h2>
-    <p class="sub-sec">Crea cuentas y asigna roles: Maestro, Configurador o Monitor.</p>
-    <div class="form-grid" style="margin-bottom:8px">
-      <div><label>NOMBRE</label><input id="eq-nombre" placeholder="Nombre completo"></div>
-      <div><label>CORREO</label><input id="eq-email" type="email" placeholder="correo@..."></div>
-      <div><label>CLAVE TEMPORAL</label><input id="eq-clave" type="password" placeholder="Mínimo 6 caracteres"></div>
-      <div><label>ROL</label><select id="eq-rol">
-        <option value="monitor">Monitor (solo ve)</option>
-        <option value="configurador">Configurador</option>
-        <option value="maestro">Maestro</option>
-      </select></div>
-    </div>
-    <button class="btn solido" onclick="crearAdmin()">Crear administrador</button>
-    <div class="err" id="eq-err"></div>
-    <div id="lista-admins" style="margin-top:24px"></div>
-  </section>
+<section class="sec" id="sec-sorteo"><h2 class="titulo-sec">Sorteo final</h2>
+ <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap"><div style="width:180px"><label>GANADORES</label><input id="so-n" type="number" min="1" value="3"></div>
+ <button class="btn solido" onclick="sortear()">Ejecutar sorteo (notifica a todos)</button></div>
+ <div id="res-sorteo"></div><div id="hist-sorteo" style="margin-top:20px"></div></section>
 
-  <section class="sec" id="sec-reinicio">
-    <h2 class="titulo-sec">Reinicio del evento</h2>
-    <p class="sub-sec">Pone el evento en cero para un ensayo o nueva edición. Requiere doble confirmación y es irreversible.</p>
-    <div style="background:var(--card);border:1px solid rgba(255,69,58,.25);border-radius:16px;padding:22px">
-      <label class="rz-check"><input type="checkbox" id="rz-prog" checked> Progreso de participantes (sellos → 0/7; las cuentas se conservan)</label>
-      <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones del Oráculo</label>
-      <label class="rz-check"><input type="checkbox" id="rz-sort" checked> Sorteos realizados</label>
-      <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa de actividades</label>
-      <label class="rz-check"><input type="checkbox" id="rz-sellos"> Configuración de sellos y QRs</label>
-      <div style="margin-top:18px">
-        <button class="btn peligro" onclick="rzPaso1()">Reiniciar evento</button>
-      </div>
-      <div id="rz-paso2" class="oculto" style="margin-top:16px;border-top:1px solid rgba(255,69,58,.25);padding-top:16px">
-        <p style="color:var(--rojo);font-size:14px">⚠ <b>Confirmación 1 de 2 registrada.</b> Lo marcado se borrará definitivamente. No hay deshacer.</p>
-        <button class="btn peligro" style="margin-top:12px" onclick="rzPaso2()">Confirmación 2 de 2 — Ejecutar</button>
-        <button class="btn mini" style="margin-left:8px" onclick="rzCancelar()">Cancelar</button>
-      </div>
-    </div>
-  </section>
+<section class="sec" id="sec-equipo"><h2 class="titulo-sec">Equipo</h2>
+ <div class="form-grid" style="margin-bottom:8px"><div><label>NOMBRE</label><input id="eq-nombre"></div><div><label>CORREO</label><input id="eq-email"></div><div><label>CLAVE</label><input id="eq-clave" type="password"></div>
+ <div><label>ROL</label><select id="eq-rol"><option value="monitor">Monitor</option><option value="configurador">Configurador</option><option value="maestro">Maestro</option></select></div></div>
+ <button class="btn solido" onclick="crearAdmin()">Crear admin</button><div class="err" id="eq-err"></div><div id="lista-admins" style="margin-top:20px"></div></section>
 
-</main>
-</div>
+<section class="sec" id="sec-reinicio"><h2 class="titulo-sec">Reinicio del evento</h2>
+ <div class="card" style="border-color:rgba(255,69,58,.25)">
+  <label class="rz-check"><input type="checkbox" id="rz-prog" checked> Progreso sellos → 0/7</label>
+  <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones</label>
+  <label class="rz-check"><input type="checkbox" id="rz-sort" checked> Sorteos</label>
+  <label class="rz-check"><input type="checkbox" id="rz-juegos"> Datos de juegos (pasaporte, bingo, voto, círculo)</label>
+  <label class="rz-check"><input type="checkbox" id="rz-muro"> Muro de susurros</label>
+  <label class="rz-check"><input type="checkbox" id="rz-aux"> Pedidos de auxilio</label>
+  <label class="rz-check"><input type="checkbox" id="rz-aplausos"> Contador de aplausos</label>
+  <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa</label>
+  <label class="rz-check"><input type="checkbox" id="rz-sellos"> Sellos y QRs</label>
+  <button class="btn peligro" style="margin-top:14px" onclick="rzPaso1()">Reiniciar evento</button>
+  <div id="rz-paso2" class="oculto" style="margin-top:14px"><p style="color:var(--rojo)">⚠ Confirmación 1 de 2.</p>
+  <button class="btn peligro" onclick="rzPaso2()">Confirmación 2 de 2 — Ejecutar</button><button class="btn mini" onclick="rzCancelar()">Cancelar</button></div></div></section>
+
+</main></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, addDoc, writeBatch,
-         onSnapshot, collection, deleteField } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const CFG = {
-  apiKey: "AIzaSyA-1VBoP1hTjzbLSsMvqXYealszIu0y66g",
-  authDomain: "simbolos-vinos-2026.firebaseapp.com",
-  projectId: "simbolos-vinos-2026",
-  storageBucket: "simbolos-vinos-2026.firebasestorage.app",
-  messagingSenderId: "1055775891853",
-  appId: "1:1055775891853:web:ba134c84b0c33905aa5dc4"
-};
-const app = initializeApp(CFG);
-const auth = getAuth(app), db = getFirestore(app);
-const $ = id => document.getElementById(id);
-const esc = s => String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
-const toast = m => { const d=document.createElement('div'); d.className='toast'; d.textContent=m;
-  $('toasts').appendChild(d); setTimeout(()=>d.remove(),5000); };
-const hoyISO = () => { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
-const fmtF = f => { if(!f) return 'HOY'; const d=new Date(f+'T12:00:00');
-  return d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'}); };
-
-const QUIZ_DEF={activo:false,preguntas:[
- {categoria:'Varietal',pregunta:'¿Qué uva te llama en la noche?',opciones:[
-   {t:'Malbec profundo',v:'Malbec'},{t:'Cabernet firme',v:'Cabernet'},{t:'Torrontés luminoso',v:'Torrontés'},{t:'Blend misterioso',v:'Blend'}]},
- {categoria:'Estilo',pregunta:'¿Cómo es tu copa ideal?',opciones:[
-   {t:'Joven y frutal',v:'Joven'},{t:'Con crianza en roble',v:'Crianza'},{t:'Espumante y vibrante',v:'Espumante'},{t:'Dulce y envolvente',v:'Dulce'}]},
- {categoria:'Frecuencia',pregunta:'¿Cuándo sueles descorchar?',opciones:[
-   {t:'Cada semana',v:'Semanal'},{t:'Cada mes',v:'Mensual'},{t:'Ocasiones especiales',v:'Ocasiones'},{t:'Esta noche es mi estreno',v:'Primera vez'}]},
- {categoria:'Interes',pregunta:'¿Qué te gustaría recibir en el futuro?',opciones:[
-   {t:'Invitaciones y catas',v:'Invitaciones'},{t:'Ofertas de vinos',v:'Ofertas'},{t:'Cursos de historia y simbolismo',v:'Cursos'},{t:'Todo lo anterior',v:'Todo'}]}
-]};
-
-let yo=null, miRol=null, PART={}, filtroAct='todos', FAQ=[], fqEdit=null, PERFIL={}, perfilLoaded=false;
-let QUIZ=null, quizFormLoaded=false;
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, addDoc, writeBatch, onSnapshot, collection, deleteField } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const CFG={apiKey:"AIzaSyA-1VBoP1hTjzbLSsMvqXYealszIu0y66g",authDomain:"simbolos-vinos-2026.firebaseapp.com",projectId:"simbolos-vinos-2026",storageBucket:"simbolos-vinos-2026.firebasestorage.app",messagingSenderId:"1055775891853",appId:"1:1055775891853:web:ba134c84b0c33905aa5dc4"};
+const app=initializeApp(CFG),auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+const toast=m=>{const d=document.createElement('div');d.className='toast';d.textContent=m;$('toasts').appendChild(d);setTimeout(()=>d.remove(),5000);};
+const hoyISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
+const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
+const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
+const JG_META=[['quiz','Arcano (quiz)'],['pasaporte','Pasaporte de cata'],['bingo','Bingo'],['ranking','Tabla de buscadores'],['marco','Marco de fotos'],['credencial','Credencial de Digno'],['muro','Muro de susurros'],['aplausos','Aplausos en vivo'],['progPersonal','Programa personal'],['auxilio','Botón de auxilio'],['album','Álbum'],['circulo','Círculo de beneficios'],['voto','Voto bodega']];
+let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},MURO=[],AUX=[],VOTOS=[],APLAUSOS=0;
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
-const PERM={torre:['maestro','configurador','monitor'],sellos:['maestro','configurador'],
- programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],
- quiz:['maestro','configurador'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
-const TABS=[['torre','Dashboard'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['quiz','Quiz'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
-
-window.login = async ()=>{ try{
-  await signInWithEmailAndPassword(auth,$('l-email').value.trim(),$('l-clave').value);
- }catch(e){ $('l-err').textContent = e.code==='auth/invalid-credential'?'Credenciales incorrectas.':'Error: '+e.code; } };
-window.salir = ()=> signOut(auth);
-
-onAuthStateChanged(auth, async u=>{
-  if(!u){ yo=null; miRol=null; $('s-app').classList.add('oculto'); $('s-noperm').classList.add('oculto'); $('s-login').style.display='grid'; return; }
-  yo=u.uid; $('s-login').style.display='none';
-  const s = await getDoc(doc(db,'admins',yo));
-  if(!s.exists()){ $('s-noperm').classList.remove('oculto'); return; }
-  miRol = s.data().rol;
-  $('h-rol').textContent = miRol.charAt(0).toUpperCase()+miRol.slice(1);
-  $('h-user').textContent = s.data().nombre||s.data().email;
-  $('s-app').classList.remove('oculto');
-  const tabs=$('tabs'); tabs.innerHTML='';
-  TABS.filter(([k])=>PERM[k].includes(miRol)).forEach(([k,n],i)=>{
-    const b=document.createElement('button'); b.textContent=n; b.onclick=()=>irSec(k,b); tabs.appendChild(b);
-    if(i===0) irSec(k,b);
-  });
-  if(miRol==='maestro') $('btn-xlsx').classList.remove('oculto');
-  escuchar();
-});
-
-function irSec(k,btn){ document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('act'));
-  btn&&btn.classList.add('act');
-  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('act')); $('sec-'+k).classList.add('act'); }
+const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],quiz:['maestro','configurador'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
+const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['quiz','Quiz'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
+window.login=async()=>{try{await signInWithEmailAndPassword(auth,$('l-email').value.trim(),$('l-clave').value);}catch(e){$('l-err').textContent='Credenciales incorrectas';}};
+window.salir=()=>signOut(auth);
+onAuthStateChanged(auth,async u=>{if(!u){yo=null;miRol=null;$('s-app').classList.add('oculto');$('s-noperm').classList.add('oculto');$('s-login').style.display='grid';return;}
+ yo=u.uid;$('s-login').style.display='none';const s=await getDoc(doc(db,'admins',yo));if(!s.exists()){$('s-noperm').classList.remove('oculto');return;}
+ miRol=s.data().rol;$('h-rol').textContent=miRol;$('h-user').textContent=s.data().nombre||s.data().email;$('s-app').classList.remove('oculto');
+ const t=$('tabs');t.innerHTML='';TABS.filter(([k])=>PERM[k].includes(miRol)).forEach(([k,n],i)=>{const b=document.createElement('button');b.textContent=n;b.onclick=()=>irSec(k,b);t.appendChild(b);if(i===0)irSec(k,b);});
+ if(miRol==='maestro')$('btn-xlsx').classList.remove('oculto');escuchar();});
+function irSec(k,b){document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');document.querySelectorAll('.sec').forEach(s=>s.classList.remove('act'));$('sec-'+k).classList.add('act');}
 
 function escuchar(){
-  onSnapshot(collection(db,'participantes'), s=>{ PART={}; s.forEach(d=>PART[d.id]={id:d.id,...d.data()});
-    $('m-total').textContent=s.size;
-    $('m-aptos').textContent=Object.values(PART).filter(p=>p.estado==='apto').length;
-    $('m-iniciados').textContent=Object.values(PART).filter(p=>(p.simbolos||[]).length>0).length;
-    pintarTabla(); pintarQuizRes(); });
-  onSnapshot(collection(db,'simbolos'), ()=>pintarSellos());
-  onSnapshot(collection(db,'programa'), s=>{ window.PROG=[]; s.forEach(d=>PROG.push({id:d.id,...d.data()}));
-    PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));
-    pintarProg(); });
-  onSnapshot(collection(db,'anuncios'), s=>{ window.ANUN=[]; s.forEach(d=>ANUN.push({id:d.id,...d.data()}));
-    ANUN.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')); pintarAnun(); });
-  onSnapshot(collection(db,'faq'), s=>{ FAQ=[]; s.forEach(d=>FAQ.push({id:d.id,...d.data()}));
-    FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0)); pintarFAQ(); });
-  onSnapshot(doc(db,'config','perfil'), s=>{ PERFIL = s.exists()? s.data() : {};
-    setPrev('oraculo', PERFIL.avatarOraculo); setPrev('usuario', PERFIL.avatarUsuario);
-    if(!perfilLoaded){ perfilLoaded=true;
-      $('pf-nombre').value=PERFIL.nombreOraculo||''; $('pf-titulo').value=PERFIL.tituloApp||''; $('pf-sub').value=PERFIL.subApp||'';
-      $('pf-url-oraculo').value=PERFIL.avatarOraculo||''; $('pf-url-usuario').value=PERFIL.avatarUsuario||''; } });
-  onSnapshot(doc(db,'config','quiz'), s=>{ QUIZ = s.exists()? s.data() : null;
-    $('qz-activo').checked = !!(QUIZ&&QUIZ.activo);
-    if(!quizFormLoaded){ quizFormLoaded=true; renderQuizForm(); } });
-  onSnapshot(collection(db,'sorteos'), s=>{ window.SORT=[]; s.forEach(d=>SORT.push({id:d.id,...d.data()}));
-    SORT.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')); pintarHistSorteo(); });
-  if(miRol==='maestro') onSnapshot(collection(db,'admins'), s=>{ window.ADM={}; s.forEach(d=>ADM[d.id]=d.data()); pintarAdmins(); });
+ onSnapshot(collection(db,'participantes'),s=>{PART={};s.forEach(d=>PART[d.id]={id:d.id,...d.data()});
+  $('m-total').textContent=s.size;$('m-aptos').textContent=Object.values(PART).filter(p=>p.estado==='apto').length;
+  $('m-iniciados').textContent=Object.values(PART).filter(p=>(p.simbolos||[]).length>0).length;
+  $('m-circulo').textContent=Object.values(PART).filter(p=>p.circulo).length;
+  pintarTabla();pintarQuizRes();pintarStatsJuegos();pintarRankAdmin();});
+ onSnapshot(collection(db,'simbolos'),()=>pintarSellos());
+ onSnapshot(collection(db,'programa'),s=>{window.PROG=[];s.forEach(d=>PROG.push({id:d.id,...d.data()}));PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));pintarProg();});
+ onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>ANUN.push({id:d.id,...d.data()}));pintarAnun();});
+ onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>FAQ.push({id:d.id,...d.data()}));FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarFAQ();});
+ onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};setPrev('oraculo',PERFIL.avatarOraculo);setPrev('usuario',PERFIL.avatarUsuario);if(!perfilLoaded){perfilLoaded=true;$('pf-nombre').value=PERFIL.nombreOraculo||'';$('pf-titulo').value=PERFIL.tituloApp||'';$('pf-sub').value=PERFIL.subApp||'';$('pf-url-oraculo').value=PERFIL.avatarOraculo||'';$('pf-url-usuario').value=PERFIL.avatarUsuario||'';}});
+ onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;$('qz-activo').checked=!!(QUIZ&&QUIZ.activo);if(!quizFormLoaded){quizFormLoaded=true;renderQuizForm();}});
+ onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};if(!juegosLoaded){juegosLoaded=true;renderToggles();}syncToggles();});
+ onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};if(juegosLoaded)fillExtra();});
+ onSnapshot(doc(db,'config','aplausos'),s=>{APLAUSOS=(s.exists()&&s.data().total)||0;$('jz-apl').textContent=APLAUSOS;});
+ onSnapshot(collection(db,'muro'),s=>{MURO=[];s.forEach(d=>MURO.push({id:d.id,...d.data()}));pintarMuroAdmin();});
+ onSnapshot(collection(db,'auxilios'),s=>{AUX=[];s.forEach(d=>AUX.push({id:d.id,...d.data()}));pintarAuxAdmin();});
+ onSnapshot(collection(db,'votos'),s=>{VOTOS=[];s.forEach(d=>VOTOS.push({id:d.id,...d.data()}));pintarVotoAdmin();});
+ onSnapshot(collection(db,'sorteos'),s=>{window.SORT=[];s.forEach(d=>SORT.push({id:d.id,...d.data()}));pintarHistSorteo();});
+ if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>ADM[d.id]=d.data());pintarAdmins();});
 }
 
-/* ── TORRE ── */
-window.filtro=(f,btn)=>{ filtroAct=f; document.querySelectorAll('.chip').forEach(c=>c.classList.remove('act')); btn.classList.add('act'); pintarTabla(); };
-window.pintarTabla=()=>{
-  const q=($('q').value||'').toLowerCase();
-  let rows=Object.values(PART).filter(p=>{
-    if(filtroAct==='apto'&&p.estado!=='apto') return false;
-    if(filtroAct==='iniciado'&&(p.simbolos||[]).length===0) return false;
-    const txt=((p.nombre||'')+' '+(p.apellido||'')+' '+(p.email||'')+' '+(p.telefono||'')+' '+(p.quiz&&p.quiz.titulo||'')).toLowerCase();
-    return txt.includes(q);
-  }).sort((a,b)=>(b.registro||'').localeCompare(a.registro||''));
-  $('tb').innerHTML = rows.length? rows.map(p=>{
-    const n=(p.simbolos||[]).length; const pf=p.perfil||{};
-    const quizHecho = p.quiz && p.quiz.completado;
-    return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td>'+
-    '<td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono)+'</td>'+
-    '<td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td>'+
-    '<td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'En búsqueda')+'</span></td>'+
-    '<td style="color:var(--texto2);font-size:12px">'+(quizHecho? '⚜ '+esc(p.quiz.titulo||'')+'<br>'+esc(pf.Varietal||'')+' · '+esc(pf.Frecuencia||'') : '—')+'</td>'+
-    '<td style="color:var(--texto2);font-size:12px">'+new Date(p.registro||Date.now()).toLocaleString()+'</td>'+
-    '<td style="white-space:nowrap">'+(quizHecho? '<button class="btn mini peligro" onclick="resetearQuiz(\''+p.id+'\')">Resetear quiz</button>' : '<span style="color:var(--texto3);font-size:11px">Sin quiz</span>')+'</td>'+
-    '</tr>';
-  }).join('') : '<tr><td colspan="7" class="vacio">Aún no hay participantes registrados</td></tr>';
-};
-window.exportar=()=>{
-  const rows=Object.values(PART).map(p=>{ const pf=p.perfil||{};
-    return {Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,
-    Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO SORTEO':'EN BUSQUEDA',
-    Varietal:pf.Varietal||'',Estilo:pf.Estilo||'',Frecuencia:pf.Frecuencia||'',Interes:pf.Interes||'',
-    Arcano:(p.quiz&&p.quiz.titulo)||'',Quiz:(p.quiz&&p.quiz.completado)?'SI':'NO',
-    Registro:new Date(p.registro||Date.now()).toLocaleString()}; });
-  const ws=XLSX.utils.json_to_sheet(rows); const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'Participantes'); XLSX.writeFile(wb,'participantes-simbolos-vinos.xlsx');
-  toast('✓ Excel exportado con datos de leads');
-};
-/* ── RESET QUIZ ── */
-window.resetearQuiz=async(id)=>{
-  const p=PART[id]; if(!p) return;
-  if(!confirm('¿Resetear el quiz de '+(p.nombre||'este participante')+'? Podrá descubrir su arcano de nuevo y tu base perderá sus datos enológicos actuales.')) return;
-  await updateDoc(doc(db,'participantes',id),{ quiz:deleteField(), perfil:deleteField() });
-  toast('✓ Quiz reseteado para '+(p.nombre||'el participante'));
-};
-window.resetQuizGlobal=async()=>{
-  if(!confirm('Esto borrará el quiz y perfil enológico de TODOS los participantes. ¿Continuar?')) return;
-  if(!confirm('Confirmación 2 de 2: los participantes podrán redescubrir su arcano. ¿Ejecutar?')) return;
-  const snap = await getDocs(collection(db,'participantes'));
-  const ops=[]; snap.forEach(d=>ops.push({ref:d.ref}));
-  for(let i=0;i<ops.length;i+=450){
-    const b=writeBatch(db);
-    ops.slice(i,i+450).forEach(o=>b.update(o.ref,{quiz:deleteField(),perfil:deleteField()}));
-    await b.commit();
-  }
-  toast('✓ Quiz reseteado en '+ops.length+' participantes');
-};
+/* TORRE */
+window.filtro=(f,b)=>{filtroAct=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('act'));b.classList.add('act');pintarTabla();};
+window.pintarTabla=()=>{const q=($('q').value||'').toLowerCase();
+ let rows=Object.values(PART).filter(p=>{if(filtroAct==='apto'&&p.estado!=='apto')return false;if(filtroAct==='iniciado'&&(p.simbolos||[]).length===0)return false;return((p.nombre||'')+' '+(p.apellido||'')+' '+(p.email||'')).toLowerCase().includes(q);}).sort((a,b)=>(b.registro||'').localeCompare(a.registro||''));
+ $('tb').innerHTML=rows.length?rows.map(p=>{const n=(p.simbolos||[]).length,pf=p.perfil||{},qh=p.quiz&&p.quiz.completado;
+ return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td><td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono)+'</td><td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td><td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'Buscando')+'</span></td><td style="color:var(--texto2);font-size:12px">'+(qh?'⚜ '+esc(p.quiz.titulo)+'<br>'+esc(pf.Varietal||''):'—')+'</td><td style="font-size:11px;color:var(--texto2)">Priv:'+(p.consent&&p.consent.priv?'✓':'—')+'<br>Mkt:'+(p.consent&&p.consent.mkt?'✓':'—')+'</td><td>'+(qh?'<button class="btn mini peligro" onclick="resetearQuiz(\''+p.id+'\')">Reset quiz</button>':'—')+'</td></tr>';}).join(''):'<tr><td colspan="7" class="vacio">Sin participantes</td></tr>';};
+window.resetearQuiz=async id=>{if(!confirm('¿Resetear quiz de este participante?'))return;await updateDoc(doc(db,'participantes',id),{quiz:deleteField(),perfil:deleteField()});toast('✓ Quiz reseteado');};
+window.exportar=()=>{const wb=XLSX.utils.book_new();
+ const rows=Object.values(PART).map(p=>{const pf=p.perfil||{},x=p.extra||{};return{Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO':'BUSCANDO',Varietal:pf.Varietal||'',Estilo:pf.Estilo||'',Frecuencia:pf.Frecuencia||'',Interes:pf.Interes||'',Arcano:(p.quiz&&p.quiz.titulo)||'',ConsentPriv:p.consent&&p.consent.priv?'SI':'NO',ConsentMkt:p.consent&&p.consent.mkt?'SI':'NO',Nacimiento:x.nac||'',Zona:x.zona||'',ComoEntero:x.como||'',Compania:x.comp||'',Catas:(p.pasaporte||[]).length,Bingo:(p.bingo||[]).length,Voto:p.voto||'',Circulo:p.circulo?'SI':'NO',Aplausos:p.aplausos||0,Registro:new Date(p.registro||Date.now()).toLocaleString()};});
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Participantes');
+ const catas=[];Object.values(PART).forEach(p=>(p.pasaporte||[]).forEach(c=>catas.push({Nombre:p.nombre+' '+p.apellido,Bodega:c.b,Estrellas:c.e,Fecha:new Date(c.f).toLocaleString()})));
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(catas.length?catas:[{Info:'sin catas'}]),'Catas');
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(VOTOS.map(v=>({Nombre:v.nombre,Bodega:v.bodega,Fecha:new Date(v.fecha).toLocaleString()}))),'Votos');
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(MURO.map(m=>({Texto:m.texto,Nombre:m.nombre,Aprobado:m.aprobado?'SI':'NO'}))),'Muro');
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(AUX.map(a=>({Nombre:a.nombre,Salon:a.salon,Atendido:a.atendido?'SI':'NO'}))),'Auxilios');
+ XLSX.writeFile(wb,'simbolos-vinos-datos.xlsx');toast('✓ Excel completo exportado');};
 
-/* ── QUIZ ── */
-function renderQuizForm(){
-  const qs=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;
-  $('qz-form').innerHTML=qs.map((q,i)=>
-   '<div style="border-top:1px solid var(--linea);margin-top:16px;padding-top:12px">'+
-   '<div class="form-grid"><div><label>CATEGORÍA (nombre del dato)</label><input id="qz-c'+i+'" value="'+esc(q.categoria)+'"></div>'+
-   '<div style="grid-column:1/-1"><label>PREGUNTA '+(i+1)+'</label><input id="qz-p'+i+'" value="'+esc(q.pregunta)+'"></div></div>'+
-   (q.opciones||[]).map((o,j)=>
-     '<div class="form-grid" style="margin-top:6px"><div><label>OPCIÓN '+(j+1)+' (texto)</label><input id="qz-o'+i+'-'+j+'t" value="'+esc(o.t)+'"></div>'+
-     '<div><label>DATO QUE CAPTURA</label><input id="qz-o'+i+'-'+j+'v" value="'+esc(o.v)+'"></div></div>').join('')+
-   '</div>').join('');
-}
-window.guardarQuiz=async()=>{
-  const base=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;
-  const qs=base.map((q,i)=>({
-    categoria:$('qz-c'+i).value.trim(), pregunta:$('qz-p'+i).value.trim(),
-    opciones:(q.opciones||[]).map((o,j)=>({t:$('qz-o'+i+'-'+j+'t').value.trim(), v:$('qz-o'+i+'-'+j+'v').value.trim()}))
-  }));
-  await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked,preguntas:qs},{merge:true});
-  toast('✓ Quiz guardado');
-};
-window.toggleQuiz=async()=>{
-  await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked},{merge:true});
-  toast($('qz-activo').checked?'✓ Quiz activado en la app':'Quiz desactivado');
-};
-function pintarQuizRes(){
-  const el=$('qz-res'); if(!el) return;
-  const qs=(QUIZ&&QUIZ.preguntas)||[];
-  const done=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado);
-  let html='<p style="color:var(--texto2);font-size:13px;margin-bottom:14px">Completaron el quiz: <b style="color:var(--verde)">'+done.length+'</b> de '+Object.keys(PART).length+' participantes</p>';
-  qs.forEach(q=>{
-    const counts={}; done.forEach(p=>{ const v=(p.perfil||{})[q.categoria]; if(v) counts[v]=(counts[v]||0)+1; });
-    const total=done.length||1;
-    html+='<div style="margin-bottom:16px"><b style="font-size:13px">'+esc(q.pregunta)+'</b>'+
-      Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([v,n])=>{
-        const pct=Math.round(n/total*100);
-        return '<div style="display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px">'+
-        '<span style="width:120px;color:var(--texto2)">'+esc(v)+'</span>'+
-        '<span style="flex:1;height:6px;background:var(--card2);border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:var(--accent)"></i></span>'+
-        '<span style="width:80px;text-align:right;color:var(--texto2)">'+n+' · '+pct+'%</span></div>';
-      }).join('')+'</div>';
-  });
-  el.innerHTML=html;
-}
+/* JUEGOS */
+function renderToggles(){$('jz-toggles').innerHTML=JG_META.map(([k,n])=>'<label class="tgl"><input type="checkbox" id="jz-'+k+'"> '+n+'</label>').join('');}
+function syncToggles(){JG_META.forEach(([k])=>{const e=$('jz-'+k);if(e)e.checked=!!JUEGOS[k];});}
+function fillExtra(){$('jz-salones').value=(EXTRA.salones||[]).join('\n');$('jz-bodegas').value=(EXTRA.bodegas||[]).join('\n');$('jz-misiones').value=(EXTRA.misiones||[]).join('\n');$('jz-bvoto').value=(EXTRA.bodegasVoto||[]).join('\n');$('jz-album').value=EXTRA.albumUrl||'';$('jz-sorteo').value=toLocal(EXTRA.sorteoHora);}
+window.guardarJuegos=async()=>{const j={};JG_META.forEach(([k])=>j[k]=$('jz-'+k).checked);
+ await setDoc(doc(db,'config','juegos'),j);
+ const lines=v=>v.split('\n').map(x=>x.trim()).filter(Boolean);
+ const extra={salones:lines($('jz-salones').value),bodegas:lines($('jz-bodegas').value),misiones:lines($('jz-misiones').value),bodegasVoto:lines($('jz-bvoto').value),albumUrl:$('jz-album').value.trim()};
+ if($('jz-sorteo').value)extra.sorteoHora=new Date($('jz-sorteo').value).toISOString();
+ await setDoc(doc(db,'config','extra'),extra,{merge:true});toast('✓ Juegos y contenidos guardados');};
+window.resetAplausos=async()=>{await setDoc(doc(db,'config','aplausos'),{total:0});toast('✓ Aplausos reiniciados');};
+function pintarStatsJuegos(){const P=Object.values(PART);const catas=P.reduce((a,p)=>a+(p.pasaporte||[]).length,0);const bingo=P.filter(p=>(p.bingo||[]).length>0).length;
+ $('jz-stats').innerHTML='Catas registradas: <b>'+catas+'</b><br>Bingo iniciados: <b>'+bingo+'</b><br>Votos: <b>'+VOTOS.length+'</b><br>Susurros: <b>'+MURO.length+'</b><br>Auxilios: <b>'+AUX.length+'</b>';}
+function pintarRankAdmin(){const r=[...Object.values(PART)].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,10);
+ $('jz-rank').innerHTML=r.map((p,i)=>'<div class="item-prog"><span class="hora">#'+(i+1)+'</span><div class="det"><b>'+esc(p.nombre)+' '+esc(p.apellido||'')+'</b></div><span>'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<div class="vacio">Sin datos aún</div>';}
+function pintarVotoAdmin(){const c={};VOTOS.forEach(v=>c[v.bodega]=(c[v.bodega]||0)+1);const t=VOTOS.length||1;
+ $('jz-votores').innerHTML=Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px"><span style="width:140px;color:var(--texto2)">'+esc(v)+'</span><span style="flex:1;height:6px;background:var(--card2);border-radius:3px"><i style="display:block;height:100%;width:'+Math.round(n/t*100)+'%;background:var(--accent)"></i></span><span>'+n+'</span></div>').join('')||'<div class="vacio">Sin votos</div>';}
+function pintarMuroAdmin(){$('jz-muro').innerHTML=MURO.map(m=>'<div class="item-prog"><div class="det"><b>'+esc(m.texto)+'</b><span>'+esc(m.nombre||'')+' · '+(m.aprobado?'✓ aprobado':'pendiente')+'</span></div>'+(m.aprobado?'<button class="btn mini" onclick="desMuro(\''+m.id+'\')">Ocultar</button>':'<button class="btn mini solido" onclick="okMuro(\''+m.id+'\')">Aprobar</button>')+'<button class="btn mini peligro" onclick="delMuro(\''+m.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin susurros</div>';}
+window.okMuro=async id=>{await updateDoc(doc(db,'muro',id),{aprobado:true});};
+window.desMuro=async id=>{await updateDoc(doc(db,'muro',id),{aprobado:false});};
+window.delMuro=async id=>{if(confirm('¿Eliminar susurro?'))await deleteDoc(doc(db,'muro',id));};
+function pintarAuxAdmin(){$('jz-aux').innerHTML=AUX.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')).map(a=>'<div class="item-prog"><div class="det"><b>🆘 '+esc(a.nombre)+'</b><span>Salón: '+esc(a.salon)+' · '+(a.atendido?'✓ atendido':'pendiente')+'</span></div>'+(a.atendido?'':'<button class="btn mini solido" onclick="okAux(\''+a.id+'\')">Atendido</button>')+'<button class="btn mini peligro" onclick="delAux(\''+a.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin pedidos</div>';}
+window.okAux=async id=>{await updateDoc(doc(db,'auxilios',id),{atendido:true});};
+window.delAux=async id=>{await deleteDoc(doc(db,'auxilios',id));};
 
-/* ── SELLOS ── */
-async function pintarSellos(){
-  const g=$('grid-sellos'); g.innerHTML='';
-  for(let n=1;n<=7;n++){
-    const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};
-    const c=document.createElement('div'); c.className='sello-card';
-    c.innerHTML='<div class="cab"><span class="glifo">'+GLIFOS[n]+'</span><span class="num">Sello '+n+' · '+(s.nombre||'Sin nombre')+'</span></div>'+
-    '<label>NOMBRE</label><input id="sn-'+n+'" value="'+esc(s.nombre||'')+'" placeholder="Ej: Sol">'+
-    '<label>SALÓN</label><input id="ss-'+n+'" value="'+esc(s.salon||'')+'" placeholder="Ej: Salón Barrica">'+
-    '<label>FRAGMENTO QUE REVELA</label><input id="sf-'+n+'" value="'+esc(s.fragmento||'')+'" placeholder="Ej: El oro">'+
-    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn mini solido" onclick="guardarSello('+n+')">Guardar</button>'+
-    '<button class="btn mini" onclick="genToken('+n+')">Generar QR</button>'+
-    '<button class="btn mini" onclick="imprimirQRs()">Imprimir todos</button></div>'+
-    '<div class="qr-zone"><div class="qr" id="qr-'+n+'"></div><div style="font-size:12px;color:var(--texto2)"><div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">Código</div><b id="tk-'+n+'" style="color:var(--texto);font-family:monospace;font-size:12px">'+esc(s.token||'Sin generar')+'</b></div></div>';
-    g.appendChild(c);
-    if(s.token) new QRCode($('qr-'+n),{text:s.token,width:104,height:104,colorDark:'#000',colorLight:'#fff'});
-  }
-}
-window.guardarSello=async n=>{ await setDoc(doc(db,'simbolos',String(n)),{numero:n,
-  nombre:$('sn-'+n).value.trim(), salon:$('ss-'+n).value.trim(), fragmento:$('sf-'+n).value.trim(),
-  token:(await getDoc(doc(db,'simbolos',String(n)))).data()?.token||'', activo:true},{merge:true});
-  toast('✓ Sello '+n+' guardado'); };
-window.genToken=async n=>{
-  const t='SV2026-S'+n+'-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');
-  await setDoc(doc(db,'simbolos',String(n)),{numero:n,token:t},{merge:true});
-  toast('✓ QR generado para sello '+n); };
-window.imprimirQRs=async()=>{
-  let html='<html><head><title>QRs Símbolos & Vinos</title><style>body{font-family:sans-serif;display:flex;flex-wrap:wrap;gap:30px;padding:30px}'+
-  '.c{text-align:center}.c img{width:180px;height:180px}.c b{display:block;margin-top:8px}</style></head><body>';
-  for(let n=1;n<=7;n++){ const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};
-    const el=document.createElement('div'); if(s.token) new QRCode(el,{text:s.token,width:180,height:180,colorDark:'#000',colorLight:'#fff'});
-    const img=el.querySelector('canvas')?el.querySelector('canvas').toDataURL(): (el.querySelector('img')?el.querySelector('img').src:'');
-    html+='<div class="c"><img src="'+img+'"><b>Sello '+n+' · '+esc(s.nombre||'')+'</b><span>'+esc(s.salon||'')+'</span><br><small>'+esc(s.token||'')+'</small></div>'; }
-  html+='</body></html>';
-  const w=window.open(''); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),600);
-};
+/* SELLOS */
+async function pintarSellos(){const g=$('grid-sellos');g.innerHTML='';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const c=document.createElement('div');c.className='sello-card';
+ c.innerHTML='<label>NOMBRE</label><input id="sn-'+n+'" value="'+esc(s.nombre||'')+'"><label>SALÓN</label><input id="ss-'+n+'" value="'+esc(s.salon||'')+'"><label>FRAGMENTO</label><input id="sf-'+n+'" value="'+esc(s.fragmento||'')+'"><div style="display:flex;gap:8px"><button class="btn mini solido" onclick="guardarSello('+n+')">Guardar</button><button class="btn mini" onclick="genToken('+n+')">QR</button><button class="btn mini" onclick="imprimirQRs()">Imprimir</button></div><div class="qr-zone"><div class="qr" id="qr-'+n+'"></div><b id="tk-'+n+'" style="font-family:monospace;font-size:12px">'+esc(s.token||'—')+'</b></div>';
+ g.appendChild(c);if(s.token)new QRCode($('qr-'+n),{text:s.token,width:104,height:104,colorDark:'#000',colorLight:'#fff'});}}
+window.guardarSello=async n=>{await setDoc(doc(db,'simbolos',String(n)),{numero:n,nombre:$('sn-'+n).value.trim(),salon:$('ss-'+n).value.trim(),fragmento:$('sf-'+n).value.trim(),token:(await getDoc(doc(db,'simbolos',String(n)))).data()?.token||'',activo:true},{merge:true});toast('✓ Sello '+n);};
+window.genToken=async n=>{const t='SV2026-S'+n+'-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');await setDoc(doc(db,'simbolos',String(n)),{numero:n,token:t},{merge:true});toast('✓ QR '+n);};
+window.imprimirQRs=async()=>{let h='<html><body style="display:flex;flex-wrap:wrap;gap:30px;padding:30px">';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const el=document.createElement('div');if(s.token)new QRCode(el,{text:s.token,width:180,height:180});const img=el.querySelector('canvas')?el.querySelector('canvas').toDataURL():'';h+='<div style="text-align:center"><img src="'+img+'" style="width:180px"><b>Sello '+n+'</b></div>';}h+='</body></html>';const w=window.open('');w.document.write(h);w.document.close();setTimeout(()=>w.print(),600);};
 
-/* ── PROGRAMA ── */
-window.guardarProg=async()=>{ const h=$('pg-hora').value;
-  if(!h||!$('pg-tema').value) return toast('Completa hora y tema');
-  await addDoc(collection(db,'programa'),{fecha:$('pg-fecha').value||'',hora:h,
-   tema:$('pg-tema').value.trim(),disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim()});
-  ['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value=''); toast('✓ Actividad agregada'); };
-function pintarProg(){ $('lista-prog').innerHTML = PROG.length? PROG.map(a=>
-  '<div class="item-prog"><span class="hora">'+esc(a.hora)+'<span class="fch">'+fmtF(a.fecha)+'</span></span>'+
-  '<div class="det"><b>'+esc(a.tema)+'</b>'+
-  '<span>'+esc(a.disertante)+(a.lugar?' · '+esc(a.lugar):'')+'</span></div>'+
-  '<button class="btn mini peligro" onclick="borrarProg(\''+a.id+'\')">Eliminar</button></div>').join('')
-  : '<div class="vacio">Aún no hay actividades en el programa</div>'; }
-window.borrarProg=async id=>{ await deleteDoc(doc(db,'programa',id)); toast('Actividad eliminada'); };
-
-/* ── ORÁCULO ── */
-window.enviarAnuncio=async()=>{ const t=$('an-titulo').value.trim(), m=$('an-msg').value.trim();
-  if(!m) return toast('Escribe el mensaje');
-  await addDoc(collection(db,'anuncios'),{titulo:t,mensaje:m,fecha:new Date().toISOString()});
-  $('an-titulo').value=''; $('an-msg').value=''; toast('✓ Mensaje enviado a todos los participantes'); };
-function pintarAnun(){ $('lista-anun').innerHTML = ANUN.length? '<h3 style="color:var(--texto2);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Historial</h3>'+
-  ANUN.map(a=>'<div class="item-prog"><div class="det"><b>'+esc(a.titulo||'Mensaje')+'</b><span>'+esc(a.mensaje)+
-  ' · '+new Date(a.fecha).toLocaleString()+'</span></div></div>').join('') : ''; }
-
-/* ── CHAT ── */
-window.guardarFAQ=async()=>{ const p=$('fq-p').value.trim(), r=$('fq-r').value.trim();
-  if(!p||!r) return toast('Completa pregunta y respuesta');
-  if(fqEdit){ await updateDoc(doc(db,'faq',fqEdit),{pregunta:p,respuesta:r}); toast('✓ Pregunta actualizada'); }
-  else{ const ord = FAQ.length? Math.max(...FAQ.map(f=>f.orden||0))+1 : 1;
-    await addDoc(collection(db,'faq'),{pregunta:p,respuesta:r,orden:ord});
-    toast('✓ Pregunta publicada en el chat'); }
-  $('fq-p').value=''; $('fq-r').value=''; fqEdit=null; $('fq-cancel').classList.add('oculto'); };
-window.cancelarFAQ=()=>{ fqEdit=null; $('fq-p').value=''; $('fq-r').value=''; $('fq-cancel').classList.add('oculto'); };
-window.editarFAQ=id=>{ const f=FAQ.find(x=>x.id===id); if(!f) return;
-  fqEdit=id; $('fq-p').value=f.pregunta||''; $('fq-r').value=f.respuesta||'';
-  $('fq-cancel').classList.remove('oculto'); window.scrollTo({top:0,behavior:'smooth'}); };
-window.borrarFAQ=async id=>{ if(confirm('¿Eliminar esta pregunta del chat?')){
-  await deleteDoc(doc(db,'faq',id)); toast('Pregunta eliminada'); } };
-function pintarFAQ(){ $('lista-faq').innerHTML = FAQ.length?
-  '<h3 style="color:var(--texto2);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Preguntas activas ('+FAQ.length+')</h3>'+
-  FAQ.map(f=>'<div class="item-prog"><div class="det"><b>'+esc(f.pregunta)+'</b><span>'+esc(f.respuesta)+'</span></div>'+
-  '<button class="btn mini" onclick="editarFAQ(\''+f.id+'\')">Editar</button>'+
-  '<button class="btn mini peligro" onclick="borrarFAQ(\''+f.id+'\')">Eliminar</button></div>').join('')
-  : '<div class="vacio">Aún no hay preguntas configuradas</div>'; }
-
-/* ── PERFIL ── */
-function setPrev(q,url){ const img=$('pf-img-'+q);
-  if(url){ img.src=url; img.style.visibility='visible'; } else { img.style.visibility='hidden'; } }
+/* PROGRAMA/ORACULO/CHAT/QUIZ/PERFIL */
+window.guardarProg=async()=>{const h=$('pg-hora').value;if(!h||!$('pg-tema').value)return toast('Completa hora y tema');await addDoc(collection(db,'programa'),{fecha:$('pg-fecha').value||'',hora:h,tema:$('pg-tema').value.trim(),disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim()});['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value='');toast('✓ Actividad');};
+function pintarProg(){$('lista-prog').innerHTML=PROG.map(a=>'<div class="item-prog"><span class="hora">'+esc(a.hora)+'<span style="font-size:10px;color:var(--texto2)">'+fmtF(a.fecha)+'</span></span><div class="det"><b>'+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+'</span></div><button class="btn mini peligro" onclick="borrarProg(\''+a.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin actividades</div>';}
+window.borrarProg=async id=>{await deleteDoc(doc(db,'programa',id));};
+window.enviarAnuncio=async()=>{const t=$('an-titulo').value.trim(),m=$('an-msg').value.trim();if(!m)return toast('Escribe el mensaje');await addDoc(collection(db,'anuncios'),{titulo:t,mensaje:m,fecha:new Date().toISOString()});$('an-titulo').value='';$('an-msg').value='';toast('✓ Enviado');};
+function pintarAnun(){$('lista-anun').innerHTML=ANUN.map(a=>'<div class="item-prog"><div class="det"><b>'+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje)+'</span></div></div>').join('');}
+window.guardarFAQ=async()=>{const p=$('fq-p').value.trim(),r=$('fq-r').value.trim();if(!p||!r)return toast('Completa');if(fqEdit){await updateDoc(doc(db,'faq',fqEdit),{pregunta:p,respuesta:r});}else{await addDoc(collection(db,'faq'),{pregunta:p,respuesta:r,orden:FAQ.length+1});}$('fq-p').value='';$('fq-r').value='';fqEdit=null;$('fq-cancel').classList.add('oculto');toast('✓ Guardada');};
+window.cancelarFAQ=()=>{fqEdit=null;$('fq-p').value='';$('fq-r').value='';$('fq-cancel').classList.add('oculto');};
+window.editarFAQ=id=>{const f=FAQ.find(x=>x.id===id);fqEdit=id;$('fq-p').value=f.pregunta;$('fq-r').value=f.respuesta;$('fq-cancel').classList.remove('oculto');};
+window.borrarFAQ=async id=>{if(confirm('¿Eliminar?'))await deleteDoc(doc(db,'faq',id));};
+function pintarFAQ(){$('lista-faq').innerHTML=FAQ.map(f=>'<div class="item-prog"><div class="det"><b>'+esc(f.pregunta)+'</b><span>'+esc(f.respuesta)+'</span></div><button class="btn mini" onclick="editarFAQ(\''+f.id+'\')">Editar</button><button class="btn mini peligro" onclick="borrarFAQ(\''+f.id+'\')">✕</button></div>').join('');}
+function renderQuizForm(){const qs=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;$('qz-form').innerHTML=qs.map((q,i)=>'<div style="border-top:1px solid var(--linea);margin-top:14px;padding-top:10px"><div class="form-grid"><div><label>CATEGORÍA</label><input id="qz-c'+i+'" value="'+esc(q.categoria)+'"></div><div style="grid-column:1/-1"><label>PREGUNTA '+(i+1)+'</label><input id="qz-p'+i+'" value="'+esc(q.pregunta)+'"></div></div>'+(q.opciones||[]).map((o,j)=>'<div class="form-grid" style="margin-top:6px"><div><label>OPCIÓN '+(j+1)+'</label><input id="qz-o'+i+'-'+j+'t" value="'+esc(o.t)+'"></div><div><label>DATO</label><input id="qz-o'+i+'-'+j+'v" value="'+esc(o.v)+'"></div></div>').join('')+'</div>').join('');}
+window.guardarQuiz=async()=>{const b=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;const qs=b.map((q,i)=>({categoria:$('qz-c'+i).value.trim(),pregunta:$('qz-p'+i).value.trim(),opciones:(q.opciones||[]).map((o,j)=>({t:$('qz-o'+i+'-'+j+'t').value.trim(),v:$('qz-o'+i+'-'+j+'v').value.trim()}))}));await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked,preguntas:qs},{merge:true});toast('✓ Quiz guardado');};
+window.toggleQuiz=async()=>{await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked},{merge:true});};
+function pintarQuizRes(){const qs=(QUIZ&&QUIZ.preguntas)||[];const done=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado);let h='<p style="color:var(--texto2);font-size:13px">Completaron: <b style="color:var(--verde)">'+done.length+'</b></p>';qs.forEach(q=>{const c={};done.forEach(p=>{const v=(p.perfil||{})[q.categoria];if(v)c[v]=(c[v]||0)+1;});const t=done.length||1;h+='<b style="font-size:13px">'+esc(q.pregunta)+'</b>'+Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div style="display:flex;gap:8px;margin:5px 0;font-size:12px"><span style="width:110px;color:var(--texto2)">'+esc(v)+'</span><span style="flex:1;height:6px;background:var(--card2)"><i style="display:block;height:100%;width:'+Math.round(n/t*100)+'%;background:var(--accent)"></i></span><span>'+n+'</span></div>').join('');});$('qz-res').innerHTML=h;}
+function setPrev(q,u){const i=$('pf-img-'+q);if(u){i.src=u;i.style.visibility='visible';}else i.style.visibility='hidden';}
 window.prevAvatar=q=>setPrev(q,$('pf-url-'+q).value.trim());
-window.guardarPerfil=async()=>{
-  await setDoc(doc(db,'config','perfil'),{
-    nombreOraculo:$('pf-nombre').value.trim()||'El Oráculo',
-    tituloApp:$('pf-titulo').value.trim(),
-    subApp:$('pf-sub').value.trim(),
-    avatarOraculo:$('pf-url-oraculo').value.trim(),
-    avatarUsuario:$('pf-url-usuario').value.trim()
-  },{merge:true});
-  toast('✓ Perfil del Oráculo guardado');
-};
-window.resetChats=async()=>{
-  if(!confirm('Se borrará el historial de chat de TODOS los participantes. ¿Continuar?')) return;
-  if(!confirm('Confirmación 2 de 2: esta acción es irreversible. ¿Ejecutar?')) return;
-  await setDoc(doc(db,'config','perfil'),{chatReset:new Date().toISOString()},{merge:true});
-  toast('✓ Chats reiniciados en todos los participantes');
-};
+window.guardarPerfil=async()=>{await setDoc(doc(db,'config','perfil'),{nombreOraculo:$('pf-nombre').value.trim()||'El Oráculo',tituloApp:$('pf-titulo').value.trim(),subApp:$('pf-sub').value.trim(),avatarOraculo:$('pf-url-oraculo').value.trim(),avatarUsuario:$('pf-url-usuario').value.trim()},{merge:true});toast('✓ Perfil');};
+window.resetChats=async()=>{if(!confirm('¿Reiniciar chats de todos?'))return;await setDoc(doc(db,'config','perfil'),{chatReset:new Date().toISOString()},{merge:true});toast('✓ Chats reiniciados');};
 
-/* ── SORTEO ── */
-window.sortear=async()=>{
-  const aptos=Object.values(PART).filter(p=>p.estado==='apto');
-  const n=parseInt($('so-n').value)||1;
-  if(!aptos.length) return toast('No hay participantes aptos aún');
-  if(n>aptos.length) return toast('Solo hay '+aptos.length+' aptos');
-  const pool=[...aptos]; const gan=[];
-  for(let i=0;i<n;i++){ const r=crypto.getRandomValues(new Uint32Array(1))[0]%pool.length; gan.push(pool.splice(r,1)[0]); }
-  await addDoc(collection(db,'sorteos'),{fecha:new Date().toISOString(),n,
-    ganadores:gan.map(g=>({nombre:g.nombre+' '+g.apellido,email:g.email,telefono:g.telefono}))});
-  toast('✓ Sorteo ejecutado'); };
-function pintarHistSorteo(){ const r=$('res-sorteo');
-  $('hist-sorteo').innerHTML = SORT.length? '<h3 style="color:var(--texto2);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Sorteos realizados</h3>'+
-  SORT.map(s=>'<div style="background:var(--card);border:1px solid var(--linea);border-radius:14px;padding:16px;margin-bottom:10px">'+
-  '<b style="color:var(--texto)">Sorteo · '+new Date(s.fecha).toLocaleString()+'</b>'+
-  (s.ganadores||[]).map(g=>'<div style="margin-top:8px;color:var(--verde)">🏆 '+esc(g.nombre)+' <span style="color:var(--texto2);font-size:13px">'+esc(g.telefono)+'</span></div>').join('')+'</div>').join('') : '';
-  if(SORT[0]) r.innerHTML='<div style="margin-top:20px">'+SORT[0].ganadores.map((g,i)=>
-   '<div class="ganador" style="animation-delay:'+(i*.15)+'s"><div class="n">🏆 '+esc(g.nombre)+'</div><div class="d">'+esc(g.email)+' · '+esc(g.telefono)+'</div></div>').join('')+'</div>';
-}
+/* SORTEO (notifica ganadores) */
+window.sortear=async()=>{const aptos=Object.values(PART).filter(p=>p.estado==='apto');const n=parseInt($('so-n').value)||1;if(!aptos.length)return toast('Sin aptos');if(n>aptos.length)return toast('Solo '+aptos.length);const pool=[...aptos],g=[];for(let i=0;i<n;i++){g.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}
+ await addDoc(collection(db,'sorteos'),{fecha:new Date().toISOString(),n,ganadores:g.map(x=>({nombre:x.nombre+' '+x.apellido,email:x.email,telefono:x.telefono}))});
+ await addDoc(collection(db,'anuncios'),{titulo:'🏆 GANADORES DEL SORTEO',mensaje:g.map(x=>x.nombre+' '+x.apellido).join(' · '),fecha:new Date().toISOString()});
+ toast('🏆 Sorteo ejecutado y notificado');};
+function pintarHistSorteo(){$('hist-sorteo').innerHTML=SORT.map(s=>'<div class="card"><b>Sorteo · '+new Date(s.fecha).toLocaleString()+'</b>'+(s.ganadores||[]).map(g=>'<div style="color:var(--verde);margin-top:6px">🏆 '+esc(g.nombre)+'</div>').join('')+'</div>').join('');}
 
-/* ── EQUIPO ── */
-window.crearAdmin=async()=>{ $('eq-err').textContent='';
-  const n=$('eq-nombre').value.trim(), e=$('eq-email').value.trim(), c=$('eq-clave').value, r=$('eq-rol').value;
-  if(!n||!e||c.length<6) return $('eq-err').textContent='Completa nombre, correo y clave (mín. 6)';
-  try{
-    const sec=initializeApp(CFG,'sec'+Date.now()); const secAuth=getAuth(sec);
-    const cred=await createUserWithEmailAndPassword(secAuth,e,c);
-    await setDoc(doc(db,'admins',cred.user.uid),{nombre:n,email:e,rol:r});
-    await signOut(secAuth);
-    $('eq-nombre').value=$('eq-email').value=$('eq-clave').value='';
-    toast('✓ '+n+' creado como '+r);
-  }catch(err){ $('eq-err').textContent = err.code==='auth/email-already-in-use'?'Ese correo ya existe':'Error: '+err.code; } };
-function pintarAdmins(){ $('lista-admins').innerHTML = Object.entries(ADM).map(([id,a])=>
-  '<div class="item-prog"><div class="det"><b>'+esc(a.nombre)+'</b><span>'+esc(a.email)+'</span></div>'+
-  (id===yo? '<span class="tag apto">Tú · '+esc(a.rol)+'</span>' :
-  '<select style="width:auto;margin:0" onchange="cambiarRol(\''+id+'\',this.value)">'+
-  ['maestro','configurador','monitor'].map(r=>'<option'+(r===a.rol?' selected':'')+'>'+r+'</option>').join('')+'</select>'+
-  '<button class="btn mini peligro" onclick="revocar(\''+id+'\')">Eliminar</button>')+'</div>').join(''); }
-window.cambiarRol=async(id,r)=>{ await updateDoc(doc(db,'admins',id),{rol:r}); toast('Rol actualizado'); };
-window.revocar=async id=>{ if(confirm('¿Eliminar este administrador?')){ await deleteDoc(doc(db,'admins',id)); toast('Administrador eliminado'); } };
+/* EQUIPO */
+window.crearAdmin=async()=>{$('eq-err').textContent='';const n=$('eq-nombre').value.trim(),e=$('eq-email').value.trim(),c=$('eq-clave').value,r=$('eq-rol').value;if(!n||!e||c.length<6)return $('eq-err').textContent='Completa todo';try{const sec=initializeApp(CFG,'sec'+Date.now());const sa=getAuth(sec);const cr=await createUserWithEmailAndPassword(sa,e,c);await setDoc(doc(db,'admins',cr.user.uid),{nombre:n,email:e,rol:r});await signOut(sa);toast('✓ '+n);}catch(err){$('eq-err').textContent='Error';}};
+function pintarAdmins(){$('lista-admins').innerHTML=Object.entries(ADM).map(([id,a])=>'<div class="item-prog"><div class="det"><b>'+esc(a.nombre)+'</b><span>'+esc(a.email)+'</span></div>'+(id===yo?'<span class="tag apto">Tú</span>':'<select style="width:auto" onchange="cambiarRol(\''+id+'\',this.value)">'+['maestro','configurador','monitor'].map(r=>'<option'+(r===a.rol?' selected':'')+'>'+r+'</option>').join('')+'</select><button class="btn mini peligro" onclick="revocar(\''+id+'\')">✕</button>')+'</div>').join('');}
+window.cambiarRol=async(id,r)=>{await updateDoc(doc(db,'admins',id),{rol:r});};
+window.revocar=async id=>{if(confirm('¿Eliminar?'))await deleteDoc(doc(db,'admins',id));};
 
-/* ── REINICIO ── */
-window.rzPaso1=()=>{ $('rz-paso2').classList.remove('oculto'); toast('Confirmación 1 de 2 registrada'); };
-window.rzCancelar=()=>{ $('rz-paso2').classList.add('oculto'); };
-window.rzPaso2=async()=>{
-  const ops=[];
-  if($('rz-prog').checked) (await getDocs(collection(db,'participantes'))).forEach(d=>
-    ops.push({t:'u',ref:d.ref,d:{simbolos:[],estado:'iniciado'}}));
-  const marcarBorrado=col=>(getDocs(collection(db,col))).then(s=>s.forEach(d=>ops.push({t:'d',ref:d.ref})));
-  if($('rz-anun').checked) await marcarBorrado('anuncios');
-  if($('rz-sort').checked) await marcarBorrado('sorteos');
-  if($('rz-programa').checked) await marcarBorrado('programa');
-  if($('rz-sellos').checked) await marcarBorrado('simbolos');
-  for(let i=0;i<ops.length;i+=450){
-    const b=writeBatch(db);
-    ops.slice(i,i+450).forEach(o=> o.t==='u'? b.update(o.ref,o.d) : b.delete(o.ref));
-    await b.commit();
-  }
-  $('rz-paso2').classList.add('oculto');
-  toast('✓ Evento reiniciado · '+ops.length+' operaciones');
-};
+/* REINICIO */
+window.rzPaso1=()=>{$('rz-paso2').classList.remove('oculto');};
+window.rzCancelar=()=>{$('rz-paso2').classList.add('oculto');};
+window.rzPaso2=async()=>{const ops=[];const del=col=>getDocs(collection(db,col)).then(s=>s.forEach(d=>ops.push({t:'d',ref:d.ref})));
+ if($('rz-prog').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{simbolos:[],estado:'iniciado'}}));
+ if($('rz-juegos').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{pasaporte:deleteField(),bingo:deleteField(),voto:deleteField(),circulo:deleteField(),progFav:deleteField()}}));
+ if($('rz-anun').checked)await del('anuncios');if($('rz-sort').checked)await del('sorteos');if($('rz-muro').checked)await del('muro');if($('rz-aux').checked)await del('auxilios');if($('rz-programa').checked)await del('programa');if($('rz-sellos').checked)await del('simbolos');
+ if($('rz-aplausos').checked)await setDoc(doc(db,'config','aplausos'),{total:0});
+ for(let i=0;i<ops.length;i+=450){const b=writeBatch(db);ops.slice(i,i+450).forEach(o=>o.t==='u'?b.update(o.ref,o.d):b.delete(o.ref));await b.commit();}
+ $('rz-paso2').classList.add('oculto');toast('✓ Evento reiniciado');};
 </script>
 </body>
 </html>
