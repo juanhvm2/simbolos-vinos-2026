@@ -37,6 +37,7 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 .btn.solido{background:var(--tinta);color:var(--crema);box-shadow:var(--sombra)}
 .btn.fantasma{border-color:var(--linea2);color:var(--texto2)}
 .auth-card,.card{background:var(--crema);border:1px solid var(--linea);border-radius:18px;padding:22px;box-shadow:var(--sombra)}
+.card h3{font-size:12px;letter-spacing:.2em;color:var(--purpura);text-transform:uppercase;margin-bottom:10px}
 .campo{margin-bottom:12px;text-align:left}
 .campo label{display:block;font-size:10px;font-weight:600;letter-spacing:.22em;color:var(--purpura);margin-bottom:5px;text-transform:uppercase}
 .campo input,.campo select{width:100%;padding:13px 14px;background:var(--papel);border:1px solid var(--linea);border-radius:10px;color:var(--texto);font-size:16px;font-family:'Jost'}
@@ -57,14 +58,18 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 .cd-card{margin-top:14px;padding:16px;border-radius:16px;background:linear-gradient(140deg,var(--tinta2),var(--purpura));text-align:center;color:var(--crema)}
 .cd-card .t{font-size:10px;letter-spacing:.3em;opacity:.8}
 .cd-card .n{font-family:'Julius Sans One';font-size:24px;margin-top:6px}
-.progreso{display:flex;align-items:center;gap:16px;margin:14px 0 8px;background:var(--crema);border:1px solid var(--linea);border-radius:18px;padding:18px}
+.home-row{display:flex;gap:12px;align-items:stretch;margin-top:14px}
+.progreso{flex:1;display:flex;align-items:center;gap:16px;background:var(--crema);border:1px solid var(--linea);border-radius:18px;padding:18px}
 .anillo{position:relative;width:100px;height:100px;flex:none}
 .anillo svg{transform:rotate(-90deg)}
 .anillo .fondo{stroke:rgba(122,16,52,.12)}
 .anillo .barra{stroke:var(--tinta);stroke-linecap:round;transition:stroke-dashoffset 1s}
 .anillo .num{position:absolute;inset:0;display:grid;place-items:center;font-family:'Julius Sans One';font-size:19px;color:var(--tinta)}
 .progreso .txt{flex:1;font-size:15px;color:var(--texto2)}
-.progreso .scan{margin:0;width:auto;flex:none;padding:14px 16px;font-size:11px}
+.scanbox{flex:none;width:110px;background:var(--crema);border:1px solid var(--linea);border-radius:18px;box-shadow:var(--sombra);display:flex;align-items:center;justify-content:center}
+.scanbox button{background:none;border:none;cursor:pointer;color:var(--tinta);font-family:'Jost';font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 16px;border-radius:14px}
+.scanbox button svg{width:26px;height:26px}
+.scanbox button:active{background:var(--tinta);color:var(--crema)}
 .sec-titulo{font-size:12px;font-weight:600;letter-spacing:.3em;color:var(--purpura);text-transform:uppercase;margin:24px 0 12px;text-align:center}
 .sellos{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .sello{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:radial-gradient(circle at 35% 30%,#fff,var(--crema) 60%);border:2px solid var(--linea);box-shadow:inset 0 0 0 4px var(--papel),inset 0 0 0 5px var(--linea),var(--sombra);position:relative;cursor:pointer}
@@ -79,7 +84,6 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 .frase-caja::before{content:"⚜";position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--papel);padding:0 10px;color:var(--tinta)}
 .frase-caja .frag{font-family:'Julius Sans One';font-size:15px;color:var(--tinta);letter-spacing:.1em;line-height:1.9}
 .frase-caja .pista{font-size:11px;font-weight:600;letter-spacing:.3em;color:var(--purpura);text-transform:uppercase}
-/* perfil */
 .perfil-hero{display:flex;gap:16px;align-items:center}
 .perfil-hero .ava{width:70px;height:70px;border-radius:50%;background:var(--tinta);color:var(--crema);display:grid;place-items:center;font-family:'Julius Sans One';font-size:26px;overflow:hidden;flex:none;box-shadow:var(--sombra)}
 .perfil-hero .ava img{width:100%;height:100%;object-fit:cover}
@@ -87,6 +91,8 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .chipmini{font-size:10px;padding:4px 10px;border-radius:999px;border:1px solid var(--linea);color:var(--texto2)}
 .chipmini.on{background:var(--tinta);color:var(--crema);border-color:var(--tinta)}
+.star{font-size:24px;color:var(--linea2);cursor:pointer}
+.star.on{color:var(--oro)}
 .nav{position:fixed;bottom:0;left:0;right:0;z-index:40;display:flex;gap:3px;background:rgba(251,247,239,.94);backdrop-filter:blur(16px);border-top:1px solid var(--linea);padding:7px 6px calc(7px + env(safe-area-inset-bottom))}
 .nav button{flex:1;padding:9px 1px 7px;background:none;border:none;cursor:pointer;color:var(--texto3);font-family:'Jost';font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:14px}
 .nav button .i{display:block;margin:0 auto 4px;width:max-content;position:relative}
@@ -107,8 +113,6 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 .likebox .h{font-size:22px;line-height:1;color:var(--linea2)}
 .likebox .h.on{color:var(--corazon)}
 .likebox .c{font-size:12px;color:var(--texto2)}
-.star{font-size:24px;color:var(--linea2);cursor:pointer}
-.star.on{color:var(--oro)}
 .rank{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--linea);border-radius:12px;margin-bottom:8px;background:var(--crema)}
 .rank .pos{font-family:'Julius Sans One';font-size:16px;color:var(--tinta);width:30px}
 .rank .nm{flex:1;font-weight:600}
@@ -193,13 +197,15 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
     @simbolosyvinos · Síguenos</a>
   <div class="cd-card oculto" id="cd-card"><div class="t">EL SORTEO COMIENZA EN</div><div class="n" id="cd-num">—</div></div>
   <button class="btn" onclick="ver('p-instrucciones')">📜 Cómo se juega</button>
-  <div class="progreso">
-    <div class="anillo"><svg width="100" height="100">
-      <circle class="fondo" cx="50" cy="50" r="43" fill="none" stroke-width="6"/>
-      <circle class="barra" id="h-barra" cx="50" cy="50" r="43" fill="none" stroke-width="6" stroke-dasharray="270.2" stroke-dashoffset="270.2"/></svg>
-      <div class="num" id="h-num">0/7</div></div>
-    <div class="txt" id="h-lema">Los sellos duermen.<br><b style="color:var(--tinta)">Ve y despiértalos.</b></div>
-    <button class="btn solido scan" onclick="irScan()">📷 Escanear</button>
+  <div class="home-row">
+    <div class="progreso">
+      <div class="anillo"><svg width="100" height="100">
+        <circle class="fondo" cx="50" cy="50" r="43" fill="none" stroke-width="6"/>
+        <circle class="barra" id="h-barra" cx="50" cy="50" r="43" fill="none" stroke-width="6" stroke-dasharray="270.2" stroke-dashoffset="270.2"/></svg>
+        <div class="num" id="h-num">0/7</div></div>
+      <div class="txt" id="h-lema">Los sellos duermen.<br><b style="color:var(--tinta)">Ve y despiértalos.</b></div>
+    </div>
+    <div class="scanbox"><button onclick="irScan()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg>Escanear</button></div>
   </div>
   <div class="sec-titulo">· Toca un sello dorado para ver su leyenda ·</div>
   <div class="sellos" id="h-sellos"></div>
@@ -211,10 +217,10 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
   <h2 style="font-size:20px;text-align:center">LA BÚSQUEDA DE LOS SELLOS</h2>
   <div class="card" style="margin-top:14px">
     <div class="paso"><div class="num">1</div><div class="txt"><b>Recorre los salones</b><span>El Palacio guarda siete sellos grabados, cada uno con su código (QR).</span></div></div>
-    <div class="paso"><div class="num">2</div><div class="txt"><b>Escanea el grabado</b><span>Usa el botón 📷 ESCANEAR y apunta al código del sello hallado.</span></div></div>
+    <div class="paso"><div class="num">2</div><div class="txt"><b>Escanea el grabado</b><span>Usa el botón ESCANEAR (junto al contador) y apunta al código del sello.</span></div></div>
     <div class="paso"><div class="num">3</div><div class="txt"><b>Despierta el sello</b><span>Cada sello se dora en tu tablero y revela un fragmento de la frase. Tócalo para volver a ver su leyenda.</span></div></div>
     <div class="paso"><div class="num">4</div><div class="txt"><b>Completa la frase</b><span>Al reunir los siete, serás declarado APTO para el sorteo final.</span></div></div>
-    <div class="paso"><div class="num">5</div><div class="txt"><b>Disfruta la velada</b><span>Juega, cata, puntúa y deja tu marca en el Salón de Juegos.</span></div></div>
+    <div class="paso"><div class="num">5</div><div class="txt"><b>Disfruta la velada</b><span>Juega, cata y deja tu marca en el Salón de Juegos y en tu Perfil.</span></div></div>
   </div>
   <button class="btn solido" onclick="ver('p-home')">Entendido, a buscar</button>
 </section>
@@ -222,6 +228,9 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 <section class="pantalla" id="p-juegos"><h2 style="font-size:20px;text-align:center">SALÓN DE JUEGOS</h2>
   <p class="mistica" style="text-align:center;margin:6px 0 14px">Toca para jugar · puedes repetir los completados.</p>
   <div id="juegos-lista"></div></section>
+
+<section class="pantalla" id="p-ranking"><h2 style="font-size:20px;text-align:center">TABLA DE BUSCADORES</h2>
+  <div id="rank-lista" style="margin-top:14px"></div></section>
 
 <section class="pantalla" id="p-quiz"><h2 style="font-size:20px;text-align:center">TU ARCANO ENOLÓGICO</h2>
   <div id="quiz-dots" style="display:flex;gap:6px;justify-content:center;margin:14px 0"></div>
@@ -231,44 +240,6 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
     <div id="qf-titulo" style="font-family:'Julius Sans One';color:var(--tinta);font-size:21px;margin:10px 0"></div>
     <div id="qf-det" class="mistica"></div>
     <button class="btn solido" style="margin-top:14px" onclick="ver('p-juegos')">Volver</button></div></section>
-
-<section class="pantalla" id="p-pasaporte"><h2 style="font-size:20px;text-align:center">PASAPORTE DE CATA</h2>
-  <div class="card" style="margin-top:14px">
-    <div class="campo"><label>Bodega / vino</label><select id="cat-bodega"></select></div>
-    <div class="campo"><label>Tu puntaje</label><div id="cat-stars" style="display:flex;gap:6px"></div></div>
-    <button class="btn solido" onclick="guardarCata()">Sellar cata</button>
-  </div>
-  <div class="sec-titulo">· Mi libreta ·</div><div id="cat-lista"></div></section>
-
-<section class="pantalla" id="p-bingo"><h2 style="font-size:20px;text-align:center">BINGO DE LA VELADA</h2>
-  <div id="bingo-lista" style="margin-top:14px"></div>
-  <div id="bingo-estado" class="card" style="text-align:center;margin-top:12px"></div></section>
-
-<section class="pantalla" id="p-ranking"><h2 style="font-size:20px;text-align:center">TABLA DE BUSCADORES</h2>
-  <div id="rank-lista" style="margin-top:14px"></div></section>
-
-<section class="pantalla" id="p-marco"><h2 style="font-size:20px;text-align:center">MARCO DE FOTOS</h2>
-  <div class="card" style="text-align:center;margin-top:14px">
-    <input type="file" accept="image/*" capture="environment" id="marco-file" style="margin-bottom:10px">
-    <canvas id="marco-canvas" style="max-width:100%;border-radius:12px;display:none"></canvas>
-    <button class="btn solido oculto" id="marco-dl" onclick="descargarMarco()">⬇ Descargar mi foto</button>
-  </div></section>
-
-<section class="pantalla" id="p-muro"><h2 style="font-size:20px;text-align:center">MURO DE SUSURROS</h2>
-  <div class="card" style="margin-top:12px">
-    <div class="campo"><label>Tu susurro anónimo</label><input id="muro-txt" maxlength="120" placeholder="El Oráculo escucha…"></div>
-    <button class="btn solido" onclick="susurrar()">Susurrar al muro</button>
-  </div>
-  <div class="sec-titulo">· Susurros aprobados ·</div><div id="muro-lista"></div></section>
-
-<section class="pantalla" id="p-voto"><h2 style="font-size:20px;text-align:center">BODEGA FAVORITA</h2>
-  <div id="voto-lista" style="margin-top:14px"></div></section>
-
-<section class="pantalla" id="p-circulo"><h2 style="font-size:20px;text-align:center">CÍRCULO DE BENEFICIOS</h2>
-  <div class="card" style="margin-top:12px;text-align:center">
-    <p class="mistica" style="font-size:16px">Únete y recibe beneficios exclusivos en futuras ediciones.</p>
-    <button class="btn solido" style="margin-top:14px" id="circulo-btn" onclick="unirCirculo()">⚜ Unirme al Círculo</button>
-  </div></section>
 
 <section class="pantalla" id="p-auxilio"><h2 style="font-size:20px;text-align:center">BOTÓN DE AUXILIO</h2>
   <div class="card" style="margin-top:12px">
@@ -287,6 +258,18 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
     </div>
   </div>
   <div class="card" style="margin-top:12px">
+    <h3>⚜ Círculo de beneficios</h3>
+    <p class="mistica" style="font-size:14px;margin-bottom:10px">Beneficios exclusivos en futuras ediciones.</p>
+    <button class="btn solido" id="circulo-btn" onclick="unirCirculo()">Unirme al Círculo</button>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>♥ Tu bodega favorita</h3>
+    <div class="campo"><label>Bodega</label><select id="pf-voto"></select></div>
+    <div class="campo"><label>Tu puntaje</label><div id="pf-stars" style="display:flex;gap:6px"></div></div>
+    <button class="btn solido" onclick="guardarVotoPerfil()">Guardar bodega y puntaje</button>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>Mis datos</h3>
     <div class="campo"><label>Nacimiento</label><input id="x-nac" type="date"></div>
     <div class="campo"><label>Zona / ciudad</label><input id="x-zona"></div>
     <div class="campo"><label>¿Cómo te enteraste?</label><select id="x-como"><option value="">—</option><option>Instagram</option><option>Amigo / familiar</option><option>Mailing</option><option>Cartel</option><option>Otro</option></select></div>
@@ -323,7 +306,6 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 <nav class="nav" id="nav" style="display:none">
   <button class="act" data-p="p-home" onclick="navegar('p-home',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>Sellos</button>
   <button data-p="p-juegos" onclick="navegar('p-juegos',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>Juegos</button>
-  <button data-p="p-scan" onclick="navegar('p-scan',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg></span>Escanear</button>
   <button data-p="p-chat" onclick="navegar('p-chat',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/></svg></span>Chat</button>
   <button data-p="p-avisos" onclick="navegar('p-avisos',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge oculto" id="badge">0</span></span>Avisos</button>
   <button data-p="p-prog" onclick="navegar('p-prog',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>Programa</button>
@@ -342,8 +324,8 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
-let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},QUIZ=null,JUEGOS={},EXTRA={},MURO=[],RANK=[],VOTO_MIO=null;
-let quizIdx=0,quizResp={},catStars=0,marcoURL=null;
+let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},QUIZ=null,JUEGOS={},EXTRA={},RANK=[];
+let quizIdx=0,quizResp={},votoStars=0;
 let vistos=JSON.parse(localStorage.getItem('sv-avisos')||'null'),avisosCache=[],notificados=new Set();
 let chatHist=JSON.parse(localStorage.getItem('sv-chat')||'[]');
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
@@ -351,7 +333,7 @@ const NOMBRES={1:'SOL',2:'LUNA',3:'MERCURIO',4:'VENUS',5:'MARTE',6:'JÚPITER',7:
 const TITULOS={'Malbec':'Guardián del Malbec','Cabernet':'Caballero del Cabernet','Torrontés':'Alma de Torrontés','Blend':'Alquimista del Blend'};
 const botName=()=>PERFIL.nombreOraculo||'El Oráculo';
 window.ver=id=>{document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));$(id).classList.add('activa');};
-window.irScan=()=>navegar('p-scan',document.querySelector('[data-p="p-scan"]'));
+window.irScan=()=>navegar('p-scan',null);
 window.irAuth=m=>{modoAuth(m);ver('p-auth');};
 window.cambiarModo=()=>modoAuth($('form-registro').style.display==='none'?'registro':'ingreso');
 function modoAuth(m){const r=m==='registro';$('form-registro').style.display=r?'block':'none';$('form-ingreso').style.display=r?'none':'block';$('auth-cambio').textContent=r?'Ya tengo marca — ingresar':'Aún no tengo marca — registrarme';$('auth-error').textContent='';}
@@ -360,37 +342,31 @@ let audioCtx=null;
 function chime(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();[659.25,880].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=f;g.gain.setValueAtTime(0,audioCtx.currentTime+i*.18);g.gain.linearRampToValueAtTime(.18,audioCtx.currentTime+i*.18+.02);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+i*.18+.7);o.connect(g).connect(audioCtx.destination);o.start(audioCtx.currentTime+i*.18);o.stop(audioCtx.currentTime+i*.18+.8);});navigator.vibrate&&navigator.vibrate([90,60,90]);}catch(e){}}
 document.addEventListener('touchstart',()=>{try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();}catch(e){}},{once:true});
 function scramble(el,t){let i=0;const g='⚜✦';const int=setInterval(()=>{el.textContent=t.split('').map((c,j)=>j<i?c:(c===' '?' ':g[Math.floor(Math.random()*g.length)])).join('');i+=.6;if(i>=t.length+1){el.textContent=t;clearInterval(int);}},34);}
-const ICONO={quiz:'<path d="M26 22 H54 C54 40 46 48 40 49 C34 48 26 40 26 22 Z"/><path d="M40 49 C32 56 46 60 38 66"/>',pasaporte:'<rect x="24" y="20" width="32" height="42" rx="4"/><path d="M32 32 h16 M32 40 h16 M32 48 h10"/>',bingo:'<rect x="22" y="22" width="36" height="36" rx="4"/><path d="M34 22 v36 M46 22 v36 M22 34 h36 M22 46 h36"/>',ranking:'<path d="M28 56 V40 M40 56 V28 M52 56 V46"/><path d="M22 60 h36"/>',marco:'<rect x="22" y="24" width="36" height="30" rx="3"/><circle cx="33" cy="34" r="4"/><path d="M24 50 l10-9 8 7 8-7 8 9"/>',credencial:'<rect x="22" y="24" width="36" height="32" rx="4"/><circle cx="32" cy="36" r="5"/><path d="M42 32 h10 M42 40 h10 M28 48 h24"/>',muro:'<path d="M24 24 h32 v20 h-18 l-8 8 v-8 h-6 z"/>',voto:'<path d="M26 40 l8 8 16-16"/><rect x="22" y="22" width="36" height="36" rx="6"/>',circulo:'<circle cx="40" cy="40" r="16"/><path d="M40 24 v-6 M40 62 v-6 M24 40 h-6 M62 40 h-6"/>',auxilio:'<circle cx="40" cy="40" r="17"/><path d="M40 30 v12 M40 48 v2"/>',album:'<rect x="22" y="26" width="36" height="28" rx="3"/><circle cx="40" cy="40" r="7"/><path d="M30 26 l4-6 h12 l4 6"/>'};
+const ICONO={quiz:'<path d="M26 22 H54 C54 40 46 48 40 49 C34 48 26 40 26 22 Z"/><path d="M40 49 C32 56 46 60 38 66"/>',ranking:'<path d="M28 56 V40 M40 56 V28 M52 56 V46"/><path d="M22 60 h36"/>',credencial:'<rect x="22" y="24" width="36" height="32" rx="4"/><circle cx="32" cy="36" r="5"/><path d="M42 32 h10 M42 40 h10 M28 48 h24"/>',album:'<rect x="22" y="26" width="36" height="28" rx="3"/><circle cx="40" cy="40" r="7"/><path d="M30 26 l4-6 h12 l4 6"/>'};
 function bannerSVG(o){const id='g'+o.key+Math.random().toString(36).slice(2,6);return `<svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${o.a1}"/><stop offset="1" stop-color="${o.a2}"/></linearGradient></defs><rect width="600" height="150" fill="url(#${id})"/><rect x="4" y="4" width="592" height="142" rx="14" fill="none" stroke="#f3d27a" stroke-width="1.5" opacity=".8"/><g transform="translate(36,35)"><circle cx="40" cy="40" r="36" fill="rgba(0,0,0,.25)" stroke="#f3d27a" stroke-width="1.5"/><g stroke="#f3d27a" stroke-width="2.4" fill="none" stroke-linecap="round">${ICONO[o.key]||''}</g></g><text x="130" y="50" font-family="Georgia,serif" font-size="11" fill="#f3d27a" letter-spacing="4">SÍMBOLOS &amp; VINOS</text><text x="130" y="86" font-family="Georgia,serif" font-size="25" fill="#fbf7ef" font-weight="700">${o.t}</text><text x="130" y="114" font-family="Georgia,serif" font-size="13" fill="#f0e9dd" font-style="italic" opacity=".85">${o.s}</text></svg>`;}
 function bannerSello(s,i){return `<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5c0c26"/><stop offset="1" stop-color="#6d1f6e"/></linearGradient></defs><rect width="600" height="300" fill="url(#rs)"/><rect x="6" y="6" width="588" height="288" rx="18" fill="none" stroke="#f3d27a" stroke-width="2"/><circle cx="120" cy="150" r="70" fill="rgba(0,0,0,.3)" stroke="#f3d27a" stroke-width="2"/><text x="120" y="175" font-size="70" text-anchor="middle" fill="#f3d27a">${GLIFOS[i]}</text><text x="230" y="110" font-family="Georgia,serif" font-size="14" fill="#f3d27a" letter-spacing="4">SELLO ${i} · REVELADO</text><text x="230" y="160" font-family="Georgia,serif" font-size="40" fill="#fbf7ef" font-weight="700">${(s.nombre||NOMBRES[i]).toUpperCase()}</text><text x="230" y="195" font-family="Georgia,serif" font-size="16" fill="#f0e9dd" font-style="italic">Salón: ${s.salon||'—'}</text><text x="230" y="240" font-family="Georgia,serif" font-size="15" fill="#f3d27a">⚜ ${s.fragmento||''}</text></svg>`;}
 const COL=[['#5c0c26','#6d1f6e'],['#4a0e2e','#7a1034'],['#5c0c26','#8a4a1e'],['#3d0a20','#6d1f6e']];
-const JUEGOS_META=[{key:'quiz',t:'Arcano Enológico',s:'4 preguntas · tu perfil'},{key:'pasaporte',t:'Pasaporte de Cata',s:'prueba y puntúa'},{key:'bingo',t:'Bingo de la Velada',s:'misiones sociales'},{key:'ranking',t:'Tabla de Buscadores',s:'ranking en vivo'},{key:'marco',t:'Marco de Fotos',s:'tu foto con el sello'},{key:'credencial',t:'Credencial de Digno',s:'tu tarjeta 7/7'},{key:'muro',t:'Muro de Susurros',s:'susurro anónimo'},{key:'voto',t:'Bodega Favorita',s:'tu voto cuenta'},{key:'circulo',t:'Círculo de Beneficios',s:'beneficios futuros'},{key:'auxilio',t:'Botón de Auxilio',s:'pide ayuda'},{key:'album',t:'Álbum de la Velada',s:'recuerdos'}];
-const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado,pasaporte:()=>(parte.pasaporte||[]).length>0,bingo:()=>(parte.bingo||[]).length>0,voto:()=>!!(parte&&parte.voto),circulo:()=>!!(parte&&parte.circulo),credencial:()=>parte&&parte.estado==='apto'};
+/* Orden: Tabla de Buscadores ARRIBA, luego Arcanos */
+const JUEGOS_META=[{key:'ranking',t:'Tabla de Buscadores',s:'ranking en vivo'},{key:'quiz',t:'Arcano Enológico',s:'4 preguntas · tu perfil'},{key:'credencial',t:'Credencial de Digno',s:'tu tarjeta 7/7'},{key:'album',t:'Álbum de la Velada',s:'recuerdos'}];
+const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado,credencial:()=>parte&&parte.estado==='apto'};
 function pintarJuegos(){const c=$('juegos-lista');c.innerHTML='';JUEGOS_META.forEach((m,i)=>{if(!JUEGOS[m.key])return;if(m.key==='credencial'&&!(parte&&parte.estado==='apto'))return;
  const d=document.createElement('div');d.className='banner';d.innerHTML=bannerSVG({...m,a1:COL[i%4][0],a2:COL[i%4][1]})+'<div class="shimmer"></div>'+((DONE[m.key]&&DONE[m.key]())?'<span class="done-chip">✓ COMPLETADO</span>':'');d.onclick=()=>abrirJuego(m.key);c.appendChild(d);});}
-function abrirJuego(k){if(k==='quiz')return abrirQuiz();if(k==='album')return EXTRA.albumUrl?window.open(EXTRA.albumUrl,'_blank'):toast('Álbum no disponible','');if(k==='credencial')return generarCredencial();
- const map={pasaporte:'p-pasaporte',bingo:'p-bingo',ranking:'p-ranking',marco:'p-marco',muro:'p-muro',voto:'p-voto',circulo:'p-circulo',auxilio:'p-auxilio'};if(map[k])ver(map[k]);}
+function abrirJuego(k){if(k==='quiz')return abrirQuiz();if(k==='album')return EXTRA.albumUrl?window.open(EXTRA.albumUrl,'_blank'):toast('Álbum no disponible','');if(k==='credencial')return generarCredencial();if(k==='ranking')return ver('p-ranking');}
 function escucharQuiz(){onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;});}
 window.abrirQuiz=()=>{if(!QUIZ||!(QUIZ.preguntas||[]).length)return toast('El Oráculo prepara el arcano','');quizIdx=0;quizResp={};$('quiz-final').classList.add('oculto');$('quiz-caja').classList.remove('oculto');ver('p-quiz');pintarQuiz();};
 function pintarQuiz(){const qs=QUIZ.preguntas||[];$('quiz-dots').innerHTML=qs.map((_,i)=>'<span style="width:8px;height:8px;border-radius:50%;background:'+(i<quizIdx?'var(--tinta)':'var(--linea)')+'"></span>').join('');const q=qs[quizIdx];if(!q)return;$('quiz-pregunta').textContent=q.pregunta||'';const c=$('quiz-ops');c.innerHTML='';(q.opciones||[]).forEach(o=>{const b=document.createElement('button');b.className='btn';b.style.marginTop='10px';b.textContent=o.t;b.onclick=()=>responder(q,o);c.appendChild(b);});}
 function responder(q,o){quizResp[q.categoria]=o.v;quizIdx++;if(quizIdx<(QUIZ.preguntas||[]).length)return pintarQuiz();const t=TITULOS[quizResp.Varietal]||'Buscador de Arcanos';updateDoc(doc(db,'participantes',yo),{perfil:quizResp,quiz:{completado:true,fecha:new Date().toISOString(),titulo:t}});$('quiz-caja').classList.add('oculto');$('quiz-final').classList.remove('oculto');$('qf-titulo').textContent=t;$('qf-det').innerHTML=Object.entries(quizResp).map(([k,v])=>k+': <b>'+v+'</b>').join(' · ');chime();}
-function pintarPasaporte(){const b=EXTRA.bodegas||[];$('cat-bodega').innerHTML=b.map(x=>'<option>'+esc(x)+'</option>').join('')||'<option>—</option>';const s=$('cat-stars');s.innerHTML='';for(let i=1;i<=5;i++){const e=document.createElement('span');e.className='star'+(i<=catStars?' on':'');e.textContent='★';e.onclick=()=>{catStars=i;pintarPasaporte();};s.appendChild(e);}
- const mias=(parte&&parte.pasaporte)||[];$('cat-lista').innerHTML=mias.map(c=>'<div class="item"><div class="det"><b>'+esc(c.b)+'</b><span>'+'★'.repeat(c.e)+'☆'.repeat(5-c.e)+'</span></div></div>').join('')||'<p class="mistica" style="text-align:center">Aún no registras catas.</p>';}
-window.guardarCata=async()=>{const b=$('cat-bodega').value;if(!b||b==='—')return toast('Elige una bodega','');if(!catStars)return toast('Puntúa con estrellas','');const cur=((parte.pasaporte)||[]).filter(c=>c.b!==b);cur.push({b,e:catStars,f:new Date().toISOString()});await updateDoc(doc(db,'participantes',yo),{pasaporte:cur});catStars=0;toast('✓ Cata sellada','');pintarPasaporte();};
-function pintarBingo(){const mis=EXTRA.misiones||[];const hechas=(parte&&parte.bingo)||[];$('bingo-lista').innerHTML=mis.map(m=>{const on=hechas.includes(m);return '<div class="item" style="cursor:pointer" onclick="toggleMision(\''+esc(m).replace(/'/g,'')+'\')"><div class="det"><b>'+esc(m)+'</b></div><span style="font-size:22px;color:'+(on?'var(--tinta)':'var(--linea2)')+'">'+(on?'✔':'○')+'</span></div>';}).join('')||'<p class="mistica" style="text-align:center">El Oráculo prepara las misiones.</p>';
- $('bingo-estado').innerHTML='<b style="font-family:\'Julius Sans One\';color:var(--tinta)">'+hechas.length+' / '+mis.length+'</b><div style="font-size:11px;letter-spacing:.2em;color:var(--purpura)">'+(mis.length&&hechas.length>=mis.length?'🏆 ¡BINGO!':'MISIONES')+'</div>';}
-window.toggleMision=async m=>{const h=(parte&&parte.bingo)||[];if(h.includes(m))await updateDoc(doc(db,'participantes',yo),{bingo:arrayRemove(m)});else await updateDoc(doc(db,'participantes',yo),{bingo:arrayUnion(m)});};
 function pintarRanking(){const r=[...RANK].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,20);$('rank-lista').innerHTML=r.map((p,i)=>'<div class="rank"><span class="pos">'+(i+1)+'</span><span class="nm">'+esc(p.nombre)+' '+esc(p.apellido||'')+'</span><span class="sc">'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<p class="mistica" style="text-align:center">Sin datos aún.</p>';}
-$('marco-file').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{marcoURL=r.result;dibujarMarco();};r.readAsDataURL(f);});
-function dibujarMarco(){const img=new Image();img.onload=()=>{const cv=$('marco-canvas');const W=1080,H=1350;cv.width=W;cv.height=H;const x=cv.getContext('2d');const sc=Math.max(W/img.width,H/img.height);x.drawImage(img,(W-img.width*sc)/2,(H-img.height*sc)/2,img.width*sc,img.height*sc);
- x.fillStyle='rgba(240,233,221,.92)';x.fillRect(0,0,W,150);x.fillRect(0,H-150,W,150);x.strokeStyle='#7a1034';x.lineWidth=10;x.strokeRect(30,30,W-60,H-60);x.lineWidth=3;x.strokeRect(55,55,W-110,H-110);x.fillStyle='#7a1034';x.font='700 60px Georgia';x.textAlign='center';x.fillText('SÍMBOLOS & VINOS',W/2,100);x.font='28px Georgia';x.fillText('EDICIÓN MASÓNICA · MMXXVI',W/2,H-80);x.fillStyle='#d4a84b';x.font='60px Georgia';x.fillText('⚜',W/2,H-30);cv.style.display='block';$('marco-dl').classList.remove('oculto');};img.src=marcoURL;}
-window.descargarMarco=()=>{const a=document.createElement('a');a.download='simbolos-vinos-foto.png';a.href=$('marco-canvas').toDataURL('image/png');a.click();toast('✓ Foto descargada','#SimbolosYVinos');};
 function generarCredencial(){if(!(parte&&parte.estado==='apto'))return toast('Completa los 7 sellos','');const W=1080,H=1350;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#5c0c26');g.addColorStop(1,'#6d1f6e');x.fillStyle=g;x.fillRect(0,0,W,H);x.strokeStyle='#f3d27a';x.lineWidth=6;x.strokeRect(40,40,W-80,H-80);x.textAlign='center';x.fillStyle='#f3d27a';x.font='40px Georgia';x.fillText('⚜',W/2,180);x.fillStyle='#fbf7ef';x.font='700 70px Georgia';x.fillText('DIGNO',W/2,420);x.font='34px Georgia';x.fillText('DE LOS SIETE SELLOS',W/2,490);x.fillStyle='#f3d27a';x.font='52px Georgia';x.fillText((parte.nombre||'')+' '+(parte.apellido||''),W/2,760);x.fillStyle='#f0e9dd';x.font='30px Georgia';x.fillText('Símbolos & Vinos · MMXXVI',W/2,1180);const a=document.createElement('a');a.download='credencial-digno.png';a.href=cv.toDataURL('image/png');a.click();toast('⚜ Credencial descargada','');}
-window.susurrar=async()=>{const t=$('muro-txt').value.trim();if(!t)return toast('Escribe tu susurro','');await addDoc(collection(db,'muro'),{texto:t,nombre:parte.nombre,fecha:new Date().toISOString(),aprobado:false});$('muro-txt').value='';toast('🜂 Susurro enviado','');};
-function pintarMuro(){$('muro-lista').innerHTML=MURO.filter(m=>m.aprobado).map(m=>'<div class="item"><div class="det"><span class="mistica" style="font-size:16px">“'+esc(m.texto)+'”</span></div></div>').join('')||'<p class="mistica" style="text-align:center">El muro guarda silencio.</p>';}
-function pintarVoto(){const b=EXTRA.bodegasVoto||[];$('voto-lista').innerHTML=b.map(x=>'<div class="item" style="cursor:pointer" onclick="votar(\''+esc(x).replace(/'/g,'')+'\')"><div class="det"><b>'+esc(x)+'</b></div><span style="font-size:20px;color:'+(VOTO_MIO===x?'var(--tinta)':'var(--linea2)')+'">'+(VOTO_MIO===x?'✔':'○')+'</span></div>').join('')||'<p class="mistica" style="text-align:center">Sin bodegas aún.</p>';}
-window.votar=async b=>{await setDoc(doc(db,'votos',yo),{bodega:b,nombre:(parte.nombre||'')+' '+(parte.apellido||''),fecha:new Date().toISOString()});await updateDoc(doc(db,'participantes',yo),{voto:b});toast('✓ Voto registrado','');};
 window.unirCirculo=async()=>{await updateDoc(doc(db,'participantes',yo),{circulo:true});toast('⚜ Bienvenido al Círculo','');};
+/* Bodega favorita + puntaje (en perfil) */
+function pintarVotoPerfil(){const b=EXTRA.bodegasVoto||EXTRA.bodegas||[];$('pf-voto').innerHTML=b.map(x=>'<option>'+esc(x)+'</option>').join('')||'<option>—</option>';
+ if(parte&&parte.voto)$('pf-voto').value=parte.voto;
+ votoStars=(parte&&parte.votoPuntaje)||0;
+ const s=$('pf-stars');s.innerHTML='';for(let i=1;i<=5;i++){const e=document.createElement('span');e.className='star'+(i<=votoStars?' on':'');e.textContent='★';e.onclick=()=>{votoStars=i;pintarVotoPerfil();};s.appendChild(e);}}
+window.guardarVotoPerfil=async()=>{const b=$('pf-voto').value;if(!b||b==='—')return toast('Elige una bodega','');if(!votoStars)return toast('Puntúa con estrellas','');
+ await setDoc(doc(db,'votos',yo),{bodega:b,puntaje:votoStars,nombre:(parte.nombre||'')+' '+(parte.apellido||''),fecha:new Date().toISOString()});
+ await updateDoc(doc(db,'participantes',yo),{voto:b,votoPuntaje:votoStars});toast('✓ Bodega y puntaje guardados','');};
 function pintarAux(){$('aux-salon').innerHTML=(EXTRA.salones||['—']).map(s=>'<option>'+esc(s)+'</option>').join('');}
 window.pedirAuxilio=async()=>{await addDoc(collection(db,'auxilios'),{nombre:(parte.nombre||'')+' '+(parte.apellido||''),salon:$('aux-salon').value,fecha:new Date().toISOString(),atendido:false});toast('🆘 Pedido enviado','');};
 function pintarPerfil(){
@@ -401,16 +377,17 @@ function pintarPerfil(){
  let chips='<span class="chipmini'+(parte.estado==='apto'?' on':'')+'">'+(parte.estado==='apto'?'⚜ APTO':'BUSCADOR')+'</span>';
  if(parte.quiz&&parte.quiz.completado)chips+='<span class="chipmini on">'+esc(parte.quiz.titulo)+'</span>';
  if(parte.circulo)chips+='<span class="chipmini on">⚜ Círculo</span>';
- if(parte.voto)chips+='<span class="chipmini">♥ '+esc(parte.voto)+'</span>';
+ if(parte.voto)chips+='<span class="chipmini">♥ '+esc(parte.voto)+' · '+((parte.votoPuntaje)||0)+'★</span>';
  $('pf-chips').innerHTML=chips;
+ if(parte.circulo)$('circulo-btn').textContent='⚜ Ya formas parte del Círculo';
  const x=parte.extra||{};$('x-nac').value=x.nac||'';$('x-zona').value=x.zona||'';$('x-como').value=x.como||'';$('x-comp').value=x.comp||'';
- $('x-priv').checked=!!(parte.consent&&parte.consent.priv);$('x-mkt').checked=!!(parte.consent&&parte.consent.mkt);}
+ $('x-priv').checked=!!(parte.consent&&parte.consent.priv);$('x-mkt').checked=!!(parte.consent&&parte.consent.mkt);
+ pintarVotoPerfil();}
 window.guardarExtra=async()=>{await updateDoc(doc(db,'participantes',yo),{extra:{nac:$('x-nac').value,zona:$('x-zona').value.trim(),como:$('x-como').value,comp:$('x-comp').value},consent:{priv:$('x-priv').checked,mkt:$('x-mkt').checked}});toast('✓ Perfil actualizado','');};
 setInterval(()=>{if(!EXTRA.sorteoHora)return;const d=new Date(EXTRA.sorteoHora)-new Date();$('cd-card').classList.remove('oculto');if(d<=0){$('cd-num').textContent='🏆 EL CÁLIZ HABLA…';return;}const s=Math.floor(d/1000);$('cd-num').textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s';},1000);
 window.toggleLike=async id=>{const likes=(parte&&parte.likes)||[];const ref=doc(db,'programa',id);
  if(likes.includes(id)){await updateDoc(ref,{likes:increment(-1)}).catch(()=>{});await updateDoc(doc(db,'participantes',yo),{likes:arrayRemove(id)});}
  else{await updateDoc(ref,{likes:increment(1)}).catch(async()=>{await setDoc(ref,{likes:1},{merge:true});});await updateDoc(doc(db,'participantes',yo),{likes:arrayUnion(id)});}};
-window.toggleFav=async id=>{const f=(parte&&parte.progFav)||[];if(f.includes(id))await updateDoc(doc(db,'participantes',yo),{progFav:arrayRemove(id)});else await updateDoc(doc(db,'participantes',yo),{progFav:arrayUnion(id)});};
 async function registrarToken(){try{const r=await navigator.serviceWorker.ready;const t=await getToken(getMessaging(app),{vapidKey:VAPID,serviceWorkerRegistration:r});if(t)await setDoc(doc(db,'tokens',yo),{token:t,fecha:new Date().toISOString()});}catch(e){}}
 window.activarPush=async()=>{if(!('Notification' in window))return toast('Sin soporte de avisos','');const p=await Notification.requestPermission();if(p==='granted'){await registrarToken();$('btn-push').classList.add('oculto');toast(botName()+' te susurrará','');}};
 onMessage(getMessaging(app),pl=>{const n=pl.notification||{};if(pl.data&&pl.data.id)notificados.add(pl.data.id);toast('⚜ '+botName().toUpperCase(),n.body||'');chime();});
@@ -427,21 +404,21 @@ window.registrar=async()=>{const n=$('r-nombre').value.trim(),a=$('r-apellido').
 window.ingresar=async()=>{try{await signInWithEmailAndPassword(auth,$('i-email').value.trim(),$('i-clave').value);}catch(err){$('auth-error').textContent=ERR[err.code]||'Error';}};
 window.salir=()=>{pararScanner();signOut(auth);};
 onAuthStateChanged(auth,u=>{$('carga').classList.add('fin');if(u){yo=u.uid;escucharTodo();renderHist();$('nav').style.display='flex';ver('p-home');}else{yo=null;parte=null;$('nav').style.display='none';ver('p-landing');}});
+function marcarVistos(){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));actualizarBadge();pintarAvisos();}
+function actualizarBadge(){const n=vistos?avisosCache.filter(a=>!vistos.includes(a.id)).length:0;$('badge').textContent=n;$('badge').classList.toggle('oculto',n===0);}
 function escucharTodo(){
- onSnapshot(doc(db,'participantes',yo),s=>{if(s.exists()){parte=s.data();pintarHome();pintarPerfil();pintarPasaporte();pintarBingo();pintarVoto();pintarJuegos();pintarPrograma();if(parte.circulo)$('circulo-btn').textContent='⚜ Ya formas parte del Círculo';}});
+ onSnapshot(doc(db,'participantes',yo),s=>{if(s.exists()){parte=s.data();pintarHome();pintarPerfil();pintarJuegos();pintarPrograma();}});
  onSnapshot(collection(db,'simbolos'),s=>{s.forEach(d=>simbolos[d.id]={...d.data(),id:d.id});pintarHome();});
  onSnapshot(collection(db,'programa'),s=>{programa=[];s.forEach(d=>programa.push({id:d.id,...d.data()}));programa.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarPrograma();});
  onSnapshot(collection(db,'participantes'),s=>{RANK=[];s.forEach(d=>RANK.push({id:d.id,...d.data()}));pintarRanking();});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};pintarJuegos();$('btn-aux').style.display=JUEGOS.auxilio?'':'none';});
- onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};pintarPasaporte();pintarVoto();pintarAux();if(EXTRA.albumUrl){$('prog-album').classList.remove('oculto');$('prog-album').href=EXTRA.albumUrl;}});
- onSnapshot(collection(db,'muro'),s=>{MURO=[];s.forEach(d=>MURO.push({id:d.id,...d.data()}));pintarMuro();});
+ onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};pintarVotoPerfil();pintarAux();if(EXTRA.albumUrl){$('prog-album').classList.remove('oculto');$('prog-album').href=EXTRA.albumUrl;}});
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};
   if(PERFIL.tituloApp)$('land-titulo').textContent=PERFIL.tituloApp;if(PERFIL.subApp)$('land-sub').textContent=PERFIL.subApp;if(PERFIL.avatarOraculo)$('orb').innerHTML='<img src="'+PERFIL.avatarOraculo+'">';$('chat-titulo').textContent=(botName()+' RESPONDE').toUpperCase();
   const lr=localStorage.getItem('sv-chat-reset');
   if(PERFIL.chatReset&&lr!==PERFIL.chatReset){localStorage.setItem('sv-chat-reset',PERFIL.chatReset);chatHist=[];localStorage.setItem('sv-chat','[]');renderHist();toast('🜂 El Oráculo renovó sus memorias','');}
   pintarPerfil();});
- onSnapshot(doc(db,'votos',yo),s=>{VOTO_MIO=s.exists()?s.data().bodega:null;pintarVoto();});
- onSnapshot(collection(db,'anuncios'),s=>{avisosCache=[];s.forEach(d=>avisosCache.push({id:d.id,...d.data()}));avisosCache.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));if(vistos===null){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));}const nv=avisosCache.filter(a=>!vistos.includes(a.id)&&!notificados.has(a.id));nv.forEach(a=>{notificados.add(a.id);toast('⚜ '+botName().toUpperCase()+' · '+(a.titulo||''),a.mensaje||'');});if(nv.length)chime();const n=vistos?avisosCache.filter(a=>!vistos.includes(a.id)).length:0;$('badge').textContent=n;$('badge').classList.toggle('oculto',n===0);pintarAvisos();});
+ onSnapshot(collection(db,'anuncios'),s=>{avisosCache=[];s.forEach(d=>avisosCache.push({id:d.id,...d.data()}));avisosCache.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));if(vistos===null){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));}const nv=avisosCache.filter(a=>!vistos.includes(a.id)&&!notificados.has(a.id));nv.forEach(a=>{notificados.add(a.id);toast('⚜ '+botName().toUpperCase()+' · '+(a.titulo||''),a.mensaje||'');});if(nv.length)chime();actualizarBadge();pintarAvisos();});
  escucharFAQ();escucharQuiz();
 }
 function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' '+parte.apellido;const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=270.2*(1-n/7);const e=$('h-estado');e.textContent=apto?'⚜ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
@@ -449,14 +426,13 @@ function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' 
  const fr=[];for(let i=1;i<=7;i++){fr.push((parte.simbolos||[]).includes(i)&&simbolos[i]&&simbolos[i].fragmento?simbolos[i].fragmento:'· · ·');}$('h-frase').textContent=fr.join('  ');}
 function revelarSello(i){const s=simbolos[i]||{};$('rev-banner').innerHTML=bannerSello(s,i);$('rev-frag').textContent='';$('revelacion').classList.add('activa');scramble($('rev-frag'),s.fragmento||'· · ·');}
 window.cerrarRevelacion=()=>{$('revelacion').classList.remove('activa');};
-function pintarPrograma(){const fav=(parte&&parte.progFav)||[],likes=(parte&&parte.likes)||[];
+function pintarPrograma(){const likes=(parte&&parte.likes)||[];
  $('prog-lista').innerHTML=programa.map(a=>{const n=a.likes||0,my=likes.includes(a.id);
  return '<div class="item"><div class="det"><b>'+fmtF(a.fecha)+' · '+esc(a.hora)+' · '+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div>'+
- (JUEGOS.aplausos?'<div class="likebox" onclick="toggleLike(\''+a.id+'\')"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div>':'')+
- (JUEGOS.progPersonal?'<span class="star'+(fav.includes(a.id)?' on':'')+'" onclick="toggleFav(\''+a.id+'\')">★</span>':'')+'</div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
-function pintarAvisos(){$('avisos-lista').innerHTML=avisosCache.map(a=>'<div class="item"><div class="det"><b style="font-family:\'Julius Sans One\';font-size:12px;color:var(--tinta)">⚜ '+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje||'')+'</span></div></div>').join('')||'<p class="mistica" style="text-align:center">Sin avisos.</p>';}
+ (JUEGOS.aplausos?'<div class="likebox" onclick="toggleLike(\''+a.id+'\')"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div>':'')+'</div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
+function pintarAvisos(){$('avisos-lista').innerHTML=avisosCache.map(a=>{const nuevo=vistos&&!vistos.includes(a.id);return '<div class="item" style="'+(nuevo?'border-color:var(--oro)':'')+'"><div class="det"><b style="font-family:\'Julius Sans One\';font-size:12px;color:var(--tinta)">⚜ '+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje||'')+'</span></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin avisos.</p>';}
 let hq=null,escaneando=false;
-window.navegar=(id,b)=>{ver(id);document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');if(id==='p-scan')iniciarScanner();else pararScanner();};
+window.navegar=(id,b)=>{ver(id);document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');if(id==='p-avisos')marcarVistos();if(id==='p-scan')iniciarScanner();else pararScanner();};
 async function iniciarScanner(){if(escaneando)return;escaneando=true;try{hq=hq||new Html5Qrcode("qr-reader");await hq.start({facingMode:"environment"},{fps:10,qrbox:{width:220,height:220}},t=>{pararScanner();procesar(t);},()=>{});}catch(e){toast('Cámara no responde','Usa el código manual.');}}
 function pararScanner(){escaneando=false;if(hq&&hq.isScanning)hq.stop().catch(()=>{});}
 window.procesar=async raw=>{if(!raw)return;const tk=raw.trim();const e=Object.values(simbolos).find(s=>s.token&&s.token.toUpperCase()===tk.toUpperCase());if(!e)return toast('Sello falso','');const n=e.numero;if((parte.simbolos||[]).includes(n))return toast('Sello ya marcado','');const nuevo=(parte.simbolos||[]).length+1;await updateDoc(doc(db,'participantes',yo),{simbolos:arrayUnion(n),estado:nuevo>=7?'apto':'iniciado',...(nuevo>=7?{completadoFecha:new Date().toISOString()}:{})});chime();revelarSello(n);$('s-manual').value='';};
