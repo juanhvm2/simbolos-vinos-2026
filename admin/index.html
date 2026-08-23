@@ -7,7 +7,7 @@
 <title>S&V · Panel de Control</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#000;--bg2:#0a0a0b;--card:#1c1c1e;--card2:#2c2c2e;--card-hover:#3a3a3c;--linea:rgba(255,255,255,.08);--linea2:rgba(255,255,255,.14);--texto:#fff;--texto2:#8e8e93;--texto3:#636366;--accent:#007aff;--accent2:#0a84ff;--verde:#30d158;--amarillo:#ffd60a;--rojo:#ff453a;--radius:14px;--radius-sm:10px;--font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',sans-serif}
+:root{--bg:#000;--bg2:#0a0a0b;--card:#1c1c1e;--card2:#2c2c2e;--card-hover:#3a3a3c;--linea:rgba(255,255,255,.08);--linea2:rgba(255,255,255,.14);--texto:#fff;--texto2:#8e8e93;--texto3:#636366;--accent:#007aff;--verde:#30d158;--rojo:#ff453a;--corazon:#e0245e;--radius:14px;--radius-sm:10px;--font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',sans-serif}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--texto);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-weight:600;letter-spacing:-.02em}
@@ -115,8 +115,8 @@ tr:last-child td{border-bottom:none}
 
 <section class="sec" id="sec-juegos">
  <h2 class="titulo-sec">Salón de Juegos · Control</h2>
- <p class="sub-sec">Activa cada juego, configura sus contenidos y mira los resultados en tiempo real.</p>
- <div class="card"><h3>Activar / desactivar juegos</h3><div id="jz-toggles"></div></div>
+ <p class="sub-sec">Activa cada juego, configura contenidos y mira todo en tiempo real.</p>
+ <div class="card"><h3>Activar / desactivar</h3><div id="jz-toggles"></div></div>
  <div class="card"><h3>Contenidos</h3>
   <label>Salones de auxilio (uno por línea)</label><textarea id="jz-salones"></textarea>
   <label>Bodegas del pasaporte (una por línea)</label><textarea id="jz-bodegas"></textarea>
@@ -126,7 +126,7 @@ tr:last-child td{border-bottom:none}
   <label>Hora del sorteo (cuenta regresiva)</label><input id="jz-sorteo" type="datetime-local">
   <button class="btn solido" style="margin-top:10px" onclick="guardarJuegos()">Guardar juegos y contenidos</button></div>
  <div class="grid2">
-  <div class="card"><h3>Aplausos en vivo</h3><div style="font-size:40px;font-weight:700" id="jz-apl">0</div><button class="btn mini peligro" style="margin-top:10px" onclick="resetAplausos()">Reiniciar contador</button></div>
+  <div class="card"><h3>♥ Corazones (me gusta) en vivo</h3><div style="font-size:40px;font-weight:700;color:var(--corazon)" id="jz-apl">0</div><button class="btn mini peligro" style="margin-top:10px" onclick="resetCorazones()">Reiniciar corazones</button></div>
   <div class="card"><h3>Estadísticas</h3><div id="jz-stats" style="font-size:14px;color:var(--texto2)"></div></div>
  </div>
  <div class="card"><h3>Voto a bodega favorita</h3><div id="jz-votores"></div></div>
@@ -135,7 +135,7 @@ tr:last-child td{border-bottom:none}
  <div class="card"><h3>Botón de auxilio · en vivo</h3><div id="jz-aux"></div></div>
 </section>
 
-<section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento y QR de cada sello.</p><div class="grid2" id="grid-sellos"></div></section>
+<section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento y QR.</p><div class="grid2" id="grid-sellos"></div></section>
 
 <section class="sec" id="sec-programa"><h2 class="titulo-sec">Programa</h2>
  <div class="form-grid" style="margin-bottom:14px">
@@ -184,7 +184,7 @@ tr:last-child td{border-bottom:none}
   <label class="rz-check"><input type="checkbox" id="rz-juegos"> Datos de juegos (pasaporte, bingo, voto, círculo)</label>
   <label class="rz-check"><input type="checkbox" id="rz-muro"> Muro de susurros</label>
   <label class="rz-check"><input type="checkbox" id="rz-aux"> Pedidos de auxilio</label>
-  <label class="rz-check"><input type="checkbox" id="rz-aplausos"> Contador de aplausos</label>
+  <label class="rz-check"><input type="checkbox" id="rz-corazones"> Contador de corazones (me gusta)</label>
   <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa</label>
   <label class="rz-check"><input type="checkbox" id="rz-sellos"> Sellos y QRs</label>
   <button class="btn peligro" style="margin-top:14px" onclick="rzPaso1()">Reiniciar evento</button>
@@ -208,8 +208,8 @@ const hoyISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMont
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
-const JG_META=[['quiz','Arcano (quiz)'],['pasaporte','Pasaporte de cata'],['bingo','Bingo'],['ranking','Tabla de buscadores'],['marco','Marco de fotos'],['credencial','Credencial de Digno'],['muro','Muro de susurros'],['aplausos','Aplausos en vivo'],['progPersonal','Programa personal'],['auxilio','Botón de auxilio'],['album','Álbum'],['circulo','Círculo de beneficios'],['voto','Voto bodega']];
-let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},MURO=[],AUX=[],VOTOS=[],APLAUSOS=0;
+const JG_META=[['quiz','Arcano (quiz)'],['pasaporte','Pasaporte de cata'],['bingo','Bingo'],['ranking','Tabla de buscadores'],['marco','Marco de fotos'],['credencial','Credencial de Digno'],['muro','Muro de susurros'],['aplausos','Me gusta (corazones) en programa'],['progPersonal','Programa personal (★)'],['auxilio','Botón de auxilio (visible)'],['album','Álbum'],['circulo','Círculo de beneficios'],['voto','Voto bodega']];
+let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},MURO=[],AUX=[],VOTOS=[],PROG=[];
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],quiz:['maestro','configurador'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
 const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['quiz','Quiz'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
@@ -227,16 +227,15 @@ function escuchar(){
   $('m-total').textContent=s.size;$('m-aptos').textContent=Object.values(PART).filter(p=>p.estado==='apto').length;
   $('m-iniciados').textContent=Object.values(PART).filter(p=>(p.simbolos||[]).length>0).length;
   $('m-circulo').textContent=Object.values(PART).filter(p=>p.circulo).length;
-  pintarTabla();pintarQuizRes();pintarStatsJuegos();pintarRankAdmin();});
+  pintarTabla();pintarQuizRes();pintarStats();pintarRankAdmin();});
  onSnapshot(collection(db,'simbolos'),()=>pintarSellos());
- onSnapshot(collection(db,'programa'),s=>{window.PROG=[];s.forEach(d=>PROG.push({id:d.id,...d.data()}));PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));pintarProg();});
+ onSnapshot(collection(db,'programa'),s=>{PROG=[];s.forEach(d=>PROG.push({id:d.id,...d.data()}));PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));pintarProg();});
  onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>ANUN.push({id:d.id,...d.data()}));pintarAnun();});
  onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>FAQ.push({id:d.id,...d.data()}));FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarFAQ();});
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};setPrev('oraculo',PERFIL.avatarOraculo);setPrev('usuario',PERFIL.avatarUsuario);if(!perfilLoaded){perfilLoaded=true;$('pf-nombre').value=PERFIL.nombreOraculo||'';$('pf-titulo').value=PERFIL.tituloApp||'';$('pf-sub').value=PERFIL.subApp||'';$('pf-url-oraculo').value=PERFIL.avatarOraculo||'';$('pf-url-usuario').value=PERFIL.avatarUsuario||'';}});
  onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;$('qz-activo').checked=!!(QUIZ&&QUIZ.activo);if(!quizFormLoaded){quizFormLoaded=true;renderQuizForm();}});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};if(!juegosLoaded){juegosLoaded=true;renderToggles();}syncToggles();});
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};if(juegosLoaded)fillExtra();});
- onSnapshot(doc(db,'config','aplausos'),s=>{APLAUSOS=(s.exists()&&s.data().total)||0;$('jz-apl').textContent=APLAUSOS;});
  onSnapshot(collection(db,'muro'),s=>{MURO=[];s.forEach(d=>MURO.push({id:d.id,...d.data()}));pintarMuroAdmin();});
  onSnapshot(collection(db,'auxilios'),s=>{AUX=[];s.forEach(d=>AUX.push({id:d.id,...d.data()}));pintarAuxAdmin();});
  onSnapshot(collection(db,'votos'),s=>{VOTOS=[];s.forEach(d=>VOTOS.push({id:d.id,...d.data()}));pintarVotoAdmin();});
@@ -252,10 +251,11 @@ window.pintarTabla=()=>{const q=($('q').value||'').toLowerCase();
  return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td><td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono)+'</td><td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td><td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'Buscando')+'</span></td><td style="color:var(--texto2);font-size:12px">'+(qh?'⚜ '+esc(p.quiz.titulo)+'<br>'+esc(pf.Varietal||''):'—')+'</td><td style="font-size:11px;color:var(--texto2)">Priv:'+(p.consent&&p.consent.priv?'✓':'—')+'<br>Mkt:'+(p.consent&&p.consent.mkt?'✓':'—')+'</td><td>'+(qh?'<button class="btn mini peligro" onclick="resetearQuiz(\''+p.id+'\')">Reset quiz</button>':'—')+'</td></tr>';}).join(''):'<tr><td colspan="7" class="vacio">Sin participantes</td></tr>';};
 window.resetearQuiz=async id=>{if(!confirm('¿Resetear quiz de este participante?'))return;await updateDoc(doc(db,'participantes',id),{quiz:deleteField(),perfil:deleteField()});toast('✓ Quiz reseteado');};
 window.exportar=()=>{const wb=XLSX.utils.book_new();
- const rows=Object.values(PART).map(p=>{const pf=p.perfil||{},x=p.extra||{};return{Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO':'BUSCANDO',Varietal:pf.Varietal||'',Estilo:pf.Estilo||'',Frecuencia:pf.Frecuencia||'',Interes:pf.Interes||'',Arcano:(p.quiz&&p.quiz.titulo)||'',ConsentPriv:p.consent&&p.consent.priv?'SI':'NO',ConsentMkt:p.consent&&p.consent.mkt?'SI':'NO',Nacimiento:x.nac||'',Zona:x.zona||'',ComoEntero:x.como||'',Compania:x.comp||'',Catas:(p.pasaporte||[]).length,Bingo:(p.bingo||[]).length,Voto:p.voto||'',Circulo:p.circulo?'SI':'NO',Aplausos:p.aplausos||0,Registro:new Date(p.registro||Date.now()).toLocaleString()};});
+ const rows=Object.values(PART).map(p=>{const pf=p.perfil||{},x=p.extra||{};return{Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO':'BUSCANDO',Varietal:pf.Varietal||'',Estilo:pf.Estilo||'',Frecuencia:pf.Frecuencia||'',Interes:pf.Interes||'',Arcano:(p.quiz&&p.quiz.titulo)||'',ConsentPriv:p.consent&&p.consent.priv?'SI':'NO',ConsentMkt:p.consent&&p.consent.mkt?'SI':'NO',Nacimiento:x.nac||'',Zona:x.zona||'',ComoEntero:x.como||'',Compania:x.comp||'',Catas:(p.pasaporte||[]).length,Bingo:(p.bingo||[]).length,Voto:p.voto||'',Circulo:p.circulo?'SI':'NO',MeGustaDados:(p.likes||[]).length,Registro:new Date(p.registro||Date.now()).toLocaleString()};});
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Participantes');
  const catas=[];Object.values(PART).forEach(p=>(p.pasaporte||[]).forEach(c=>catas.push({Nombre:p.nombre+' '+p.apellido,Bodega:c.b,Estrellas:c.e,Fecha:new Date(c.f).toLocaleString()})));
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(catas.length?catas:[{Info:'sin catas'}]),'Catas');
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(PROG.map(a=>({Fecha:fmtF(a.fecha),Hora:a.hora,Tema:a.tema,Corazones:a.likes||0}))),'MeGustaCharlas');
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(VOTOS.map(v=>({Nombre:v.nombre,Bodega:v.bodega,Fecha:new Date(v.fecha).toLocaleString()}))),'Votos');
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(MURO.map(m=>({Texto:m.texto,Nombre:m.nombre,Aprobado:m.aprobado?'SI':'NO'}))),'Muro');
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(AUX.map(a=>({Nombre:a.nombre,Salon:a.salon,Atendido:a.atendido?'SI':'NO'}))),'Auxilios');
@@ -265,17 +265,16 @@ window.exportar=()=>{const wb=XLSX.utils.book_new();
 function renderToggles(){$('jz-toggles').innerHTML=JG_META.map(([k,n])=>'<label class="tgl"><input type="checkbox" id="jz-'+k+'"> '+n+'</label>').join('');}
 function syncToggles(){JG_META.forEach(([k])=>{const e=$('jz-'+k);if(e)e.checked=!!JUEGOS[k];});}
 function fillExtra(){$('jz-salones').value=(EXTRA.salones||[]).join('\n');$('jz-bodegas').value=(EXTRA.bodegas||[]).join('\n');$('jz-misiones').value=(EXTRA.misiones||[]).join('\n');$('jz-bvoto').value=(EXTRA.bodegasVoto||[]).join('\n');$('jz-album').value=EXTRA.albumUrl||'';$('jz-sorteo').value=toLocal(EXTRA.sorteoHora);}
-window.guardarJuegos=async()=>{const j={};JG_META.forEach(([k])=>j[k]=$('jz-'+k).checked);
- await setDoc(doc(db,'config','juegos'),j);
+window.guardarJuegos=async()=>{const j={};JG_META.forEach(([k])=>j[k]=$('jz-'+k).checked);await setDoc(doc(db,'config','juegos'),j);
  const lines=v=>v.split('\n').map(x=>x.trim()).filter(Boolean);
  const extra={salones:lines($('jz-salones').value),bodegas:lines($('jz-bodegas').value),misiones:lines($('jz-misiones').value),bodegasVoto:lines($('jz-bvoto').value),albumUrl:$('jz-album').value.trim()};
  if($('jz-sorteo').value)extra.sorteoHora=new Date($('jz-sorteo').value).toISOString();
  await setDoc(doc(db,'config','extra'),extra,{merge:true});toast('✓ Juegos y contenidos guardados');};
-window.resetAplausos=async()=>{await setDoc(doc(db,'config','aplausos'),{total:0});toast('✓ Aplausos reiniciados');};
-function pintarStatsJuegos(){const P=Object.values(PART);const catas=P.reduce((a,p)=>a+(p.pasaporte||[]).length,0);const bingo=P.filter(p=>(p.bingo||[]).length>0).length;
- $('jz-stats').innerHTML='Catas registradas: <b>'+catas+'</b><br>Bingo iniciados: <b>'+bingo+'</b><br>Votos: <b>'+VOTOS.length+'</b><br>Susurros: <b>'+MURO.length+'</b><br>Auxilios: <b>'+AUX.length+'</b>';}
+window.resetCorazones=async()=>{if(!confirm('¿Poner en cero todos los corazones?'))return;const b=writeBatch(db);PROG.forEach(a=>b.update(doc(db,'programa',a.id),{likes:0}));await b.commit();toast('✓ Corazones reiniciados');};
+function pintarStats(){const P=Object.values(PART);const catas=P.reduce((a,p)=>a+(p.pasaporte||[]).length,0);
+ $('jz-stats').innerHTML='Catas: <b>'+catas+'</b><br>Bingo iniciados: <b>'+P.filter(p=>(p.bingo||[]).length>0).length+'</b><br>Votos: <b>'+VOTOS.length+'</b><br>Susurros: <b>'+MURO.length+'</b><br>Auxilios: <b>'+AUX.length+'</b>';}
 function pintarRankAdmin(){const r=[...Object.values(PART)].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,10);
- $('jz-rank').innerHTML=r.map((p,i)=>'<div class="item-prog"><span class="hora">#'+(i+1)+'</span><div class="det"><b>'+esc(p.nombre)+' '+esc(p.apellido||'')+'</b></div><span>'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<div class="vacio">Sin datos aún</div>';}
+ $('jz-rank').innerHTML=r.map((p,i)=>'<div class="item-prog"><span class="hora">#'+(i+1)+'</span><div class="det"><b>'+esc(p.nombre)+' '+esc(p.apellido||'')+'</b></div><span>'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<div class="vacio">Sin datos</div>';}
 function pintarVotoAdmin(){const c={};VOTOS.forEach(v=>c[v.bodega]=(c[v.bodega]||0)+1);const t=VOTOS.length||1;
  $('jz-votores').innerHTML=Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px"><span style="width:140px;color:var(--texto2)">'+esc(v)+'</span><span style="flex:1;height:6px;background:var(--card2);border-radius:3px"><i style="display:block;height:100%;width:'+Math.round(n/t*100)+'%;background:var(--accent)"></i></span><span>'+n+'</span></div>').join('')||'<div class="vacio">Sin votos</div>';}
 function pintarMuroAdmin(){$('jz-muro').innerHTML=MURO.map(m=>'<div class="item-prog"><div class="det"><b>'+esc(m.texto)+'</b><span>'+esc(m.nombre||'')+' · '+(m.aprobado?'✓ aprobado':'pendiente')+'</span></div>'+(m.aprobado?'<button class="btn mini" onclick="desMuro(\''+m.id+'\')">Ocultar</button>':'<button class="btn mini solido" onclick="okMuro(\''+m.id+'\')">Aprobar</button>')+'<button class="btn mini peligro" onclick="delMuro(\''+m.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin susurros</div>';}
@@ -294,10 +293,13 @@ window.guardarSello=async n=>{await setDoc(doc(db,'simbolos',String(n)),{numero:
 window.genToken=async n=>{const t='SV2026-S'+n+'-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');await setDoc(doc(db,'simbolos',String(n)),{numero:n,token:t},{merge:true});toast('✓ QR '+n);};
 window.imprimirQRs=async()=>{let h='<html><body style="display:flex;flex-wrap:wrap;gap:30px;padding:30px">';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const el=document.createElement('div');if(s.token)new QRCode(el,{text:s.token,width:180,height:180});const img=el.querySelector('canvas')?el.querySelector('canvas').toDataURL():'';h+='<div style="text-align:center"><img src="'+img+'" style="width:180px"><b>Sello '+n+'</b></div>';}h+='</body></html>';const w=window.open('');w.document.write(h);w.document.close();setTimeout(()=>w.print(),600);};
 
-/* PROGRAMA/ORACULO/CHAT/QUIZ/PERFIL */
-window.guardarProg=async()=>{const h=$('pg-hora').value;if(!h||!$('pg-tema').value)return toast('Completa hora y tema');await addDoc(collection(db,'programa'),{fecha:$('pg-fecha').value||'',hora:h,tema:$('pg-tema').value.trim(),disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim()});['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value='');toast('✓ Actividad');};
-function pintarProg(){$('lista-prog').innerHTML=PROG.map(a=>'<div class="item-prog"><span class="hora">'+esc(a.hora)+'<span style="font-size:10px;color:var(--texto2)">'+fmtF(a.fecha)+'</span></span><div class="det"><b>'+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+'</span></div><button class="btn mini peligro" onclick="borrarProg(\''+a.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin actividades</div>';}
+/* PROGRAMA (con corazones por charla) */
+window.guardarProg=async()=>{const h=$('pg-hora').value;if(!h||!$('pg-tema').value)return toast('Completa hora y tema');await addDoc(collection(db,'programa'),{fecha:$('pg-fecha').value||'',hora:h,tema:$('pg-tema').value.trim(),disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim(),likes:0});['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value='');toast('✓ Actividad');};
+function pintarProg(){$('lista-prog').innerHTML=PROG.map(a=>'<div class="item-prog"><span class="hora">'+esc(a.hora)+'<span style="font-size:10px;color:var(--texto2)">'+fmtF(a.fecha)+'</span></span><div class="det"><b>'+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div><span style="color:var(--corazon);font-weight:600">♥ '+(a.likes||0)+'</span><button class="btn mini peligro" onclick="borrarProg(\''+a.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin actividades</div>';
+ $('jz-apl').textContent=PROG.reduce((s,a)=>s+(a.likes||0),0);}
 window.borrarProg=async id=>{await deleteDoc(doc(db,'programa',id));};
+
+/* ORACULO/CHAT/QUIZ/PERFIL */
 window.enviarAnuncio=async()=>{const t=$('an-titulo').value.trim(),m=$('an-msg').value.trim();if(!m)return toast('Escribe el mensaje');await addDoc(collection(db,'anuncios'),{titulo:t,mensaje:m,fecha:new Date().toISOString()});$('an-titulo').value='';$('an-msg').value='';toast('✓ Enviado');};
 function pintarAnun(){$('lista-anun').innerHTML=ANUN.map(a=>'<div class="item-prog"><div class="det"><b>'+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje)+'</span></div></div>').join('');}
 window.guardarFAQ=async()=>{const p=$('fq-p').value.trim(),r=$('fq-r').value.trim();if(!p||!r)return toast('Completa');if(fqEdit){await updateDoc(doc(db,'faq',fqEdit),{pregunta:p,respuesta:r});}else{await addDoc(collection(db,'faq'),{pregunta:p,respuesta:r,orden:FAQ.length+1});}$('fq-p').value='';$('fq-r').value='';fqEdit=null;$('fq-cancel').classList.add('oculto');toast('✓ Guardada');};
@@ -314,7 +316,7 @@ window.prevAvatar=q=>setPrev(q,$('pf-url-'+q).value.trim());
 window.guardarPerfil=async()=>{await setDoc(doc(db,'config','perfil'),{nombreOraculo:$('pf-nombre').value.trim()||'El Oráculo',tituloApp:$('pf-titulo').value.trim(),subApp:$('pf-sub').value.trim(),avatarOraculo:$('pf-url-oraculo').value.trim(),avatarUsuario:$('pf-url-usuario').value.trim()},{merge:true});toast('✓ Perfil');};
 window.resetChats=async()=>{if(!confirm('¿Reiniciar chats de todos?'))return;await setDoc(doc(db,'config','perfil'),{chatReset:new Date().toISOString()},{merge:true});toast('✓ Chats reiniciados');};
 
-/* SORTEO (notifica ganadores) */
+/* SORTEO */
 window.sortear=async()=>{const aptos=Object.values(PART).filter(p=>p.estado==='apto');const n=parseInt($('so-n').value)||1;if(!aptos.length)return toast('Sin aptos');if(n>aptos.length)return toast('Solo '+aptos.length);const pool=[...aptos],g=[];for(let i=0;i<n;i++){g.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}
  await addDoc(collection(db,'sorteos'),{fecha:new Date().toISOString(),n,ganadores:g.map(x=>({nombre:x.nombre+' '+x.apellido,email:x.email,telefono:x.telefono}))});
  await addDoc(collection(db,'anuncios'),{titulo:'🏆 GANADORES DEL SORTEO',mensaje:g.map(x=>x.nombre+' '+x.apellido).join(' · '),fecha:new Date().toISOString()});
@@ -332,9 +334,9 @@ window.rzPaso1=()=>{$('rz-paso2').classList.remove('oculto');};
 window.rzCancelar=()=>{$('rz-paso2').classList.add('oculto');};
 window.rzPaso2=async()=>{const ops=[];const del=col=>getDocs(collection(db,col)).then(s=>s.forEach(d=>ops.push({t:'d',ref:d.ref})));
  if($('rz-prog').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{simbolos:[],estado:'iniciado'}}));
- if($('rz-juegos').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{pasaporte:deleteField(),bingo:deleteField(),voto:deleteField(),circulo:deleteField(),progFav:deleteField()}}));
+ if($('rz-juegos').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{pasaporte:deleteField(),bingo:deleteField(),voto:deleteField(),circulo:deleteField(),progFav:deleteField(),likes:deleteField()}}));
+ if($('rz-corazones').checked)PROG.forEach(a=>ops.push({t:'u',ref:doc(db,'programa',a.id),d:{likes:0}}));
  if($('rz-anun').checked)await del('anuncios');if($('rz-sort').checked)await del('sorteos');if($('rz-muro').checked)await del('muro');if($('rz-aux').checked)await del('auxilios');if($('rz-programa').checked)await del('programa');if($('rz-sellos').checked)await del('simbolos');
- if($('rz-aplausos').checked)await setDoc(doc(db,'config','aplausos'),{total:0});
  for(let i=0;i<ops.length;i+=450){const b=writeBatch(db);ops.slice(i,i+450).forEach(o=>o.t==='u'?b.update(o.ref,o.d):b.delete(o.ref));await b.commit();}
  $('rz-paso2').classList.add('oculto');toast('✓ Evento reiniciado');};
 </script>
