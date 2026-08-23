@@ -124,7 +124,6 @@ tr:last-child td{border-bottom:none}
  <p class="sub-sec">Activa lo que está vivo y configura sus contenidos.</p>
  <div class="card"><h3>Activar / desactivar</h3><div id="jz-toggles"></div></div>
  <div class="card"><h3>Contenidos</h3>
-  <label>Salones de auxilio (uno por línea)</label><textarea id="jz-salones"></textarea>
   <label>Bodegas para votar (una por línea)</label><textarea id="jz-bvoto"></textarea>
   <label>Hora del sorteo (cuenta regresiva)</label><input id="jz-sorteo" type="datetime-local">
   <button class="btn solido" style="margin-top:10px" onclick="guardarJuegos()">Guardar contenidos</button></div>
@@ -133,7 +132,6 @@ tr:last-child td{border-bottom:none}
   <div class="card"><h3>Estadísticas en vivo</h3><div id="jz-stats" style="font-size:14px;color:var(--texto2)"></div></div>
  </div>
  <div class="card"><h3>Ranking en vivo</h3><div id="jz-rank"></div></div>
- <div class="card"><h3>Botón de auxilio · en vivo</h3><div id="jz-aux"></div></div>
 </section>
 
 <section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento y QR.</p><div class="grid2" id="grid-sellos"></div></section>
@@ -184,7 +182,6 @@ tr:last-child td{border-bottom:none}
   <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones</label>
   <label class="rz-check"><input type="checkbox" id="rz-sort" checked> Sorteos</label>
   <label class="rz-check"><input type="checkbox" id="rz-juegos"> Datos de juegos (voto, círculo, me gusta)</label>
-  <label class="rz-check"><input type="checkbox" id="rz-aux"> Pedidos de auxilio</label>
   <label class="rz-check"><input type="checkbox" id="rz-corazones"> Contador de corazones (me gusta)</label>
   <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa</label>
   <label class="rz-check"><input type="checkbox" id="rz-sellos"> Sellos y QRs</label>
@@ -209,8 +206,9 @@ const hoyISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMont
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
-const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['credencial','Credencial de Digno'],['aplausos','Me gusta (corazones) en programa'],['auxilio','Botón de auxilio (visible)']];
-let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},AUX=[],VOTOS=[],PROG=[];
+/* Exactamente los juegos que lee la app del participante */
+const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['credencial','Credencial de Digno']];
+let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},VOTOS=[],PROG=[];
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],quiz:['maestro','configurador'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
 const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['quiz','Quiz'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
@@ -238,7 +236,6 @@ function escuchar(){
  onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;$('qz-activo').checked=!!(QUIZ&&QUIZ.activo);if(!quizFormLoaded){quizFormLoaded=true;renderQuizForm();}});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};if(!juegosLoaded){juegosLoaded=true;renderToggles();}syncToggles();});
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};if(juegosLoaded)fillExtra();});
- onSnapshot(collection(db,'auxilios'),s=>{AUX=[];s.forEach(d=>AUX.push({id:d.id,...d.data()}));pintarAuxAdmin();});
  onSnapshot(collection(db,'votos'),s=>{VOTOS=[];s.forEach(d=>VOTOS.push({id:d.id,...d.data()}));pintarVotoAdmin();});
  onSnapshot(collection(db,'sorteos'),s=>{window.SORT=[];s.forEach(d=>SORT.push({id:d.id,...d.data()}));pintarHistSorteo();});
  if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>ADM[d.id]=d.data());pintarAdmins();});
@@ -267,7 +264,6 @@ window.exportar=()=>{const wb=XLSX.utils.book_new();
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Participantes');
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(PROG.map(a=>({Fecha:fmtF(a.fecha),Hora:a.hora,Tema:a.tema,Disertante:a.disertante||'',Lugar:a.lugar||'',Corazones:a.likes||0}))),'MeGustaCharlas');
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(VOTOS.map(v=>({Nombre:v.nombre,Bodega:v.bodega,Fecha:new Date(v.fecha).toLocaleString()}))),'Votos');
- XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(AUX.map(a=>({Nombre:a.nombre,Salon:a.salon,Atendido:a.atendido?'SI':'NO'}))),'Auxilios');
  const circ=Object.values(PART).filter(p=>p.circulo).map(p=>({Nombre:p.nombre+' '+p.apellido,Email:p.email,Telefono:p.telefono}));
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(circ.length?circ:[{Info:'sin miembros'}]),'Circulo');
  XLSX.writeFile(wb,'simbolos-vinos-datos.xlsx');toast('✓ Excel completo exportado');};
@@ -275,20 +271,17 @@ window.exportar=()=>{const wb=XLSX.utils.book_new();
 /* JUEGOS */
 function renderToggles(){$('jz-toggles').innerHTML=JG_META.map(([k,n])=>'<label class="tgl"><input type="checkbox" id="jz-'+k+'"> '+n+'</label>').join('');}
 function syncToggles(){JG_META.forEach(([k])=>{const e=$('jz-'+k);if(e)e.checked=!!JUEGOS[k];});}
-function fillExtra(){$('jz-salones').value=(EXTRA.salones||[]).join('\n');$('jz-bvoto').value=(EXTRA.bodegasVoto||[]).join('\n');$('jz-sorteo').value=toLocal(EXTRA.sorteoHora);}
+function fillExtra(){$('jz-bvoto').value=(EXTRA.bodegasVoto||[]).join('\n');$('jz-sorteo').value=toLocal(EXTRA.sorteoHora);}
 window.guardarJuegos=async()=>{const j={};JG_META.forEach(([k])=>j[k]=$('jz-'+k).checked);await setDoc(doc(db,'config','juegos'),j);
  const lines=v=>v.split('\n').map(x=>x.trim()).filter(Boolean);
- const extra={salones:lines($('jz-salones').value),bodegasVoto:lines($('jz-bvoto').value)};
+ const extra={bodegasVoto:lines($('jz-bvoto').value)};
  if($('jz-sorteo').value)extra.sorteoHora=new Date($('jz-sorteo').value).toISOString();
  await setDoc(doc(db,'config','extra'),extra,{merge:true});toast('✓ Contenidos guardados');};
 window.resetCorazones=async()=>{if(!confirm('¿Poner en cero todos los corazones?'))return;const b=writeBatch(db);PROG.forEach(a=>b.update(doc(db,'programa',a.id),{likes:0}));await b.commit();toast('✓ Corazones reiniciados');};
 function pintarStats(){const P=Object.values(PART);
- $('jz-stats').innerHTML='Arcano completados: <b>'+P.filter(p=>p.quiz&&p.quiz.completado).length+'</b><br>Círculo: <b>'+P.filter(p=>p.circulo).length+'</b><br>Votos bodega: <b>'+VOTOS.length+'</b><br>Auxilios: <b>'+AUX.length+'</b>';}
+ $('jz-stats').innerHTML='Arcano completados: <b>'+P.filter(p=>p.quiz&&p.quiz.completado).length+'</b><br>Círculo: <b>'+P.filter(p=>p.circulo).length+'</b><br>Votos bodega: <b>'+VOTOS.length+'</b>';}
 function pintarRankAdmin(){const r=[...Object.values(PART)].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,10);
  $('jz-rank').innerHTML=r.map((p,i)=>'<div class="item-prog"><span class="hora">#'+(i+1)+'</span><div class="det"><b>'+esc(p.nombre)+' '+esc(p.apellido||'')+'</b></div><span>'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<div class="vacio">Sin datos</div>';}
-function pintarAuxAdmin(){$('jz-aux').innerHTML=AUX.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')).map(a=>'<div class="item-prog"><div class="det"><b>🆘 '+esc(a.nombre)+'</b><span>Salón: '+esc(a.salon)+' · '+(a.atendido?'✓ atendido':'pendiente')+'</span></div>'+(a.atendido?'':'<button class="btn mini solido" onclick="okAux(\''+a.id+'\')">Atendido</button>')+'<button class="btn mini peligro" onclick="delAux(\''+a.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin pedidos</div>';}
-window.okAux=async id=>{await updateDoc(doc(db,'auxilios',id),{atendido:true});};
-window.delAux=async id=>{await deleteDoc(doc(db,'auxilios',id));};
 
 /* SELLOS */
 async function pintarSellos(){const g=$('grid-sellos');g.innerHTML='';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const c=document.createElement('div');c.className='sello-card';
@@ -341,7 +334,7 @@ window.rzPaso2=async()=>{const ops=[];const del=col=>getDocs(collection(db,col))
  if($('rz-juegos').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{voto:deleteField(),circulo:deleteField(),likes:deleteField()}}));
  if($('rz-corazones').checked)PROG.forEach(a=>ops.push({t:'u',ref:doc(db,'programa',a.id),d:{likes:0}}));
  if($('rz-chats').checked)await setDoc(doc(db,'config','perfil'),{chatReset:new Date().toISOString()},{merge:true});
- if($('rz-anun').checked)await del('anuncios');if($('rz-sort').checked)await del('sorteos');if($('rz-aux').checked)await del('auxilios');if($('rz-programa').checked)await del('programa');if($('rz-sellos').checked)await del('simbolos');
+ if($('rz-anun').checked)await del('anuncios');if($('rz-sort').checked)await del('sorteos');if($('rz-programa').checked)await del('programa');if($('rz-sellos').checked)await del('simbolos');
  for(let i=0;i<ops.length;i+=450){const b=writeBatch(db);ops.slice(i,i+450).forEach(o=>o.t==='u'?b.update(o.ref,o.d):b.delete(o.ref));await b.commit();}
  $('rz-paso2').classList.add('oculto');toast('✓ Evento reiniciado');};
 </script>
