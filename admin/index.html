@@ -84,7 +84,7 @@ main{max-width:1200px;margin:0 auto;padding:24px 20px 100px}
 .chip:hover{border-color:var(--linea2);color:var(--texto)}
 .chip.act{background:var(--texto);color:#000;border-color:var(--texto)}
 .tabla-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--linea);border-radius:16px}
-table{width:100%;border-collapse:collapse;min-width:760px}
+table{width:100%;border-collapse:collapse;min-width:880px}
 th{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--texto2);text-align:left;padding:14px 16px;
   border-bottom:1px solid var(--linea);text-transform:uppercase;background:rgba(255,255,255,.02)}
 td{padding:14px 16px;border-bottom:1px solid var(--linea);font-size:14px;vertical-align:middle}
@@ -186,7 +186,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <button class="btn mini solido oculto" id="btn-xlsx" onclick="exportar()">⬇ Excel</button>
     </div>
     <div class="tabla-wrap"><table>
-      <thead><tr><th>Nombre</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Perfil (quiz)</th><th>Registro</th></tr></thead>
+      <thead><tr><th>Nombre</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Perfil (quiz)</th><th>Registro</th><th>Acciones</th></tr></thead>
       <tbody id="tb"></tbody>
     </table></div>
   </section>
@@ -247,6 +247,11 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <div style="margin-top:24px">
       <h3 style="font-size:12px;color:var(--texto2);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Resultados en vivo</h3>
       <div id="qz-res"></div>
+    </div>
+    <div style="margin-top:24px;background:var(--card);border:1px solid rgba(255,69,58,.25);border-radius:16px;padding:20px">
+      <b style="color:var(--rojo)">Resetear quiz de TODOS los participantes</b>
+      <p style="color:var(--texto2);font-size:13px;margin:8px 0 14px">Borra el quiz y el perfil enológico de todos los participantes, para que puedan descubrir su arcano de nuevo.</p>
+      <button class="btn peligro" onclick="resetQuizGlobal()">Resetear todos los quizzes</button>
     </div>
   </section>
 
@@ -340,7 +345,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, addDoc, writeBatch,
-         onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+         onSnapshot, collection, deleteField } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const CFG = {
   apiKey: "AIzaSyA-1VBoP1hTjzbLSsMvqXYealszIu0y66g",
@@ -445,13 +450,16 @@ window.pintarTabla=()=>{
   }).sort((a,b)=>(b.registro||'').localeCompare(a.registro||''));
   $('tb').innerHTML = rows.length? rows.map(p=>{
     const n=(p.simbolos||[]).length; const pf=p.perfil||{};
+    const quizHecho = p.quiz && p.quiz.completado;
     return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td>'+
     '<td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono)+'</td>'+
     '<td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td>'+
     '<td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'En búsqueda')+'</span></td>'+
-    '<td style="color:var(--texto2);font-size:12px">'+(p.quiz&&p.quiz.completado? '⚜ '+esc(p.quiz.titulo||'')+'<br>'+esc(pf.Varietal||'')+' · '+esc(pf.Frecuencia||'') : '—')+'</td>'+
-    '<td style="color:var(--texto2);font-size:12px">'+new Date(p.registro||Date.now()).toLocaleString()+'</td></tr>';
-  }).join('') : '<tr><td colspan="6" class="vacio">Aún no hay participantes registrados</td></tr>';
+    '<td style="color:var(--texto2);font-size:12px">'+(quizHecho? '⚜ '+esc(p.quiz.titulo||'')+'<br>'+esc(pf.Varietal||'')+' · '+esc(pf.Frecuencia||'') : '—')+'</td>'+
+    '<td style="color:var(--texto2);font-size:12px">'+new Date(p.registro||Date.now()).toLocaleString()+'</td>'+
+    '<td style="white-space:nowrap">'+(quizHecho? '<button class="btn mini peligro" onclick="resetearQuiz(\''+p.id+'\')">Resetear quiz</button>' : '<span style="color:var(--texto3);font-size:11px">Sin quiz</span>')+'</td>'+
+    '</tr>';
+  }).join('') : '<tr><td colspan="7" class="vacio">Aún no hay participantes registrados</td></tr>';
 };
 window.exportar=()=>{
   const rows=Object.values(PART).map(p=>{ const pf=p.perfil||{};
@@ -463,6 +471,25 @@ window.exportar=()=>{
   const ws=XLSX.utils.json_to_sheet(rows); const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Participantes'); XLSX.writeFile(wb,'participantes-simbolos-vinos.xlsx');
   toast('✓ Excel exportado con datos de leads');
+};
+/* ── RESET QUIZ ── */
+window.resetearQuiz=async(id)=>{
+  const p=PART[id]; if(!p) return;
+  if(!confirm('¿Resetear el quiz de '+(p.nombre||'este participante')+'? Podrá descubrir su arcano de nuevo y tu base perderá sus datos enológicos actuales.')) return;
+  await updateDoc(doc(db,'participantes',id),{ quiz:deleteField(), perfil:deleteField() });
+  toast('✓ Quiz reseteado para '+(p.nombre||'el participante'));
+};
+window.resetQuizGlobal=async()=>{
+  if(!confirm('Esto borrará el quiz y perfil enológico de TODOS los participantes. ¿Continuar?')) return;
+  if(!confirm('Confirmación 2 de 2: los participantes podrán redescubrir su arcano. ¿Ejecutar?')) return;
+  const snap = await getDocs(collection(db,'participantes'));
+  const ops=[]; snap.forEach(d=>ops.push({ref:d.ref}));
+  for(let i=0;i<ops.length;i+=450){
+    const b=writeBatch(db);
+    ops.slice(i,i+450).forEach(o=>b.update(o.ref,{quiz:deleteField(),perfil:deleteField()}));
+    await b.commit();
+  }
+  toast('✓ Quiz reseteado en '+ops.length+' participantes');
 };
 
 /* ── QUIZ ── */
