@@ -181,7 +181,8 @@ tr:last-child td{border-bottom:none}
   <div><label>NOMBRE ORÁCULO</label><input id="pf-nombre"></div><div><label>TÍTULO APP</label><input id="pf-titulo"></div><div><label>SUBTÍTULO</label><input id="pf-sub"></div></div>
   <div class="form-grid" style="margin-top:12px">
   <div><label>LINK AVATAR ORÁCULO</label><input id="pf-url-oraculo" oninput="prevAvatar('oraculo')"><img id="pf-img-oraculo" class="avatar-prev" style="visibility:hidden"></div>
-  <div><label>LINK AVATAR PARTICIPANTE (respaldo)</label><input id="pf-url-usuario" oninput="prevAvatar('usuario')"><img id="pf-img-usuario" class="avatar-prev" style="visibility:hidden"></div></div>
+  <div><label>LINK AVATAR PARTICIPANTE (respaldo)</label><input id="pf-url-usuario" oninput="prevAvatar('usuario')"><img id="pf-img-usuario" class="avatar-prev" style="visibility:hidden"></div>
+  <div><label>ANIMACIÓN DEL CHAT (SEGUNDOS)</label><input id="pf-chatdelay" type="number" min="0.5" step="0.5" value="2"></div></div>
  <button class="btn solido" style="margin-top:14px" onclick="guardarPerfil()">Guardar perfil</button></div>
  <div class="card"><h3>Frases de aliento y frase final</h3>
   <label>FRASES DE ALIENTO (una por línea · sello 1 a 6)</label><textarea id="fr-aliento" style="min-height:150px" placeholder="¡Felicitaciones! El primer sello despierta.&#10;¡Bien hecho! Dos sellos ya brillan.&#10;…"></textarea>
@@ -264,7 +265,7 @@ function escuchar(){
   barChart($('ch-likes'),PROG.map(a=>[a.tema||a.hora,a.likes||0]),'var(--corazon)');});
  onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>ANUN.push({id:d.id,...d.data()}));pintarAnun();});
  onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>FAQ.push({id:d.id,...d.data()}));FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarFAQ();});
- onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};setPrev('oraculo',PERFIL.avatarOraculo);setPrev('usuario',PERFIL.avatarUsuario);if(!perfilLoaded){perfilLoaded=true;$('pf-nombre').value=PERFIL.nombreOraculo||'';$('pf-titulo').value=PERFIL.tituloApp||'';$('pf-sub').value=PERFIL.subApp||'';$('pf-url-oraculo').value=PERFIL.avatarOraculo||'';$('pf-url-usuario').value=PERFIL.avatarUsuario||'';}});
+ onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};setPrev('oraculo',PERFIL.avatarOraculo);setPrev('usuario',PERFIL.avatarUsuario);if(!perfilLoaded){perfilLoaded=true;$('pf-nombre').value=PERFIL.nombreOraculo||'';$('pf-titulo').value=PERFIL.tituloApp||'';$('pf-sub').value=PERFIL.subApp||'';$('pf-url-oraculo').value=PERFIL.avatarOraculo||'';$('pf-url-usuario').value=PERFIL.avatarUsuario||'';$('pf-chatdelay').value=(PERFIL.chatDelay!=null?PERFIL.chatDelay:2);}});
  onSnapshot(doc(db,'config','frases'),s=>{const F=s.exists()?s.data():{};if(!frasesLoaded){frasesLoaded=true;$('fr-aliento').value=(F.aliento||[]).join('\n');$('fr-final').value=F.final||'';}});
  onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;$('qz-activo').checked=!!(QUIZ&&QUIZ.activo);if(!quizFormLoaded){quizFormLoaded=true;renderQuizForm();}});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};if(!juegosLoaded){juegosLoaded=true;renderToggles();}syncToggles();});
@@ -382,7 +383,8 @@ window.borrarFAQ=async id=>{if(confirm('¿Eliminar?'))await deleteDoc(doc(db,'fa
 function pintarFAQ(){$('lista-faq').innerHTML=FAQ.map(f=>'<div class="item-prog"><div class="det"><b>'+esc(f.pregunta)+'</b><span>'+esc(f.respuesta)+'</span></div><button class="btn mini" onclick="editarFAQ(\''+f.id+'\')">Editar</button><button class="btn mini peligro" onclick="borrarFAQ(\''+f.id+'\')">✕</button></div>').join('');}
 function setPrev(q,u){const i=$('pf-img-'+q);if(u){i.src=u;i.style.visibility='visible';}else i.style.visibility='hidden';}
 window.prevAvatar=q=>setPrev(q,$('pf-url-'+q).value.trim());
-window.guardarPerfil=async()=>{await setDoc(doc(db,'config','perfil'),{nombreOraculo:$('pf-nombre').value.trim()||'El Oráculo',tituloApp:$('pf-titulo').value.trim(),subApp:$('pf-sub').value.trim(),avatarOraculo:$('pf-url-oraculo').value.trim(),avatarUsuario:$('pf-url-usuario').value.trim()},{merge:true});toast('✓ Perfil');};
+window.guardarPerfil=async()=>{const dv=parseFloat($('pf-chatdelay').value);const delay=(isFinite(dv)&&dv>0)?dv:2;
+ await setDoc(doc(db,'config','perfil'),{nombreOraculo:$('pf-nombre').value.trim()||'El Oráculo',tituloApp:$('pf-titulo').value.trim(),subApp:$('pf-sub').value.trim(),avatarOraculo:$('pf-url-oraculo').value.trim(),avatarUsuario:$('pf-url-usuario').value.trim(),chatDelay:delay},{merge:true});toast('✓ Perfil guardado (chat: '+delay+'s)');};
 window.guardarFrases=async()=>{const lines=$('fr-aliento').value.split('\n').map(x=>x.trim()).filter(Boolean);
  await setDoc(doc(db,'config','frases'),{aliento:lines,final:$('fr-final').value.trim()},{merge:true});toast('✓ Frases guardadas');};
 
