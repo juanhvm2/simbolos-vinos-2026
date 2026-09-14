@@ -556,7 +556,6 @@ function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' 
   const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];
   const wrap=document.createElement('div');wrap.className='sello-wrap'+(ab?' abierto':'');
   const d=document.createElement('div');d.className='sello'+(ab?' abierto':'');
-  // === CAMBIO: sello cerrado muestra solo "✦" misterioso y nombre oculto ("—"); sello abierto muestra la imagen del admin + nombre real ===
   let centro;
   if(ab){
     centro = (s&&s.img) ? '<img class="sello-img" src="'+s.img+'" alt="">' : '<span class="g">'+GLIFOS[i]+'</span>';
@@ -594,8 +593,14 @@ function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};
    $('revelacion').classList.add('activa');
    scramble($('rev-frag'), s.fragmento||'· · ·');
  }}
-window.cerrarRevelacion=()=>{$('revelacion').classList.remove('activa');
- if(localStorage.getItem('sv-nps-pending')==='1' && parte && parte.nps==null) mostrarNps();};
+window.cerrarRevelacion=()=>{
+ $('revelacion').classList.remove('activa');
+ // Volver automáticamente a la pantalla principal (Sellos)
+ const homeBtn=document.querySelector('[data-p="p-home"]');
+ navegar('p-home',homeBtn);
+ // Si corresponde, mostrar el NPS encima
+ if(localStorage.getItem('sv-nps-pending')==='1' && parte && parte.nps==null) mostrarNps();
+};
 function pintarPrograma(){const likes=(parte&&parte.likes)||[];const asis=(parte&&parte.asistencias)||[];
  $('prog-lista').innerHTML=programa.map(a=>{const n=a.likes||0,my=likes.includes(a.id);const fue=asis.includes(a.id);
  return '<div class="item" onclick="darLike(\''+a.id+'\')"><div class="det"><b>'+fmtF(a.fecha)+' · '+esc(a.hora)+' · '+esc(a.tema)+(fue?' <span style="color:var(--verde)">✓ asistencia</span>':'')+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div><div class="likebox"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
