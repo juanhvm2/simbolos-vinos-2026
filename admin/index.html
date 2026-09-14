@@ -168,7 +168,11 @@ tr:last-child td{border-bottom:none}
   <div class="form-grid" style="margin-top:12px">
   <div><label>LINK AVATAR ORÁCULO</label><input id="pf-url-oraculo" oninput="prevAvatar('oraculo')"><img id="pf-img-oraculo" class="avatar-prev" style="visibility:hidden"></div>
   <div><label>LINK AVATAR PARTICIPANTE</label><input id="pf-url-usuario" oninput="prevAvatar('usuario')"><img id="pf-img-usuario" class="avatar-prev" style="visibility:hidden"></div></div>
- <button class="btn solido" style="margin-top:14px" onclick="guardarPerfil()">Guardar perfil</button></div></section>
+ <button class="btn solido" style="margin-top:14px" onclick="guardarPerfil()">Guardar perfil</button></div>
+ <div class="card"><h3>Frases de aliento y frase final</h3>
+  <label>FRASES DE ALIENTO (una por línea · sello 1 a 6)</label><textarea id="fr-aliento" style="min-height:150px" placeholder="¡Felicitaciones! El primer sello despierta.&#10;¡Bien hecho! Dos sellos ya brillan.&#10;…"></textarea>
+  <label>FRASE FINAL (al completar los 7 sellos)</label><textarea id="fr-final" placeholder="¡Has completado los siete sellos!…"></textarea>
+  <button class="btn solido" style="margin-top:10px" onclick="guardarFrases()">Guardar frases</button></div></section>
 
 <section class="sec" id="sec-sorteo"><h2 class="titulo-sec">Sorteo final</h2>
  <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap"><div style="width:180px"><label>GANADORES</label><input id="so-n" type="number" min="1" value="3"></div>
@@ -214,7 +218,7 @@ const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateStri
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
 const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores']];
-let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[];
+let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[];
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
 const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
@@ -246,6 +250,7 @@ function escuchar(){
  onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>ANUN.push({id:d.id,...d.data()}));pintarAnun();});
  onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>FAQ.push({id:d.id,...d.data()}));FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarFAQ();});
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};setPrev('oraculo',PERFIL.avatarOraculo);setPrev('usuario',PERFIL.avatarUsuario);if(!perfilLoaded){perfilLoaded=true;$('pf-nombre').value=PERFIL.nombreOraculo||'';$('pf-titulo').value=PERFIL.tituloApp||'';$('pf-sub').value=PERFIL.subApp||'';$('pf-url-oraculo').value=PERFIL.avatarOraculo||'';$('pf-url-usuario').value=PERFIL.avatarUsuario||'';}});
+ onSnapshot(doc(db,'config','frases'),s=>{const F=s.exists()?s.data():{};if(!frasesLoaded){frasesLoaded=true;$('fr-aliento').value=(F.aliento||[]).join('\n');$('fr-final').value=F.final||'';}});
  onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;$('qz-activo').checked=!!(QUIZ&&QUIZ.activo);if(!quizFormLoaded){quizFormLoaded=true;renderQuizForm();}});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};if(!juegosLoaded){juegosLoaded=true;renderToggles();}syncToggles();});
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};if(juegosLoaded)fillExtra();});
@@ -283,7 +288,7 @@ window.exportar=()=>{const wb=XLSX.utils.book_new();
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(circ.length?circ:[{Info:'sin miembros'}]),'Circulo');
  XLSX.writeFile(wb,'simbolos-vinos-datos.xlsx');toast('✓ Excel completo exportado');};
 
-/* JUEGOS (incluye quiz) */
+/* JUEGOS */
 function renderToggles(){$('jz-toggles').innerHTML=JG_META.map(([k,n])=>'<label class="tgl"><input type="checkbox" id="jz-'+k+'"> '+n+'</label>').join('');}
 function syncToggles(){JG_META.forEach(([k])=>{const e=$('jz-'+k);if(e)e.checked=!!JUEGOS[k];});}
 function fillExtra(){$('jz-bvoto').value=(EXTRA.bodegasVoto||[]).join('\n');$('jz-sorteo').value=toLocal(EXTRA.sorteoHora);}
@@ -316,7 +321,7 @@ function pintarProg(){$('lista-prog').innerHTML=PROG.map(a=>'<div class="item-pr
  $('jz-apl').textContent=PROG.reduce((s,a)=>s+(a.likes||0),0);}
 window.borrarProg=async id=>{await deleteDoc(doc(db,'programa',id));};
 
-/* ORACULO/CHAT/PERFIL */
+/* ORACULO/CHAT/PERFIL/FRASES */
 window.enviarAnuncio=async()=>{const t=$('an-titulo').value.trim(),m=$('an-msg').value.trim();if(!m)return toast('Escribe el mensaje');await addDoc(collection(db,'anuncios'),{titulo:t,mensaje:m,fecha:new Date().toISOString()});$('an-titulo').value='';$('an-msg').value='';toast('✓ Enviado');};
 function pintarAnun(){$('lista-anun').innerHTML=ANUN.map(a=>'<div class="item-prog"><div class="det"><b>'+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje)+'</span></div></div>').join('');}
 window.guardarFAQ=async()=>{const p=$('fq-p').value.trim(),r=$('fq-r').value.trim();if(!p||!r)return toast('Completa');if(fqEdit){await updateDoc(doc(db,'faq',fqEdit),{pregunta:p,respuesta:r});}else{await addDoc(collection(db,'faq'),{pregunta:p,respuesta:r,orden:FAQ.length+1});}$('fq-p').value='';$('fq-r').value='';fqEdit=null;$('fq-cancel').classList.add('oculto');toast('✓ Guardada');};
@@ -327,6 +332,8 @@ function pintarFAQ(){$('lista-faq').innerHTML=FAQ.map(f=>'<div class="item-prog"
 function setPrev(q,u){const i=$('pf-img-'+q);if(u){i.src=u;i.style.visibility='visible';}else i.style.visibility='hidden';}
 window.prevAvatar=q=>setPrev(q,$('pf-url-'+q).value.trim());
 window.guardarPerfil=async()=>{await setDoc(doc(db,'config','perfil'),{nombreOraculo:$('pf-nombre').value.trim()||'El Oráculo',tituloApp:$('pf-titulo').value.trim(),subApp:$('pf-sub').value.trim(),avatarOraculo:$('pf-url-oraculo').value.trim(),avatarUsuario:$('pf-url-usuario').value.trim()},{merge:true});toast('✓ Perfil');};
+window.guardarFrases=async()=>{const lines=$('fr-aliento').value.split('\n').map(x=>x.trim()).filter(Boolean);
+ await setDoc(doc(db,'config','frases'),{aliento:lines,final:$('fr-final').value.trim()},{merge:true});toast('✓ Frases guardadas');};
 
 /* SORTEO */
 window.sortear=async()=>{const aptos=Object.values(PART).filter(p=>p.estado==='apto');const n=parseInt($('so-n').value)||1;if(!aptos.length)return toast('Sin aptos');if(n>aptos.length)return toast('Solo '+aptos.length);const pool=[...aptos],g=[];for(let i=0;i<n;i++){g.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}
@@ -335,7 +342,7 @@ window.sortear=async()=>{const aptos=Object.values(PART).filter(p=>p.estado==='a
  toast('🏆 Sorteo ejecutado y notificado');};
 function pintarHistSorteo(){$('hist-sorteo').innerHTML=SORT.map(s=>'<div class="card"><b>Sorteo · '+new Date(s.fecha).toLocaleString()+'</b>'+(s.ganadores||[]).map(g=>'<div style="color:var(--verde);margin-top:6px">🏆 '+esc(g.nombre)+'</div>').join('')+'</div>').join('');}
 
-/* EQUIPO (con contraseñas) */
+/* EQUIPO */
 window.crearAdmin=async()=>{$('eq-err').textContent='';const n=$('eq-nombre').value.trim(),e=$('eq-email').value.trim(),c=$('eq-clave').value,r=$('eq-rol').value;if(!n||!e||c.length<6)return $('eq-err').textContent='Completa todo y clave mín 6';try{const sec=initializeApp(CFG,'sec'+Date.now());const sa=getAuth(sec);const cr=await createUserWithEmailAndPassword(sa,e,c);await setDoc(doc(db,'admins',cr.user.uid),{nombre:n,email:e,rol:r,clave:c});await signOut(sa);$('eq-nombre').value=$('eq-email').value=$('eq-clave').value='';toast('✓ '+n+' creado');}catch(err){$('eq-err').textContent='Error: '+err.code;}};
 function pintarAdmins(){$('lista-admins').innerHTML=Object.entries(ADM).map(([id,a])=>'<div class="item-prog"><div class="det"><b>'+esc(a.nombre)+'</b><span>'+esc(a.email)+'</span></div>'+(id===yo?'<span class="tag apto">Tú</span>':'<span style="font-family:monospace;font-size:12px;color:var(--oro)">clave: '+esc(a.clave||'—')+'</span><select style="width:auto" onchange="cambiarRol(\''+id+'\',this.value)">'+['maestro','configurador','monitor'].map(r=>'<option'+(r===a.rol?' selected':'')+'>'+r+'</option>').join('')+'</select><button class="btn mini peligro" onclick="revocar(\''+id+'\')">✕</button>')+'</div>').join('');}
 window.cambiarRol=async(id,r)=>{await updateDoc(doc(db,'admins',id),{rol:r});toast('Rol actualizado');};
