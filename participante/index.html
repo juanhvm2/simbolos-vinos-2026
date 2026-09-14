@@ -31,7 +31,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .mistica{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--texto2)}
 .orn{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--oro);margin:18px 0}
 .orn::before,.orn::after{content:"";height:1px;width:56px;background:var(--linea2)}
-/* Landing */
 #p-landing{display:none;place-items:center;text-align:center}
 #p-landing.activa{display:grid}
 .orb{width:132px;height:132px;margin:0 auto 26px;border-radius:50%;background:var(--card);border:1px solid var(--linea);display:grid;place-items:center;box-shadow:var(--sombra);overflow:hidden;position:relative}
@@ -40,13 +39,11 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .titulo{font-size:clamp(28px,8vw,40px);font-weight:700;letter-spacing:-.03em}
 .sub{font-size:11px;font-weight:600;letter-spacing:.34em;color:var(--purpura);margin-top:8px;text-transform:uppercase}
 .lema{margin:20px auto;max-width:320px;font-size:17px;line-height:1.55}
-/* Botones */
 .btn{display:block;width:100%;padding:15px 22px;margin-top:12px;cursor:pointer;font-family:var(--sys);font-weight:600;font-size:15px;letter-spacing:0;text-transform:none;color:var(--tinta);background:transparent;border:1.5px solid var(--linea2);border-radius:999px;transition:.18s}
 .btn:active{transform:scale(.97)}
 .btn.solido{background:var(--tinta);color:#fff;border-color:var(--tinta);box-shadow:0 6px 18px rgba(122,16,52,.28)}
 .btn.fantasma{color:var(--texto2);border-color:var(--linea)}
 .btn.google{background:#fff;color:var(--texto);border:1px solid rgba(0,0,0,.10);box-shadow:var(--sombra2);display:flex;align-items:center;justify-content:center;gap:10px}
-/* Cards / campos */
 .card{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);padding:22px;box-shadow:var(--sombra)}
 .card h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);font-weight:600;margin-bottom:12px}
 .campo{margin-bottom:12px;text-align:left}
@@ -56,7 +53,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .campo select,select{width:100%;appearance:none;-webkit-appearance:none;padding:14px 38px 14px 16px;background:var(--card2) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%237a1034' stroke-width='2' fill='none'/></svg>") no-repeat right 16px center/12px;border:1px solid var(--linea);border-radius:14px;color:var(--texto);font-size:16px;font-family:var(--sys)}
 .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--texto2);margin:12px 0;text-align:left;cursor:pointer}
 .check input{width:auto;margin-top:2px;accent-color:var(--tinta)}
-/* Home */
 .cab{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .cab .nombre{font-size:19px;font-weight:700;letter-spacing:-.02em}
 .salir{background:none;border:none;color:var(--texto3);font-size:13px;cursor:pointer}
@@ -79,22 +75,23 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .scan-cta svg{width:24px;height:24px;stroke-width:2}
 .scan-cta:active{transform:scale(.97)}
 .sec-titulo{font-size:12px;font-weight:600;letter-spacing:.14em;color:var(--texto2);text-transform:uppercase;margin:26px 0 12px;text-align:center}
+/* Sellos: botón circular + nombre FUERA, debajo */
 .sellos{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.sello{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:var(--card);border:1px solid var(--linea);box-shadow:var(--sombra2);position:relative;cursor:pointer;overflow:hidden}
-.sello .g{font-size:24px;color:var(--texto3);filter:grayscale(1)}
+.sello-wrap{display:flex;flex-direction:column;align-items:center;gap:7px}
+.sello{width:100%;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--linea);box-shadow:var(--sombra2);position:relative;cursor:pointer;overflow:hidden}
+.sello .g{font-size:26px;color:var(--texto3);filter:grayscale(1)}
 .sello-img{width:70%;height:70%;object-fit:contain;border-radius:8px}
-.sello .n{font-size:8px;font-weight:600;letter-spacing:.1em;color:var(--texto3);text-transform:uppercase;text-align:center}
 .sello.abierto{background:linear-gradient(140deg,var(--tinta),var(--tinta2));border-color:transparent;box-shadow:0 8px 22px rgba(122,16,52,.35);animation:abrir .6s cubic-bezier(.34,1.56,.64,1)}
 .sello.abierto .g{color:#fff;filter:none}
 .sello.abierto .sello-img{filter:drop-shadow(0 0 6px rgba(255,255,255,.4))}
-.sello.abierto .n{color:rgba(255,255,255,.8)}
 .sello.abierto::after{content:"✓";position:absolute;top:-3px;right:-2px;width:20px;height:20px;border-radius:50%;background:var(--oro);color:var(--tinta2);font-size:12px;font-weight:800;display:grid;place-items:center;z-index:2}
+.sello-nombre{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);text-align:center;line-height:1.2}
+.sello-wrap.abierto .sello-nombre{color:var(--tinta);font-weight:700}
 @keyframes abrir{0%{transform:scale(.5)}100%{transform:scale(1)}}
 .frase-caja{margin-top:26px;padding:22px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);background:var(--card);text-align:center;position:relative;box-shadow:var(--sombra)}
 .frase-caja::before{content:"⚜";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--fondo);padding:0 10px;color:var(--oro);font-size:16px}
 .frase-caja .frag{font-size:16px;font-weight:600;color:var(--tinta);letter-spacing:.02em;line-height:1.8}
 .frase-caja .pista{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--texto2);text-transform:uppercase}
-/* Perfil */
 .perfil-hero{display:flex;gap:16px;align-items:center}
 .perfil-hero .ava{width:68px;height:68px;border-radius:50%;background:linear-gradient(140deg,var(--tinta),var(--purpura));color:#fff;display:grid;place-items:center;font-size:24px;font-weight:700;overflow:hidden;flex:none;box-shadow:0 6px 18px rgba(122,16,52,.3)}
 .ava svg{width:100%;height:100%;display:block}
@@ -107,21 +104,18 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .ava-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .ava-opt{border:2px solid var(--linea);border-radius:16px;overflow:hidden;cursor:pointer;background:var(--card2)}
 .ava-opt.sel{border-color:var(--tinta);box-shadow:0 4px 14px rgba(122,16,52,.25)}
-/* Nav flotante */
 .nav{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;display:flex;gap:4px;background:rgba(253,251,247,.86);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(122,16,52,.08);border-radius:26px;box-shadow:0 12px 40px rgba(92,12,38,.18);padding:8px}
 .nav button{flex:1;padding:8px 2px 6px;background:none;border:none;cursor:pointer;color:var(--texto3);font-family:var(--sys);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:18px}
 .nav button .i{display:block;margin:0 auto 4px;width:max-content;position:relative}
 .nav button .i svg{width:21px;height:21px;stroke-width:1.8}
 .nav button.act{background:var(--tinta);color:#fff;box-shadow:0 4px 14px rgba(122,16,52,.3)}
 .badge{position:absolute;top:-6px;right:-14px;min-width:16px;height:16px;border-radius:8px;background:var(--corazon);color:#fff;font-size:9px;font-weight:700;display:grid;place-items:center;padding:0 3px}
-/* Juegos / banners */
 .banner{display:block;width:100%;margin-top:12px;cursor:pointer;border-radius:20px;overflow:hidden;box-shadow:var(--sombra);border:1px solid rgba(122,16,52,.06);position:relative}
 .banner:active{transform:scale(.98)}
 .banner svg{display:block;width:100%;height:auto}
 .banner .shimmer{position:absolute;inset:0;background:linear-gradient(110deg,transparent 32%,rgba(255,255,255,.18) 50%,transparent 68%);transform:translateX(-100%);animation:shine 5s infinite}
 @keyframes shine{0%{transform:translateX(-100%)}35%,100%{transform:translateX(100%)}}
 .done-chip{position:absolute;top:10px;right:10px;background:#fff;color:var(--tinta);font-size:9px;font-weight:700;letter-spacing:.08em;padding:5px 11px;border-radius:999px;box-shadow:var(--sombra2);z-index:2}
-/* Items / listas */
 .item{display:flex;gap:14px;padding:15px 16px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio-sm);margin-bottom:10px;background:var(--card);align-items:center;cursor:pointer;box-shadow:var(--sombra2)}
 .item .det{flex:1}
 .item .det b{display:block;font-size:15px;font-weight:600}
@@ -136,7 +130,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .rank .sc{font-weight:700;color:var(--purpura)}
 .rk-ctl{display:flex;gap:6px}
 .rk-ctl button{width:32px;height:32px;border-radius:50%;border:1px solid var(--linea);background:var(--card2);color:var(--tinta);font-size:13px;cursor:pointer}
-/* Pasos / chat */
 .paso{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px}
 .paso .num{flex:none;width:32px;height:32px;border-radius:50%;background:var(--tinta);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700}
 .paso .txt b{display:block;font-size:15px;font-weight:600}
@@ -152,7 +145,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--texto2);animation:tec 1s infinite}
 .typing span:nth-child(2){animation-delay:.18s}.typing span:nth-child(3){animation-delay:.36s}
 @keyframes tec{0%,100%{opacity:.25}50%{opacity:.8;transform:translateY(-4px)}}
-/* Revelado */
 #revelacion{position:fixed;inset:0;z-index:60;display:none;place-items:center;text-align:center;background:rgba(244,240,233,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:24px;overflow-y:auto}
 #revelacion.activa{display:grid;animation:ap .4s}
 #rev-banner{width:100%;max-width:420px;border-radius:20px;overflow:hidden;box-shadow:var(--sombra)}
@@ -160,7 +152,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 #rev-frag{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:24px;color:var(--purpura);margin:18px 0}
 .rev-aliento{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--tinta);margin:4px 0 14px}
 .rev-aliento.final{font-size:24px;color:var(--purpura);font-weight:600}
-/* Toast / carga */
 #toasts{position:fixed;top:calc(14px + env(safe-area-inset-top));left:14px;right:14px;z-index:70;display:flex;flex-direction:column;gap:10px;pointer-events:none}
 .toast{background:rgba(253,251,247,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(122,16,52,.12);border-left:4px solid var(--tinta);border-radius:16px;padding:13px 16px;box-shadow:0 10px 30px rgba(92,12,38,.15);animation:bajar .45s}
 .toast .t{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--tinta);text-transform:uppercase}
@@ -293,8 +284,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <div class="sec-titulo">Preguntas</div><div id="chat-chips" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center"></div></section>
 
 <section class="pantalla" id="p-prog"><h2 style="font-size:22px;text-align:center">Programa del evento</h2>
-  <p class="mistica" style="text-align:center;margin:6px 0 14px">Toca una actividad para dar ♥ me gusta (una sola vez, queda grabado).</p>
-  <div id="prog-lista"></div></section>
+  <div id="prog-lista" style="margin-top:14px"></div></section>
 
 <div id="revelacion"><div style="width:100%;max-width:420px">
   <div id="rev-banner"></div>
@@ -453,10 +443,13 @@ function escucharTodo(){
 }
 function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' '+parte.apellido;const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=263.9*(1-n/7);const e=$('h-estado');e.textContent=apto?'⚜ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
  const c=$('h-sellos');c.innerHTML='';for(let i=1;i<=7;i++){const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];
+  const wrap=document.createElement('div');wrap.className='sello-wrap'+(ab?' abierto':'');
   const d=document.createElement('div');d.className='sello'+(ab?' abierto':'');
   const centro = s.img ? '<img class="sello-img" src="'+s.img+'" alt="">' : '<span class="g">'+GLIFOS[i]+'</span>';
-  d.innerHTML=centro+'<span class="n">'+((s&&s.nombre)||NOMBRES[i])+'</span>';
-  if(ab)d.onclick=()=>revelarSello(i);c.appendChild(d);}
+  d.innerHTML=centro;
+  if(ab)d.onclick=()=>revelarSello(i);
+  const nm=document.createElement('div');nm.className='sello-nombre';nm.textContent=((s&&s.nombre)||NOMBRES[i]);
+  wrap.appendChild(d);wrap.appendChild(nm);c.appendChild(wrap);}
  const fr=[];for(let i=1;i<=7;i++){fr.push((parte.simbolos||[]).includes(i)&&simbolos[i]&&simbolos[i].fragmento?simbolos[i].fragmento:'· · ·');}$('h-frase').textContent=fr.join('  ');}
 function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};$('rev-banner').innerHTML=bannerSello(s,i);$('rev-frag').textContent='';
  const al=$('rev-aliento');
