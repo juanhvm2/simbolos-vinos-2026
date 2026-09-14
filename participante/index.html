@@ -44,7 +44,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .btn.solido{background:var(--tinta);color:#fff;border-color:var(--tinta);box-shadow:0 6px 18px rgba(122,16,52,.28)}
 .btn.fantasma{color:var(--texto2);border-color:var(--linea)}
 .btn.google{background:#fff;color:var(--texto);border:1px solid rgba(0,0,0,.10);box-shadow:var(--sombra2);display:flex;align-items:center;justify-content:center;gap:10px}
-/* Botones de acceso rápido: perfil + instagram, lado a lado */
 .acc-row{display:flex;gap:10px;margin-top:12px}
 .acc-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:9px;padding:14px 16px;background:var(--card);border:1px solid var(--linea);border-radius:16px;color:var(--tinta);font-family:var(--sys);font-weight:600;font-size:14px;letter-spacing:0;cursor:pointer;box-shadow:var(--sombra2);transition:.18s;text-decoration:none}
 .acc-btn:active{transform:scale(.97)}
@@ -101,6 +100,18 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .frase-caja::before{content:"⚜";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--fondo);padding:0 10px;color:var(--oro);font-size:16px}
 .frase-caja .frag{font-size:16px;font-weight:600;color:var(--tinta);letter-spacing:.02em;line-height:1.8}
 .frase-caja .pista{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--texto2);text-transform:uppercase}
+/* SALÓN DE JUEGOS · estilo Apple */
+#juegos-lista{display:flex;flex-direction:column;gap:12px}
+.game-card{display:flex;align-items:center;gap:14px;padding:16px;background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:22px;box-shadow:var(--sombra);cursor:pointer;transition:transform .18s ease;width:100%;text-align:left;font-family:var(--sys)}
+.game-card:active{transform:scale(.97)}
+.game-icon{width:54px;height:54px;flex:none;border-radius:16px;display:grid;place-items:center;box-shadow:0 6px 16px rgba(92,12,38,.28)}
+.game-icon svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.game-info{flex:1;min-width:0;display:flex;flex-direction:column}
+.game-title{font-weight:600;font-size:16px;color:var(--texto);letter-spacing:-.01em}
+.game-sub{font-size:13px;color:var(--texto2);margin-top:2px}
+.game-right{display:flex;align-items:center;gap:8px;flex:none}
+.game-chip{font-size:10px;font-weight:700;letter-spacing:.05em;padding:5px 10px;border-radius:999px;background:var(--tinta);color:#fff;white-space:nowrap}
+.game-chev{width:18px;height:18px;color:var(--texto3)}
 .perfil-hero{display:flex;gap:16px;align-items:center}
 .perfil-hero .ava{width:68px;height:68px;border-radius:50%;background:linear-gradient(140deg,var(--tinta),var(--purpura));color:#fff;display:grid;place-items:center;font-size:24px;font-weight:700;overflow:hidden;flex:none;box-shadow:0 6px 18px rgba(122,16,52,.3)}
 .ava svg{width:100%;height:100%;display:block}
@@ -119,12 +130,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .nav button .i svg{width:21px;height:21px;stroke-width:1.8}
 .nav button.act{background:var(--tinta);color:#fff;box-shadow:0 4px 14px rgba(122,16,52,.3)}
 .badge{position:absolute;top:-6px;right:-14px;min-width:16px;height:16px;border-radius:8px;background:var(--corazon);color:#fff;font-size:9px;font-weight:700;display:grid;place-items:center;padding:0 3px}
-.banner{display:block;width:100%;margin-top:12px;cursor:pointer;border-radius:20px;overflow:hidden;box-shadow:var(--sombra);border:1px solid rgba(122,16,52,.06);position:relative}
-.banner:active{transform:scale(.98)}
-.banner svg{display:block;width:100%;height:auto}
-.banner .shimmer{position:absolute;inset:0;background:linear-gradient(110deg,transparent 32%,rgba(255,255,255,.18) 50%,transparent 68%);transform:translateX(-100%);animation:shine 5s infinite}
-@keyframes shine{0%{transform:translateX(-100%)}35%,100%{transform:translateX(100%)}}
-.done-chip{position:absolute;top:10px;right:10px;background:#fff;color:var(--tinta);font-size:9px;font-weight:700;letter-spacing:.08em;padding:5px 11px;border-radius:999px;box-shadow:var(--sombra2);z-index:2}
 .item{display:flex;gap:14px;padding:15px 16px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio-sm);margin-bottom:10px;background:var(--card);align-items:center;cursor:pointer;box-shadow:var(--sombra2)}
 .item .det{flex:1}
 .item .det b{display:block;font-size:15px;font-weight:600}
@@ -154,7 +159,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--texto2);animation:tec 1s infinite}
 .typing span:nth-child(2){animation-delay:.18s}.typing span:nth-child(3){animation-delay:.36s}
 @keyframes tec{0%,100%{opacity:.25}50%{opacity:.8;transform:translateY(-4px)}}
-/* Revelado: lámina + espacio para la frase */
 #revelacion{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:rgba(29,26,23,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:20px;overflow-y:auto}
 #revelacion.activa{display:grid;animation:ap .35s}
 .rev-full{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#160b10}
@@ -246,7 +250,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 </section>
 
 <section class="pantalla" id="p-juegos"><h2 style="font-size:22px;text-align:center">Salón de Juegos</h2>
-  <p class="mistica" style="text-align:center;margin:6px 0 14px">Toca para jugar · puedes repetir los completados.</p>
+  <p class="mistica" style="text-align:center;margin:6px 0 16px">Toca para jugar · puedes repetir los completados.</p>
   <div id="juegos-lista"></div></section>
 
 <section class="pantalla" id="p-voto">
@@ -386,6 +390,11 @@ function avatarSVG(i){const f=i>=4,p=PAL[i%4];
  +(f?'<circle cx="77" cy="60" r="4" fill="'+p[2]+'"/>':'<polygon points="34,62 50,86 66,62 58,70 50,66 42,70" fill="'+p[1]+'"/>')
  +'</svg>';}
 const ORACULO_SVG='<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5c0c26"/><path d="M50 14 L86 82 H14 Z" fill="none" stroke="#f3d27a" stroke-width="4"/><path d="M32 62 C40 52 60 52 68 62 C60 70 40 70 32 62 Z" fill="none" stroke="#f3d27a" stroke-width="3"/><circle cx="50" cy="61" r="5" fill="#f3d27a"/></svg>';
+/* Íconos de juegos (24x24) */
+const GAME_ICON={
+ quiz:'<path d="M7 3h10c0 6-3 9-5 9s-5-3-5-9z"/><path d="M12 12v5"/><path d="M9 20h6"/>',
+ ranking:'<path d="M6 20v-6"/><path d="M12 20V6"/><path d="M18 20v-10"/><path d="M4 20h16"/>'};
+const GAME_GRAD=['linear-gradient(140deg,var(--tinta),var(--purpura))','linear-gradient(140deg,var(--purpura),#9b4dca)','linear-gradient(140deg,var(--oro),#a97b12)'];
 window.ver=id=>{document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));$(id).classList.add('activa');};
 window.irScan=()=>navegar('p-scan',null);
 window.googleLogin=async()=>{try{await signInWithPopup(auth,gprov);}catch(e){toast('No se pudo iniciar con Google','Autoriza el dominio en Firebase Auth → Configuración.');}};
@@ -394,13 +403,18 @@ let audioCtx=null;
 function chime(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();[659.25,880].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=f;g.gain.setValueAtTime(0,audioCtx.currentTime+i*.18);g.gain.linearRampToValueAtTime(.18,audioCtx.currentTime+i*.18+.02);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+i*.18+.7);o.connect(g).connect(audioCtx.destination);o.start(audioCtx.currentTime+i*.18);o.stop(audioCtx.currentTime+i*.18+.8);});navigator.vibrate&&navigator.vibrate([90,60,90]);}catch(e){}}
 document.addEventListener('touchstart',()=>{try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();}catch(e){}},{once:true});
 function scramble(el,t){let i=0;const g='⚜✦';const int=setInterval(()=>{el.textContent=t.split('').map((c,j)=>j<i?c:(c===' '?' ':g[Math.floor(Math.random()*g.length)])).join('');i+=.6;if(i>=t.length+1){el.textContent=t;clearInterval(int);}},34);}
-const ICONO={quiz:'<path d="M26 22 H54 C54 40 46 48 40 49 C34 48 26 40 26 22 Z"/><path d="M40 49 C32 56 46 60 38 66"/>',ranking:'<path d="M28 56 V40 M40 56 V28 M52 56 V46"/><path d="M22 60 h36"/>'};
-function bannerSVG(o){const id='g'+o.key+Math.random().toString(36).slice(2,6);return `<svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${o.a1}"/><stop offset="1" stop-color="${o.a2}"/></linearGradient></defs><rect width="600" height="150" fill="url(#${id})"/><rect x="4" y="4" width="592" height="142" rx="14" fill="none" stroke="#f3d27a" stroke-width="1.5" opacity=".8"/><g transform="translate(36,35)"><circle cx="40" cy="40" r="36" fill="rgba(0,0,0,.25)" stroke="#f3d27a" stroke-width="1.5"/><g stroke="#f3d27a" stroke-width="2.4" fill="none" stroke-linecap="round">${ICONO[o.key]||''}</g></g><text x="130" y="50" font-family="Georgia,serif" font-size="11" fill="#f3d27a" letter-spacing="4">SÍMBOLOS &amp; VINOS</text><text x="130" y="86" font-family="Georgia,serif" font-size="25" fill="#fbf7ef" font-weight="700">${o.t}</text><text x="130" y="114" font-family="Georgia,serif" font-size="13" fill="#f0e9dd" font-style="italic" opacity=".85">${o.s}</text></svg>`;}
-const COL=[['#5c0c26','#6d1f6e'],['#4a0e2e','#7a1034'],['#5c0c26','#8a4a1e'],['#3d0a20','#6d1f6e']];
-const JUEGOS_META=[{key:'ranking',t:'Tabla de Buscadores',s:'ranking en vivo'},{key:'quiz',t:'Arcano Enológico',s:'4 preguntas · tu perfil'}];
+const JUEGOS_META=[{key:'ranking',t:'Tabla de Buscadores',s:'Ranking en vivo de la búsqueda'},{key:'quiz',t:'Arcano Enológico',s:'4 preguntas · descubre tu perfil'}];
 const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado};
-function pintarJuegos(){const c=$('juegos-lista');c.innerHTML='';JUEGOS_META.forEach((m,i)=>{if(!JUEGOS[m.key])return;
- const d=document.createElement('div');d.className='banner';d.innerHTML=bannerSVG({...m,a1:COL[i%4][0],a2:COL[i%4][1]})+'<div class="shimmer"></div>'+((DONE[m.key]&&DONE[m.key]())?'<span class="done-chip">✓ COMPLETADO</span>':'');d.onclick=()=>abrirJuego(m.key);c.appendChild(d);});}
+function pintarJuegos(){const c=$('juegos-lista');c.innerHTML='';
+ JUEGOS_META.forEach((m,i)=>{ if(!JUEGOS[m.key])return;
+  const done=DONE[m.key]&&DONE[m.key]();
+  const d=document.createElement('button');d.type='button';d.className='game-card';
+  d.innerHTML='<span class="game-icon" style="background:'+GAME_GRAD[i%GAME_GRAD.length]+'"><svg viewBox="0 0 24 24">'+(GAME_ICON[m.key]||'')+'</svg></span>'+
+   '<span class="game-info"><span class="game-title">'+m.t+'</span><span class="game-sub">'+m.s+'</span></span>'+
+   '<span class="game-right">'+(done?'<span class="game-chip">✓ Completado</span>':'')+'<svg class="game-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>';
+  d.onclick=()=>abrirJuego(m.key);
+  c.appendChild(d); });
+ if(!c.children.length)c.innerHTML='<p class="mistica" style="text-align:center">El Oráculo aún no abrió los juegos.</p>';}
 function abrirJuego(k){if(k==='quiz')return abrirQuiz();if(k==='ranking')return ver('p-ranking');}
 function actualizarVotoNav(){const oculto=(JUEGOS.voto===false);const b=$('nav-voto');if(b)b.style.display=oculto?'none':'';
  if(oculto&&$('p-voto').classList.contains('activa'))navegar('p-home',document.querySelector('[data-p="p-home"]'));
