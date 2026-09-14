@@ -290,7 +290,7 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 <nav class="nav" id="nav" style="display:none">
   <button class="act" data-p="p-home" onclick="navegar('p-home',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>Sellos</button>
   <button data-p="p-juegos" onclick="navegar('p-juegos',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>Juegos</button>
-  <button data-p="p-voto" onclick="navegar('p-voto',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></span>Votar</button>
+  <button id="nav-voto" data-p="p-voto" onclick="navegar('p-voto',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></span>Votar</button>
   <button data-p="p-chat" onclick="navegar('p-chat',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/></svg></span>Chat</button>
   <button data-p="p-avisos" onclick="navegar('p-avisos',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge oculto" id="badge">0</span></span>Avisos</button>
   <button data-p="p-prog" onclick="navegar('p-prog',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>Programa</button>
@@ -352,6 +352,9 @@ const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado};
 function pintarJuegos(){const c=$('juegos-lista');c.innerHTML='';JUEGOS_META.forEach((m,i)=>{if(!JUEGOS[m.key])return;
  const d=document.createElement('div');d.className='banner';d.innerHTML=bannerSVG({...m,a1:COL[i%4][0],a2:COL[i%4][1]})+'<div class="shimmer"></div>'+((DONE[m.key]&&DONE[m.key]())?'<span class="done-chip">✓ COMPLETADO</span>':'');d.onclick=()=>abrirJuego(m.key);c.appendChild(d);});}
 function abrirJuego(k){if(k==='quiz')return abrirQuiz();if(k==='ranking')return ver('p-ranking');}
+/* Ocultar / mostrar sección VOTAR según el admin */
+function actualizarVotoNav(){const oculto=(JUEGOS.voto===false);const b=$('nav-voto');if(b)b.style.display=oculto?'none':'';
+ if(oculto&&$('p-voto').classList.contains('activa'))navegar('p-home',document.querySelector('[data-p="p-home"]'));}
 function escucharQuiz(){onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;});}
 window.abrirQuiz=()=>{if(!QUIZ||!(QUIZ.preguntas||[]).length)return toast('El Oráculo prepara el arcano','');quizIdx=0;quizResp={};$('quiz-final').classList.add('oculto');$('quiz-caja').classList.remove('oculto');ver('p-quiz');pintarQuiz();};
 function pintarQuiz(){const qs=QUIZ.preguntas||[];$('quiz-dots').innerHTML=qs.map((_,i)=>'<span style="width:8px;height:8px;border-radius:50%;background:'+(i<quizIdx?'var(--tinta)':'var(--linea)')+'"></span>').join('');const q=qs[quizIdx];if(!q)return;$('quiz-pregunta').textContent=q.pregunta||'';const c=$('quiz-ops');c.innerHTML='';(q.opciones||[]).forEach(o=>{const b=document.createElement('button');b.className='btn';b.style.marginTop='10px';b.textContent=o.t;b.onclick=()=>responder(q,o);c.appendChild(b);});}
@@ -422,7 +425,7 @@ function escucharTodo(){
  onSnapshot(collection(db,'simbolos'),s=>{s.forEach(d=>simbolos[d.id]={...d.data(),id:d.id});pintarHome();});
  onSnapshot(collection(db,'programa'),s=>{programa=[];s.forEach(d=>programa.push({id:d.id,...d.data()}));programa.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarPrograma();});
  onSnapshot(collection(db,'participantes'),s=>{RANK=[];s.forEach(d=>RANK.push({id:d.id,...d.data()}));pintarRanking();});
- onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};pintarJuegos();});
+ onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};pintarJuegos();actualizarVotoNav();});
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};pintarVoto();});
  onSnapshot(doc(db,'config','frases'),s=>{FRASES=s.exists()?s.data():{};});
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};
