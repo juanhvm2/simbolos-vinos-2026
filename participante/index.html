@@ -94,7 +94,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .sello.abierto .g{color:#fff;filter:none}
 .sello.abierto .sello-img{filter:drop-shadow(0 0 6px rgba(255,255,255,.4))}
 .sello.abierto::after{content:"✓";position:absolute;top:-3px;right:-2px;width:20px;height:20px;border-radius:50%;background:var(--oro);color:var(--tinta2);font-size:12px;font-weight:800;display:grid;place-items:center;z-index:2}
-.sello-nombre{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);text-align:center;line-height:1.2}
+.sello-nombre{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);text-align:center;line-height:1.2;min-height:12px}
 .sello-wrap.abierto .sello-nombre{color:var(--tinta);font-weight:700}
 @keyframes abrir{0%{transform:scale(.5)}100%{transform:scale(1)}}
 .frase-final-caja{margin-top:18px;padding:28px 24px;border-radius:var(--radio);text-align:center;position:relative;
@@ -170,7 +170,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .ld-dots i:nth-child(2){animation-delay:.15s}
 .ld-dots i:nth-child(3){animation-delay:.3s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-12px);opacity:1}}
-/* NPS */
 .nps-modal{position:fixed;inset:0;z-index:65;display:none;place-items:center;background:rgba(29,26,23,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:20px}
 .nps-modal.activa{display:grid;animation:ap .35s}
 .nps-card{background:var(--card);border-radius:24px;padding:26px;max-width:420px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.4)}
@@ -425,11 +424,9 @@ let audioCtx=null;
 function chime(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();[659.25,880].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=f;g.gain.setValueAtTime(0,audioCtx.currentTime+i*.18);g.gain.linearRampToValueAtTime(.18,audioCtx.currentTime+i*.18+.02);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+i*.18+.7);o.connect(g).connect(audioCtx.destination);o.start(audioCtx.currentTime+i*.18);o.stop(audioCtx.currentTime+i*.18+.8);});navigator.vibrate&&navigator.vibrate([90,60,90]);}catch(e){}}
 document.addEventListener('touchstart',()=>{try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();}catch(e){}},{once:true});
 function scramble(el,t){let i=0;const g='⚜✦';const int=setInterval(()=>{el.textContent=t.split('').map((c,j)=>j<i?c:(c===' '?' ':g[Math.floor(Math.random()*g.length)])).join('');i+=.6;if(i>=t.length+1){el.textContent=t;clearInterval(int);}},34);}
-/* SESIONES Y RETENCIÓN */
 function reportarSesion(){ const st=parseInt(localStorage.getItem('sv-sesion-start')||'0'); if(!st||!yo)return; const dur=Math.max(0,Math.round((Date.now()-st)/1000)); localStorage.setItem('sv-sesion-start',String(Date.now())); if(dur>0) updateDoc(doc(db,'participantes',yo),{tiempoSesion:increment(dur)}).catch(()=>{}); }
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'){reportarSesion();} else {localStorage.setItem('sv-sesion-start',String(Date.now()));} });
 window.addEventListener('pagehide',reportarSesion);
-/* EMBUDO */
 function setFunnel(key){ if(!yo)return; const o={}; o['funnel.'+key]=new Date().toISOString(); updateDoc(doc(db,'participantes',yo),o).catch(()=>{}); }
 const JUEGOS_META=[{key:'ranking',t:'Tabla de Buscadores',s:'Ranking en vivo de la búsqueda'},{key:'quiz',t:'Arcano Enológico',s:'4 preguntas · descubre tu perfil'}];
 const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado};
@@ -502,7 +499,6 @@ function avaEl(q){ if(q==='bot'){ if(PERFIL.avatarOraculo){const im=new Image();
 function addBurb(q,txt){const row=document.createElement('div');row.className='chat-row '+q;const b=document.createElement('div');b.className='burb '+q;b.textContent=txt;if(q==='bot'){const f=document.createElement('span');f.className='firma';f.textContent='· '+botName()+' ·';b.appendChild(f);row.appendChild(avaEl('bot'));row.appendChild(b);}else{row.appendChild(b);row.appendChild(avaEl('user'));}$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;return b;}
 function typeWriter(txt){const row=document.createElement('div');row.className='chat-row bot';const b=document.createElement('div');b.className='burb bot';const f=document.createElement('span');f.className='firma';f.textContent='· '+botName()+' ·';row.appendChild(avaEl('bot'));row.appendChild(b);$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;
  let i=0;const int=setInterval(()=>{i++;b.textContent=txt.slice(0,i);b.appendChild(f);$('chat-ventana').scrollTop=1e9;if(i>=txt.length)clearInterval(int);},16);}
-/* CHAT REPORTADO: registra cada pregunta para métricas de contenido */
 window.preguntar=id=>{const f=FAQ.find(x=>x.id===id);if(!f)return;
  addBurb('user',f.pregunta);chatHist.push({q:f.pregunta,a:f.respuesta});localStorage.setItem('sv-chat',JSON.stringify(chatHist));
  if(yo) addDoc(collection(db,'chatLogs'),{uid:yo,nombre:(parte?parte.nombre+' '+parte.apellido:''),pregunta:f.pregunta,ts:new Date().toISOString()}).catch(()=>{});
@@ -512,7 +508,6 @@ window.preguntar=id=>{const f=FAQ.find(x=>x.id===id);if(!f)return;
  const dv=parseFloat(PERFIL&&PERFIL.chatDelay);const delay=(isFinite(dv)&&dv>0)?dv:2;
  setTimeout(()=>{row.remove();typeWriter(f.respuesta);}, Math.max(0.3,delay)*1000);};
 function renderHist(){$('chat-ventana').innerHTML='';chatHist.forEach(h=>{addBurb('user',h.q);addBurb('bot',h.a);});}
-/* NPS */
 function mostrarNps(){const sc=$('nps-scale');sc.innerHTML='';for(let v=0;v<=10;v++){const b=document.createElement('button');b.textContent=v;b.onclick=()=>guardarNps(v);sc.appendChild(b);}$('nps').classList.add('activa');}
 window.cerrarNps=()=>{localStorage.removeItem('sv-nps-pending');$('nps').classList.remove('activa');};
 window.guardarNps=async v=>{await updateDoc(doc(db,'participantes',yo),{nps:v,npsTs:new Date().toISOString()});localStorage.removeItem('sv-nps-pending');$('nps').classList.remove('activa');toast('✓ ¡Gracias por tu opinión!','');};
@@ -522,13 +517,11 @@ onAuthStateChanged(auth,async u=>{$('carga').classList.add('fin');
   const ex=await getDoc(doc(db,'participantes',yo));
   if(!ex.exists()){const dn=u.displayName||'';const parts=dn.split(' ');
    await setDoc(doc(db,'participantes',yo),{nombre:parts[0]||'Buscador',apellido:parts.slice(1).join(' ')||'',email:u.email||'',telefono:'',simbolos:[],estado:'iniciado',registro:new Date().toISOString(),consent:{priv:true,mkt:false},avatar:''});}
-  // Sesión: contador + última conexión + inicio de sesión actual
   updateDoc(doc(db,'participantes',yo),{sesiones:increment(1),ultimaConexion:new Date().toISOString()}).catch(()=>{});
   localStorage.setItem('sv-sesion-start',String(Date.now()));
   escucharTodo();renderHist();$('nav').style.display='flex';ver('p-home');}
  else{yo=null;parte=null;$('nav').style.display='none';ver('p-landing');}});
 function marcarVistos(){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));
- // APERTURAS DE AVISOS: reporta una apertura por aviso (una sola vez por dispositivo)
  let rep=JSON.parse(localStorage.getItem('sv-avisos-open')||'[]');
  avisosCache.forEach(a=>{ if(!rep.includes(a.id)){ rep.push(a.id); updateDoc(doc(db,'anuncios',a.id),{aperturas:increment(1)}).catch(()=>{}); } });
  localStorage.setItem('sv-avisos-open',JSON.stringify(rep));
@@ -558,14 +551,24 @@ function actualizarFraseFinal(){const ff=$('frase-final-caja');if(!ff)return;
 function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' '+parte.apellido;
  const ha=$('h-ava');if(ha){ if(parte.avatar)ha.innerHTML='<img src="'+parte.avatar+'" alt="">'; else ha.textContent=(parte.nombre||'✦')[0].toUpperCase(); }
  const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=270.2*(1-n/7);const e=$('h-estado');e.textContent=apto?'⚜ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
- const c=$('h-sellos');c.innerHTML='';for(let i=1;i<=7;i++){const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];
+ const c=$('h-sellos');c.innerHTML='';
+ for(let i=1;i<=7;i++){
+  const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];
   const wrap=document.createElement('div');wrap.className='sello-wrap'+(ab?' abierto':'');
   const d=document.createElement('div');d.className='sello'+(ab?' abierto':'');
-  const centro = s.img ? '<img class="sello-img" src="'+s.img+'" alt="">' : '<span class="g">'+GLIFOS[i]+'</span>';
+  // === CAMBIO: sello cerrado muestra solo "✦" misterioso y nombre oculto ("—"); sello abierto muestra la imagen del admin + nombre real ===
+  let centro;
+  if(ab){
+    centro = (s&&s.img) ? '<img class="sello-img" src="'+s.img+'" alt="">' : '<span class="g">'+GLIFOS[i]+'</span>';
+  } else {
+    centro = '<span class="g" style="font-size:26px;color:var(--texto3)">✦</span>';
+  }
   d.innerHTML=centro;
   if(ab)d.onclick=()=>revelarSello(i);
-  const nm=document.createElement('div');nm.className='sello-nombre';nm.textContent=((s&&s.nombre)||NOMBRES[i]);
-  wrap.appendChild(d);wrap.appendChild(nm);c.appendChild(wrap);}
+  const nm=document.createElement('div');nm.className='sello-nombre';
+  nm.textContent = ab ? ((s&&s.nombre)||NOMBRES[i]) : '—';
+  wrap.appendChild(d);wrap.appendChild(nm);c.appendChild(wrap);
+ }
  const fr=[];for(let i=1;i<=7;i++){fr.push((parte.simbolos||[]).includes(i)&&simbolos[i]&&simbolos[i].fragmento?simbolos[i].fragmento:'· · ·');}$('h-frase').textContent=fr.join('  ');
  actualizarFraseFinal();}
 function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};
@@ -602,20 +605,18 @@ window.navegar=(id,b)=>{ver(id);document.querySelectorAll('.nav button').forEach
 async function iniciarScanner(){if(escaneando)return;escaneando=true;try{hq=hq||new Html5Qrcode("qr-reader");await hq.start({facingMode:"environment"},{fps:10,qrbox:{width:220,height:220}},t=>{pararScanner();procesar(t);},()=>{});}catch(e){toast('Cámara no responde','Usa el código manual.');}}
 function pararScanner(){escaneando=false;if(hq&&hq.isScanning)hq.stop().catch(()=>{});}
 window.procesar=async raw=>{if(!raw)return;const tk=raw.trim();
- // 1) CHECK-IN DE CHARLA (QR de asistencia)
  const prog=programa.find(a=>a.checkin && a.checkin.toUpperCase()===tk.toUpperCase());
  if(prog){ const as=(parte.asistencias||[]);
    if(!as.includes(prog.id)){ const o={asistencias:arrayUnion(prog.id)}; o['asistTs.'+prog.id]=new Date().toISOString(); await updateDoc(doc(db,'participantes',yo),o); toast('✓ Check-in registrado', prog.tema||''); }
    else toast('Ya hiciste check-in aquí','');
    $('s-manual').value=''; return; }
- // 2) SELLO
  const e=Object.values(simbolos).find(s=>s.token&&s.token.toUpperCase()===tk.toUpperCase());
  if(!e)return toast('Código no reconocido','No es un sello ni un check-in válido.');
  const n=e.numero;if((parte.simbolos||[]).includes(n))return toast('Sello ya marcado','');
  const nuevo=(parte.simbolos||[]).length+1; const ahora=new Date().toISOString();
  const upd={simbolos:arrayUnion(n), estado:nuevo>=7?'apto':'iniciado', ultimoSello:n};
- upd['sellosTs.'+n]=ahora;                       // timestamp por sello (mapa de calor)
- if(nuevo===1) upd['funnel.primerSello']=ahora;  // embudo: 1er sello
+ upd['sellosTs.'+n]=ahora;
+ if(nuevo===1) upd['funnel.primerSello']=ahora;
  if(nuevo>=7){ upd['funnel.sieteSellos']=ahora; if(!parte.completadoFecha) upd.completadoFecha=ahora; localStorage.setItem('sv-nps-pending','1'); }
  await updateDoc(doc(db,'participantes',yo),upd);
  chime();
@@ -625,8 +626,8 @@ window.procesar=async raw=>{if(!raw)return;const tk=raw.trim();
  revelarSello(n,aliento,esFinal);
  $('s-manual').value='';};
 </script>
-</body>
- <!-- ===== PWA: banner de instalación (additive, no toca nada existente) ===== -->
+
+<!-- ===== PWA: banner de instalación ===== -->
 <div id="install-banner" class="oculto" style="position:fixed;left:14px;right:14px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:50;background:var(--tinta);color:#fff;padding:14px 16px;border-radius:16px;box-shadow:0 10px 30px rgba(92,12,38,.45);display:flex;align-items:center;gap:12px">
   <span style="font-size:22px;line-height:1">⚜</span>
   <div style="flex:1;min-width:0">
@@ -657,4 +658,6 @@ window.procesar=async raw=>{if(!raw)return;const tk=raw.trim();
 })();
 </script>
 <!-- ===== /PWA ===== -->
+
+</body>
 </html>
