@@ -89,12 +89,7 @@ tr:last-child td{border-bottom:none}
 .av-thumb{position:relative;display:inline-block}
 .av-thumb img{width:76px;height:76px;border-radius:16px;object-fit:cover;display:block;border:1px solid var(--linea2)}
 .av-thumb button{position:absolute;top:-8px;right:-8px;padding:2px 8px;border-radius:50%}
-.mrow{display:flex;gap:8px;align-items:center;margin:6px 0;font-size:12px}
-.mrow .lbl{width:150px;color:var(--texto2);flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mrow .track{flex:1;height:8px;background:var(--card2);border-radius:4px;overflow:hidden}
-.mrow .track i{display:block;height:100%;background:var(--accent);border-radius:4px}
-.mrow .val{width:70px;text-align:right;color:var(--texto2);flex:none}
-@media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:28px}.titulo-sec{font-size:20px}.mrow .lbl{width:100px}}
+@media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:28px}.titulo-sec{font-size:20px}}
 </style>
 </head>
 <body>
@@ -136,8 +131,17 @@ tr:last-child td{border-bottom:none}
 
 <section class="sec" id="sec-metricas">
  <h2 class="titulo-sec">Métricas del evento</h2>
- <p class="sub-sec">Embudo, mapa de calor, abandono, chat, NPS, apertura de avisos, asistencia y retención, en vivo.</p>
- <div id="met-content"></div>
+ <p class="sub-sec">Embudo, mapa de calor, contenido, NPS, apertura, asistencia y retención, todo en vivo.</p>
+ <div class="grid2">
+  <div class="card"><h3>Embudo de conversión</h3><div id="m-funnel"></div></div>
+  <div class="card"><h3>Mapa de calor · escaneos por salón</h3><div id="m-heat"></div></div>
+  <div class="card"><h3>Top preguntas del chat</h3><div id="m-chat"></div></div>
+  <div class="card"><h3>NPS</h3><div id="m-nps"></div></div>
+  <div class="card"><h3>Apertura de avisos</h3><div id="m-avisos"></div></div>
+  <div class="card"><h3>Asistencia real vs likes</h3><div id="m-asist"></div></div>
+  <div class="card"><h3>Sesiones y retención</h3><div id="m-ses"></div></div>
+  <div class="card"><h3>Punto de abandono (sellos)</h3><div id="m-drop"></div></div>
+ </div>
 </section>
 
 <section class="sec" id="sec-juegos">
@@ -160,7 +164,7 @@ tr:last-child td{border-bottom:none}
  <div class="card"><h3>Ranking de buscadores en vivo</h3><div id="jz-rank"></div></div>
 </section>
 
-<section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento, QR, <b>imagen del botón</b> e <b>imagen de revelado 1080×1350</b>.</p><div class="grid2" id="grid-sellos"></div></section>
+<section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento, QR, <b>imagen del botón</b> e <b>imagen de revelado 1080×1350</b>. Genera también el <b>código de check-in</b> de cada charla desde la pestaña Programa.</p><div class="grid2" id="grid-sellos"></div></section>
 
 <section class="sec" id="sec-avatares">
  <h2 class="titulo-sec">Avatares de participantes</h2>
@@ -242,10 +246,9 @@ const toast=m=>{const d=document.createElement('div');d.className='toast';d.text
 const hoyISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
-const fmtDur=seg=>{if(!seg)return'0m';const h=Math.floor(seg/3600),m=Math.round((seg%3600)/60);return (h?h+'h ':'')+m+'m';};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
 const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['voto','Sección VOTAR visible en participantes'],['frase','Frase oculta visible en inicio']];
-let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],AVATARES=[],CHATLOGS=[],SIMB={},ANUN=[];
+let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],AVATARES=[],SIMB={},CHATLOGS=[];
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],metricas:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],avatares:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
 const TABS=[['torre','Dashboard'],['metricas','Métricas'],['juegos','Juegos'],['sellos','Sellos'],['avatares','Avatares'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
@@ -258,8 +261,7 @@ onAuthStateChanged(auth,async u=>{if(!u){yo=null;miRol=null;$('s-app').classList
  if(miRol==='maestro')$('btn-xlsx').classList.remove('oculto');escuchar();});
 function irSec(k,b){document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');document.querySelectorAll('.sec').forEach(s=>s.classList.remove('act'));$('sec-'+k).classList.add('act');}
 function barChart(el,entries,color){const max=Math.max(1,...entries.map(e=>e[1]));
- el.innerHTML=entries.filter(e=>e[1]>0).map(([l,v])=>'<div class="mrow"><span class="lbl">'+esc(l)+'</span><span class="track"><i style="width:'+Math.round(v/max*100)+'%;background:'+(color||'var(--accent)')+'"></i></span><span class="val">'+v+'</span></div>').join('')||'<div class="vacio">Sin datos aún</div>';}
-function mrow(l,v,pct,color){return '<div class="mrow"><span class="lbl">'+esc(l)+'</span><span class="track"><i style="width:'+Math.max(2,Math.round(pct))+'%;background:'+(color||'var(--accent)')+'"></i></span><span class="val">'+v+'</span></div>';}
+ el.innerHTML=entries.filter(e=>e[1]>0).map(([l,v])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:12px"><span style="width:120px;color:var(--texto2)">'+esc(l)+'</span><span style="flex:1;height:8px;background:var(--card2);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(v/max*100)+'%;background:'+(color||'var(--accent)')+'"></i></span><b>'+v+'</b></div>').join('')||'<div class="vacio">Sin datos aún</div>';}
 
 function escuchar(){
  onSnapshot(collection(db,'participantes'),s=>{PART={};s.forEach(d=>PART[d.id]={id:d.id,...d.data()});
@@ -277,7 +279,7 @@ function escuchar(){
  onSnapshot(doc(db,'config','avatares'),s=>{const d=s.exists()?s.data():{};AVATARES=d.items||[];pintarAvatares();});
  onSnapshot(collection(db,'programa'),s=>{PROG=[];s.forEach(d=>PROG.push({id:d.id,...d.data()}));PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));pintarProg();
   barChart($('ch-likes'),PROG.map(a=>[a.tema||a.hora,a.likes||0]),'var(--corazon)');pintarMetricas();});
- onSnapshot(collection(db,'anuncios'),s=>{ANUN=[];s.forEach(d=>ANUN.push({id:d.id,...d.data()}));pintarAnun();pintarMetricas();});
+ onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>ANUN.push({id:d.id,...d.data()}));pintarAnun();pintarMetricas();});
  onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>FAQ.push({id:d.id,...d.data()}));FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarFAQ();});
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};setPrev('oraculo',PERFIL.avatarOraculo);setPrev('usuario',PERFIL.avatarUsuario);if(!perfilLoaded){perfilLoaded=true;$('pf-nombre').value=PERFIL.nombreOraculo||'';$('pf-titulo').value=PERFIL.tituloApp||'';$('pf-sub').value=PERFIL.subApp||'';$('pf-url-oraculo').value=PERFIL.avatarOraculo||'';$('pf-url-usuario').value=PERFIL.avatarUsuario||'';$('pf-chatdelay').value=(PERFIL.chatDelay!=null?PERFIL.chatDelay:2);}});
  onSnapshot(doc(db,'config','frases'),s=>{const F=s.exists()?s.data():{};if(!frasesLoaded){frasesLoaded=true;$('fr-aliento').value=(F.aliento||[]).join('\n');$('fr-final').value=F.final||'';}});
@@ -289,45 +291,31 @@ function escuchar(){
 }
 
 /* MÉTRICAS */
-function pintarMetricas(){const el=$('met-content');if(!el)return;const P=Object.values(PART);const N=P.length||1;
- // Embudo
- const f1=P.length, f2=P.filter(p=>(p.simbolos||[]).length>=1).length, f3=P.filter(p=>(p.simbolos||[]).length>=7).length,
-       f4=P.filter(p=>p.circulo).length, f5=P.filter(p=>(p.votoRank||[]).length>0||p.voto).length;
- let emb='<div class="card"><h3>Embudo de conversión</h3>';
- [[ 'Registrados',f1],['1er sello',f2],['7 sellos (aptos)',f3],['Círculo',f4],['Votó bodegas',f5]].forEach(([l,v])=>{emb+=mrow(l,v+' ('+Math.round(v/N*100)+'%)',v/N*100,'var(--verde)');});
- emb+='</div>';
- // Abandono
- const dist=[0,0,0,0,0,0,0,0];P.forEach(p=>dist[(p.simbolos||[]).length]++);
- let ab='<div class="card"><h3>Punto de abandono (sellos alcanzados)</h3>'+barChart(dist.map((v,i)=>[(i===7?'Completó (7)':i+' sellos'),v]),'var(--oro)')+'</div>';
- // Mapa de calor: por sello/salón + horas
- const perSello={},hourHist={};
- P.forEach(p=>{const ts=p.sellosTs||{};Object.entries(ts).forEach(([n,iso])=>{perSello[n]=(perSello[n]||0)+1;const h=new Date(iso).getHours();hourHist[h]=(hourHist[h]||0)+1;});});
- let mc='<div class="card"><h3>Mapa de calor · escaneos por sello/salón</h3>'+
-   (Object.keys(perSello).length? Object.keys(perSello).sort((a,b)=>a-b).map(n=>{const s=SIMB[n]||{};return mrow('Sello '+n+' · '+(s.salon||'—'),perSello[n],perSello[n]/Math.max(1,Math.max(...Object.values(perSello)))*100,'var(--accent)');}).join('') : '<div class="vacio">Sin escaneos aún</div>')+'</div>';
- let hh='<div class="card"><h3>Escaneos por hora</h3>'+ (Object.keys(hourHist).length? barChart(Object.keys(hourHist).sort((a,b)=>a-b).map(h=>[h+':00',hourHist[h]]),'var(--corazon)') : '<div class="vacio">Sin datos</div>')+'</div>';
- // Chat
+function pintarMetricas(){
+ const P=Object.values(PART);const f1=P.length;
+ const f2=P.filter(p=>(p.simbolos||[]).length>=1).length;
+ const f3=P.filter(p=>(p.simbolos||[]).length>=7||p.estado==='apto').length;
+ const f4=P.filter(p=>p.circulo).length;
+ const f5=P.filter(p=>(p.votoRank||[]).length>0).length;
+ const funnel=[['Registrados',f1],['1er sello',f2],['7 sellos',f3],['Círculo',f4],['Voto',f5]];
+ const elF=$('m-funnel');if(elF)elF.innerHTML=funnel.map(([l,v])=>{const pct=f1?Math.round(v/f1*100):0;return '<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-size:12px"><span>'+l+'</span><b>'+v+' ('+pct+'%)</b></div><div style="height:8px;background:var(--card2);border-radius:4px;overflow:hidden;margin-top:4px"><i style="display:block;height:100%;width:'+pct+'%;background:linear-gradient(90deg,var(--tinta),var(--purpura))"></i></div></div>';}).join('');
+ const heat={};P.forEach(p=>{(p.simbolos||[]).forEach(n=>{const s=SIMB[n];const salon=(s&&s.salon)||('Sello '+n);heat[salon]=(heat[salon]||0)+1;});});
+ const elH=$('m-heat');if(elH){const vals=Object.values(heat);const mx=Math.max(1,...vals);
+  elH.innerHTML=Object.entries(heat).sort((a,b)=>b[1]-a[1]).map(([s,v])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:12px"><span style="width:130px;color:var(--texto2)">'+esc(s)+'</span><span style="flex:1;height:8px;background:var(--card2);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(v/mx*100)+'%;background:linear-gradient(90deg,var(--oro),var(--corazon))"></i></span><b>'+v+'</b></div>').join('')||'<div class="vacio">Sin escaneos aún</div>';}
  const cq={};CHATLOGS.forEach(c=>{cq[c.pregunta]=(cq[c.pregunta]||0)+1;});
- const top=Object.entries(cq).sort((a,b)=>b[1]-a[1]).slice(0,8);
- let ch='<div class="card"><h3>Top preguntas del chat ('+CHATLOGS.length+')</h3>'+ (top.length? barChart(top,'var(--accent)'):'<div class="vacio">Sin preguntas aún</div>')+'</div>';
- // NPS
- const nps=P.filter(p=>p.nps!=null);const prom=nps.filter(p=>p.nps>=9).length,pas=nps.filter(p=>p.nps>=7&&p.nps<=8).length,det=nps.filter(p=>p.nps<=6).length;
- const score=nps.length?Math.round((prom-det)/nps.length*100):0; const avg=nps.length?(nps.reduce((a,p)=>a+p.nps,0)/nps.length).toFixed(1):'—';
- let np='<div class="card"><h3>NPS · ¿nos recomendarían?</h3><div style="font-size:40px;font-weight:700;color:'+(score>=0?'var(--verde)':'var(--rojo)')+'">'+score+'</div><div style="color:var(--texto2);font-size:12px;margin:4px 0 10px">Promedio '+avg+' · '+nps.length+' respuestas</div>'+
-   mrow('Promotores (9-10)',prom,prom/Math.max(1,nps.length)*100,'var(--verde)')+mrow('Pasivos (7-8)',pas,pas/Math.max(1,nps.length)*100,'var(--oro)')+mrow('Detractores (0-6)',det,det/Math.max(1,nps.length)*100,'var(--rojo)')+'</div>';
- // Avisos apertura
- let av='<div class="card"><h3>Apertura de avisos</h3>'+ (ANUN&&ANUN.length? ANUN.map(a=>mrow(a.titulo||'Aviso',(a.aperturas||0)+' ('+Math.round((a.aperturas||0)/N*100)+'%)',(a.aperturas||0)/N*100,'var(--accent)')).join('') : '<div class="vacio">Sin avisos</div>')+'</div>';
- // Asistencia vs likes
- let as='<div class="card"><h3>Asistencia real vs ♥ por charla</h3>'+ (PROG.length? PROG.map(a=>{const asis=P.filter(p=>(p.asistencias||[]).includes(a.id)).length;const lk=a.likes||0;const mx=Math.max(1,asis,lk);
-   return '<div style="margin:8px 0"><div style="font-size:12px;color:var(--texto2);margin-bottom:4px">'+esc(a.tema||a.hora)+'</div>'+mrow('✓ Asistencia',asis,asis/mx*100,'var(--verde)')+mrow('♥ Likes',lk,lk/mx*100,'var(--corazon)')+'</div>';}).join('') : '<div class="vacio">Sin actividades</div>')+'</div>';
- // Retención
- const conSes=P.filter(p=>p.sesiones);const totSes=conSes.reduce((a,p)=>a+p.sesiones,0);const totT=P.reduce((a,p)=>a+(p.tiempoSesion||0),0);
- const act24=P.filter(p=>p.ultimaConexion&&(Date.now()-new Date(p.ultimaConexion).getTime())<86400000).length;
- let rt='<div class="card"><h3>Sesiones y retención</h3>'+
-   mrow('Sesiones totales',totSes,100,'var(--accent)')+
-   mrow('Sesiones por usuario',(P.length?(totSes/P.length).toFixed(1):0),100,'var(--accent)')+
-   mrow('Tiempo total en app',fmtDur(totT),100,'var(--accent)')+
-   mrow('Activos últimas 24h',act24+' ('+Math.round(act24/N*100)+'%)',act24/N*100,'var(--verde)')+'</div>';
- el.innerHTML='<div class="grid2">'+emb+ab+mc+hh+ch+np+av+as+rt+'</div>';
+ const elC=$('m-chat');if(elC)elC.innerHTML=Object.entries(cq).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([q,v])=>'<div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;margin:6px 0"><span style="color:var(--texto2)">'+esc(q)+'</span><b>'+v+'</b></div>').join('')||'<div class="vacio">Sin preguntas aún</div>';
+ const nps=P.filter(p=>p.nps!=null);const elN=$('m-nps');
+ if(elN){ if(nps.length){const avg=(nps.reduce((a,p)=>a+p.nps,0)/nps.length).toFixed(1);const prom=nps.filter(p=>p.nps>=9).length,pas=nps.filter(p=>p.nps>=7&&p.nps<=8).length,det=nps.filter(p=>p.nps<=6).length;const score=Math.round((prom-det)/nps.length*100);
+   elN.innerHTML='<div style="font-size:34px;font-weight:700">'+avg+'<span style="font-size:14px;color:var(--texto2)">/10</span></div><div style="font-size:12px;color:var(--texto2);margin:6px 0">NPS: <b style="color:'+(score>=0?'var(--verde)':'var(--rojo)')+'">'+(score>0?'+':'')+score+'</b> · '+nps.length+' respuestas</div><div style="font-size:12px;color:var(--texto2)">Promotores '+prom+' · Pasivos '+pas+' · Detractores '+det+'</div>';
+  } else elN.innerHTML='<div class="vacio">Sin respuestas NPS</div>'; }
+ const elA=$('m-avisos');if(elA)elA.innerHTML=ANUN.map(a=>{const ap=a.aperturas||0;const pct=f1?Math.round(ap/f1*100):0;return '<div style="margin:6px 0;font-size:12px"><div style="display:flex;justify-content:space-between"><span>'+esc(a.titulo||'Aviso')+'</span><b>'+ap+' ('+pct+'%)</b></div><div style="height:6px;background:var(--card2);border-radius:3px;overflow:hidden;margin-top:4px"><i style="display:block;height:100%;width:'+Math.min(100,pct)+'%;background:var(--accent)"></i></div></div>';}).join('')||'<div class="vacio">Sin avisos</div>';
+ const elAs=$('m-asist');if(elAs)elAs.innerHTML=PROG.map(a=>{const asis=P.filter(p=>(p.asistencias||[]).includes(a.id)).length;const likes=a.likes||0;return '<div style="margin:8px 0;font-size:12px"><b>'+esc(a.tema)+'</b><div style="display:flex;gap:12px;margin-top:4px;color:var(--texto2)"><span>✓ asistencia: <b style="color:var(--verde)">'+asis+'</b></span><span>♥ likes: <b style="color:var(--corazon)">'+likes+'</b></span></div></div>';}).join('')||'<div class="vacio">Sin actividades</div>';
+ const ses=P.filter(p=>p.sesiones);const avgSes=ses.length?(ses.reduce((a,p)=>a+p.sesiones,0)/ses.length).toFixed(1):0;
+ const tsec=P.filter(p=>p.tiempoSesion);const avgT=tsec.length?Math.round(tsec.reduce((a,p)=>a+p.tiempoSesion,0)/tsec.length/60):0;
+ const act24=P.filter(p=>p.ultimaConexion&&(Date.now()-new Date(p.ultimaConexion))<86400000).length;
+ const elS=$('m-ses');if(elS)elS.innerHTML='Aperturas promedio: <b>'+avgSes+'</b><br>Tiempo en app promedio: <b>'+avgT+' min</b><br>Activos últimas 24h: <b>'+act24+'</b>';
+ const dist=[0,0,0,0,0,0,0,0];P.forEach(p=>{dist[(p.simbolos||[]).length]++;});
+ const elD=$('m-drop');if(elD){const mx=Math.max(1,...dist);elD.innerHTML=dist.map((v,i)=>'<div style="display:flex;gap:8px;align-items:center;margin:5px 0;font-size:12px"><span style="width:70px;color:var(--texto2)">'+i+' sellos</span><span style="flex:1;height:8px;background:var(--card2);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(v/mx*100)+'%;background:'+(i===7?'var(--verde)':'var(--oro)')+'"></i></span><b>'+v+'</b></div>').join('');}
 }
 
 /* TORRE */
@@ -350,15 +338,15 @@ window.exportar=()=>{const wb=XLSX.utils.book_new();
   const rankStr=(p.votoRank||[]).map((b,i)=>(i+1)+'º '+b).join(' | ');
   const avIdx=AVATARES.indexOf(p.avatar);
   return{Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,Avatar:p.avatar?('Avatar '+(avIdx>=0?avIdx+1:'elegido')):'Sin avatar',
-  Sellos:(p.simbolos||[]).length+'/7',UltimoSello:p.ultimoSello||'',Estado:p.estado==='apto'?'APTO':'BUSCANDO',
+  Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO':'BUSCANDO',
   Varietal:pf.Varietal||'',Estilo:pf.Estilo||'',Frecuencia:pf.Frecuencia||'',Interes:pf.Interes||'',Arcano:(p.quiz&&p.quiz.titulo)||'',
-  NPS:p.nps!=null?p.nps:'',ConsentPriv:p.consent&&p.consent.priv?'SI':'NO',ConsentMkt:p.consent&&p.consent.mkt?'SI':'NO',
+  ConsentPriv:p.consent&&p.consent.priv?'SI':'NO',ConsentMkt:p.consent&&p.consent.mkt?'SI':'NO',
   Nacimiento:x.nac||'',Zona:x.zona||'',ComoEntero:x.como||'',Compania:x.comp||'',
   BodegaFav:p.voto||'',RankingBodegas:rankStr,Circulo:p.circulo?'SI':'NO',MeGustaDados:(p.likes||[]).length,MeGustaCharlas:likeNames,
-  Asistencias:(p.asistencias||[]).length,Sesiones:p.sesiones||0,TiempoAppSeg:p.tiempoSesion||0,UltimaConexion:p.ultimaConexion||'',
+  NPS:(p.nps!=null?p.nps:''),Sesiones:(p.sesiones||0),MinutosEnApp:(p.tiempoSesion?Math.round(p.tiempoSesion/60):0),
   Registro:new Date(p.registro||Date.now()).toLocaleString()};});
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Participantes');
- XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(PROG.map(a=>({Fecha:fmtF(a.fecha),Hora:a.hora,Tema:a.tema,Disertante:a.disertante||'',Lugar:a.lugar||'',Likes:a.likes||0,Asistencias:Object.values(PART).filter(p=>(p.asistencias||[]).includes(a.id)).length})),'Charlas');
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(PROG.map(a=>({Fecha:fmtF(a.fecha),Hora:a.hora,Tema:a.tema,Disertante:a.disertante||'',Lugar:a.lugar||'',Corazones:a.likes||0,Asistencias:Object.values(PART).filter(p=>(p.asistencias||[]).includes(a.id)).length})),'Charlas');
  const agg={};Object.values(PART).forEach(p=>{(p.votoRank||[]).forEach((b,i)=>{if(!agg[b])agg[b]={pts:0,cnt:0};agg[b].pts+=(p.votoRank.length-i);agg[b].cnt++;});});
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(Object.entries(agg).sort((a,b)=>b[1].pts-a[1].pts).map(([b,o])=>({Bodega:b,Puntos:o.pts,VecesVotada:o.cnt}))),'RankingBodegas');
  const circ=Object.values(PART).filter(p=>p.circulo).map(p=>({Nombre:p.nombre+' '+p.apellido,Email:p.email,Telefono:p.telefono}));
@@ -383,7 +371,9 @@ function pintarRankAdmin(){const r=[...Object.values(PART)].filter(p=>(p.simbolo
 function renderQuizForm(){const qs=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;$('qz-form').innerHTML=qs.map((q,i)=>'<div style="border-top:1px solid var(--linea);margin-top:14px;padding-top:10px"><div class="form-grid"><div><label>CATEGORÍA</label><input id="qz-c'+i+'" value="'+esc(q.categoria)+'"></div><div style="grid-column:1/-1"><label>PREGUNTA '+(i+1)+'</label><input id="qz-p'+i+'" value="'+esc(q.pregunta)+'"></div></div>'+(q.opciones||[]).map((o,j)=>'<div class="form-grid" style="margin-top:6px"><div><label>OPCIÓN '+(j+1)+'</label><input id="qz-o'+i+'-'+j+'t" value="'+esc(o.t)+'"></div><div><label>DATO</label><input id="qz-o'+i+'-'+j+'v" value="'+esc(o.v)+'"></div></div>').join('')+'</div>').join('');}
 window.guardarQuiz=async()=>{const b=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;const qs=b.map((q,i)=>({categoria:$('qz-c'+i).value.trim(),pregunta:$('qz-p'+i).value.trim(),opciones:(q.opciones||[]).map((o,j)=>({t:$('qz-o'+i+'-'+j+'t').value.trim(),v:$('qz-o'+i+'-'+j+'v').value.trim()}))}));await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked,preguntas:qs},{merge:true});toast('✓ Quiz guardado');};
 window.toggleQuiz=async()=>{await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked},{merge:true});};
-function pintarQuizRes(){const qs=(QUIZ&&QUIZ.preguntas)||[];const done=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado);let h='<p style="color:var(--texto2);font-size:13px">Completaron: <b style="color:var(--verde)">'+done.length+'</b></p>';qs.forEach(q=>{const c={};done.forEach(p=>{const v=(p.perfil||{})[q.categoria];if(v)c[v]=(c[v]||0)+1;});const t=done.length||1;h+='<b style="font-size:13px">'+esc(q.pregunta)+'</b>'+Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div class="mrow"><span class="lbl">'+esc(v)+'</span><span class="track"><i style="width:'+Math.round(n/t*100)+'%"></i></span><span class="val">'+n+'</span></div>').join('');});$('qz-res').innerHTML=h;}
+function pintarQuizRes(){const qs=(QUIZ&&QUIZ.preguntas)||[];const done=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado);let h='<p style="color:var(--texto2);font-size:13px">Completaron: <b style="color:var(--verde)">'+done.length+'</b></p>';qs.forEach(q=>{const c={};done.forEach(p=>{const v=(p.perfil||{})[q.categoria];if(v)c[v]=(c[v]||0)+1;});const t=done.length||1;h+='<b style="font-size:13px">'+esc(q.pregunta)+'</b>'+Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div style="display:flex;gap:8px;margin:5px 0;font-size:12px"><span style="width:110px;color:var(--texto2)">'+esc(v)+'</span><span style="flex:1;height:6px;background:var(--card2)"><i style="display:block;height:100%;width:'+Math.round(n/t*100)+'%;background:var(--accent)"></i></span><span>'+n+'</span></div>').join('');});$('qz-res').innerHTML=h;}
+
+/* MÉTRICAS helpers ya arriba */
 
 /* AVATARES */
 function pintarAvatares(){const el=$('av-list');if(!el)return;
@@ -409,7 +399,6 @@ window.quitarImgFull=n=>{window['_imgPendFull']=window['_imgPendFull']||{};windo
 async function pintarSellos(){const g=$('grid-sellos');g.innerHTML='';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const c=document.createElement('div');c.className='sello-card';
  c.innerHTML='<div style="display:flex;gap:12px;align-items:center;margin-bottom:10px"><span style="font-size:26px">'+GLIFOS[n]+'</span><b>Sello '+n+'</b></div>'+
  '<label>NOMBRE</label><input id="sn-'+n+'" value="'+esc(s.nombre||'')+'"><label>SALÓN</label><input id="ss-'+n+'" value="'+esc(s.salon||'')+'"><label>FRAGMENTO</label><input id="sf-'+n+'" value="'+esc(s.fragmento||'')+'">'+
- '<label>CÓDIGO CHECK-IN DE CHARLA (opcional)</label><input id="sc-'+n+'" value="'+esc(s.checkin||'')+'" placeholder="Ej: CHARLA-1">'+
  '<label>IMAGEN PNG DEL SÍMBOLO (botón)</label><input type="file" accept="image/png,image/*" id="si-'+n+'" onchange="cargarImgSello('+n+',this)">'+
  '<div style="display:flex;gap:10px;align-items:center;margin:4px 0 10px"><img id="sp-'+n+'" style="width:48px;height:48px;object-fit:contain;background:var(--bg2);border-radius:10px;visibility:'+(s.img?'visible':'hidden')+'" '+(s.img?'src="'+s.img+'"':'')+'><button class="btn mini peligro" onclick="quitarImgSello('+n+')">Quitar</button></div>'+
  '<label>IMAGEN REVELADO (1080×1350)</label><input type="file" accept="image/*" id="sfull-'+n+'" onchange="cargarImgFull('+n+',this)">'+
@@ -422,17 +411,15 @@ window.guardarSello=async n=>{const cur=(await getDoc(doc(db,'simbolos',String(n
  const pend=window['_imgPend']||{},pendF=window['_imgPendFull']||{};
  const img=(n in pend)?pend[n]:(cur.img||'');
  const imgFull=(n in pendF)?pendF[n]:(cur.imgFull||'');
- await setDoc(doc(db,'simbolos',String(n)),{numero:n,nombre:$('sn-'+n).value.trim(),salon:$('ss-'+n).value.trim(),fragmento:$('sf-'+n).value.trim(),checkin:($('sc-'+n)?$('sc-'+n).value.trim():'')||cur.checkin||'',token:cur.token||'',activo:true,img:img,imgFull:imgFull},{merge:true});toast('✓ Sello '+n+' guardado');};
+ await setDoc(doc(db,'simbolos',String(n)),{numero:n,nombre:$('sn-'+n).value.trim(),salon:$('ss-'+n).value.trim(),fragmento:$('sf-'+n).value.trim(),token:cur.token||'',activo:true,img:img,imgFull:imgFull},{merge:true});toast('✓ Sello '+n+' guardado');};
 window.genToken=async n=>{const t='SV2026-S'+n+'-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');await setDoc(doc(db,'simbolos',String(n)),{numero:n,token:t},{merge:true});toast('✓ QR '+n);};
 window.imprimirQRs=async()=>{let h='<html><body style="display:flex;flex-wrap:wrap;gap:30px;padding:30px">';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const el=document.createElement('div');if(s.token)new QRCode(el,{text:s.token,width:180,height:180});const img=el.querySelector('canvas')?el.querySelector('canvas').toDataURL():'';h+='<div style="text-align:center"><img src="'+img+'" style="width:180px"><b>Sello '+n+'</b></div>';}h+='</body></html>';const w=window.open('');w.document.write(h);w.document.close();setTimeout(()=>w.print(),600);};
 
-/* PROGRAMA */
-window.guardarProg=async()=>{const h=$('pg-hora').value;if(!h||!$('pg-tema').value)return toast('Completa hora y tema');
- const chk='CHARLA-'+(PROG.length+1);
- await addDoc(collection(db,'programa'),{fecha:$('pg-fecha').value||'',hora:h,tema:$('pg-tema').value.trim(),disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim(),likes:0,checkin:chk});
- ['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value='');toast('✓ Actividad agregada · check-in: '+chk);};
-function pintarProg(){$('lista-prog').innerHTML=PROG.map(a=>'<div class="item-prog"><span class="hora">'+esc(a.hora)+'<span style="font-size:10px;color:var(--texto2)">'+fmtF(a.fecha)+'</span></span><div class="det"><b>'+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+' · check-in: '+esc(a.checkin||'—')+'</span></div><span style="color:var(--corazon);font-weight:600">♥ '+(a.likes||0)+'</span><button class="btn mini peligro" onclick="borrarProg(\''+a.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin actividades</div>';
+/* PROGRAMA (con código de check-in) */
+window.guardarProg=async()=>{const h=$('pg-hora').value;if(!h||!$('pg-tema').value)return toast('Completa hora y tema');await addDoc(collection(db,'programa'),{fecha:$('pg-fecha').value||'',hora:h,tema:$('pg-tema').value.trim(),disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim(),likes:0,checkin:''});['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value='');toast('✓ Actividad');};
+function pintarProg(){$('lista-prog').innerHTML=PROG.map(a=>'<div class="item-prog"><span class="hora">'+esc(a.hora)+'<span style="font-size:10px;color:var(--texto2)">'+fmtF(a.fecha)+'</span></span><div class="det"><b>'+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+' · ✓'+Object.values(PART).filter(p=>(p.asistencias||[]).includes(a.id)).length+' · ♥'+(a.likes||0)+'</span></div><button class="btn mini" onclick="genCheckin(\''+a.id+'\')">QR check-in</button><button class="btn mini peligro" onclick="borrarProg(\''+a.id+'\')">✕</button></div>').join('')||'<div class="vacio">Sin actividades</div>';
  $('jz-apl').textContent=PROG.reduce((s,a)=>s+(a.likes||0),0);}
+window.genCheckin=async id=>{const t='CHK-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');await updateDoc(doc(db,'programa',id),{checkin:t});toast('✓ Código check-in generado: '+t);};
 window.borrarProg=async id=>{await deleteDoc(doc(db,'programa',id));};
 
 /* ORACULO/CHAT/PERFIL/FRASES */
