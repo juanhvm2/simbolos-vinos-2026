@@ -100,7 +100,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .frase-caja::before{content:"⚜";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--fondo);padding:0 10px;color:var(--oro);font-size:16px}
 .frase-caja .frag{font-size:16px;font-weight:600;color:var(--tinta);letter-spacing:.02em;line-height:1.8}
 .frase-caja .pista{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--texto2);text-transform:uppercase}
-/* SALÓN DE JUEGOS · estilo Apple */
 #juegos-lista{display:flex;flex-direction:column;gap:12px}
 .game-card{display:flex;align-items:center;gap:14px;padding:16px;background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:22px;box-shadow:var(--sombra);cursor:pointer;transition:transform .18s ease;width:100%;text-align:left;font-family:var(--sys)}
 .game-card:active{transform:scale(.97)}
@@ -114,7 +113,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .game-chev{width:18px;height:18px;color:var(--texto3)}
 .perfil-hero{display:flex;gap:16px;align-items:center}
 .perfil-hero .ava{width:68px;height:68px;border-radius:50%;background:linear-gradient(140deg,var(--tinta),var(--purpura));color:#fff;display:grid;place-items:center;font-size:24px;font-weight:700;overflow:hidden;flex:none;box-shadow:0 6px 18px rgba(122,16,52,.3)}
-.ava svg{width:100%;height:100%;display:block}
+.ava img{width:100%;height:100%;object-fit:cover;display:block}
 .perfil-hero .nom{font-size:18px;font-weight:700;letter-spacing:-.02em}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .chipmini{font-size:10px;font-weight:600;padding:5px 11px;border-radius:999px;border:1px solid var(--linea);color:var(--texto2);background:var(--card2)}
@@ -122,7 +121,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .comp-bar{height:6px;background:rgba(122,16,52,.10);border-radius:3px;overflow:hidden;margin-top:12px}
 .comp-bar i{display:block;height:100%;background:var(--tinta);width:0;transition:width .4s;border-radius:3px}
 .ava-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.ava-opt{border:2px solid var(--linea);border-radius:16px;overflow:hidden;cursor:pointer;background:var(--card2)}
+.ava-opt{border:2px solid var(--linea);border-radius:16px;overflow:hidden;cursor:pointer;background:var(--card2);aspect-ratio:1}
 .ava-opt.sel{border-color:var(--tinta);box-shadow:0 4px 14px rgba(122,16,52,.25)}
 .nav{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;display:flex;gap:4px;background:rgba(253,251,247,.86);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(122,16,52,.08);border-radius:26px;box-shadow:0 12px 40px rgba(92,12,38,.18);padding:8px}
 .nav button{flex:1;padding:8px 2px 6px;background:none;border:none;cursor:pointer;color:var(--texto3);font-family:var(--sys);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:18px}
@@ -212,7 +211,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <h2 style="font-size:22px;text-align:center">La búsqueda de los sellos</h2>
   <div class="card" style="margin-top:16px">
     <div class="paso"><div class="num">1</div><div class="txt"><b>Entra con Google</b><span>Sin contraseña: tu cuenta se crea sola con tu nombre y correo.</span></div></div>
-    <div class="paso"><div class="num">2</div><div class="txt"><b>Completa tu perfil</b><span>Carga tu teléfono y datos: cuanto más completo, mejor tu experiencia.</span></div></div>
+    <div class="paso"><div class="num">2</div><div class="txt"><b>Completa tu perfil</b><span>Carga tu teléfono, datos y elige tu avatar.</span></div></div>
     <div class="paso"><div class="num">3</div><div class="txt"><b>Escanea el grabado</b><span>Toca el botón Escanear y apunta al código del sello.</span></div></div>
     <div class="paso"><div class="num">4</div><div class="txt"><b>Despierta el sello</b><span>Cada sello se dora y revela su lámina y un fragmento de la frase.</span></div></div>
     <div class="paso"><div class="num">5</div><div class="txt"><b>Completa los siete</b><span>Al reunirlos, la frase final se revela en tu pantalla principal y entras al sorteo.</span></div></div>
@@ -367,7 +366,7 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
 const qesc=s=>esc(s).replace(/'/g,'');
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
-let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},FRASES={},QUIZ=null,JUEGOS={},EXTRA={},RANK=[];
+let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},FRASES={},QUIZ=null,JUEGOS={},EXTRA={},RANK=[],AVATARES=[];
 let quizIdx=0,quizResp={};
 let vistos=JSON.parse(localStorage.getItem('sv-avisos')||'null'),avisosCache=[],notificados=new Set();
 let chatHist=JSON.parse(localStorage.getItem('sv-chat')||'[]');
@@ -377,20 +376,7 @@ const TITULOS={'Malbec':'Guardián del Malbec','Cabernet':'Caballero del Caberne
 const DEF_ALIENTO=['¡Felicitaciones! El primer sello despierta.','¡Bien hecho! Dos sellos ya brillan en tu camino.','¡Sigue así! La frase comienza a susurrar.','¡Vamos que falta poco! Ya cruzaste la mitad.','¡Imparable! Solo unos sellos te separan de la gloria.','¡Estás a un paso! Un solo sello para ser Digno.'];
 const DEF_FINAL='¡Has completado los siete sellos! La frase oculta se revela y tu nombre entra en el cáliz del sorteo.';
 const botName=()=>PERFIL.nombreOraculo||'El Oráculo';
-const PAL=[['#7a1034','#a3305c','#d4a84b','#f0e9dd'],['#5c0c26','#8a4a1e','#e6c66a','#f0e9dd'],['#6d1f6e','#a3305c','#f3d27a','#f0e9dd'],['#4a0e2e','#6d1f6e','#d4a84b','#f0e9dd']];
-function avatarSVG(i){const f=i>=4,p=PAL[i%4];
- return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">'
- +'<rect width="100" height="100" fill="'+p[0]+'"/>'
- +'<polygon points="0,100 100,0 100,100" fill="'+p[1]+'" opacity=".5"/>'
- +(f?'<path d="M22 44 Q18 12 50 12 Q82 12 78 44 Q70 26 50 26 Q30 26 22 44" fill="'+p[1]+'"/>':'')
- +'<polygon points="50,18 78,50 50,82 22,50" fill="'+p[3]+'"/>'
- +'<polygon points="50,18 78,50 50,82" fill="'+p[2]+'"/>'
- +'<circle cx="40" cy="46" r="4" fill="'+p[0]+'"/><rect x="56" y="42" width="9" height="7" fill="'+p[0]+'"/>'
- +'<polygon points="50,52 46,60 54,60" fill="'+p[0]+'"/><rect x="42" y="66" width="16" height="3" fill="'+p[0]+'"/>'
- +(f?'<circle cx="77" cy="60" r="4" fill="'+p[2]+'"/>':'<polygon points="34,62 50,86 66,62 58,70 50,66 42,70" fill="'+p[1]+'"/>')
- +'</svg>';}
 const ORACULO_SVG='<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5c0c26"/><path d="M50 14 L86 82 H14 Z" fill="none" stroke="#f3d27a" stroke-width="4"/><path d="M32 62 C40 52 60 52 68 62 C60 70 40 70 32 62 Z" fill="none" stroke="#f3d27a" stroke-width="3"/><circle cx="50" cy="61" r="5" fill="#f3d27a"/></svg>';
-/* Íconos de juegos (24x24) */
 const GAME_ICON={
  quiz:'<path d="M7 3h10c0 6-3 9-5 9s-5-3-5-9z"/><path d="M12 12v5"/><path d="M9 20h6"/>',
  ranking:'<path d="M6 20v-6"/><path d="M12 20V6"/><path d="M18 20v-10"/><path d="M4 20h16"/>'};
@@ -435,13 +421,16 @@ function pintarVoto(){const rank=miRank();const all=EXTRA.bodegasVoto||[];
  $('voto-rank').innerHTML=rank.length?rank.map((b,i)=>'<div class="item" style="cursor:default"><span class="pos" style="width:26px">'+(i+1)+'</span><div class="det"><b>'+esc(b)+'</b></div><div class="rk-ctl"><button onclick="upRank(\''+qesc(b)+'\')">▲</button><button onclick="downRank(\''+qesc(b)+'\')">▼</button><button onclick="delRank(\''+qesc(b)+'\')">✕</button></div></div>').join(''):'<p class="mistica" style="text-align:center">Aún no has votado. Agrega bodegas abajo.</p>';
  const rest=all.filter(b=>!rank.includes(b));
  $('voto-add').innerHTML=rest.length?rest.map(b=>'<div class="item" onclick="addRank(\''+qesc(b)+'\')"><div class="det"><b>'+esc(b)+'</b></div><span style="color:var(--tinta);font-size:22px">+</span></div>').join(''):'<p class="mistica" style="text-align:center">Todas las bodegas están en tu ranking.</p>';}
-window.elegirAvatar=async i=>{await updateDoc(doc(db,'participantes',yo),{avatar:i});toast('✓ Avatar actualizado','');};
+/* AVATARES (definidos por el admin) */
+window.elegirAvatarIdx=async idx=>{const u=AVATARES[idx];if(!u)return;await updateDoc(doc(db,'participantes',yo),{avatar:u});toast('✓ Avatar actualizado','');};
 function pintarPerfil(){
  $('pf-nom').textContent=parte.nombre+' '+parte.apellido;
  $('pf-mail').textContent=(parte.email||'')+(parte.telefono?' · '+parte.telefono:'');
  const ava=$('pf-ava');
- if(parte.avatar!=null)ava.innerHTML=avatarSVG(parte.avatar);else ava.textContent=(parte.nombre||'✦')[0].toUpperCase();
- let ag='';for(let i=0;i<8;i++){ag+='<div class="ava-opt'+(parte.avatar===i?' sel':'')+'" onclick="elegirAvatar('+i+')">'+avatarSVG(i)+'</div>';}
+ if(parte.avatar)ava.innerHTML='<img src="'+parte.avatar+'" alt="">';else ava.textContent=(parte.nombre||'✦')[0].toUpperCase();
+ let ag='';
+ if(AVATARES.length){ AVATARES.forEach((u,idx)=>{ ag+='<div class="ava-opt'+(parte.avatar===u?' sel':'')+'" onclick="elegirAvatarIdx('+idx+')"><img src="'+u+'" alt=""></div>'; }); }
+ else ag='<p class="mistica" style="grid-column:1/-1;text-align:center">El Oráculo aún no preparó avatares.</p>';
  $('pf-avatares').innerHTML=ag;
  let chips='<span class="chipmini'+(parte.estado==='apto'?' on':'')+'">'+(parte.estado==='apto'?'⚜ APTO':'BUSCADOR')+'</span>';
  if(parte.quiz&&parte.quiz.completado)chips+='<span class="chipmini on">'+esc(parte.quiz.titulo)+'</span>';
@@ -451,7 +440,7 @@ function pintarPerfil(){
  if(parte.circulo)$('circulo-btn').textContent='⚜ Ya formas parte del Círculo';
  const x=parte.extra||{};$('x-tel').value=parte.telefono||'';$('x-nac').value=x.nac||'';$('x-zona').value=x.zona||'';$('x-como').value=x.como||'';$('x-comp').value=x.comp||'';
  $('x-mkt').checked=!!(parte.consent&&parte.consent.mkt);
- const campos=[parte.telefono,x.nac,x.zona,x.como,x.comp,(parte.avatar!=null?1:'')];
+ const campos=[parte.telefono,x.nac,x.zona,x.como,x.comp,(parte.avatar?1:'')];
  const llenos=campos.filter(v=>v).length;const pct=Math.round(llenos/campos.length*100);
  $('pf-comp').style.width=pct+'%';
  $('pf-comp-txt').textContent=pct>=100?'✓ Perfil completo · ¡gracias!':'Perfil '+pct+'% completo · completa tus datos';}
@@ -467,7 +456,7 @@ onMessage(getMessaging(app),pl=>{const n=pl.notification||{};if(pl.data&&pl.data
 function escucharFAQ(){onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>FAQ.push({id:d.id,...d.data()}));FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarChips();});}
 function pintarChips(){$('chat-chips').innerHTML=FAQ.map(f=>'<button class="btn" style="width:auto;padding:10px 16px;font-size:14px" onclick="preguntar(\''+f.id+'\')">'+esc(f.pregunta)+'</button>').join('')||'<p class="mistica">'+botName()+' prepara respuestas.</p>';}
 function avaEl(q){ if(q==='bot'){ if(PERFIL.avatarOraculo){const im=new Image();im.className='ava';im.src=PERFIL.avatarOraculo;return im;} const d=document.createElement('div');d.className='ava';d.innerHTML=ORACULO_SVG;return d;}
- if(parte&&parte.avatar!=null){const d=document.createElement('div');d.className='ava';d.innerHTML=avatarSVG(parte.avatar);return d;}
+ if(parte&&parte.avatar){const im=new Image();im.className='ava';im.src=parte.avatar;return im;}
  const d=document.createElement('div');d.className='ava missing';d.textContent=(parte&&parte.nombre?parte.nombre[0].toUpperCase():'✦');return d;}
 function addBurb(q,txt){const row=document.createElement('div');row.className='chat-row '+q;const b=document.createElement('div');b.className='burb '+q;b.textContent=txt;if(q==='bot'){const f=document.createElement('span');f.className='firma';f.textContent='· '+botName()+' ·';b.appendChild(f);row.appendChild(avaEl('bot'));row.appendChild(b);}else{row.appendChild(b);row.appendChild(avaEl('user'));}$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;return b;}
 function typeWriter(txt){const row=document.createElement('div');row.className='chat-row bot';const t=document.createElement('div');t.className='burb bot typing';t.innerHTML='<span></span><span></span><span></span>';row.appendChild(avaEl('bot'));row.appendChild(t);$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;
@@ -479,7 +468,7 @@ onAuthStateChanged(auth,async u=>{$('carga').classList.add('fin');
  if(u){yo=u.uid;
   const ex=await getDoc(doc(db,'participantes',yo));
   if(!ex.exists()){const dn=u.displayName||'';const parts=dn.split(' ');
-   await setDoc(doc(db,'participantes',yo),{nombre:parts[0]||'Buscador',apellido:parts.slice(1).join(' ')||'',email:u.email||'',telefono:'',simbolos:[],estado:'iniciado',registro:new Date().toISOString(),consent:{priv:true,mkt:false},avatar:null});}
+   await setDoc(doc(db,'participantes',yo),{nombre:parts[0]||'Buscador',apellido:parts.slice(1).join(' ')||'',email:u.email||'',telefono:'',simbolos:[],estado:'iniciado',registro:new Date().toISOString(),consent:{priv:true,mkt:false},avatar:''});}
   escucharTodo();renderHist();$('nav').style.display='flex';ver('p-home');}
  else{yo=null;parte=null;$('nav').style.display='none';ver('p-landing');}});
 function marcarVistos(){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));actualizarBadge();pintarAvisos();}
@@ -491,6 +480,7 @@ function escucharTodo(){
  onSnapshot(collection(db,'participantes'),s=>{RANK=[];s.forEach(d=>RANK.push({id:d.id,...d.data()}));pintarRanking();});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};pintarJuegos();actualizarVotoNav();});
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};pintarVoto();});
+ onSnapshot(doc(db,'config','avatares'),s=>{const d=s.exists()?s.data():{};AVATARES=d.items||[];if(parte)pintarPerfil();});
  onSnapshot(doc(db,'config','frases'),s=>{FRASES=s.exists()?s.data():{};actualizarFraseFinal();});
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};
   if(PERFIL.tituloApp)$('land-titulo').textContent=PERFIL.tituloApp;if(PERFIL.subApp)$('land-sub').textContent=PERFIL.subApp;if(PERFIL.avatarOraculo)$('orb').innerHTML='<img src="'+PERFIL.avatarOraculo+'">';$('chat-titulo').textContent=(botName()+' RESPONDE').toUpperCase();
