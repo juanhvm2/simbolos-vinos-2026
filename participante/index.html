@@ -621,4 +621,35 @@ window.procesar=async raw=>{if(!raw)return;const tk=raw.trim();
  $('s-manual').value='';};
 </script>
 </body>
+ <!-- ===== PWA: banner de instalación (additive, no toca nada existente) ===== -->
+<div id="install-banner" class="oculto" style="position:fixed;left:14px;right:14px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:50;background:var(--tinta);color:#fff;padding:14px 16px;border-radius:16px;box-shadow:0 10px 30px rgba(92,12,38,.45);display:flex;align-items:center;gap:12px">
+  <span style="font-size:22px;line-height:1">⚜</span>
+  <div style="flex:1;min-width:0">
+    <b style="display:block;font-size:14px">Instalar la app</b>
+    <span style="display:block;opacity:.85;font-size:12px">Abrí S&amp;V como app del celular</span>
+  </div>
+  <button id="btn-instalar" style="padding:8px 14px;border-radius:999px;background:#fff;color:var(--tinta);border:none;font-weight:600;font-size:13px;cursor:pointer;flex:none">Instalar</button>
+  <button id="btn-dismiss" aria-label="Cerrar" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:18px;cursor:pointer;flex:none">✕</button>
+</div>
+<script>
+(function(){
+  var deferred=null;
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault(); deferred=e;
+    var b=document.getElementById('install-banner'); if(b) b.classList.remove('oculto');
+  });
+  document.addEventListener('click',function(e){
+    var t=e.target; if(!t) return;
+    if(t.id==='btn-instalar'&&deferred){
+      deferred.prompt();
+      deferred.userChoice.then(function(){ deferred=null; var b=document.getElementById('install-banner'); if(b) b.classList.add('oculto'); });
+    }
+    if(t.id==='btn-dismiss'){ var b=document.getElementById('install-banner'); if(b) b.classList.add('oculto'); }
+  });
+  window.addEventListener('appinstalled',function(){
+    var b=document.getElementById('install-banner'); if(b) b.classList.add('oculto');
+  });
+})();
+</script>
+<!-- ===== /PWA ===== -->
 </html>
