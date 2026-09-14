@@ -152,7 +152,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .paso .num{flex:none;width:32px;height:32px;border-radius:50%;background:var(--tinta);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700}
 .paso .txt b{display:block;font-size:15px;font-weight:600}
 .paso .txt span{font-size:14px;color:var(--texto2)}
-/* CHAT */
 .chat-row{display:flex;gap:8px;margin-bottom:10px;animation:ap .3s}
 .chat-row.user{justify-content:flex-end}
 .chat-row .ava{width:32px;height:32px;border-radius:50%;object-fit:cover;flex:none;border:1px solid var(--linea);background:var(--card2);overflow:hidden}
@@ -161,12 +160,18 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .burb.bot{background:var(--card);border:1px solid rgba(122,16,52,.06);border-bottom-left-radius:6px;box-shadow:var(--sombra2)}
 .burb.user{background:var(--tinta);color:#fff;border-bottom-right-radius:6px;box-shadow:0 4px 14px rgba(122,16,52,.25)}
 .burb .firma{display:block;margin-top:5px;font-size:9px;letter-spacing:.14em;color:var(--purpura);text-transform:uppercase}
-/* Animación "pensando" (3 puntos rebotando) */
 .ld-dots{display:flex;gap:8px;justify-content:center;padding:6px 2px;--ink:var(--purpura)}
 .ld-dots i{width:10px;height:10px;border-radius:50%;background:var(--ink);animation:bounce 1.1s ease-in-out infinite}
 .ld-dots i:nth-child(2){animation-delay:.15s}
 .ld-dots i:nth-child(3){animation-delay:.3s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-12px);opacity:1}}
+/* NPS */
+.nps-modal{position:fixed;inset:0;z-index:65;display:none;place-items:center;background:rgba(29,26,23,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:20px}
+.nps-modal.activa{display:grid;animation:ap .35s}
+.nps-card{background:var(--card);border-radius:24px;padding:26px;max-width:420px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.nps-scale{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0}
+.nps-scale button{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--linea2);background:var(--card2);color:var(--tinta);font-weight:700;font-size:15px;cursor:pointer}
+.nps-scale button:active{transform:scale(.9)}
 #revelacion{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:rgba(29,26,23,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:20px;overflow-y:auto}
 #revelacion.activa{display:grid;animation:ap .35s}
 .rev-full{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#160b10}
@@ -221,7 +226,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <div class="card" style="margin-top:16px">
     <div class="paso"><div class="num">1</div><div class="txt"><b>Entra con Google</b><span>Sin contraseña: tu cuenta se crea sola con tu nombre y correo.</span></div></div>
     <div class="paso"><div class="num">2</div><div class="txt"><b>Toca tu foto de perfil</b><span>Elige tu avatar entre las opciones del Oráculo.</span></div></div>
-    <div class="paso"><div class="num">3</div><div class="txt"><b>Escanea el grabado</b><span>Toca el botón Escanear y apunta al código del sello.</span></div></div>
+    <div class="paso"><div class="num">3</div><div class="txt"><b>Escanea el grabado</b><span>Toca el botón Escanear y apunta al código del sello (o al QR de check-in de una charla).</span></div></div>
     <div class="paso"><div class="num">4</div><div class="txt"><b>Despierta el sello</b><span>Cada sello se dora y revela su lámina y un fragmento de la frase.</span></div></div>
     <div class="paso"><div class="num">5</div><div class="txt"><b>Completa los siete</b><span>Al reunirlos, la frase final se revela y entras al sorteo.</span></div></div>
   </div>
@@ -246,7 +251,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <div class="progreso">
     <div class="anillo"><svg width="96" height="96">
       <circle class="fondo" cx="48" cy="48" r="42" fill="none" stroke-width="5"/>
-      <circle class="barra" id="h-barra" cx="48" cy="48" r="42" fill="none" stroke-width="5" stroke-dasharray="263.9" stroke-dashoffset="263.9"/></svg>
+      <circle class="barra" id="h-barra" cx="48" cy="48" r="42" fill="none" stroke-width="5" stroke-dasharray="270.2" stroke-dashoffset="270.2"/></svg>
       <div class="num" id="h-num">0/7</div></div>
     <div class="txt" id="h-lema">Los sellos duermen.<br><b style="color:var(--tinta)">Ve y despiértalos.</b></div>
   </div>
@@ -323,7 +328,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 
 <section class="pantalla" id="p-scan"><h2 style="font-size:22px;text-align:center">El ojo que todo lo ve</h2>
   <div style="position:relative;max-width:420px;margin:16px auto"><div id="qr-reader" style="border-radius:20px;overflow:hidden;border:1px solid var(--linea);box-shadow:var(--sombra)"></div></div>
-  <div class="campo"><label>O escribe el código</label><input id="s-manual" placeholder="SV2026-…"></div>
+  <div class="campo"><label>O escribe el código</label><input id="s-manual" placeholder="SV2026-… o código de charla"></div>
   <button class="btn solido" onclick="procesar(document.getElementById('s-manual').value)">Validar código</button></section>
 
 <section class="pantalla" id="p-avisos"><h2 style="font-size:22px;text-align:center">Pergamino de avisos</h2>
@@ -336,6 +341,15 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 
 <section class="pantalla" id="p-prog"><h2 style="font-size:22px;text-align:center">Programa del evento</h2>
   <div id="prog-lista" style="margin-top:14px"></div></section>
+
+<div id="nps" class="nps-modal">
+  <div class="nps-card">
+    <h3 style="font-size:19px">¿Nos recomendarías a un amigo?</h3>
+    <p class="mistica" style="margin:6px 0 0">0 = para nada · 10 = sin dudarlo</p>
+    <div class="nps-scale" id="nps-scale"></div>
+    <button class="btn" onclick="cerrarNps()">Ahora no</button>
+  </div>
+</div>
 
 <div id="revelacion">
   <div class="rev-full" id="rev-full">
@@ -393,7 +407,6 @@ const TITULOS={'Malbec':'Guardián del Malbec','Cabernet':'Caballero del Caberne
 const DEF_ALIENTO=['¡Felicitaciones! El primer sello despierta.','¡Bien hecho! Dos sellos ya brillan en tu camino.','¡Sigue así! La frase comienza a susurrar.','¡Vamos que falta poco! Ya cruzaste la mitad.','¡Imparable! Solo unos sellos te separan de la gloria.','¡Estás a un paso! Un solo sello para ser Digno.'];
 const DEF_FINAL='¡Has completado los siete sellos! La frase oculta se revela y tu nombre entra en el cáliz del sorteo.';
 const botName=()=>PERFIL.nombreOraculo||'El Oráculo';
-const chatDelaySec=()=>{const v=PERFIL&&PERFIL.chatDelay;const n=parseFloat(v);return (isFinite(n)&&n>0)?n:2;};
 const ORACULO_SVG='<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5c0c26"/><path d="M50 14 L86 82 H14 Z" fill="none" stroke="#f3d27a" stroke-width="4"/><path d="M32 62 C40 52 60 52 68 62 C60 70 40 70 32 62 Z" fill="none" stroke="#f3d27a" stroke-width="3"/><circle cx="50" cy="61" r="5" fill="#f3d27a"/></svg>';
 const GAME_ICON={
  quiz:'<path d="M7 3h10c0 6-3 9-5 9s-5-3-5-9z"/><path d="M12 12v5"/><path d="M9 20h6"/>',
@@ -407,6 +420,12 @@ let audioCtx=null;
 function chime(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();[659.25,880].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=f;g.gain.setValueAtTime(0,audioCtx.currentTime+i*.18);g.gain.linearRampToValueAtTime(.18,audioCtx.currentTime+i*.18+.02);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+i*.18+.7);o.connect(g).connect(audioCtx.destination);o.start(audioCtx.currentTime+i*.18);o.stop(audioCtx.currentTime+i*.18+.8);});navigator.vibrate&&navigator.vibrate([90,60,90]);}catch(e){}}
 document.addEventListener('touchstart',()=>{try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();}catch(e){}},{once:true});
 function scramble(el,t){let i=0;const g='⚜✦';const int=setInterval(()=>{el.textContent=t.split('').map((c,j)=>j<i?c:(c===' '?' ':g[Math.floor(Math.random()*g.length)])).join('');i+=.6;if(i>=t.length+1){el.textContent=t;clearInterval(int);}},34);}
+/* SESIONES Y RETENCIÓN */
+function reportarSesion(){ const st=parseInt(localStorage.getItem('sv-sesion-start')||'0'); if(!st||!yo)return; const dur=Math.max(0,Math.round((Date.now()-st)/1000)); localStorage.setItem('sv-sesion-start',String(Date.now())); if(dur>0) updateDoc(doc(db,'participantes',yo),{tiempoSesion:increment(dur)}).catch(()=>{}); }
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'){reportarSesion();} else {localStorage.setItem('sv-sesion-start',String(Date.now()));} });
+window.addEventListener('pagehide',reportarSesion);
+/* EMBUDO */
+function setFunnel(key){ if(!yo)return; const o={}; o['funnel.'+key]=new Date().toISOString(); updateDoc(doc(db,'participantes',yo),o).catch(()=>{}); }
 const JUEGOS_META=[{key:'ranking',t:'Tabla de Buscadores',s:'Ranking en vivo de la búsqueda'},{key:'quiz',t:'Arcano Enológico',s:'4 preguntas · descubre tu perfil'}];
 const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado};
 function pintarJuegos(){const c=$('juegos-lista');c.innerHTML='';
@@ -428,10 +447,10 @@ window.abrirQuiz=()=>{if(!QUIZ||!(QUIZ.preguntas||[]).length)return toast('El Or
 function pintarQuiz(){const qs=QUIZ.preguntas||[];$('quiz-dots').innerHTML=qs.map((_,i)=>'<span style="width:8px;height:8px;border-radius:50%;background:'+(i<quizIdx?'var(--tinta)':'var(--linea2)')+'"></span>').join('');const q=qs[quizIdx];if(!q)return;$('quiz-pregunta').textContent=q.pregunta||'';const c=$('quiz-ops');c.innerHTML='';(q.opciones||[]).forEach(o=>{const b=document.createElement('button');b.className='btn';b.style.marginTop='10px';b.textContent=o.t;b.onclick=()=>responder(q,o);c.appendChild(b);});}
 function responder(q,o){quizResp[q.categoria]=o.v;quizIdx++;if(quizIdx<(QUIZ.preguntas||[]).length)return pintarQuiz();const t=TITULOS[quizResp.Varietal]||'Buscador de Arcanos';updateDoc(doc(db,'participantes',yo),{perfil:quizResp,quiz:{completado:true,fecha:new Date().toISOString(),titulo:t}});$('quiz-caja').classList.add('oculto');$('quiz-final').classList.remove('oculto');$('qf-titulo').textContent=t;$('qf-det').innerHTML=Object.entries(quizResp).map(([k,v])=>k+': <b>'+v+'</b>').join(' · ');chime();}
 function pintarRanking(){const r=[...RANK].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,20);$('rank-lista').innerHTML=r.map((p,i)=>'<div class="rank"><span class="pos">'+(i+1)+'</span><span class="nm">'+esc(p.nombre)+' '+esc(p.apellido||'')+'</span><span class="sc">'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<p class="mistica" style="text-align:center">Sin datos aún.</p>';}
-window.unirCirculo=async()=>{await updateDoc(doc(db,'participantes',yo),{circulo:true});toast('⚜ Bienvenido al Círculo','');};
+window.unirCirculo=async()=>{await updateDoc(doc(db,'participantes',yo),{circulo:true});setFunnel('circulo');toast('⚜ Bienvenido al Círculo','');};
 const miRank=()=> (parte&&parte.votoRank)||[];
 function setRank(arr){updateDoc(doc(db,'participantes',yo),{votoRank:arr,voto:arr[0]||''});}
-window.addRank=b=>{setRank([...miRank(),b]);};
+window.addRank=b=>{if(miRank().length===0)setFunnel('voto');setRank([...miRank(),b]);};
 window.delRank=b=>{setRank(miRank().filter(x=>x!==b));};
 window.upRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>0){[r[i-1],r[i]]=[r[i],r[i-1]];setRank(r);}};
 window.downRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>-1&&i<r.length-1){[r[i+1],r[i]]=[r[i],r[i+1]];setRank(r);}};
@@ -476,26 +495,39 @@ function avaEl(q){ if(q==='bot'){ if(PERFIL.avatarOraculo){const im=new Image();
  if(parte&&parte.avatar){const im=new Image();im.className='ava';im.src=parte.avatar;return im;}
  const d=document.createElement('div');d.className='ava missing';d.textContent=(parte&&parte.nombre?parte.nombre[0].toUpperCase():'✦');return d;}
 function addBurb(q,txt){const row=document.createElement('div');row.className='chat-row '+q;const b=document.createElement('div');b.className='burb '+q;b.textContent=txt;if(q==='bot'){const f=document.createElement('span');f.className='firma';f.textContent='· '+botName()+' ·';b.appendChild(f);row.appendChild(avaEl('bot'));row.appendChild(b);}else{row.appendChild(b);row.appendChild(avaEl('user'));}$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;return b;}
-/* Escribe la respuesta letra por letra (sin indicador previo) */
 function typeWriter(txt){const row=document.createElement('div');row.className='chat-row bot';const b=document.createElement('div');b.className='burb bot';const f=document.createElement('span');f.className='firma';f.textContent='· '+botName()+' ·';row.appendChild(avaEl('bot'));row.appendChild(b);$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;
  let i=0;const int=setInterval(()=>{i++;b.textContent=txt.slice(0,i);b.appendChild(f);$('chat-ventana').scrollTop=1e9;if(i>=txt.length)clearInterval(int);},16);}
+/* CHAT REPORTADO: registra cada pregunta para métricas de contenido */
 window.preguntar=id=>{const f=FAQ.find(x=>x.id===id);if(!f)return;
  addBurb('user',f.pregunta);chatHist.push({q:f.pregunta,a:f.respuesta});localStorage.setItem('sv-chat',JSON.stringify(chatHist));
- // Burbuja "pensando" con los 3 puntos rebotando, durante los segundos configurados en el admin
+ if(yo) addDoc(collection(db,'chatLogs'),{uid:yo,nombre:(parte?parte.nombre+' '+parte.apellido:''),pregunta:f.pregunta,ts:new Date().toISOString()}).catch(()=>{});
  const row=document.createElement('div');row.className='chat-row bot';
  const b=document.createElement('div');b.className='burb bot';b.innerHTML='<div class="ld-dots"><i></i><i></i><i></i></div>';
  row.appendChild(avaEl('bot'));row.appendChild(b);$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;
- setTimeout(()=>{row.remove();typeWriter(f.respuesta);}, Math.max(0.3,chatDelaySec())*1000);};
+ const dv=parseFloat(PERFIL&&PERFIL.chatDelay);const delay=(isFinite(dv)&&dv>0)?dv:2;
+ setTimeout(()=>{row.remove();typeWriter(f.respuesta);}, Math.max(0.3,delay)*1000);};
 function renderHist(){$('chat-ventana').innerHTML='';chatHist.forEach(h=>{addBurb('user',h.q);addBurb('bot',h.a);});}
+/* NPS */
+function mostrarNps(){const sc=$('nps-scale');sc.innerHTML='';for(let v=0;v<=10;v++){const b=document.createElement('button');b.textContent=v;b.onclick=()=>guardarNps(v);sc.appendChild(b);}$('nps').classList.add('activa');}
+window.cerrarNps=()=>{localStorage.removeItem('sv-nps-pending');$('nps').classList.remove('activa');};
+window.guardarNps=async v=>{await updateDoc(doc(db,'participantes',yo),{nps:v,npsTs:new Date().toISOString()});localStorage.removeItem('sv-nps-pending');$('nps').classList.remove('activa');toast('✓ ¡Gracias por tu opinión!','');};
 window.salir=()=>{pararScanner();signOut(auth);};
 onAuthStateChanged(auth,async u=>{$('carga').classList.add('fin');
  if(u){yo=u.uid;
   const ex=await getDoc(doc(db,'participantes',yo));
   if(!ex.exists()){const dn=u.displayName||'';const parts=dn.split(' ');
    await setDoc(doc(db,'participantes',yo),{nombre:parts[0]||'Buscador',apellido:parts.slice(1).join(' ')||'',email:u.email||'',telefono:'',simbolos:[],estado:'iniciado',registro:new Date().toISOString(),consent:{priv:true,mkt:false},avatar:''});}
+  // Sesión: contador + última conexión + inicio de sesión actual
+  updateDoc(doc(db,'participantes',yo),{sesiones:increment(1),ultimaConexion:new Date().toISOString()}).catch(()=>{});
+  localStorage.setItem('sv-sesion-start',String(Date.now()));
   escucharTodo();renderHist();$('nav').style.display='flex';ver('p-home');}
  else{yo=null;parte=null;$('nav').style.display='none';ver('p-landing');}});
-function marcarVistos(){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));actualizarBadge();pintarAvisos();}
+function marcarVistos(){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));
+ // APERTURAS DE AVISOS: reporta una apertura por aviso (una sola vez por dispositivo)
+ let rep=JSON.parse(localStorage.getItem('sv-avisos-open')||'[]');
+ avisosCache.forEach(a=>{ if(!rep.includes(a.id)){ rep.push(a.id); updateDoc(doc(db,'anuncios',a.id),{aperturas:increment(1)}).catch(()=>{}); } });
+ localStorage.setItem('sv-avisos-open',JSON.stringify(rep));
+ actualizarBadge();pintarAvisos();}
 function actualizarBadge(){const n=vistos?avisosCache.filter(a=>!vistos.includes(a.id)).length:0;$('badge').textContent=n;$('badge').classList.toggle('oculto',n===0);}
 function escucharTodo(){
  onSnapshot(doc(db,'participantes',yo),s=>{if(s.exists()){parte=s.data();pintarHome();pintarPerfil();pintarJuegos();pintarPrograma();pintarVoto();pintarAvatarGrid();checkDefaultAvatar();}});
@@ -520,7 +552,7 @@ function actualizarFraseFinal(){const ff=$('frase-final-caja');if(!ff)return;
  else ff.classList.add('oculto');}
 function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' '+parte.apellido;
  const ha=$('h-ava');if(ha){ if(parte.avatar)ha.innerHTML='<img src="'+parte.avatar+'" alt="">'; else ha.textContent=(parte.nombre||'✦')[0].toUpperCase(); }
- const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=263.9*(1-n/7);const e=$('h-estado');e.textContent=apto?'⚜ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
+ const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=270.2*(1-n/7);const e=$('h-estado');e.textContent=apto?'⚜ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
  const c=$('h-sellos');c.innerHTML='';for(let i=1;i<=7;i++){const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];
   const wrap=document.createElement('div');wrap.className='sello-wrap'+(ab?' abierto':'');
   const d=document.createElement('div');d.className='sello'+(ab?' abierto':'');
@@ -554,17 +586,34 @@ function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};
    $('revelacion').classList.add('activa');
    scramble($('rev-frag'), s.fragmento||'· · ·');
  }}
-window.cerrarRevelacion=()=>{$('revelacion').classList.remove('activa');};
-function pintarPrograma(){const likes=(parte&&parte.likes)||[];
- $('prog-lista').innerHTML=programa.map(a=>{const n=a.likes||0,my=likes.includes(a.id);
- return '<div class="item" onclick="darLike(\''+a.id+'\')"><div class="det"><b>'+fmtF(a.fecha)+' · '+esc(a.hora)+' · '+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div><div class="likebox"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
+window.cerrarRevelacion=()=>{$('revelacion').classList.remove('activa');
+ if(localStorage.getItem('sv-nps-pending')==='1' && parte && parte.nps==null) mostrarNps();};
+function pintarPrograma(){const likes=(parte&&parte.likes)||[];const asis=(parte&&parte.asistencias)||[];
+ $('prog-lista').innerHTML=programa.map(a=>{const n=a.likes||0,my=likes.includes(a.id);const fue=asis.includes(a.id);
+ return '<div class="item" onclick="darLike(\''+a.id+'\')"><div class="det"><b>'+fmtF(a.fecha)+' · '+esc(a.hora)+' · '+esc(a.tema)+(fue?' <span style="color:var(--verde)">✓ asistencia</span>':'')+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div><div class="likebox"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
 function pintarAvisos(){$('avisos-lista').innerHTML=avisosCache.map(a=>{const nuevo=vistos&&!vistos.includes(a.id);return '<div class="item" style="cursor:default;'+(nuevo?'border-color:var(--oro)':'')+'"><div class="det"><b style="font-size:12px;font-weight:600;color:var(--tinta)">⚜ '+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje||'')+'</span></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin avisos.</p>';}
 let hq=null,escaneando=false;
 window.navegar=(id,b)=>{ver(id);document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');if(id==='p-avisos')marcarVistos();if(id==='p-scan')iniciarScanner();else pararScanner();if(id==='p-avatar')pintarAvatarGrid();};
 async function iniciarScanner(){if(escaneando)return;escaneando=true;try{hq=hq||new Html5Qrcode("qr-reader");await hq.start({facingMode:"environment"},{fps:10,qrbox:{width:220,height:220}},t=>{pararScanner();procesar(t);},()=>{});}catch(e){toast('Cámara no responde','Usa el código manual.');}}
 function pararScanner(){escaneando=false;if(hq&&hq.isScanning)hq.stop().catch(()=>{});}
-window.procesar=async raw=>{if(!raw)return;const tk=raw.trim();const e=Object.values(simbolos).find(s=>s.token&&s.token.toUpperCase()===tk.toUpperCase());if(!e)return toast('Sello falso','');const n=e.numero;if((parte.simbolos||[]).includes(n))return toast('Sello ya marcado','');const nuevo=(parte.simbolos||[]).length+1;
- await updateDoc(doc(db,'participantes',yo),{simbolos:arrayUnion(n),estado:nuevo>=7?'apto':'iniciado',...(nuevo>=7?{completadoFecha:new Date().toISOString()}:{})});chime();
+window.procesar=async raw=>{if(!raw)return;const tk=raw.trim();
+ // 1) CHECK-IN DE CHARLA (QR de asistencia)
+ const prog=programa.find(a=>a.checkin && a.checkin.toUpperCase()===tk.toUpperCase());
+ if(prog){ const as=(parte.asistencias||[]);
+   if(!as.includes(prog.id)){ const o={asistencias:arrayUnion(prog.id)}; o['asistTs.'+prog.id]=new Date().toISOString(); await updateDoc(doc(db,'participantes',yo),o); toast('✓ Check-in registrado', prog.tema||''); }
+   else toast('Ya hiciste check-in aquí','');
+   $('s-manual').value=''; return; }
+ // 2) SELLO
+ const e=Object.values(simbolos).find(s=>s.token&&s.token.toUpperCase()===tk.toUpperCase());
+ if(!e)return toast('Código no reconocido','No es un sello ni un check-in válido.');
+ const n=e.numero;if((parte.simbolos||[]).includes(n))return toast('Sello ya marcado','');
+ const nuevo=(parte.simbolos||[]).length+1; const ahora=new Date().toISOString();
+ const upd={simbolos:arrayUnion(n), estado:nuevo>=7?'apto':'iniciado', ultimoSello:n};
+ upd['sellosTs.'+n]=ahora;                       // timestamp por sello (mapa de calor)
+ if(nuevo===1) upd['funnel.primerSello']=ahora;  // embudo: 1er sello
+ if(nuevo>=7){ upd['funnel.sieteSellos']=ahora; if(!parte.completadoFecha) upd.completadoFecha=ahora; localStorage.setItem('sv-nps-pending','1'); }
+ await updateDoc(doc(db,'participantes',yo),upd);
+ chime();
  let aliento=null,esFinal=false;
  if(nuevo>=7){aliento=(FRASES&&FRASES.final)||DEF_FINAL;esFinal=true;}
  else{const arr=(FRASES&&FRASES.aliento&&FRASES.aliento.length?FRASES.aliento:DEF_ALIENTO);aliento=arr[nuevo-1]||DEF_ALIENTO[nuevo-1]||'¡Vamos por el próximo!';}
