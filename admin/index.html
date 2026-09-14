@@ -56,7 +56,7 @@ main{max-width:1200px;margin:0 auto;padding:24px 20px 100px}
 .chip{padding:8px 14px;border:1px solid var(--linea);border-radius:20px;background:transparent;color:var(--texto2);font-size:12px;cursor:pointer}
 .chip.act{background:var(--texto);color:#000}
 .tabla-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--linea);border-radius:16px}
-table{width:100%;border-collapse:collapse;min-width:880px}
+table{width:100%;border-collapse:collapse;min-width:920px}
 th{font-size:11px;font-weight:600;color:var(--texto2);text-align:left;padding:14px 16px;border-bottom:1px solid var(--linea);text-transform:uppercase;background:rgba(255,255,255,.02)}
 td{padding:14px 16px;border-bottom:1px solid var(--linea);font-size:14px;vertical-align:middle}
 tr:last-child td{border-bottom:none}
@@ -86,6 +86,9 @@ tr:last-child td{border-bottom:none}
 .vacio{color:var(--texto3);text-align:center;padding:40px;font-size:14px}
 .rz-check{display:flex;gap:10px;align-items:center;font-size:14px;margin:12px 0;cursor:pointer}
 .avatar-prev{width:64px;height:64px;border-radius:50%;object-fit:cover;background:var(--card2);border:2px solid var(--linea2);display:block;margin-top:6px}
+.av-thumb{position:relative;display:inline-block}
+.av-thumb img{width:76px;height:76px;border-radius:16px;object-fit:cover;display:block;border:1px solid var(--linea2)}
+.av-thumb button{position:absolute;top:-8px;right:-8px;padding:2px 8px;border-radius:50%}
 @media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:28px}.titulo-sec{font-size:20px}}
 </style>
 </head>
@@ -119,7 +122,7 @@ tr:last-child td{border-bottom:none}
   <button class="chip" onclick="filtro('iniciado',this)">Iniciaron</button>
   <button class="chip" onclick="filtro('apto',this)">Aptos</button>
   <button class="btn mini solido oculto" id="btn-xlsx" onclick="exportar()">⬇ Excel completo</button></div>
- <div class="tabla-wrap"><table><thead><tr><th>Nombre</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Perfil/Quiz</th><th>Consent.</th><th>Acciones</th></tr></thead><tbody id="tb"></tbody></table></div>
+ <div class="tabla-wrap"><table><thead><tr><th>Nombre</th><th>Avatar</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Perfil/Quiz</th><th>Consent.</th><th>Acciones</th></tr></thead><tbody id="tb"></tbody></table></div>
  <div class="grid2" style="margin-top:16px">
   <div class="card"><h3>⚜ Círculo de beneficios · miembros</h3><div id="lista-circulo"></div></div>
   <div class="card"><h3>★ Ranking de bodegas · puntos</h3><div id="jz-votores"></div></div>
@@ -148,6 +151,16 @@ tr:last-child td{border-bottom:none}
 
 <section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento, QR, <b>imagen del botón</b> e <b>imagen de revelado 1080×1350</b>.</p><div class="grid2" id="grid-sellos"></div></section>
 
+<section class="sec" id="sec-avatares">
+ <h2 class="titulo-sec">Avatares de participantes</h2>
+ <p class="sub-sec">Sube las imágenes que los participantes podrán elegir como avatar. Se recortan cuadradas (256×256) automáticamente.</p>
+ <div class="card">
+  <label>AGREGAR AVATARES (PNG / JPG)</label>
+  <input type="file" accept="image/*" id="av-input" multiple onchange="cargarAvatares(this)">
+  <div id="av-list" style="display:flex;flex-wrap:wrap;gap:14px;margin-top:16px"></div>
+ </div>
+</section>
+
 <section class="sec" id="sec-programa"><h2 class="titulo-sec">Programa</h2>
  <div class="form-grid" style="margin-bottom:14px">
   <div><label>FECHA</label><input id="pg-fecha" type="date"></div><div><label>HORA</label><input id="pg-hora" type="time"></div>
@@ -168,7 +181,7 @@ tr:last-child td{border-bottom:none}
   <div><label>NOMBRE ORÁCULO</label><input id="pf-nombre"></div><div><label>TÍTULO APP</label><input id="pf-titulo"></div><div><label>SUBTÍTULO</label><input id="pf-sub"></div></div>
   <div class="form-grid" style="margin-top:12px">
   <div><label>LINK AVATAR ORÁCULO</label><input id="pf-url-oraculo" oninput="prevAvatar('oraculo')"><img id="pf-img-oraculo" class="avatar-prev" style="visibility:hidden"></div>
-  <div><label>LINK AVATAR PARTICIPANTE</label><input id="pf-url-usuario" oninput="prevAvatar('usuario')"><img id="pf-img-usuario" class="avatar-prev" style="visibility:hidden"></div></div>
+  <div><label>LINK AVATAR PARTICIPANTE (respaldo)</label><input id="pf-url-usuario" oninput="prevAvatar('usuario')"><img id="pf-img-usuario" class="avatar-prev" style="visibility:hidden"></div></div>
  <button class="btn solido" style="margin-top:14px" onclick="guardarPerfil()">Guardar perfil</button></div>
  <div class="card"><h3>Frases de aliento y frase final</h3>
   <label>FRASES DE ALIENTO (una por línea · sello 1 a 6)</label><textarea id="fr-aliento" style="min-height:150px" placeholder="¡Felicitaciones! El primer sello despierta.&#10;¡Bien hecho! Dos sellos ya brillan.&#10;…"></textarea>
@@ -219,10 +232,10 @@ const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateStri
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
 const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['voto','Sección VOTAR visible en participantes'],['frase','Frase oculta visible en inicio']];
-let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],imgPend={},imgPendFull={};
+let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],AVATARES=[];
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
-const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
-const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
+const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],avatares:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
+const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['avatares','Avatares'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
 window.login=async()=>{try{await signInWithEmailAndPassword(auth,$('l-email').value.trim(),$('l-clave').value);}catch(e){$('l-err').textContent='Credenciales incorrectas';}};
 window.salir=()=>signOut(auth);
 onAuthStateChanged(auth,async u=>{if(!u){yo=null;miRol=null;$('s-app').classList.add('oculto');$('s-noperm').classList.add('oculto');$('s-login').style.display='grid';return;}
@@ -246,6 +259,7 @@ function escuchar(){
   barChart($('ch-sellos'),dist.map((v,i)=>[(i===7?'7 ⚜':i+' sellos'),v]));
   pintarTabla();pintarCirculo();pintarVotoAdmin();pintarQuizRes();pintarStats();pintarRankAdmin();});
  onSnapshot(collection(db,'simbolos'),()=>pintarSellos());
+ onSnapshot(doc(db,'config','avatares'),s=>{const d=s.exists()?s.data():{};AVATARES=d.items||[];pintarAvatares();});
  onSnapshot(collection(db,'programa'),s=>{PROG=[];s.forEach(d=>PROG.push({id:d.id,...d.data()}));PROG.sort((a,b)=>((a.fecha||hoyISO())+(a.hora||'')).localeCompare((b.fecha||hoyISO())+(b.hora||'')));pintarProg();
   barChart($('ch-likes'),PROG.map(a=>[a.tema||a.hora,a.likes||0]),'var(--corazon)');});
  onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>ANUN.push({id:d.id,...d.data()}));pintarAnun();});
@@ -269,13 +283,17 @@ function pintarVotoAdmin(){const pts={},cnt={};
 window.pintarTabla=()=>{const q=($('q').value||'').toLowerCase();
  let rows=Object.values(PART).filter(p=>{if(filtroAct==='apto'&&p.estado!=='apto')return false;if(filtroAct==='iniciado'&&(p.simbolos||[]).length===0)return false;return((p.nombre||'')+' '+(p.apellido||'')+' '+(p.email||'')).toLowerCase().includes(q);}).sort((a,b)=>(b.registro||'').localeCompare(a.registro||''));
  $('tb').innerHTML=rows.length?rows.map(p=>{const n=(p.simbolos||[]).length,pf=p.perfil||{},qh=p.quiz&&p.quiz.completado;
- return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td><td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono||'')+'</td><td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td><td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'Buscando')+'</span></td><td style="color:var(--texto2);font-size:12px">'+(qh?'⚜ '+esc(p.quiz.titulo)+'<br>'+esc(pf.Varietal||''):'—')+'</td><td style="font-size:11px;color:var(--texto2)">Priv:'+(p.consent&&p.consent.priv?'✓':'—')+'<br>Mkt:'+(p.consent&&p.consent.mkt?'✓':'—')+'</td><td>'+(qh?'<button class="btn mini peligro" onclick="resetearQuiz(\''+p.id+'\')">Reset quiz</button>':'—')+'</td></tr>';}).join(''):'<tr><td colspan="7" class="vacio">Sin participantes</td></tr>';};
+ return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td>'+
+ '<td>'+(p.avatar?'<img src="'+p.avatar+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;display:block">':'<span style="color:var(--texto3)">—</span>')+'</td>'+
+ '<td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono||'')+'</td><td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td><td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'✓ Apto':'Buscando')+'</span></td><td style="color:var(--texto2);font-size:12px">'+(qh?'⚜ '+esc(p.quiz.titulo)+'<br>'+esc(pf.Varietal||''):'—')+'</td><td style="font-size:11px;color:var(--texto2)">Priv:'+(p.consent&&p.consent.priv?'✓':'—')+'<br>Mkt:'+(p.consent&&p.consent.mkt?'✓':'—')+'</td><td>'+(qh?'<button class="btn mini peligro" onclick="resetearQuiz(\''+p.id+'\')">Reset quiz</button>':'—')+'</td></tr>';}).join(''):'<tr><td colspan="8" class="vacio">Sin participantes</td></tr>';};
 window.resetearQuiz=async id=>{if(!confirm('¿Resetear quiz de este participante?'))return;await updateDoc(doc(db,'participantes',id),{quiz:deleteField(),perfil:deleteField()});toast('✓ Quiz reseteado');};
 window.exportar=()=>{const wb=XLSX.utils.book_new();
  const rows=Object.values(PART).map(p=>{const pf=p.perfil||{},x=p.extra||{};
   const likeNames=(p.likes||[]).map(id=>{const a=PROG.find(y=>y.id===id);return a?a.tema:'';}).filter(Boolean).join(' | ');
   const rankStr=(p.votoRank||[]).map((b,i)=>(i+1)+'º '+b).join(' | ');
-  return{Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO':'BUSCANDO',
+  const avIdx=AVATARES.indexOf(p.avatar);
+  return{Nombre:p.nombre,Apellido:p.apellido,Email:p.email,Telefono:p.telefono,Avatar:p.avatar?('Avatar '+(avIdx>=0?avIdx+1:'elegido')):'Sin avatar',
+  Sellos:(p.simbolos||[]).length+'/7',Estado:p.estado==='apto'?'APTO':'BUSCANDO',
   Varietal:pf.Varietal||'',Estilo:pf.Estilo||'',Frecuencia:pf.Frecuencia||'',Interes:pf.Interes||'',Arcano:(p.quiz&&p.quiz.titulo)||'',
   ConsentPriv:p.consent&&p.consent.priv?'SI':'NO',ConsentMkt:p.consent&&p.consent.mkt?'SI':'NO',
   Nacimiento:x.nac||'',Zona:x.zona||'',ComoEntero:x.como||'',Compania:x.comp||'',
@@ -300,7 +318,7 @@ window.guardarJuegos=async()=>{const j={};JG_META.forEach(([k])=>j[k]=$('jz-'+k)
  await setDoc(doc(db,'config','extra'),extra,{merge:true});toast('✓ Contenidos guardados');};
 window.resetCorazones=async()=>{if(!confirm('¿Poner en cero todos los corazones?'))return;const b=writeBatch(db);PROG.forEach(a=>b.update(doc(db,'programa',a.id),{likes:0}));await b.commit();toast('✓ Corazones reiniciados');};
 function pintarStats(){const P=Object.values(PART);
- $('jz-stats').innerHTML='Arcano completados: <b>'+P.filter(p=>p.quiz&&p.quiz.completado).length+'</b><br>Círculo: <b>'+P.filter(p=>p.circulo).length+'</b><br>Con ranking de bodegas: <b>'+P.filter(p=>(p.votoRank||[]).length>0).length+'</b><br>♥ totales: <b>'+P.reduce((a,p)=>a+(p.likes||[]).length,0)+'</b>';}
+ $('jz-stats').innerHTML='Arcano completados: <b>'+P.filter(p=>p.quiz&&p.quiz.completado).length+'</b><br>Círculo: <b>'+P.filter(p=>p.circulo).length+'</b><br>Con ranking de bodegas: <b>'+P.filter(p=>(p.votoRank||[]).length>0).length+'</b><br>Con avatar: <b>'+P.filter(p=>p.avatar).length+'</b><br>♥ totales: <b>'+P.reduce((a,p)=>a+(p.likes||[]).length,0)+'</b>';}
 function pintarRankAdmin(){const r=[...Object.values(PART)].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,10);
  $('jz-rank').innerHTML=r.map((p,i)=>'<div class="item-prog"><span class="hora">#'+(i+1)+'</span><div class="det"><b>'+esc(p.nombre)+' '+esc(p.apellido||'')+'</b></div><span>'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<div class="vacio">Sin datos</div>';}
 function renderQuizForm(){const qs=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;$('qz-form').innerHTML=qs.map((q,i)=>'<div style="border-top:1px solid var(--linea);margin-top:14px;padding-top:10px"><div class="form-grid"><div><label>CATEGORÍA</label><input id="qz-c'+i+'" value="'+esc(q.categoria)+'"></div><div style="grid-column:1/-1"><label>PREGUNTA '+(i+1)+'</label><input id="qz-p'+i+'" value="'+esc(q.pregunta)+'"></div></div>'+(q.opciones||[]).map((o,j)=>'<div class="form-grid" style="margin-top:6px"><div><label>OPCIÓN '+(j+1)+'</label><input id="qz-o'+i+'-'+j+'t" value="'+esc(o.t)+'"></div><div><label>DATO</label><input id="qz-o'+i+'-'+j+'v" value="'+esc(o.v)+'"></div></div>').join('')+'</div>').join('');}
@@ -308,15 +326,27 @@ window.guardarQuiz=async()=>{const b=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;
 window.toggleQuiz=async()=>{await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked},{merge:true});};
 function pintarQuizRes(){const qs=(QUIZ&&QUIZ.preguntas)||[];const done=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado);let h='<p style="color:var(--texto2);font-size:13px">Completaron: <b style="color:var(--verde)">'+done.length+'</b></p>';qs.forEach(q=>{const c={};done.forEach(p=>{const v=(p.perfil||{})[q.categoria];if(v)c[v]=(c[v]||0)+1;});const t=done.length||1;h+='<b style="font-size:13px">'+esc(q.pregunta)+'</b>'+Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div style="display:flex;gap:8px;margin:5px 0;font-size:12px"><span style="width:110px;color:var(--texto2)">'+esc(v)+'</span><span style="flex:1;height:6px;background:var(--card2)"><i style="display:block;height:100%;width:'+Math.round(n/t*100)+'%;background:var(--accent)"></i></span><span>'+n+'</span></div>').join('');});$('qz-res').innerHTML=h;}
 
-/* SELLOS: imagen botón (256) + imagen revelado (1080x1350) */
+/* AVATARES */
+function pintarAvatares(){const el=$('av-list');if(!el)return;
+ el.innerHTML=AVATARES.map((u,i)=>'<span class="av-thumb"><img src="'+u+'" alt=""><button class="btn mini peligro" onclick="quitarAvatar('+i+')">✕</button></span>').join('')||'<p class="vacio">Sin avatares aún · sube imágenes arriba</p>';}
+window.cargarAvatares=async input=>{const files=[...input.files];if(!files.length)return;
+ let items=[...AVATARES];let ok=0;
+ for(const f of files){ if(f.size>8*1024*1024){toast('Imagen muy pesada: '+f.name,'');continue;}
+  const url=await new Promise(res=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const S=256;const cv=document.createElement('canvas');cv.width=S;cv.height=S;const x=cv.getContext('2d');x.fillStyle='#ffffff';x.fillRect(0,0,S,S);const sc=Math.max(S/im.width,S/im.height);const w=im.width*sc,h=im.height*sc;x.drawImage(im,(S-w)/2,(S-h)/2,w,h);res(cv.toDataURL('image/jpeg',0.85));};im.src=r.result;};r.readAsDataURL(f);});
+  items.push(url);ok++; }
+ if(ok){ await setDoc(doc(db,'config','avatares'),{items:items},{merge:true}); toast('✓ '+ok+' avatar(es) agregados'); }
+ input.value='';};
+window.quitarAvatar=async i=>{const items=[...AVATARES];items.splice(i,1);await setDoc(doc(db,'config','avatares'),{items:items},{merge:true});toast('Avatar quitado');};
+
+/* SELLOS */
 function comprimirImg(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const S=256;const cv=document.createElement('canvas');cv.width=S;cv.height=S;const x=cv.getContext('2d');const sc=Math.min(S/im.width,S/im.height);const w=im.width*sc,h=im.height*sc;x.clearRect(0,0,S,S);x.drawImage(im,(S-w)/2,(S-h)/2,w,h);cb(cv.toDataURL('image/png'));};im.src=r.result;};r.readAsDataURL(file);}
 function comprimirFull(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1080,H=1350;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');const sc=Math.max(W/im.width,H/im.height);const w=im.width*sc,h=im.height*sc;x.drawImage(im,(W-w)/2,(H-h)/2,w,h);cb(cv.toDataURL('image/jpeg',0.82));};im.src=r.result;};r.readAsDataURL(file);}
 window.cargarImgSello=(n,input)=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024)return toast('Imagen muy pesada (máx 4MB)','');
- comprimirImg(f,url=>{imgPend[n]=url;const p=$('sp-'+n);if(p){p.src=url;p.style.visibility='visible';}toast('✓ Imagen botón lista · pulsa Guardar','');});};
-window.quitarImgSello=n=>{imgPend[n]='';const p=$('sp-'+n);if(p){p.removeAttribute('src');p.style.visibility='hidden';}toast('Imagen botón quitada · pulsa Guardar','');};
+ comprimirImg(f,url=>{window['_imgPend']=window['_imgPend']||{};window['_imgPend'][n]=url;const p=$('sp-'+n);if(p){p.src=url;p.style.visibility='visible';}toast('✓ Imagen botón lista · pulsa Guardar','');});};
+window.quitarImgSello=n=>{window['_imgPend']=window['_imgPend']||{};window['_imgPend'][n]='';const p=$('sp-'+n);if(p){p.removeAttribute('src');p.style.visibility='hidden';}toast('Imagen botón quitada · pulsa Guardar','');};
 window.cargarImgFull=(n,input)=>{const f=input.files[0];if(!f)return;if(f.size>8*1024*1024)return toast('Imagen muy pesada (máx 8MB)','');
- comprimirFull(f,url=>{imgPendFull[n]=url;const p=$('spfull-'+n);if(p){p.src=url;p.style.visibility='visible';}toast('✓ Imagen revelado lista · pulsa Guardar','');});};
-window.quitarImgFull=n=>{imgPendFull[n]='';const p=$('spfull-'+n);if(p){p.removeAttribute('src');p.style.visibility='hidden';}toast('Imagen revelado quitada · pulsa Guardar','');};
+ comprimirFull(f,url=>{window['_imgPendFull']=window['_imgPendFull']||{};window['_imgPendFull'][n]=url;const p=$('spfull-'+n);if(p){p.src=url;p.style.visibility='visible';}toast('✓ Imagen revelado lista · pulsa Guardar','');});};
+window.quitarImgFull=n=>{window['_imgPendFull']=window['_imgPendFull']||{};window['_imgPendFull'][n]='';const p=$('spfull-'+n);if(p){p.removeAttribute('src');p.style.visibility='hidden';}toast('Imagen revelado quitada · pulsa Guardar','');};
 async function pintarSellos(){const g=$('grid-sellos');g.innerHTML='';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const c=document.createElement('div');c.className='sello-card';
  c.innerHTML='<div style="display:flex;gap:12px;align-items:center;margin-bottom:10px"><span style="font-size:26px">'+GLIFOS[n]+'</span><b>Sello '+n+'</b></div>'+
  '<label>NOMBRE</label><input id="sn-'+n+'" value="'+esc(s.nombre||'')+'"><label>SALÓN</label><input id="ss-'+n+'" value="'+esc(s.salon||'')+'"><label>FRAGMENTO</label><input id="sf-'+n+'" value="'+esc(s.fragmento||'')+'">'+
@@ -327,11 +357,11 @@ async function pintarSellos(){const g=$('grid-sellos');g.innerHTML='';for(let n=
  '<div style="display:flex;gap:8px"><button class="btn mini solido" onclick="guardarSello('+n+')">Guardar</button><button class="btn mini" onclick="genToken('+n+')">QR</button><button class="btn mini" onclick="imprimirQRs()">Imprimir</button></div>'+
  '<div class="qr-zone"><div class="qr" id="qr-'+n+'"></div><b id="tk-'+n+'" style="font-family:monospace;font-size:12px">'+esc(s.token||'—')+'</b></div>';
  g.appendChild(c);
- imgPend[n]=s.img||'';imgPendFull[n]=s.imgFull||'';
  if(s.token)new QRCode($('qr-'+n),{text:s.token,width:104,height:104,colorDark:'#000',colorLight:'#fff'});}}
 window.guardarSello=async n=>{const cur=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};
- const img=(n in imgPend)?imgPend[n]:(cur.img||'');
- const imgFull=(n in imgPendFull)?imgPendFull[n]:(cur.imgFull||'');
+ const pend=window['_imgPend']||{},pendF=window['_imgPendFull']||{};
+ const img=(n in pend)?pend[n]:(cur.img||'');
+ const imgFull=(n in pendF)?pendF[n]:(cur.imgFull||'');
  await setDoc(doc(db,'simbolos',String(n)),{numero:n,nombre:$('sn-'+n).value.trim(),salon:$('ss-'+n).value.trim(),fragmento:$('sf-'+n).value.trim(),token:cur.token||'',activo:true,img:img,imgFull:imgFull},{merge:true});toast('✓ Sello '+n+' guardado');};
 window.genToken=async n=>{const t='SV2026-S'+n+'-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');await setDoc(doc(db,'simbolos',String(n)),{numero:n,token:t},{merge:true});toast('✓ QR '+n);};
 window.imprimirQRs=async()=>{let h='<html><body style="display:flex;flex-wrap:wrap;gap:30px;padding:30px">';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const el=document.createElement('div');if(s.token)new QRCode(el,{text:s.token,width:180,height:180});const img=el.querySelector('canvas')?el.querySelector('canvas').toDataURL():'';h+='<div style="text-align:center"><img src="'+img+'" style="width:180px"><b>Sello '+n+'</b></div>';}h+='</body></html>';const w=window.open('');w.document.write(h);w.document.close();setTimeout(()=>w.print(),600);};
