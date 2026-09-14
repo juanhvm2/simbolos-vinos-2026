@@ -49,6 +49,10 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .acc-btn:active{transform:scale(.97)}
 .acc-btn svg{width:20px;height:20px;flex:none}
 .acc-btn.ig{flex:0 0 54px;padding:14px 0;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);color:#fff;border:none;box-shadow:0 6px 18px rgba(214,41,118,.35)}
+/* foto de perfil tocable en el inicio */
+.home-ava{width:50px;height:50px;border-radius:50%;overflow:hidden;border:2px solid var(--linea2);background:var(--card);display:grid;place-items:center;font-size:19px;font-weight:700;color:var(--tinta);cursor:pointer;flex:none;box-shadow:var(--sombra2);padding:0;transition:transform .18s}
+.home-ava:active{transform:scale(.92)}
+.home-ava img{width:100%;height:100%;object-fit:cover;display:block}
 .card{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);padding:22px;box-shadow:var(--sombra)}
 .card h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);font-weight:600;margin-bottom:12px}
 .campo{margin-bottom:12px;text-align:left}
@@ -120,9 +124,12 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .chipmini.on{background:var(--tinta);color:#fff;border-color:var(--tinta)}
 .comp-bar{height:6px;background:rgba(122,16,52,.10);border-radius:3px;overflow:hidden;margin-top:12px}
 .comp-bar i{display:block;height:100%;background:var(--tinta);width:0;transition:width .4s;border-radius:3px}
-.ava-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.ava-opt{border:2px solid var(--linea);border-radius:16px;overflow:hidden;cursor:pointer;background:var(--card2);aspect-ratio:1}
-.ava-opt.sel{border-color:var(--tinta);box-shadow:0 4px 14px rgba(122,16,52,.25)}
+/* cuadrícula de avatares (pantalla de elección) */
+.ava-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ava-opt{border:2px solid var(--linea);border-radius:20px;overflow:hidden;cursor:pointer;background:var(--card2);aspect-ratio:1;transition:transform .15s}
+.ava-opt:active{transform:scale(.94)}
+.ava-opt img{width:100%;height:100%;object-fit:cover;display:block}
+.ava-opt.sel{border-color:var(--tinta);box-shadow:0 6px 18px rgba(122,16,52,.3)}
 .nav{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;display:flex;gap:4px;background:rgba(253,251,247,.86);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(122,16,52,.08);border-radius:26px;box-shadow:0 12px 40px rgba(92,12,38,.18);padding:8px}
 .nav button{flex:1;padding:8px 2px 6px;background:none;border:none;cursor:pointer;color:var(--texto3);font-family:var(--sys);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:18px}
 .nav button .i{display:block;margin:0 auto 4px;width:max-content;position:relative}
@@ -211,18 +218,23 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <h2 style="font-size:22px;text-align:center">La búsqueda de los sellos</h2>
   <div class="card" style="margin-top:16px">
     <div class="paso"><div class="num">1</div><div class="txt"><b>Entra con Google</b><span>Sin contraseña: tu cuenta se crea sola con tu nombre y correo.</span></div></div>
-    <div class="paso"><div class="num">2</div><div class="txt"><b>Completa tu perfil</b><span>Carga tu teléfono, datos y elige tu avatar.</span></div></div>
+    <div class="paso"><div class="num">2</div><div class="txt"><b>Toca tu foto de perfil</b><span>Elige tu avatar entre las opciones del Oráculo.</span></div></div>
     <div class="paso"><div class="num">3</div><div class="txt"><b>Escanea el grabado</b><span>Toca el botón Escanear y apunta al código del sello.</span></div></div>
     <div class="paso"><div class="num">4</div><div class="txt"><b>Despierta el sello</b><span>Cada sello se dora y revela su lámina y un fragmento de la frase.</span></div></div>
-    <div class="paso"><div class="num">5</div><div class="txt"><b>Completa los siete</b><span>Al reunirlos, la frase final se revela en tu pantalla principal y entras al sorteo.</span></div></div>
+    <div class="paso"><div class="num">5</div><div class="txt"><b>Completa los siete</b><span>Al reunirlos, la frase final se revela y entras al sorteo.</span></div></div>
   </div>
   <button class="btn solido" onclick="ver('p-landing')">Volver</button>
 </section>
 
 <section class="pantalla" id="p-home">
-  <div class="cab"><div><div style="font-size:13px;color:var(--texto2)">Hola, buscador</div>
-    <div class="nombre" id="h-nombre">—</div><button class="salir" onclick="salir()">cerrar sesión</button></div>
-    <div class="estado" id="h-estado">BUSCADOR</div></div>
+  <div class="cab">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0">
+      <button class="home-ava" id="h-ava" onclick="ver('p-avatar')" aria-label="Elegir avatar">✦</button>
+      <div style="min-width:0"><div style="font-size:13px;color:var(--texto2)">Hola, buscador</div>
+        <div class="nombre" id="h-nombre">—</div><button class="salir" onclick="salir()">cerrar sesión</button></div>
+    </div>
+    <div class="estado" id="h-estado">BUSCADOR</div>
+  </div>
   <div class="acc-row">
     <button class="acc-btn" onclick="ver('p-perfil')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mi perfil</button>
     <a class="acc-btn ig" href="https://www.instagram.com/simbolosyvinos/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
@@ -246,6 +258,13 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   </div>
   <div class="frase-caja" id="frase-caja"><div class="pista" id="h-frase-titulo">La frase oculta</div>
     <div class="frag" id="h-frase" style="margin-top:8px">· · · &nbsp; · · ·</div></div>
+</section>
+
+<section class="pantalla" id="p-avatar">
+  <h2 style="font-size:22px;text-align:center">Elige tu avatar</h2>
+  <p class="mistica" style="text-align:center;margin:6px 0 16px">Toca una opción para adoptarla al instante.</p>
+  <div class="ava-grid" id="av-grid"></div>
+  <button class="btn" onclick="ver('p-home')">Volver</button>
 </section>
 
 <section class="pantalla" id="p-juegos"><h2 style="font-size:22px;text-align:center">Salón de Juegos</h2>
@@ -282,10 +301,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
       <div class="comp-bar"><i id="pf-comp"></i></div>
       <div style="font-size:11px;color:var(--texto2);margin-top:5px" id="pf-comp-txt">Completa tus datos</div>
     </div>
-  </div>
-  <div class="card" style="margin-top:12px">
-    <h3>🎨 Elige tu avatar</h3>
-    <div class="ava-grid" id="pf-avatares"></div>
   </div>
   <div class="card" style="margin-top:12px">
     <h3>⚜ Círculo de beneficios</h3>
@@ -421,17 +436,17 @@ function pintarVoto(){const rank=miRank();const all=EXTRA.bodegasVoto||[];
  $('voto-rank').innerHTML=rank.length?rank.map((b,i)=>'<div class="item" style="cursor:default"><span class="pos" style="width:26px">'+(i+1)+'</span><div class="det"><b>'+esc(b)+'</b></div><div class="rk-ctl"><button onclick="upRank(\''+qesc(b)+'\')">▲</button><button onclick="downRank(\''+qesc(b)+'\')">▼</button><button onclick="delRank(\''+qesc(b)+'\')">✕</button></div></div>').join(''):'<p class="mistica" style="text-align:center">Aún no has votado. Agrega bodegas abajo.</p>';
  const rest=all.filter(b=>!rank.includes(b));
  $('voto-add').innerHTML=rest.length?rest.map(b=>'<div class="item" onclick="addRank(\''+qesc(b)+'\')"><div class="det"><b>'+esc(b)+'</b></div><span style="color:var(--tinta);font-size:22px">+</span></div>').join(''):'<p class="mistica" style="text-align:center">Todas las bodegas están en tu ranking.</p>';}
-/* AVATARES (definidos por el admin) */
-window.elegirAvatarIdx=async idx=>{const u=AVATARES[idx];if(!u)return;await updateDoc(doc(db,'participantes',yo),{avatar:u});toast('✓ Avatar actualizado','');};
+/* AVATARES */
+window.elegirAvatarIdx=async idx=>{const u=AVATARES[idx];if(!u)return;await updateDoc(doc(db,'participantes',yo),{avatar:u});toast('✓ Avatar actualizado','');ver('p-home');};
+function pintarAvatarGrid(){const g=$('av-grid');if(!g)return;
+ if(!AVATARES.length){g.innerHTML='<p class="mistica" style="grid-column:1/-1;text-align:center">El Oráculo aún no preparó avatares.</p>';return;}
+ g.innerHTML=AVATARES.map((u,idx)=>'<div class="ava-opt'+((parte&&parte.avatar===u)?' sel':'')+'" onclick="elegirAvatarIdx('+idx+')"><img src="'+u+'" alt=""></div>').join('');}
+function checkDefaultAvatar(){ if(yo && parte && AVATARES.length && !parte.avatar){ updateDoc(doc(db,'participantes',yo),{avatar:AVATARES[0]}); } }
 function pintarPerfil(){
  $('pf-nom').textContent=parte.nombre+' '+parte.apellido;
  $('pf-mail').textContent=(parte.email||'')+(parte.telefono?' · '+parte.telefono:'');
  const ava=$('pf-ava');
  if(parte.avatar)ava.innerHTML='<img src="'+parte.avatar+'" alt="">';else ava.textContent=(parte.nombre||'✦')[0].toUpperCase();
- let ag='';
- if(AVATARES.length){ AVATARES.forEach((u,idx)=>{ ag+='<div class="ava-opt'+(parte.avatar===u?' sel':'')+'" onclick="elegirAvatarIdx('+idx+')"><img src="'+u+'" alt=""></div>'; }); }
- else ag='<p class="mistica" style="grid-column:1/-1;text-align:center">El Oráculo aún no preparó avatares.</p>';
- $('pf-avatares').innerHTML=ag;
  let chips='<span class="chipmini'+(parte.estado==='apto'?' on':'')+'">'+(parte.estado==='apto'?'⚜ APTO':'BUSCADOR')+'</span>';
  if(parte.quiz&&parte.quiz.completado)chips+='<span class="chipmini on">'+esc(parte.quiz.titulo)+'</span>';
  if(parte.circulo)chips+='<span class="chipmini on">⚜ Círculo</span>';
@@ -474,13 +489,13 @@ onAuthStateChanged(auth,async u=>{$('carga').classList.add('fin');
 function marcarVistos(){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));actualizarBadge();pintarAvisos();}
 function actualizarBadge(){const n=vistos?avisosCache.filter(a=>!vistos.includes(a.id)).length:0;$('badge').textContent=n;$('badge').classList.toggle('oculto',n===0);}
 function escucharTodo(){
- onSnapshot(doc(db,'participantes',yo),s=>{if(s.exists()){parte=s.data();pintarHome();pintarPerfil();pintarJuegos();pintarPrograma();pintarVoto();}});
+ onSnapshot(doc(db,'participantes',yo),s=>{if(s.exists()){parte=s.data();pintarHome();pintarPerfil();pintarJuegos();pintarPrograma();pintarVoto();pintarAvatarGrid();checkDefaultAvatar();}});
  onSnapshot(collection(db,'simbolos'),s=>{s.forEach(d=>simbolos[d.id]={...d.data(),id:d.id});pintarHome();});
  onSnapshot(collection(db,'programa'),s=>{programa=[];s.forEach(d=>programa.push({id:d.id,...d.data()}));programa.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarPrograma();});
  onSnapshot(collection(db,'participantes'),s=>{RANK=[];s.forEach(d=>RANK.push({id:d.id,...d.data()}));pintarRanking();});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};pintarJuegos();actualizarVotoNav();});
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};pintarVoto();});
- onSnapshot(doc(db,'config','avatares'),s=>{const d=s.exists()?s.data():{};AVATARES=d.items||[];if(parte)pintarPerfil();});
+ onSnapshot(doc(db,'config','avatares'),s=>{const d=s.exists()?s.data():{};AVATARES=d.items||[];pintarAvatarGrid();checkDefaultAvatar();});
  onSnapshot(doc(db,'config','frases'),s=>{FRASES=s.exists()?s.data():{};actualizarFraseFinal();});
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};
   if(PERFIL.tituloApp)$('land-titulo').textContent=PERFIL.tituloApp;if(PERFIL.subApp)$('land-sub').textContent=PERFIL.subApp;if(PERFIL.avatarOraculo)$('orb').innerHTML='<img src="'+PERFIL.avatarOraculo+'">';$('chat-titulo').textContent=(botName()+' RESPONDE').toUpperCase();
@@ -494,7 +509,9 @@ function actualizarFraseFinal(){const ff=$('frase-final-caja');if(!ff)return;
  const n=(parte&&parte.simbolos||[]).length;
  if(n>=7){ff.classList.remove('oculto');$('frase-final-texto').textContent=(FRASES&&FRASES.final)||DEF_FINAL;}
  else ff.classList.add('oculto');}
-function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' '+parte.apellido;const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=263.9*(1-n/7);const e=$('h-estado');e.textContent=apto?'⚜ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
+function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' '+parte.apellido;
+ const ha=$('h-ava');if(ha){ if(parte.avatar)ha.innerHTML='<img src="'+parte.avatar+'" alt="">'; else ha.textContent=(parte.nombre||'✦')[0].toUpperCase(); }
+ const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=263.9*(1-n/7);const e=$('h-estado');e.textContent=apto?'⚜ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
  const c=$('h-sellos');c.innerHTML='';for(let i=1;i<=7;i++){const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];
   const wrap=document.createElement('div');wrap.className='sello-wrap'+(ab?' abierto':'');
   const d=document.createElement('div');d.className='sello'+(ab?' abierto':'');
@@ -534,7 +551,7 @@ function pintarPrograma(){const likes=(parte&&parte.likes)||[];
  return '<div class="item" onclick="darLike(\''+a.id+'\')"><div class="det"><b>'+fmtF(a.fecha)+' · '+esc(a.hora)+' · '+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div><div class="likebox"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
 function pintarAvisos(){$('avisos-lista').innerHTML=avisosCache.map(a=>{const nuevo=vistos&&!vistos.includes(a.id);return '<div class="item" style="cursor:default;'+(nuevo?'border-color:var(--oro)':'')+'"><div class="det"><b style="font-size:12px;font-weight:600;color:var(--tinta)">⚜ '+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje||'')+'</span></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin avisos.</p>';}
 let hq=null,escaneando=false;
-window.navegar=(id,b)=>{ver(id);document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');if(id==='p-avisos')marcarVistos();if(id==='p-scan')iniciarScanner();else pararScanner();};
+window.navegar=(id,b)=>{ver(id);document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');if(id==='p-avisos')marcarVistos();if(id==='p-scan')iniciarScanner();else pararScanner();if(id==='p-avatar')pintarAvatarGrid();};
 async function iniciarScanner(){if(escaneando)return;escaneando=true;try{hq=hq||new Html5Qrcode("qr-reader");await hq.start({facingMode:"environment"},{fps:10,qrbox:{width:220,height:220}},t=>{pararScanner();procesar(t);},()=>{});}catch(e){toast('Cámara no responde','Usa el código manual.');}}
 function pararScanner(){escaneando=false;if(hq&&hq.isScanning)hq.stop().catch(()=>{});}
 window.procesar=async raw=>{if(!raw)return;const tk=raw.trim();const e=Object.values(simbolos).find(s=>s.token&&s.token.toUpperCase()===tk.toUpperCase());if(!e)return toast('Sello falso','');const n=e.numero;if((parte.simbolos||[]).includes(n))return toast('Sello ya marcado','');const nuevo=(parte.simbolos||[]).length+1;
