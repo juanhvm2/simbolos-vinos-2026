@@ -218,8 +218,8 @@ const hoyISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMont
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
-/* voto: por defecto VISIBLE (solo se oculta si el admin lo apaga) */
-const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['voto','Sección VOTAR visible en participantes']];
+/* voto y frase: por defecto VISIBLES (solo se ocultan si el admin los apaga) */
+const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['voto','Sección VOTAR visible en participantes'],['frase','Frase oculta visible en inicio']];
 let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],imgPend={};
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
@@ -292,7 +292,7 @@ window.exportar=()=>{const wb=XLSX.utils.book_new();
 
 /* JUEGOS */
 function renderToggles(){$('jz-toggles').innerHTML=JG_META.map(([k,n])=>'<label class="tgl"><input type="checkbox" id="jz-'+k+'"> '+n+'</label>').join('');}
-function syncToggles(){JG_META.forEach(([k])=>{const e=$('jz-'+k);if(e)e.checked=(k==='voto')?(JUEGOS[k]!==false):!!JUEGOS[k];});}
+function syncToggles(){JG_META.forEach(([k])=>{const e=$('jz-'+k);if(e)e.checked=(k==='voto'||k==='frase')?(JUEGOS[k]!==false):!!JUEGOS[k];});}
 function fillExtra(){$('jz-bvoto').value=(EXTRA.bodegasVoto||[]).join('\n');$('jz-sorteo').value=toLocal(EXTRA.sorteoHora);}
 window.guardarJuegos=async()=>{const j={};JG_META.forEach(([k])=>j[k]=$('jz-'+k).checked);await setDoc(doc(db,'config','juegos'),j);
  const lines=v=>v.split('\n').map(x=>x.trim()).filter(Boolean);
