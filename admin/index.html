@@ -19,6 +19,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em}
 .caja-login p{color:var(--texto2);font-size:14px;margin-bottom:28px}
 input,select,textarea{width:100%;padding:13px 16px;background:var(--card2);border:1px solid var(--linea);border-radius:var(--radius-sm);color:var(--texto);font-family:var(--font);font-size:15px;margin-bottom:10px}
 input[type=date],input[type=datetime-local]{color-scheme:dark}
+input[type=file]{padding:10px;background:var(--bg2);border:1px dashed var(--linea2);border-radius:var(--radius-sm);color:var(--texto2);font-size:13px;cursor:pointer}
 textarea{min-height:80px;resize:vertical}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
 input::placeholder,textarea::placeholder{color:var(--texto3)}
@@ -145,7 +146,7 @@ tr:last-child td{border-bottom:none}
  <div class="card"><h3>Ranking de buscadores en vivo</h3><div id="jz-rank"></div></div>
 </section>
 
-<section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento y QR.</p><div class="grid2" id="grid-sellos"></div></section>
+<section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento, QR e <b>imagen PNG del símbolo</b> (se adapta sola al botón del participante).</p><div class="grid2" id="grid-sellos"></div></section>
 
 <section class="sec" id="sec-programa"><h2 class="titulo-sec">Programa</h2>
  <div class="form-grid" style="margin-bottom:14px">
@@ -218,7 +219,7 @@ const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateStri
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
 const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores']];
-let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[];
+let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],imgPend={};
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
 const TABS=[['torre','Dashboard'],['juegos','Juegos'],['sellos','Sellos'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
@@ -307,11 +308,24 @@ window.guardarQuiz=async()=>{const b=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;
 window.toggleQuiz=async()=>{await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked},{merge:true});};
 function pintarQuizRes(){const qs=(QUIZ&&QUIZ.preguntas)||[];const done=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado);let h='<p style="color:var(--texto2);font-size:13px">Completaron: <b style="color:var(--verde)">'+done.length+'</b></p>';qs.forEach(q=>{const c={};done.forEach(p=>{const v=(p.perfil||{})[q.categoria];if(v)c[v]=(c[v]||0)+1;});const t=done.length||1;h+='<b style="font-size:13px">'+esc(q.pregunta)+'</b>'+Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([v,n])=>'<div style="display:flex;gap:8px;margin:5px 0;font-size:12px"><span style="width:110px;color:var(--texto2)">'+esc(v)+'</span><span style="flex:1;height:6px;background:var(--card2)"><i style="display:block;height:100%;width:'+Math.round(n/t*100)+'%;background:var(--accent)"></i></span><span>'+n+'</span></div>').join('');});$('qz-res').innerHTML=h;}
 
-/* SELLOS */
+/* SELLOS + IMAGEN PNG */
+function comprimirImg(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const S=256;const cv=document.createElement('canvas');cv.width=S;cv.height=S;const x=cv.getContext('2d');const sc=Math.min(S/im.width,S/im.height);const w=im.width*sc,h=im.height*sc;x.clearRect(0,0,S,S);x.drawImage(im,(S-w)/2,(S-h)/2,w,h);cb(cv.toDataURL('image/png'));};im.src=r.result;};r.readAsDataURL(file);}
+window.cargarImgSello=(n,input)=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024)return toast('Imagen muy pesada (máx 4MB)','');
+ comprimirImg(f,url=>{imgPend[n]=url;const p=$('sp-'+n);if(p){p.src=url;p.style.visibility='visible';}toast('✓ Imagen lista · pulsa Guardar','');});};
+window.quitarImgSello=n=>{imgPend[n]='';const p=$('sp-'+n);if(p){p.removeAttribute('src');p.style.visibility='hidden';}toast('Imagen quitada · pulsa Guardar','');};
 async function pintarSellos(){const g=$('grid-sellos');g.innerHTML='';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const c=document.createElement('div');c.className='sello-card';
- c.innerHTML='<label>NOMBRE</label><input id="sn-'+n+'" value="'+esc(s.nombre||'')+'"><label>SALÓN</label><input id="ss-'+n+'" value="'+esc(s.salon||'')+'"><label>FRAGMENTO</label><input id="sf-'+n+'" value="'+esc(s.fragmento||'')+'"><div style="display:flex;gap:8px"><button class="btn mini solido" onclick="guardarSello('+n+')">Guardar</button><button class="btn mini" onclick="genToken('+n+')">QR</button><button class="btn mini" onclick="imprimirQRs()">Imprimir</button></div><div class="qr-zone"><div class="qr" id="qr-'+n+'"></div><b id="tk-'+n+'" style="font-family:monospace;font-size:12px">'+esc(s.token||'—')+'</b></div>';
- g.appendChild(c);if(s.token)new QRCode($('qr-'+n),{text:s.token,width:104,height:104,colorDark:'#000',colorLight:'#fff'});}}
-window.guardarSello=async n=>{await setDoc(doc(db,'simbolos',String(n)),{numero:n,nombre:$('sn-'+n).value.trim(),salon:$('ss-'+n).value.trim(),fragmento:$('sf-'+n).value.trim(),token:(await getDoc(doc(db,'simbolos',String(n)))).data()?.token||'',activo:true},{merge:true});toast('✓ Sello '+n);};
+ c.innerHTML='<div style="display:flex;gap:12px;align-items:center;margin-bottom:10px"><span style="font-size:26px">'+GLIFOS[n]+'</span><b>Sello '+n+'</b></div>'+
+ '<label>NOMBRE</label><input id="sn-'+n+'" value="'+esc(s.nombre||'')+'"><label>SALÓN</label><input id="ss-'+n+'" value="'+esc(s.salon||'')+'"><label>FRAGMENTO</label><input id="sf-'+n+'" value="'+esc(s.fragmento||'')+'">'+
+ '<label>IMAGEN PNG DEL SÍMBOLO</label><input type="file" accept="image/png,image/*" id="si-'+n+'" onchange="cargarImgSello('+n+',this)">'+
+ '<div style="display:flex;gap:10px;align-items:center;margin:4px 0 10px"><img id="sp-'+n+'" style="width:48px;height:48px;object-fit:contain;background:var(--bg2);border-radius:10px;visibility:'+(s.img?'visible':'hidden')+'" '+(s.img?'src="'+s.img+'"':'')+'><button class="btn mini peligro" onclick="quitarImgSello('+n+')">Quitar imagen</button></div>'+
+ '<div style="display:flex;gap:8px"><button class="btn mini solido" onclick="guardarSello('+n+')">Guardar</button><button class="btn mini" onclick="genToken('+n+')">QR</button><button class="btn mini" onclick="imprimirQRs()">Imprimir</button></div>'+
+ '<div class="qr-zone"><div class="qr" id="qr-'+n+'"></div><b id="tk-'+n+'" style="font-family:monospace;font-size:12px">'+esc(s.token||'—')+'</b></div>';
+ g.appendChild(c);
+ imgPend[n]=s.img||'';
+ if(s.token)new QRCode($('qr-'+n),{text:s.token,width:104,height:104,colorDark:'#000',colorLight:'#fff'});}}
+window.guardarSello=async n=>{const cur=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};
+ const img=(n in imgPend)?imgPend[n]:(cur.img||'');
+ await setDoc(doc(db,'simbolos',String(n)),{numero:n,nombre:$('sn-'+n).value.trim(),salon:$('ss-'+n).value.trim(),fragmento:$('sf-'+n).value.trim(),token:cur.token||'',activo:true,img:img},{merge:true});toast('✓ Sello '+n+' guardado');};
 window.genToken=async n=>{const t='SV2026-S'+n+'-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');await setDoc(doc(db,'simbolos',String(n)),{numero:n,token:t},{merge:true});toast('✓ QR '+n);};
 window.imprimirQRs=async()=>{let h='<html><body style="display:flex;flex-wrap:wrap;gap:30px;padding:30px">';for(let n=1;n<=7;n++){const s=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const el=document.createElement('div');if(s.token)new QRCode(el,{text:s.token,width:180,height:180});const img=el.querySelector('canvas')?el.querySelector('canvas').toDataURL():'';h+='<div style="text-align:center"><img src="'+img+'" style="width:180px"><b>Sello '+n+'</b></div>';}h+='</body></html>';const w=window.open('');w.document.write(h);w.document.close();setTimeout(()=>w.print(),600);};
 
