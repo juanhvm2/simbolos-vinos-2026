@@ -75,7 +75,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .scan-cta svg{width:24px;height:24px;stroke-width:2}
 .scan-cta:active{transform:scale(.97)}
 .sec-titulo{font-size:12px;font-weight:600;letter-spacing:.14em;color:var(--texto2);text-transform:uppercase;margin:26px 0 12px;text-align:center}
-/* Sellos: botón circular + nombre FUERA, debajo */
 .sellos{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .sello-wrap{display:flex;flex-direction:column;align-items:center;gap:7px}
 .sello{width:100%;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--linea);box-shadow:var(--sombra2);position:relative;cursor:pointer;overflow:hidden}
@@ -145,13 +144,24 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--texto2);animation:tec 1s infinite}
 .typing span:nth-child(2){animation-delay:.18s}.typing span:nth-child(3){animation-delay:.36s}
 @keyframes tec{0%,100%{opacity:.25}50%{opacity:.8;transform:translateY(-4px)}}
-#revelacion{position:fixed;inset:0;z-index:60;display:none;place-items:center;text-align:center;background:rgba(244,240,233,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:24px;overflow-y:auto}
-#revelacion.activa{display:grid;animation:ap .4s}
-#rev-banner{width:100%;max-width:420px;border-radius:20px;overflow:hidden;box-shadow:var(--sombra)}
-#rev-banner svg{display:block;width:100%}
-#rev-frag{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:24px;color:var(--purpura);margin:18px 0}
-.rev-aliento{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--tinta);margin:4px 0 14px}
-.rev-aliento.final{font-size:24px;color:var(--purpura);font-weight:600}
+/* PANTALLA DE SELLO REVELADO (modal moderno) */
+#revelacion{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:rgba(29,26,23,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:20px;overflow-y:auto}
+#revelacion.activa{display:grid;animation:ap .35s}
+.rev-card{width:100%;max-width:400px;background:var(--card);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);animation:pop .45s cubic-bezier(.34,1.4,.64,1)}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.rev-top{background:linear-gradient(150deg,var(--tinta),var(--purpura));padding:36px 24px 28px;text-align:center;position:relative}
+.rev-top::after{content:"⚜";position:absolute;top:14px;right:18px;color:rgba(255,255,255,.25);font-size:18px}
+.rev-medal{width:98px;height:98px;margin:0 auto 16px;border-radius:50%;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:46px;color:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.rev-medal img{width:70%;height:70%;object-fit:contain}
+.rev-eyebrow{font-size:10px;letter-spacing:.3em;color:rgba(255,255,255,.72);text-transform:uppercase;font-weight:600}
+.rev-name{font-size:27px;font-weight:700;color:#fff;letter-spacing:.06em;margin-top:6px}
+.rev-salon{font-size:12px;color:rgba(255,255,255,.78);margin-top:5px;letter-spacing:.14em;text-transform:uppercase}
+.rev-body{padding:26px 24px 24px}
+.rev-label{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--texto2);text-transform:uppercase;text-align:center;margin-bottom:10px}
+#rev-frag{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:25px;color:var(--purpura);text-align:center;min-height:36px;line-height:1.4}
+.rev-aliento{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--texto2);text-align:center;margin:14px 0 2px}
+.rev-aliento.final{font-size:19px;color:var(--purpura);font-weight:600}
+.rev-body .btn{margin-top:20px}
 #toasts{position:fixed;top:calc(14px + env(safe-area-inset-top));left:14px;right:14px;z-index:70;display:flex;flex-direction:column;gap:10px;pointer-events:none}
 .toast{background:rgba(253,251,247,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(122,16,52,.12);border-left:4px solid var(--tinta);border-radius:16px;padding:13px 16px;box-shadow:0 10px 30px rgba(92,12,38,.15);animation:bajar .45s}
 .toast .t{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--tinta);text-transform:uppercase}
@@ -210,7 +220,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <button class="scan-cta" onclick="irScan()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg>Escanear un sello</button>
   <div class="sec-titulo">Toca un sello dorado para ver su leyenda</div>
   <div class="sellos" id="h-sellos"></div>
-  <div class="frase-caja"><div class="pista" id="h-frase-titulo">La frase oculta</div>
+  <div class="frase-caja" id="frase-caja"><div class="pista" id="h-frase-titulo">La frase oculta</div>
     <div class="frag" id="h-frase" style="margin-top:8px">· · · &nbsp; · · ·</div></div>
 </section>
 
@@ -286,11 +296,19 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 <section class="pantalla" id="p-prog"><h2 style="font-size:22px;text-align:center">Programa del evento</h2>
   <div id="prog-lista" style="margin-top:14px"></div></section>
 
-<div id="revelacion"><div style="width:100%;max-width:420px">
-  <div id="rev-banner"></div>
-  <div id="rev-frag"></div>
-  <div id="rev-aliento" class="rev-aliento oculto"></div>
-  <button class="btn solido" onclick="cerrarRevelacion()">Sellar y continuar</button>
+<div id="revelacion"><div class="rev-card">
+  <div class="rev-top">
+    <div class="rev-medal" id="rev-medal">☉</div>
+    <div class="rev-eyebrow">Sello revelado</div>
+    <div class="rev-name" id="rev-nombre2">—</div>
+    <div class="rev-salon" id="rev-salon2">Salón · —</div>
+  </div>
+  <div class="rev-body">
+    <div class="rev-label">Fragmento de la frase</div>
+    <div id="rev-frag">· · ·</div>
+    <div id="rev-aliento" class="rev-aliento oculto"></div>
+    <button class="btn solido" onclick="cerrarRevelacion()">Sellar y continuar</button>
+  </div>
 </div></div>
 
 <nav class="nav" id="nav" style="display:none">
@@ -350,8 +368,6 @@ document.addEventListener('touchstart',()=>{try{audioCtx=audioCtx||new(window.Au
 function scramble(el,t){let i=0;const g='⚜✦';const int=setInterval(()=>{el.textContent=t.split('').map((c,j)=>j<i?c:(c===' '?' ':g[Math.floor(Math.random()*g.length)])).join('');i+=.6;if(i>=t.length+1){el.textContent=t;clearInterval(int);}},34);}
 const ICONO={quiz:'<path d="M26 22 H54 C54 40 46 48 40 49 C34 48 26 40 26 22 Z"/><path d="M40 49 C32 56 46 60 38 66"/>',ranking:'<path d="M28 56 V40 M40 56 V28 M52 56 V46"/><path d="M22 60 h36"/>'};
 function bannerSVG(o){const id='g'+o.key+Math.random().toString(36).slice(2,6);return `<svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${o.a1}"/><stop offset="1" stop-color="${o.a2}"/></linearGradient></defs><rect width="600" height="150" fill="url(#${id})"/><rect x="4" y="4" width="592" height="142" rx="14" fill="none" stroke="#f3d27a" stroke-width="1.5" opacity=".8"/><g transform="translate(36,35)"><circle cx="40" cy="40" r="36" fill="rgba(0,0,0,.25)" stroke="#f3d27a" stroke-width="1.5"/><g stroke="#f3d27a" stroke-width="2.4" fill="none" stroke-linecap="round">${ICONO[o.key]||''}</g></g><text x="130" y="50" font-family="Georgia,serif" font-size="11" fill="#f3d27a" letter-spacing="4">SÍMBOLOS &amp; VINOS</text><text x="130" y="86" font-family="Georgia,serif" font-size="25" fill="#fbf7ef" font-weight="700">${o.t}</text><text x="130" y="114" font-family="Georgia,serif" font-size="13" fill="#f0e9dd" font-style="italic" opacity=".85">${o.s}</text></svg>`;}
-function bannerSello(s,i){const centro = s.img ? '<image href="'+s.img+'" x="55" y="85" width="130" height="130" preserveAspectRatio="xMidYMid meet"/>' : '<text x="120" y="175" font-size="70" text-anchor="middle" fill="#f3d27a">'+GLIFOS[i]+'</text>';
- return `<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5c0c26"/><stop offset="1" stop-color="#6d1f6e"/></linearGradient></defs><rect width="600" height="300" fill="url(#rs)"/><rect x="6" y="6" width="588" height="288" rx="18" fill="none" stroke="#f3d27a" stroke-width="2"/><circle cx="120" cy="150" r="70" fill="rgba(0,0,0,.3)" stroke="#f3d27a" stroke-width="2"/>${centro}<text x="230" y="110" font-family="Georgia,serif" font-size="14" fill="#f3d27a" letter-spacing="4">SELLO ${i} · REVELADO</text><text x="230" y="160" font-family="Georgia,serif" font-size="40" fill="#fbf7ef" font-weight="700">${(s.nombre||NOMBRES[i]).toUpperCase()}</text><text x="230" y="195" font-family="Georgia,serif" font-size="16" fill="#f0e9dd" font-style="italic">Salón: ${s.salon||'—'}</text><text x="230" y="240" font-family="Georgia,serif" font-size="15" fill="#f3d27a">⚜ ${s.fragmento||''}</text></svg>`;}
 const COL=[['#5c0c26','#6d1f6e'],['#4a0e2e','#7a1034'],['#5c0c26','#8a4a1e'],['#3d0a20','#6d1f6e']];
 const JUEGOS_META=[{key:'ranking',t:'Tabla de Buscadores',s:'ranking en vivo'},{key:'quiz',t:'Arcano Enológico',s:'4 preguntas · tu perfil'}];
 const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado};
@@ -359,7 +375,8 @@ function pintarJuegos(){const c=$('juegos-lista');c.innerHTML='';JUEGOS_META.for
  const d=document.createElement('div');d.className='banner';d.innerHTML=bannerSVG({...m,a1:COL[i%4][0],a2:COL[i%4][1]})+'<div class="shimmer"></div>'+((DONE[m.key]&&DONE[m.key]())?'<span class="done-chip">✓ COMPLETADO</span>':'');d.onclick=()=>abrirJuego(m.key);c.appendChild(d);});}
 function abrirJuego(k){if(k==='quiz')return abrirQuiz();if(k==='ranking')return ver('p-ranking');}
 function actualizarVotoNav(){const oculto=(JUEGOS.voto===false);const b=$('nav-voto');if(b)b.style.display=oculto?'none':'';
- if(oculto&&$('p-voto').classList.contains('activa'))navegar('p-home',document.querySelector('[data-p="p-home"]'));}
+ if(oculto&&$('p-voto').classList.contains('activa'))navegar('p-home',document.querySelector('[data-p="p-home"]'));
+ const fc=$('frase-caja');if(fc)fc.style.display=(JUEGOS.frase===false)?'none':'';}
 function escucharQuiz(){onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;});}
 window.abrirQuiz=()=>{if(!QUIZ||!(QUIZ.preguntas||[]).length)return toast('El Oráculo prepara el arcano','');quizIdx=0;quizResp={};$('quiz-final').classList.add('oculto');$('quiz-caja').classList.remove('oculto');ver('p-quiz');pintarQuiz();};
 function pintarQuiz(){const qs=QUIZ.preguntas||[];$('quiz-dots').innerHTML=qs.map((_,i)=>'<span style="width:8px;height:8px;border-radius:50%;background:'+(i<quizIdx?'var(--tinta)':'var(--linea2)')+'"></span>').join('');const q=qs[quizIdx];if(!q)return;$('quiz-pregunta').textContent=q.pregunta||'';const c=$('quiz-ops');c.innerHTML='';(q.opciones||[]).forEach(o=>{const b=document.createElement('button');b.className='btn';b.style.marginTop='10px';b.textContent=o.t;b.onclick=()=>responder(q,o);c.appendChild(b);});}
@@ -451,10 +468,16 @@ function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' 
   const nm=document.createElement('div');nm.className='sello-nombre';nm.textContent=((s&&s.nombre)||NOMBRES[i]);
   wrap.appendChild(d);wrap.appendChild(nm);c.appendChild(wrap);}
  const fr=[];for(let i=1;i<=7;i++){fr.push((parte.simbolos||[]).includes(i)&&simbolos[i]&&simbolos[i].fragmento?simbolos[i].fragmento:'· · ·');}$('h-frase').textContent=fr.join('  ');}
-function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};$('rev-banner').innerHTML=bannerSello(s,i);$('rev-frag').textContent='';
+function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};
+ const medal=$('rev-medal');
+ medal.innerHTML = s.img ? '<img src="'+s.img+'" alt="">' : '<span>'+GLIFOS[i]+'</span>';
+ $('rev-nombre2').textContent=((s.nombre||NOMBRES[i]||'—')+'').toUpperCase();
+ $('rev-salon2').textContent='Salón · '+(s.salon||'—');
+ $('rev-frag').textContent='· · ·';
  const al=$('rev-aliento');
  if(aliento){al.textContent=aliento;al.classList.remove('oculto');al.classList.toggle('final',!!esFinal);}else al.classList.add('oculto');
- $('revelacion').classList.add('activa');scramble($('rev-frag'),s.fragmento||'· · ·');}
+ $('revelacion').classList.add('activa');
+ scramble($('rev-frag'), s.fragmento||'· · ·');}
 window.cerrarRevelacion=()=>{$('revelacion').classList.remove('activa');};
 function pintarPrograma(){const likes=(parte&&parte.likes)||[];
  $('prog-lista').innerHTML=programa.map(a=>{const n=a.likes||0,my=likes.includes(a.id);
