@@ -65,20 +65,21 @@ h1,h2,h3{font-family:'Julius Sans One',sans-serif;letter-spacing:.08em;color:var
 .anillo .barra{stroke:var(--tinta);stroke-linecap:round;transition:stroke-dashoffset 1s}
 .anillo .num{position:absolute;inset:0;display:grid;place-items:center;font-family:'Julius Sans One';font-size:19px;color:var(--tinta)}
 .progreso .txt{flex:1;font-size:15px;color:var(--texto2)}
-/* BOTON ESCANEAR DESTACADO */
 .scan-cta{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;margin-top:14px;padding:19px;border:none;border-radius:18px;cursor:pointer;background:linear-gradient(135deg,var(--tinta),var(--purpura));color:var(--crema);font-family:'Julius Sans One';font-size:15px;letter-spacing:.15em;text-transform:uppercase;box-shadow:0 10px 30px rgba(122,16,52,.4);animation:ctaPulse 2.2s infinite}
 .scan-cta svg{width:26px;height:26px}
 .scan-cta:active{transform:scale(.97)}
 @keyframes ctaPulse{0%,100%{box-shadow:0 10px 30px rgba(122,16,52,.4)}50%{box-shadow:0 10px 46px rgba(122,16,52,.75)}}
 .sec-titulo{font-size:12px;font-weight:600;letter-spacing:.3em;color:var(--purpura);text-transform:uppercase;margin:24px 0 12px;text-align:center}
 .sellos{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.sello{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:radial-gradient(circle at 35% 30%,#fff,var(--crema) 60%);border:2px solid var(--linea);box-shadow:inset 0 0 0 4px var(--papel),inset 0 0 0 5px var(--linea),var(--sombra);position:relative;cursor:pointer}
+.sello{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:radial-gradient(circle at 35% 30%,#fff,var(--crema) 60%);border:2px solid var(--linea);box-shadow:inset 0 0 0 4px var(--papel),inset 0 0 0 5px var(--linea),var(--sombra);position:relative;cursor:pointer;overflow:hidden}
 .sello .g{font-size:24px;color:var(--texto3);filter:grayscale(1)}
+.sello-img{width:72%;height:72%;object-fit:contain;border-radius:8px}
 .sello .n{font-size:7.5px;font-weight:700;letter-spacing:.12em;color:var(--texto3);text-transform:uppercase;text-align:center}
 .sello.abierto{background:radial-gradient(circle at 35% 30%,#a3305c,var(--tinta) 60%,var(--tinta2));border-color:var(--oro);box-shadow:inset 0 0 0 4px var(--tinta),inset 0 0 0 5px var(--oro),0 8px 22px rgba(122,16,52,.4);animation:abrir .7s cubic-bezier(.34,1.56,.64,1)}
 .sello.abierto .g{color:var(--crema);filter:none}
+.sello.abierto .sello-img{filter:drop-shadow(0 0 6px rgba(251,247,239,.5))}
 .sello.abierto .n{color:rgba(251,247,239,.9)}
-.sello.abierto::after{content:"✓";position:absolute;top:-4px;right:-2px;width:20px;height:20px;border-radius:50%;background:var(--oro);color:var(--tinta2);font-size:12px;font-weight:800;display:grid;place-items:center}
+.sello.abierto::after{content:"✓";position:absolute;top:-4px;right:-2px;width:20px;height:20px;border-radius:50%;background:var(--oro);color:var(--tinta2);font-size:12px;font-weight:800;display:grid;place-items:center;z-index:2}
 @keyframes abrir{0%{transform:scale(.5)}100%{transform:scale(1)}}
 .frase-caja{margin-top:24px;padding:20px;border:1px solid var(--linea);border-radius:18px;background:var(--crema);text-align:center;position:relative}
 .frase-caja::before{content:"⚜";position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--papel);padding:0 10px;color:var(--tinta)}
@@ -343,7 +344,8 @@ document.addEventListener('touchstart',()=>{try{audioCtx=audioCtx||new(window.Au
 function scramble(el,t){let i=0;const g='⚜✦';const int=setInterval(()=>{el.textContent=t.split('').map((c,j)=>j<i?c:(c===' '?' ':g[Math.floor(Math.random()*g.length)])).join('');i+=.6;if(i>=t.length+1){el.textContent=t;clearInterval(int);}},34);}
 const ICONO={quiz:'<path d="M26 22 H54 C54 40 46 48 40 49 C34 48 26 40 26 22 Z"/><path d="M40 49 C32 56 46 60 38 66"/>',ranking:'<path d="M28 56 V40 M40 56 V28 M52 56 V46"/><path d="M22 60 h36"/>'};
 function bannerSVG(o){const id='g'+o.key+Math.random().toString(36).slice(2,6);return `<svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${o.a1}"/><stop offset="1" stop-color="${o.a2}"/></linearGradient></defs><rect width="600" height="150" fill="url(#${id})"/><rect x="4" y="4" width="592" height="142" rx="14" fill="none" stroke="#f3d27a" stroke-width="1.5" opacity=".8"/><g transform="translate(36,35)"><circle cx="40" cy="40" r="36" fill="rgba(0,0,0,.25)" stroke="#f3d27a" stroke-width="1.5"/><g stroke="#f3d27a" stroke-width="2.4" fill="none" stroke-linecap="round">${ICONO[o.key]||''}</g></g><text x="130" y="50" font-family="Georgia,serif" font-size="11" fill="#f3d27a" letter-spacing="4">SÍMBOLOS &amp; VINOS</text><text x="130" y="86" font-family="Georgia,serif" font-size="25" fill="#fbf7ef" font-weight="700">${o.t}</text><text x="130" y="114" font-family="Georgia,serif" font-size="13" fill="#f0e9dd" font-style="italic" opacity=".85">${o.s}</text></svg>`;}
-function bannerSello(s,i){return `<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5c0c26"/><stop offset="1" stop-color="#6d1f6e"/></linearGradient></defs><rect width="600" height="300" fill="url(#rs)"/><rect x="6" y="6" width="588" height="288" rx="18" fill="none" stroke="#f3d27a" stroke-width="2"/><circle cx="120" cy="150" r="70" fill="rgba(0,0,0,.3)" stroke="#f3d27a" stroke-width="2"/><text x="120" y="175" font-size="70" text-anchor="middle" fill="#f3d27a">${GLIFOS[i]}</text><text x="230" y="110" font-family="Georgia,serif" font-size="14" fill="#f3d27a" letter-spacing="4">SELLO ${i} · REVELADO</text><text x="230" y="160" font-family="Georgia,serif" font-size="40" fill="#fbf7ef" font-weight="700">${(s.nombre||NOMBRES[i]).toUpperCase()}</text><text x="230" y="195" font-family="Georgia,serif" font-size="16" fill="#f0e9dd" font-style="italic">Salón: ${s.salon||'—'}</text><text x="230" y="240" font-family="Georgia,serif" font-size="15" fill="#f3d27a">⚜ ${s.fragmento||''}</text></svg>`;}
+function bannerSello(s,i){const centro = s.img ? '<image href="'+s.img+'" x="55" y="85" width="130" height="130" preserveAspectRatio="xMidYMid meet"/>' : '<text x="120" y="175" font-size="70" text-anchor="middle" fill="#f3d27a">'+GLIFOS[i]+'</text>';
+ return `<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5c0c26"/><stop offset="1" stop-color="#6d1f6e"/></linearGradient></defs><rect width="600" height="300" fill="url(#rs)"/><rect x="6" y="6" width="588" height="288" rx="18" fill="none" stroke="#f3d27a" stroke-width="2"/><circle cx="120" cy="150" r="70" fill="rgba(0,0,0,.3)" stroke="#f3d27a" stroke-width="2"/>${centro}<text x="230" y="110" font-family="Georgia,serif" font-size="14" fill="#f3d27a" letter-spacing="4">SELLO ${i} · REVELADO</text><text x="230" y="160" font-family="Georgia,serif" font-size="40" fill="#fbf7ef" font-weight="700">${(s.nombre||NOMBRES[i]).toUpperCase()}</text><text x="230" y="195" font-family="Georgia,serif" font-size="16" fill="#f0e9dd" font-style="italic">Salón: ${s.salon||'—'}</text><text x="230" y="240" font-family="Georgia,serif" font-size="15" fill="#f3d27a">⚜ ${s.fragmento||''}</text></svg>`;}
 const COL=[['#5c0c26','#6d1f6e'],['#4a0e2e','#7a1034'],['#5c0c26','#8a4a1e'],['#3d0a20','#6d1f6e']];
 const JUEGOS_META=[{key:'ranking',t:'Tabla de Buscadores',s:'ranking en vivo'},{key:'quiz',t:'Arcano Enológico',s:'4 preguntas · tu perfil'}];
 const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado};
@@ -432,7 +434,11 @@ function escucharTodo(){
  escucharFAQ();escucharQuiz();
 }
 function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' '+parte.apellido;const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=270.2*(1-n/7);const e=$('h-estado');e.textContent=apto?'⚜ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
- const c=$('h-sellos');c.innerHTML='';for(let i=1;i<=7;i++){const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];const d=document.createElement('div');d.className='sello'+(ab?' abierto':'');d.innerHTML='<span class="g">'+GLIFOS[i]+'</span><span class="n">'+((s&&s.nombre)||NOMBRES[i])+'</span>';if(ab)d.onclick=()=>revelarSello(i);c.appendChild(d);}
+ const c=$('h-sellos');c.innerHTML='';for(let i=1;i<=7;i++){const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];
+  const d=document.createElement('div');d.className='sello'+(ab?' abierto':'');
+  const centro = s.img ? '<img class="sello-img" src="'+s.img+'" alt="">' : '<span class="g">'+GLIFOS[i]+'</span>';
+  d.innerHTML=centro+'<span class="n">'+((s&&s.nombre)||NOMBRES[i])+'</span>';
+  if(ab)d.onclick=()=>revelarSello(i);c.appendChild(d);}
  const fr=[];for(let i=1;i<=7;i++){fr.push((parte.simbolos||[]).includes(i)&&simbolos[i]&&simbolos[i].fragmento?simbolos[i].fragmento:'· · ·');}$('h-frase').textContent=fr.join('  ');}
 function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};$('rev-banner').innerHTML=bannerSello(s,i);$('rev-frag').textContent='';
  const al=$('rev-aliento');
