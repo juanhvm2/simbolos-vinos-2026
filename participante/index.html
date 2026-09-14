@@ -44,6 +44,12 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .btn.solido{background:var(--tinta);color:#fff;border-color:var(--tinta);box-shadow:0 6px 18px rgba(122,16,52,.28)}
 .btn.fantasma{color:var(--texto2);border-color:var(--linea)}
 .btn.google{background:#fff;color:var(--texto);border:1px solid rgba(0,0,0,.10);box-shadow:var(--sombra2);display:flex;align-items:center;justify-content:center;gap:10px}
+/* Botones de acceso rápido: perfil + instagram, lado a lado */
+.acc-row{display:flex;gap:10px;margin-top:12px}
+.acc-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:9px;padding:14px 16px;background:var(--card);border:1px solid var(--linea);border-radius:16px;color:var(--tinta);font-family:var(--sys);font-weight:600;font-size:14px;letter-spacing:0;cursor:pointer;box-shadow:var(--sombra2);transition:.18s;text-decoration:none}
+.acc-btn:active{transform:scale(.97)}
+.acc-btn svg{width:20px;height:20px;flex:none}
+.acc-btn.ig{flex:0 0 54px;padding:14px 0;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);color:#fff;border:none;box-shadow:0 6px 18px rgba(214,41,118,.35)}
 .card{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);padding:22px;box-shadow:var(--sombra)}
 .card h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);font-weight:600;margin-bottom:12px}
 .campo{margin-bottom:12px;text-align:left}
@@ -58,9 +64,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .salir{background:none;border:none;color:var(--texto3);font-size:13px;cursor:pointer}
 .estado{font-size:10px;font-weight:600;letter-spacing:.12em;padding:8px 13px;border:1.5px solid var(--linea2);color:var(--tinta);border-radius:999px;white-space:nowrap;text-transform:uppercase}
 .estado.apto{background:var(--tinta);color:#fff;border-color:var(--tinta);box-shadow:0 4px 14px rgba(122,16,52,.3)}
-.mini-row{display:flex;gap:8px;margin-top:12px}
-.mini-row .btn{margin-top:0;font-size:14px;padding:12px 10px}
-.btn-ig{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;margin-top:12px;background:var(--card);border:1px solid var(--linea);border-radius:999px;color:var(--tinta);font-size:15px;font-weight:600;text-decoration:none;box-shadow:var(--sombra2)}
 .cd-card{margin-top:14px;padding:18px;border-radius:20px;background:linear-gradient(140deg,var(--tinta),var(--purpura));text-align:center;color:#fff;box-shadow:0 10px 28px rgba(122,16,52,.3)}
 .cd-card .t{font-size:10px;letter-spacing:.28em;opacity:.85;text-transform:uppercase}
 .cd-card .n{font-size:26px;font-weight:700;margin-top:6px;letter-spacing:-.01em}
@@ -87,7 +90,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .sello-nombre{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);text-align:center;line-height:1.2}
 .sello-wrap.abierto .sello-nombre{color:var(--tinta);font-weight:700}
 @keyframes abrir{0%{transform:scale(.5)}100%{transform:scale(1)}}
-/* PERGAMINO FRASE FINAL (se revela con 7 sellos) */
 .frase-final-caja{margin-top:18px;padding:28px 24px;border-radius:var(--radio);text-align:center;position:relative;
  background:linear-gradient(160deg,#f8f1e3,#efe3cc);border:1px solid rgba(122,16,52,.28);
  box-shadow:var(--sombra), inset 0 0 46px rgba(122,16,52,.07);animation:ap .6s ease}
@@ -95,7 +97,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .ff-orn{color:var(--oro);font-size:22px;margin-bottom:8px}
 .ff-label{font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--texto2);text-transform:uppercase;margin-bottom:12px}
 .ff-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:21px;color:var(--tinta);line-height:1.5}
-/* caja progresiva de fragmentos */
 .frase-caja{margin-top:18px;padding:22px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);background:var(--card);text-align:center;position:relative;box-shadow:var(--sombra)}
 .frase-caja::before{content:"⚜";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--fondo);padding:0 10px;color:var(--oro);font-size:16px}
 .frase-caja .frag{font-size:16px;font-weight:600;color:var(--tinta);letter-spacing:.02em;line-height:1.8}
@@ -153,10 +154,12 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--texto2);animation:tec 1s infinite}
 .typing span:nth-child(2){animation-delay:.18s}.typing span:nth-child(3){animation-delay:.36s}
 @keyframes tec{0%,100%{opacity:.25}50%{opacity:.8;transform:translateY(-4px)}}
+/* Revelado: lámina + espacio para la frase */
 #revelacion{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:rgba(29,26,23,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:20px;overflow-y:auto}
 #revelacion.activa{display:grid;animation:ap .35s}
 .rev-full{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#160b10}
-#rev-img{width:100%;height:100%;object-fit:contain}
+#rev-img{width:100%;height:100%;object-fit:contain;transition:padding .3s ease}
+.rev-full.con-bar #rev-img{padding-bottom:120px}
 .rev-close{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-size:18px;cursor:pointer;z-index:3}
 .rev-aliento-bar{position:absolute;left:0;right:0;bottom:0;padding:20px 22px calc(20px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(20,8,14,.94),transparent);color:#fff;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;line-height:1.4}
 .rev-aliento-bar.final{font-size:20px;font-weight:600;color:var(--oro)}
@@ -217,11 +220,11 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <div class="cab"><div><div style="font-size:13px;color:var(--texto2)">Hola, buscador</div>
     <div class="nombre" id="h-nombre">—</div><button class="salir" onclick="salir()">cerrar sesión</button></div>
     <div class="estado" id="h-estado">BUSCADOR</div></div>
-  <div class="mini-row"><button class="btn" onclick="ver('p-perfil')">👤 Mi perfil</button></div>
+  <div class="acc-row">
+    <button class="acc-btn" onclick="ver('p-perfil')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mi perfil</button>
+    <a class="acc-btn ig" href="https://www.instagram.com/simbolosyvinos/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+  </div>
   <button id="btn-push" class="btn solido oculto" onclick="activarPush()">🔔 Activar avisos</button>
-  <a class="btn-ig" href="https://www.instagram.com/simbolosyvinos/" target="_blank" rel="noopener">
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-    @simbolosyvinos · Síguenos</a>
   <div class="cd-card oculto" id="cd-card"><div class="t">El sorteo comienza en</div><div class="n" id="cd-num">—</div></div>
   <div class="progreso">
     <div class="anillo"><svg width="96" height="96">
@@ -483,7 +486,6 @@ function escucharTodo(){
  onSnapshot(collection(db,'anuncios'),s=>{avisosCache=[];s.forEach(d=>avisosCache.push({id:d.id,...d.data()}));avisosCache.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));if(vistos===null){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));}const nv=avisosCache.filter(a=>!vistos.includes(a.id)&&!notificados.has(a.id));nv.forEach(a=>{notificados.add(a.id);toast('⚜ '+botName().toUpperCase()+' · '+(a.titulo||''),a.mensaje||'');});if(nv.length)chime();actualizarBadge();pintarAvisos();});
  escucharFAQ();escucharQuiz();
 }
-/* FRASE FINAL en pergamino (solo con 7 sellos) */
 function actualizarFraseFinal(){const ff=$('frase-final-caja');if(!ff)return;
  const n=(parte&&parte.simbolos||[]).length;
  if(n>=7){ff.classList.remove('oculto');$('frase-final-texto').textContent=(FRASES&&FRASES.final)||DEF_FINAL;}
@@ -504,6 +506,7 @@ function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};
  if(s.imgFull){
    $('rev-card').style.display='none';
    const rf=$('rev-full');rf.style.display='flex';
+   rf.classList.toggle('con-bar',!!alTxt);
    $('rev-img').src=s.imgFull;
    const bar=$('rev-aliento-bar');
    if(alTxt){$('rev-aliento2').textContent=alTxt;bar.classList.remove('oculto');bar.classList.toggle('final',!!esFinal);}else bar.classList.add('oculto');
