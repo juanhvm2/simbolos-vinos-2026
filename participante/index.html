@@ -87,7 +87,16 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .sello-nombre{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);text-align:center;line-height:1.2}
 .sello-wrap.abierto .sello-nombre{color:var(--tinta);font-weight:700}
 @keyframes abrir{0%{transform:scale(.5)}100%{transform:scale(1)}}
-.frase-caja{margin-top:26px;padding:22px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);background:var(--card);text-align:center;position:relative;box-shadow:var(--sombra)}
+/* PERGAMINO FRASE FINAL (se revela con 7 sellos) */
+.frase-final-caja{margin-top:18px;padding:28px 24px;border-radius:var(--radio);text-align:center;position:relative;
+ background:linear-gradient(160deg,#f8f1e3,#efe3cc);border:1px solid rgba(122,16,52,.28);
+ box-shadow:var(--sombra), inset 0 0 46px rgba(122,16,52,.07);animation:ap .6s ease}
+.frase-final-caja::before{content:"";position:absolute;inset:9px;border:1px double rgba(122,16,52,.38);border-radius:calc(var(--radio) - 7px);pointer-events:none}
+.ff-orn{color:var(--oro);font-size:22px;margin-bottom:8px}
+.ff-label{font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--texto2);text-transform:uppercase;margin-bottom:12px}
+.ff-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:21px;color:var(--tinta);line-height:1.5}
+/* caja progresiva de fragmentos */
+.frase-caja{margin-top:18px;padding:22px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);background:var(--card);text-align:center;position:relative;box-shadow:var(--sombra)}
 .frase-caja::before{content:"⚜";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--fondo);padding:0 10px;color:var(--oro);font-size:16px}
 .frase-caja .frag{font-size:16px;font-weight:600;color:var(--tinta);letter-spacing:.02em;line-height:1.8}
 .frase-caja .pista{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--texto2);text-transform:uppercase}
@@ -144,7 +153,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--texto2);animation:tec 1s infinite}
 .typing span:nth-child(2){animation-delay:.18s}.typing span:nth-child(3){animation-delay:.36s}
 @keyframes tec{0%,100%{opacity:.25}50%{opacity:.8;transform:translateY(-4px)}}
-/* REVELADO: imagen full 1080x1350 + tarjeta respaldo */
 #revelacion{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:rgba(29,26,23,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:20px;overflow-y:auto}
 #revelacion.activa{display:grid;animation:ap .35s}
 .rev-full{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#160b10}
@@ -200,7 +208,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
     <div class="paso"><div class="num">2</div><div class="txt"><b>Completa tu perfil</b><span>Carga tu teléfono y datos: cuanto más completo, mejor tu experiencia.</span></div></div>
     <div class="paso"><div class="num">3</div><div class="txt"><b>Escanea el grabado</b><span>Toca el botón Escanear y apunta al código del sello.</span></div></div>
     <div class="paso"><div class="num">4</div><div class="txt"><b>Despierta el sello</b><span>Cada sello se dora y revela su lámina y un fragmento de la frase.</span></div></div>
-    <div class="paso"><div class="num">5</div><div class="txt"><b>Completa los siete</b><span>Al reunirlos se revela la frase final y entras al sorteo.</span></div></div>
+    <div class="paso"><div class="num">5</div><div class="txt"><b>Completa los siete</b><span>Al reunirlos, la frase final se revela en tu pantalla principal y entras al sorteo.</span></div></div>
   </div>
   <button class="btn solido" onclick="ver('p-landing')">Volver</button>
 </section>
@@ -225,6 +233,11 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <button class="scan-cta" onclick="irScan()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg>Escanear un sello</button>
   <div class="sec-titulo">Toca un sello dorado para ver su lámina</div>
   <div class="sellos" id="h-sellos"></div>
+  <div class="frase-final-caja oculto" id="frase-final-caja">
+    <div class="ff-orn">⚜</div>
+    <div class="ff-label">La frase final revelada</div>
+    <div class="ff-text" id="frase-final-texto"></div>
+  </div>
   <div class="frase-caja" id="frase-caja"><div class="pista" id="h-frase-titulo">La frase oculta</div>
     <div class="frag" id="h-frase" style="margin-top:8px">· · · &nbsp; · · ·</div></div>
 </section>
@@ -461,7 +474,7 @@ function escucharTodo(){
  onSnapshot(collection(db,'participantes'),s=>{RANK=[];s.forEach(d=>RANK.push({id:d.id,...d.data()}));pintarRanking();});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};pintarJuegos();actualizarVotoNav();});
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};pintarVoto();});
- onSnapshot(doc(db,'config','frases'),s=>{FRASES=s.exists()?s.data():{};});
+ onSnapshot(doc(db,'config','frases'),s=>{FRASES=s.exists()?s.data():{};actualizarFraseFinal();});
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};
   if(PERFIL.tituloApp)$('land-titulo').textContent=PERFIL.tituloApp;if(PERFIL.subApp)$('land-sub').textContent=PERFIL.subApp;if(PERFIL.avatarOraculo)$('orb').innerHTML='<img src="'+PERFIL.avatarOraculo+'">';$('chat-titulo').textContent=(botName()+' RESPONDE').toUpperCase();
   const lr=localStorage.getItem('sv-chat-reset');
@@ -470,6 +483,11 @@ function escucharTodo(){
  onSnapshot(collection(db,'anuncios'),s=>{avisosCache=[];s.forEach(d=>avisosCache.push({id:d.id,...d.data()}));avisosCache.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));if(vistos===null){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));}const nv=avisosCache.filter(a=>!vistos.includes(a.id)&&!notificados.has(a.id));nv.forEach(a=>{notificados.add(a.id);toast('⚜ '+botName().toUpperCase()+' · '+(a.titulo||''),a.mensaje||'');});if(nv.length)chime();actualizarBadge();pintarAvisos();});
  escucharFAQ();escucharQuiz();
 }
+/* FRASE FINAL en pergamino (solo con 7 sellos) */
+function actualizarFraseFinal(){const ff=$('frase-final-caja');if(!ff)return;
+ const n=(parte&&parte.simbolos||[]).length;
+ if(n>=7){ff.classList.remove('oculto');$('frase-final-texto').textContent=(FRASES&&FRASES.final)||DEF_FINAL;}
+ else ff.classList.add('oculto');}
 function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' '+parte.apellido;const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=263.9*(1-n/7);const e=$('h-estado');e.textContent=apto?'⚜ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
  const c=$('h-sellos');c.innerHTML='';for(let i=1;i<=7;i++){const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];
   const wrap=document.createElement('div');wrap.className='sello-wrap'+(ab?' abierto':'');
@@ -479,7 +497,8 @@ function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' 
   if(ab)d.onclick=()=>revelarSello(i);
   const nm=document.createElement('div');nm.className='sello-nombre';nm.textContent=((s&&s.nombre)||NOMBRES[i]);
   wrap.appendChild(d);wrap.appendChild(nm);c.appendChild(wrap);}
- const fr=[];for(let i=1;i<=7;i++){fr.push((parte.simbolos||[]).includes(i)&&simbolos[i]&&simbolos[i].fragmento?simbolos[i].fragmento:'· · ·');}$('h-frase').textContent=fr.join('  ');}
+ const fr=[];for(let i=1;i<=7;i++){fr.push((parte.simbolos||[]).includes(i)&&simbolos[i]&&simbolos[i].fragmento?simbolos[i].fragmento:'· · ·');}$('h-frase').textContent=fr.join('  ');
+ actualizarFraseFinal();}
 function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};
  const alTxt=aliento||'';
  if(s.imgFull){
