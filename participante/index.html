@@ -119,6 +119,36 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .game-right{display:flex;align-items:center;gap:8px;flex:none}
 .game-chip{font-size:10px;font-weight:700;letter-spacing:.05em;padding:5px 10px;border-radius:999px;background:var(--tinta);color:#fff;white-space:nowrap}
 .game-chev{width:18px;height:18px;color:var(--texto3)}
+/* ===== SORTEO ===== */
+.sorteo-hero{background:linear-gradient(140deg,var(--tinta),var(--purpura));border-radius:24px;padding:24px 20px;color:#fff;text-align:center;box-shadow:0 14px 32px rgba(122,16,52,.35);margin-bottom:16px;position:relative;overflow:hidden}
+.sorteo-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,168,75,.25),transparent 60%);pointer-events:none}
+.sorteo-hero .eyebrow{font-size:10px;letter-spacing:.32em;color:rgba(255,255,255,.8);text-transform:uppercase;font-weight:600}
+.sorteo-hero h2{color:#fff;font-size:22px;letter-spacing:-.01em;margin:6px 0 4px}
+.sorteo-hero .sub{font-size:13px;color:rgba(255,255,255,.85);font-family:'Cormorant Garamond',serif;font-style:italic}
+.sorteo-cuenta{margin-top:14px;font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,.8);text-transform:uppercase;font-weight:600}
+.sorteo-num{font-size:32px;font-weight:700;letter-spacing:-.01em;margin-top:4px;color:#fff}
+.sorteo-num.live{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.reglas-card{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);padding:20px;margin-bottom:16px;box-shadow:var(--sombra)}
+.reglas-card h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);font-weight:600;margin-bottom:10px}
+.reglas-card p{font-size:14px;line-height:1.6;color:var(--texto)}
+.premios-lista{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.premio-item{display:flex;gap:12px;align-items:center;padding:12px 14px;background:var(--card2);border:1px solid var(--linea);border-radius:14px}
+.premio-num{flex:none;width:32px;height:32px;border-radius:50%;background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;box-shadow:0 4px 10px rgba(169,123,18,.35)}
+.premio-txt{flex:1;font-size:14px;font-weight:500}
+.ganadores-lista{display:flex;flex-direction:column;gap:10px}
+.ganador-item{display:flex;gap:12px;align-items:center;padding:14px;background:var(--card);border:1px solid rgba(212,168,75,.35);border-radius:16px;box-shadow:var(--sombra);opacity:0;transform:translateY(10px);animation:ganadorIn .6s ease forwards}
+.ganador-item.oro{background:linear-gradient(140deg,#fdf1d1,#f7e0a8);border-color:rgba(169,123,18,.4);box-shadow:0 10px 24px rgba(169,123,18,.25)}
+@keyframes ganadorIn{to{opacity:1;transform:none}}
+.ganador-puesto{flex:none;width:44px;height:44px;border-radius:50%;background:var(--card2);border:1.5px solid var(--linea2);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--tinta)}
+.ganador-item.oro .ganador-puesto{background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;border:none;box-shadow:0 4px 12px rgba(169,123,18,.4)}
+.ganador-info{flex:1;min-width:0}
+.ganador-info .puesto{font-size:10px;letter-spacing:.14em;color:var(--texto2);text-transform:uppercase;font-weight:600}
+.ganador-info .nombre{font-size:15px;font-weight:600;margin-top:2px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ganador-item.oro .ganador-info .puesto{color:#7a5610}
+.sorteo-esperando{text-align:center;padding:30px 20px;color:var(--texto2);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;line-height:1.5}
+.sorteo-esperando .orn-mini{color:var(--oro);font-size:18px;margin-bottom:8px}
+/* ===== /SORTEO ===== */
 .perfil-hero{display:flex;gap:16px;align-items:center}
 .perfil-hero .ava{width:68px;height:68px;border-radius:50%;background:linear-gradient(140deg,var(--tinta),var(--purpura));color:#fff;display:grid;place-items:center;font-size:24px;font-weight:700;overflow:hidden;flex:none;box-shadow:0 6px 18px rgba(122,16,52,.3)}
 .ava img{width:100%;height:100%;object-fit:cover;display:block}
@@ -282,6 +312,37 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <p class="mistica" style="text-align:center;margin:6px 0 16px">Toca para jugar · puedes repetir los completados.</p>
   <div id="juegos-lista"></div></section>
 
+<!-- ===== PANTALLA SORTEO ===== -->
+<section class="pantalla" id="p-sorteo">
+  <div class="sorteo-hero">
+    <div class="eyebrow">El cáliz del destino</div>
+    <h2 id="so-titulo">Sorteo final</h2>
+    <div class="sub" id="so-sub">Cinco elegidos · cinco premios</div>
+    <div class="sorteo-cuenta" id="so-cuenta-label">El sorteo comienza en</div>
+    <div class="sorteo-num" id="so-cuenta">—</div>
+  </div>
+  <div class="reglas-card">
+    <h3>Reglas del sorteo</h3>
+    <p id="so-reglas">El Oráculo aún no ha revelado las reglas.</p>
+  </div>
+  <div class="reglas-card">
+    <h3>🏆 Los cinco premios</h3>
+    <div class="premios-lista" id="so-premios"></div>
+  </div>
+  <div class="reglas-card">
+    <h3>Ganadores</h3>
+    <div id="so-ganadores-wrap">
+      <div class="sorteo-esperando">
+        <div class="orn-mini">⚜</div>
+        El Oráculo aún no ha elegido a los cinco dignos.<br>
+        <span style="font-size:13px">Completa los 7 sellos para entrar al cáliz.</span>
+      </div>
+    </div>
+  </div>
+  <button class="btn" onclick="ver('p-juegos')">Volver al salón</button>
+</section>
+<!-- ===== /PANTALLA SORTEO ===== -->
+
 <section class="pantalla" id="p-voto">
   <h2 style="font-size:22px;text-align:center">Tu ranking de bodegas</h2>
   <p class="mistica" style="text-align:center;margin:6px 0 14px">Vota por varias bodegas y ordénalas de tu favorita a la menos.</p>
@@ -405,6 +466,7 @@ let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},FRASES={},QUIZ=n
 let quizIdx=0,quizResp={};
 let vistos=JSON.parse(localStorage.getItem('sv-avisos')||'null'),avisosCache=[],notificados=new Set();
 let chatHist=JSON.parse(localStorage.getItem('sv-chat')||'[]');
+let SORTEO_LIVE=null;
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const NOMBRES={1:'SOL',2:'LUNA',3:'MERCURIO',4:'VENUS',5:'MARTE',6:'JÚPITER',7:'SATURNO'};
 const TITULOS={'Malbec':'Guardián del Malbec','Cabernet':'Caballero del Cabernet','Torrontés':'Alma de Torrontés','Blend':'Alquimista del Blend'};
@@ -414,7 +476,8 @@ const botName=()=>PERFIL.nombreOraculo||'El Oráculo';
 const ORACULO_SVG='<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5c0c26"/><path d="M50 14 L86 82 H14 Z" fill="none" stroke="#f3d27a" stroke-width="4"/><path d="M32 62 C40 52 60 52 68 62 C60 70 40 70 32 62 Z" fill="none" stroke="#f3d27a" stroke-width="3"/><circle cx="50" cy="61" r="5" fill="#f3d27a"/></svg>';
 const GAME_ICON={
  quiz:'<path d="M7 3h10c0 6-3 9-5 9s-5-3-5-9z"/><path d="M12 12v5"/><path d="M9 20h6"/>',
- ranking:'<path d="M6 20v-6"/><path d="M12 20V6"/><path d="M18 20v-10"/><path d="M4 20h16"/>'};
+ ranking:'<path d="M6 20v-6"/><path d="M12 20V6"/><path d="M18 20v-10"/><path d="M4 20h16"/>',
+ sorteo:'<path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 3"/><path d="M17 6h3a3 3 0 0 1-3 3"/>'};
 const GAME_GRAD=['linear-gradient(140deg,var(--tinta),var(--purpura))','linear-gradient(140deg,var(--purpura),#9b4dca)','linear-gradient(140deg,var(--oro),#a97b12)'];
 window.ver=id=>{document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));$(id).classList.add('activa');};
 window.irScan=()=>navegar('p-scan',null);
@@ -428,10 +491,14 @@ function reportarSesion(){ const st=parseInt(localStorage.getItem('sv-sesion-sta
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'){reportarSesion();} else {localStorage.setItem('sv-sesion-start',String(Date.now()));} });
 window.addEventListener('pagehide',reportarSesion);
 function setFunnel(key){ if(!yo)return; const o={}; o['funnel.'+key]=new Date().toISOString(); updateDoc(doc(db,'participantes',yo),o).catch(()=>{}); }
-const JUEGOS_META=[{key:'ranking',t:'Tabla de Buscadores',s:'Ranking en vivo de la búsqueda'},{key:'quiz',t:'Arcano Enológico',s:'4 preguntas · descubre tu perfil'}];
+const JUEGOS_META=[
+  {key:'ranking',t:'Tabla de Buscadores',s:'Ranking en vivo de la búsqueda'},
+  {key:'quiz',t:'Arcano Enológico',s:'4 preguntas · descubre tu perfil'},
+  {key:'sorteo',t:'Sorteo final',s:'Reglas, premios y ganadores en vivo'}
+];
 const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado};
 function pintarJuegos(){const c=$('juegos-lista');c.innerHTML='';
- JUEGOS_META.forEach((m,i)=>{ if(!JUEGOS[m.key])return;
+ JUEGOS_META.forEach((m,i)=>{ if(JUEGOS[m.key]===false)return;
   const done=DONE[m.key]&&DONE[m.key]();
   const d=document.createElement('button');d.type='button';d.className='game-card';
   d.innerHTML='<span class="game-icon" style="background:'+GAME_GRAD[i%GAME_GRAD.length]+'"><svg viewBox="0 0 24 24">'+(GAME_ICON[m.key]||'')+'</svg></span>'+
@@ -440,7 +507,11 @@ function pintarJuegos(){const c=$('juegos-lista');c.innerHTML='';
   d.onclick=()=>abrirJuego(m.key);
   c.appendChild(d); });
  if(!c.children.length)c.innerHTML='<p class="mistica" style="text-align:center">El Oráculo aún no abrió los juegos.</p>';}
-function abrirJuego(k){if(k==='quiz')return abrirQuiz();if(k==='ranking')return ver('p-ranking');}
+function abrirJuego(k){
+  if(k==='quiz')return abrirQuiz();
+  if(k==='ranking')return ver('p-ranking');
+  if(k==='sorteo')return abrirSorteo();
+}
 function actualizarVotoNav(){const oculto=(JUEGOS.voto===false);const b=$('nav-voto');if(b)b.style.display=oculto?'none':'';
  if(oculto&&$('p-voto').classList.contains('activa'))navegar('p-home',document.querySelector('[data-p="p-home"]'));
  const fc=$('frase-caja');if(fc)fc.style.display=(JUEGOS.frase===false)?'none':'';}
@@ -528,7 +599,7 @@ function marcarVistos(){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv
  actualizarBadge();pintarAvisos();}
 function actualizarBadge(){const n=vistos?avisosCache.filter(a=>!vistos.includes(a.id)).length:0;$('badge').textContent=n;$('badge').classList.toggle('oculto',n===0);}
 function escucharTodo(){
- onSnapshot(doc(db,'participantes',yo),s=>{if(s.exists()){parte=s.data();pintarHome();pintarPerfil();pintarJuegos();pintarPrograma();pintarVoto();pintarAvatarGrid();checkDefaultAvatar();}});
+ onSnapshot(doc(db,'participantes',yo),s=>{if(s.exists()){parte=s.data();pintarHome();pintarPerfil();pintarJuegos();pintarPrograma();pintarVoto();pintarAvatarGrid();checkDefaultAvatar();pintarSorteo();}});
  onSnapshot(collection(db,'simbolos'),s=>{s.forEach(d=>simbolos[d.id]={...d.data(),id:d.id});pintarHome();});
  onSnapshot(collection(db,'programa'),s=>{programa=[];s.forEach(d=>programa.push({id:d.id,...d.data()}));programa.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarPrograma();});
  onSnapshot(collection(db,'participantes'),s=>{RANK=[];s.forEach(d=>RANK.push({id:d.id,...d.data()}));pintarRanking();});
@@ -542,6 +613,11 @@ function escucharTodo(){
   if(PERFIL.chatReset&&lr!==PERFIL.chatReset){localStorage.setItem('sv-chat-reset',PERFIL.chatReset);chatHist=[];localStorage.setItem('sv-chat','[]');renderHist();toast('🜂 El Oráculo renovó sus memorias','');}
   pintarPerfil();});
  onSnapshot(collection(db,'anuncios'),s=>{avisosCache=[];s.forEach(d=>avisosCache.push({id:d.id,...d.data()}));avisosCache.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));if(vistos===null){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));}const nv=avisosCache.filter(a=>!vistos.includes(a.id)&&!notificados.has(a.id));nv.forEach(a=>{notificados.add(a.id);toast('⚜ '+botName().toUpperCase()+' · '+(a.titulo||''),a.mensaje||'');});if(nv.length)chime();actualizarBadge();pintarAvisos();});
+ // ===== SORTEO EN VIVO =====
+ onSnapshot(doc(db,'config','sorteoLive'),s=>{
+   SORTEO_LIVE=s.exists()?s.data():null;
+   pintarSorteo();
+ },e=>console.warn('sorteoLive',e));
  escucharFAQ();escucharQuiz();
 }
 function actualizarFraseFinal(){const ff=$('frase-final-caja');if(!ff)return;
@@ -595,12 +671,93 @@ function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};
  }}
 window.cerrarRevelacion=()=>{
  $('revelacion').classList.remove('activa');
- // Volver automáticamente a la pantalla principal (Sellos)
  const homeBtn=document.querySelector('[data-p="p-home"]');
  navegar('p-home',homeBtn);
- // Si corresponde, mostrar el NPS encima
  if(localStorage.getItem('sv-nps-pending')==='1' && parte && parte.nps==null) mostrarNps();
 };
+// ===== SORTEO =====
+function abrirSorteo(){ver('p-sorteo');pintarSorteo();}
+function pintarSorteo(){
+ const S=SORTEO_LIVE||{};
+ const premios=S.premios||[];
+ const reglas=S.reglas||'';
+ const ganadores=S.ganadores||[];
+ const estado=S.estado||'esperando';
+ // Título y subtítulo
+ if(S.titulo)$('so-titulo').textContent=S.titulo;
+ if(S.subtitulo)$('so-sub').textContent=S.subtitulo;
+ // Reglas
+ $('so-reglas').textContent=reglas||'El Oráculo aún no ha revelado las reglas.';
+ // Premios
+ const pl=$('so-premios');
+ if(premios.length){
+   pl.innerHTML=premios.map((p,i)=>'<div class="premio-item"><div class="premio-num">'+(i+1)+'°</div><div class="premio-txt">'+esc(p||'Premio '+(i+1))+'</div></div>').join('');
+ } else {
+   pl.innerHTML='<p class="mistica" style="font-size:13px">Los premios aún no fueron revelados.</p>';
+ }
+ // Cuenta regresiva / en vivo
+ const label=$('so-cuenta-label');
+ const num=$('so-cuenta');
+ const hora=S.horaInicio?new Date(S.horaInicio):null;
+ if(estado==='finalizado' && ganadores.length){
+   label.textContent='El cáliz ha hablado';
+   num.textContent='🏆';
+   num.classList.remove('live');
+ } else if(hora){
+   const ahora=new Date();
+   const falta=hora-ahora;
+   if(falta>0){
+     label.textContent='El sorteo comienza en';
+     const s=Math.floor(falta/1000);
+     num.textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s';
+     num.classList.remove('live');
+   } else {
+     label.textContent='El sorteo está en curso';
+     num.textContent='En vivo…';
+     num.classList.add('live');
+   }
+ } else {
+   label.textContent='Próximamente';
+   num.textContent='—';
+   num.classList.remove('live');
+ }
+ // Ganadores
+ const wrap=$('so-ganadores-wrap');
+ if(ganadores.length){
+   const puestoTxt=['1° Lugar','2° Lugar','3° Lugar','4° Lugar','5° Lugar'];
+   wrap.innerHTML='<div class="ganadores-lista">'+ganadores.slice(0,5).map((g,i)=>{
+     const nombre=(g&&g.nombre)||'';
+     const esOro=i===0;
+     return '<div class="ganador-item'+(esOro?' oro':'')+'" style="animation-delay:'+(i*0.35)+'s"><div class="ganador-puesto">'+(i+1)+'°</div><div class="ganador-info"><div class="puesto">'+puestoTxt[i]+'</div><div class="nombre">'+esc(nombre)+'</div></div></div>';
+   }).join('')+'</div>';
+ } else if(estado==='finalizado'){
+   wrap.innerHTML='<p class="mistica" style="text-align:center">El sorteo terminó pero aún no hay ganadores cargados.</p>';
+ } else {
+   wrap.innerHTML='<div class="sorteo-esperando"><div class="orn-mini">⚜</div>El Oráculo aún no ha elegido a los cinco dignos.<br><span style="font-size:13px">Completa los 7 sellos para entrar al cáliz.</span></div>';
+ }
+}
+// Actualización en vivo de la cuenta regresiva cada segundo
+setInterval(()=>{
+ if(!$('p-sorteo').classList.contains('activa'))return;
+ const S=SORTEO_LIVE||{};
+ if(S.estado==='finalizado' && (S.ganadores||[]).length)return;
+ const hora=S.horaInicio?new Date(S.horaInicio):null;
+ if(!hora)return;
+ const falta=hora-new Date();
+ const num=$('so-cuenta');
+ const label=$('so-cuenta-label');
+ if(falta>0){
+   label.textContent='El sorteo comienza en';
+   const s=Math.floor(falta/1000);
+   num.textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s';
+   num.classList.remove('live');
+ } else {
+   label.textContent='El sorteo está en curso';
+   num.textContent='En vivo…';
+   num.classList.add('live');
+ }
+},1000);
+// ===== /SORTEO =====
 function pintarPrograma(){const likes=(parte&&parte.likes)||[];const asis=(parte&&parte.asistencias)||[];
  $('prog-lista').innerHTML=programa.map(a=>{const n=a.likes||0,my=likes.includes(a.id);const fue=asis.includes(a.id);
  return '<div class="item" onclick="darLike(\''+a.id+'\')"><div class="det"><b>'+fmtF(a.fecha)+' · '+esc(a.hora)+' · '+esc(a.tema)+(fue?' <span style="color:var(--verde)">✓ asistencia</span>':'')+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div><div class="likebox"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
