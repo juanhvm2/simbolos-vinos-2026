@@ -244,9 +244,9 @@ tr:last-child td{border-bottom:none}
  <div class="card">
   <h3>0 · Banner del sorteo (1200×400)</h3>
   <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Esta imagen se muestra en la parte superior de la pantalla Sorteo en las apps de los participantes. Si no subís ninguna, se ve el diseño por defecto con gradiente.</p>
-  <input type="file" accept="image/*" id="slv-banner-input" onchange="cargarBannerSorteo(this)">
-  <img id="slv-banner-prev" class="banner-prev" style="display:none">
-  <div class="banner-actions" id="slv-banner-actions" style="display:none">
+  <input type="file" accept="image/*" id="slv-banner-input2" onchange="cargarBannerSorteo(this)">
+  <img id="slv-banner-prev2" class="banner-prev" style="display:none">
+  <div class="banner-actions" id="slv-banner-actions2" style="display:none">
    <button class="btn mini peligro" onclick="quitarBannerSorteo()">🗑 Quitar banner</button>
   </div>
  </div>
@@ -375,7 +375,7 @@ function escuchar(){
   renderBannerPrev();
   pintarSorteoLive();
  },e=>console.warn('sorteoLive',e));
- if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>{window.ADM[d.id]=d.data());});pintarAdmins();},e=>console.warn('admins',e));
+ if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>{window.ADM[d.id]=d.data();});pintarAdmins();},e=>console.warn('admins',e));
 }
 function pintarMetricas(){
  const P=Object.values(PART);const f1=P.length;
@@ -557,7 +557,6 @@ window.guardarPerfil=async()=>{const dv=parseFloat($('pf-chatdelay').value);cons
  await setDoc(doc(db,'config','perfil'),{nombreOraculo:$('pf-nombre').value.trim()||'El Oráculo',tituloApp:$('pf-titulo').value.trim(),subApp:$('pf-sub').value.trim(),avatarOraculo:$('pf-url-oraculo').value.trim(),avatarUsuario:$('pf-url-usuario').value.trim(),chatDelay:delay},{merge:true});toast('✓ Perfil guardado (chat: '+delay+'s)');};
 window.guardarFrases=async()=>{const lines=$('fr-aliento').value.split('\n').map(x=>x.trim()).filter(Boolean);
  await setDoc(doc(db,'config','frases'),{aliento:lines,final:$('fr-final').value.trim()},{merge:true});toast('✓ Frases guardadas');};
-// ===== SORTEO EN VIVO + BANNER =====
 function renderSorteoLiveForm(){
  const S=SORTEO_LIVE||{};
  $('slv-titulo').value=S.titulo||'Sorteo final';
@@ -574,7 +573,7 @@ function renderSorteoLiveForm(){
  renderBannerPrev();
 }
 function renderBannerPrev(){
- const prev=$('slv-banner-prev');const acts=$('slv-banner-actions');const inp=$('slv-banner-input');
+ const prev=$('slv-banner-prev2');const acts=$('slv-banner-actions2');const inp=$('slv-banner-input2');
  const url=(sorteoBannerPend!==null)?sorteoBannerPend:(SORTEO_LIVE&&SORTEO_LIVE.banner?SORTEO_LIVE.banner:null);
  if(url){prev.src=url;prev.style.display='block';acts.style.display='flex';}
  else{prev.removeAttribute('src');prev.style.display='none';acts.style.display='none';}
@@ -598,8 +597,8 @@ function pintarSorteoLive(){
  const pv=$('slv-preview');
  pv.innerHTML='<div style="font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:6px">Los participantes ven ahora</div><div style="font-size:15px;font-weight:600">'+esc(S.titulo||'Sorteo final')+' · '+esc(S.subtitulo||'')+'</div><div style="margin-top:6px;font-size:12px;opacity:.85">'+(S.banner?'📷 Banner visible':'Sin banner (diseño por defecto)')+' · '+(ganadores.filter(g=>g&&g.revelado!==false).length?ganadores.filter(g=>g&&g.revelado!==false).length+' ganador(es) visibles':'Aún no hay ganadores revelados')+'</div>';
  const btnI=$('slv-iniciar'),btnE=$('slv-ejecutar'),btnR=$('slv-reiniciar');
- btnI.disabled=(estado!=='esperando');btnI.style.opacity=btnI.disabled?.5:1;
- btnE.disabled=(estado!=='en_vivo');btnE.style.opacity=btnE.disabled?.5:1;
+ btnI.disabled=(estado!=='esperando');btnI.style.opacity=btnI.disabled?0.5:1;
+ btnE.disabled=(estado!=='en_vivo');btnE.style.opacity=btnE.disabled?0.5:1;
  btnR.disabled=false;
  const cont=$('slv-ganadores');
  if(!ganadores.length){
@@ -614,7 +613,7 @@ function pintarSorteoLive(){
  }).join('');
 }
 window.guardarSorteoLive=async()=>{
- const premios=[];for(let i=0;i<5;i++){premios.push(($('slv-p'+i).value||'').trim());}
+ const premios=[];for(let i=0;i<5;i++){premios.push($('slv-p'+i).value.trim());}
  const hora=$('slv-hora').value?new Date($('slv-hora').value).toISOString():null;
  const cur=SORTEO_LIVE||{};
  const data={
@@ -679,7 +678,6 @@ window.reiniciarSorteoLive=async()=>{
  renderSorteoLiveForm();
  toast('↻ Sorteo reiniciado');
 };
-// ===== /SORTEO EN VIVO =====
 function pintarHistSorteo(){$('hist-sorteo').innerHTML=(window.SORT||[]).length?(window.SORT||[]).map(s=>'<div class="card" style="margin-bottom:10px"><b>Sorteo · '+new Date(s.fecha).toLocaleString()+' · '+((s.ganadores||[]).length)+' ganador(es)</b>'+(s.ganadores||[]).map((g,i)=>'<div style="color:var(--verde);margin-top:6px;font-size:13px">'+(i+1)+'° 🏆 '+esc(g.nombre)+'</div>').join('')+'</div>').join(''):'<div class="vacio">Sin sorteos anteriores</div>';}
 window.crearAdmin=async()=>{$('eq-err').textContent='';const n=$('eq-nombre').value.trim();const e=$('eq-email').value.trim();const c=$('eq-clave').value;const r=$('eq-rol').value;
  if(!n||!e||c.length<6){$('eq-err').textContent='Completa todo y clave mín 6';return;}
