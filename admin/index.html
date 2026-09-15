@@ -89,6 +89,26 @@ tr:last-child td{border-bottom:none}
 .av-thumb{position:relative;display:inline-block}
 .av-thumb img{width:76px;height:76px;border-radius:16px;object-fit:cover;display:block;border:1px solid var(--linea2)}
 .av-thumb button{position:absolute;top:-8px;right:-8px;padding:2px 8px;border-radius:50%}
+/* SORTEO EN VIVO */
+.slv-status{display:inline-block;padding:6px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+.slv-status.esperando{background:rgba(255,214,10,.15);color:var(--oro);border:1px solid rgba(255,214,10,.3)}
+.slv-status.en_vivo{background:rgba(255,69,58,.15);color:var(--rojo);border:1px solid rgba(255,69,58,.3);animation:pulse 1.5s ease-in-out infinite}
+.slv-status.finalizado{background:rgba(48,209,88,.15);color:var(--verde);border:1px solid rgba(48,209,88,.3)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.slv-premio-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.slv-premio-num{flex:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700;box-shadow:0 4px 10px rgba(169,123,18,.35)}
+.slv-premio-input{flex:1;margin:0}
+.slv-ganador{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--linea);border-radius:12px;margin-bottom:8px;background:var(--card2);opacity:.4}
+.slv-ganador.revelado{opacity:1;background:linear-gradient(140deg,rgba(255,214,10,.1),rgba(122,16,52,.1));border-color:rgba(255,214,10,.3);animation:ap .6s}
+.slv-ganador.oro.revelado{background:linear-gradient(140deg,rgba(255,214,10,.2),rgba(255,140,0,.15));border-color:var(--oro);box-shadow:0 8px 24px rgba(255,214,10,.2)}
+.slv-puesto{flex:none;width:44px;height:44px;border-radius:50%;background:var(--card);border:1.5px solid var(--linea2);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--texto2)}
+.slv-ganador.oro.revelado .slv-puesto{background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;border:none;box-shadow:0 4px 12px rgba(255,214,10,.4)}
+.slv-info{flex:1;min-width:0}
+.slv-info .pos{font-size:10px;letter-spacing:.12em;color:var(--texto2);text-transform:uppercase;font-weight:600}
+.slv-info .nm{font-size:15px;font-weight:600;margin-top:2px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slv-preview{padding:16px;border-radius:12px;background:linear-gradient(140deg,#7a1034,#6d1f6e);color:#fff;font-size:13px;margin-top:14px}
+.slv-preview .label{font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:6px}
+.slv-preview .val{font-size:15px;font-weight:600}
 @media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:28px}.titulo-sec{font-size:20px}}
 </style>
 </head>
@@ -204,10 +224,60 @@ tr:last-child td{border-bottom:none}
   <label>FRASE FINAL (7 sellos)</label><textarea id="fr-final"></textarea>
   <button class="btn solido" style="margin-top:10px" onclick="guardarFrases()">Guardar frases</button></div></section>
 
-<section class="sec" id="sec-sorteo"><h2 class="titulo-sec">Sorteo final</h2>
- <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap"><div style="width:180px"><label>GANADORES</label><input id="so-n" type="number" min="1" value="3"></div>
- <button class="btn solido" onclick="sortear()">Ejecutar sorteo (notifica a todos)</button></div>
- <div id="res-sorteo"></div><div id="hist-sorteo" style="margin-top:20px"></div></section>
+<!-- ===== SORTEO EN VIVO ===== -->
+<section class="sec" id="sec-sorteo">
+ <h2 class="titulo-sec">Sorteo en vivo</h2>
+ <p class="sub-sec">Configura el sorteo, ejecútalo frente a todos y revela los 5 ganadores en tiempo real en las apps de los participantes.</p>
+
+ <div class="card">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+   <h3 style="margin:0">Estado actual</h3>
+   <span class="slv-status" id="slv-status">—</span>
+  </div>
+  <div id="slv-stats" style="font-size:13px;color:var(--texto2)"></div>
+ </div>
+
+ <div class="card">
+  <h3>1 · Configuración general</h3>
+  <div class="form-grid" style="margin-bottom:10px">
+   <div><label>TÍTULO DEL SORTEO</label><input id="slv-titulo" placeholder="Sorteo final"></div>
+   <div><label>SUBTÍTULO</label><input id="slv-sub" placeholder="Cinco elegidos · cinco premios"></div>
+  </div>
+  <label>REGLAS DEL SORTEO (texto visible para participantes)</label>
+  <textarea id="slv-reglas" style="min-height:100px" placeholder="Solo participan quienes completaron los 7 sellos antes del cierre. El sorteo es al azar entre todos los aptos."></textarea>
+  <label>HORA DE INICIO (cuenta regresiva visible en las apps)</label>
+  <input id="slv-hora" type="datetime-local">
+ </div>
+
+ <div class="card">
+  <h3>2 · Los 5 premios</h3>
+  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Describe cada premio y cómo se retira. Los participantes verán la lista completa antes del sorteo.</p>
+  <div id="slv-premios"></div>
+ </div>
+
+ <div class="card" id="slv-ctrl-card">
+  <h3>3 · Control del sorteo</h3>
+  <p style="font-size:13px;color:var(--texto2);margin-bottom:14px">Guarda la configuración primero. Después podés iniciar el sorteo (activa la cuenta regresiva en las apps) y ejecutarlo (sortea y revela los ganadores uno a uno cada 3 segundos).</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+   <button class="btn solido" onclick="guardarSorteoLive()">💾 Guardar configuración</button>
+   <button class="btn solido" id="slv-iniciar" onclick="iniciarSorteoLive()" style="background:var(--oro);border-color:var(--oro);color:#1d1a17">▶ Iniciar sorteo</button>
+   <button class="btn solido" id="slv-ejecutar" onclick="ejecutarSorteoLive()" style="background:var(--verde);border-color:var(--verde);color:#fff">🏆 Ejecutar sorteo</button>
+   <button class="btn peligro" id="slv-reiniciar" onclick="reiniciarSorteoLive()">↻ Reiniciar a 0</button>
+  </div>
+  <div class="slv-preview" id="slv-preview"></div>
+ </div>
+
+ <div class="card">
+  <h3>4 · Ganadores revelados (en vivo)</h3>
+  <div id="slv-ganadores"></div>
+ </div>
+
+ <div class="card">
+  <h3>Historial de sorteos anteriores</h3>
+  <div id="hist-sorteo"></div>
+ </div>
+</section>
+<!-- ===== /SORTEO EN VIVO ===== -->
 
 <section class="sec" id="sec-equipo"><h2 class="titulo-sec">Equipo · contraseñas</h2>
  <div class="form-grid" style="margin-bottom:8px"><div><label>NOMBRE</label><input id="eq-nombre"></div><div><label>CORREO</label><input id="eq-email"></div><div><label>CLAVE TEMPORAL</label><input id="eq-clave" type="text"></div>
@@ -250,6 +320,7 @@ const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué u
 const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['voto','Sección VOTAR visible'],['frase','Frase oculta visible']];
 let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],AVATARES=[],SIMB={},CHATLOGS=[];
 window.ANUN=[];
+let SORTEO_LIVE=null,sorteoLiveLoaded=false,sorteoInterval=null;
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],metricas:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],avatares:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
 const TABS=[['torre','Dashboard'],['metricas','Métricas'],['juegos','Juegos'],['sellos','Sellos'],['avatares','Avatares'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
@@ -275,7 +346,7 @@ function escuchar(){
   $('m-likes').textContent=P.reduce((a,p)=>a+((p.likes||[]).length),0);
   const dist=[0,0,0,0,0,0,0,0];P.forEach(p=>{dist[(p.simbolos||[]).length]++;});
   barChart($('ch-sellos'),dist.map((v,i)=>[(i===7?'7 sellos':i+' sellos'),v]));
-  pintarTabla();pintarCirculo();pintarVotoAdmin();pintarQuizRes();pintarStats();pintarRankAdmin();pintarMetricas();},e=>console.warn('participantes',e));
+  pintarTabla();pintarCirculo();pintarVotoAdmin();pintarQuizRes();pintarStats();pintarRankAdmin();pintarMetricas();pintarSorteoLive();},e=>console.warn('participantes',e));
  onSnapshot(collection(db,'simbolos'),s=>{SIMB={};s.forEach(d=>{SIMB[d.id]=d.data();});pintarSellos();pintarMetricas();},e=>console.warn('simbolos',e));
  onSnapshot(collection(db,'chatLogs'),s=>{CHATLOGS=[];s.forEach(d=>CHATLOGS.push(d.data()));pintarMetricas();},e=>console.warn('chatLogs',e));
  onSnapshot(doc(db,'config','avatares'),s=>{const d=s.exists()?s.data():{};AVATARES=d.items||[];pintarAvatares();},e=>console.warn('avatares',e));
@@ -288,6 +359,12 @@ function escuchar(){
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};if(!juegosLoaded){juegosLoaded=true;renderToggles();}syncToggles();},e=>console.warn('juegos',e));
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};if(juegosLoaded)fillExtra();},e=>console.warn('extra',e));
  onSnapshot(collection(db,'sorteos'),s=>{window.SORT=[];s.forEach(d=>{window.SORT.push(Object.assign({id:d.id},d.data()));});pintarHistSorteo();},e=>console.warn('sorteos',e));
+ // ===== SORTEO EN VIVO =====
+ onSnapshot(doc(db,'config','sorteoLive'),s=>{
+  SORTEO_LIVE=s.exists()?s.data():null;
+  if(!sorteoLiveLoaded){sorteoLiveLoaded=true;renderSorteoLiveForm();}
+  pintarSorteoLive();
+ },e=>console.warn('sorteoLive',e));
  if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>{window.ADM[d.id]=d.data();});pintarAdmins();},e=>console.warn('admins',e));
 }
 function pintarMetricas(){
@@ -457,13 +534,134 @@ window.guardarPerfil=async()=>{const dv=parseFloat($('pf-chatdelay').value);cons
  await setDoc(doc(db,'config','perfil'),{nombreOraculo:$('pf-nombre').value.trim()||'El Oráculo',tituloApp:$('pf-titulo').value.trim(),subApp:$('pf-sub').value.trim(),avatarOraculo:$('pf-url-oraculo').value.trim(),avatarUsuario:$('pf-url-usuario').value.trim(),chatDelay:delay},{merge:true});toast('✓ Perfil guardado (chat: '+delay+'s)');};
 window.guardarFrases=async()=>{const lines=$('fr-aliento').value.split('\n').map(x=>x.trim()).filter(Boolean);
  await setDoc(doc(db,'config','frases'),{aliento:lines,final:$('fr-final').value.trim()},{merge:true});toast('✓ Frases guardadas');};
-window.sortear=async()=>{const aptos=Object.values(PART).filter(p=>p.estado==='apto');const n=parseInt($('so-n').value)||1;
- if(!aptos.length){toast('Sin aptos');return;} if(n>aptos.length){toast('Solo '+aptos.length);return;}
- const pool=aptos.slice();const g=[];for(let i=0;i<n;i++){g.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}
- await addDoc(collection(db,'sorteos'),{fecha:new Date().toISOString(),n:n,ganadores:g.map(x=>({nombre:x.nombre+' '+x.apellido,email:x.email,telefono:x.telefono}))});
- await addDoc(collection(db,'anuncios'),{titulo:'🏆 GANADORES DEL SORTEO',mensaje:g.map(x=>x.nombre+' '+x.apellido).join(' · '),fecha:new Date().toISOString()});
- toast('🏆 Sorteo ejecutado y notificado');};
-function pintarHistSorteo(){$('hist-sorteo').innerHTML=(window.SORT||[]).map(s=>'<div class="card"><b>Sorteo · '+new Date(s.fecha).toLocaleString()+'</b>'+(s.ganadores||[]).map(g=>'<div style="color:var(--verde);margin-top:6px">🏆 '+esc(g.nombre)+'</div>').join('')+'</div>').join('');}
+
+// ===== SORTEO EN VIVO =====
+function renderSorteoLiveForm(){
+ const S=SORTEO_LIVE||{};
+ $('slv-titulo').value=S.titulo||'Sorteo final';
+ $('slv-sub').value=S.subtitulo||'Cinco elegidos · cinco premios';
+ $('slv-reglas').value=S.reglas||'';
+ $('slv-hora').value=toLocal(S.horaInicio)||'';
+ const premios=S.premios||['','','','',''];
+ const cont=$('slv-premios');cont.innerHTML='';
+ for(let i=0;i<5;i++){
+  const row=document.createElement('div');row.className='slv-premio-row';
+  row.innerHTML='<div class="slv-premio-num">'+(i+1)+'°</div><input class="slv-premio-input" id="slv-p'+i+'" placeholder="Premio '+(i+1)+' · descripción y forma de retiro" value="'+esc(premios[i]||'')+'">';
+  cont.appendChild(row);
+ }
+}
+function pintarSorteoLive(){
+ const S=SORTEO_LIVE||{};
+ const estado=S.estado||'esperando';
+ const ganadores=S.ganadores||[];
+ const st=$('slv-status');
+ st.textContent=estado==='esperando'?'⏳ Esperando':estado==='en_vivo'?'🔴 En vivo':'✓ Finalizado';
+ st.className='slv-status '+estado;
+ const aptos=Object.values(PART).filter(p=>p.estado==='apto').length;
+ const stats=$('slv-stats');
+ stats.innerHTML='Participantes aptos: <b style="color:var(--verde)">'+aptos+'</b> · Ganadores revelados: <b style="color:var(--oro)">'+ganadores.length+'/5</b>';
+ // Vista previa
+ const pv=$('slv-preview');
+ pv.innerHTML='<div class="label">Los participantes ven ahora</div><div class="val">'+esc(S.titulo||'Sorteo final')+' · '+esc(S.subtitulo||'')+'</div>'
+  +'<div style="margin-top:6px;font-size:12px;opacity:.85">'+(ganadores.length?ganadores.length+' ganador(es) visibles':'Aún no hay ganadores revelados')+'</div>';
+ // Botones
+ const btnI=$('slv-iniciar'),btnE=$('slv-ejecutar'),btnR=$('slv-reiniciar');
+ btnI.disabled=(estado!=='esperando');btnI.style.opacity=btnI.disabled?.5:1;
+ btnE.disabled=(estado!=='en_vivo');btnE.style.opacity=btnE.disabled?.5:1;
+ btnR.disabled=false;
+ // Lista de ganadores
+ const cont=$('slv-ganadores');
+ if(!ganadores.length){
+  cont.innerHTML='<div class="vacio" style="padding:20px">Aún no hay ganadores. Ejecutá el sorteo para revelarlos uno a uno.</div>';
+  return;
+ }
+ const puestos=['1° Lugar','2° Lugar','3° Lugar','4° Lugar','5° Lugar'];
+ cont.innerHTML=ganadores.slice(0,5).map((g,i)=>{
+  const revelado=g.revelado!==false;
+  const oro=i===0;
+  return '<div class="slv-ganador'+(oro?' oro':'')+(revelado?' revelado':'')+'"><div class="slv-puesto">'+(i+1)+'°</div><div class="slv-info"><div class="pos">'+puestos[i]+'</div><div class="nm">'+(revelado?esc(g.nombre):'· · · por revelar · · ·')+'</div></div></div>';
+ }).join('');
+}
+window.guardarSorteoLive=async()=>{
+ const premios=[];for(let i=0;i<5;i++){premios.push(($('slv-p'+i).value||'').trim());}
+ const hora=$('slv-hora').value?new Date($('slv-hora').value).toISOString():null;
+ const cur=SORTEO_LIVE||{};
+ const data={
+  estado:cur.estado||'esperando',
+  titulo:$('slv-titulo').value.trim()||'Sorteo final',
+  subtitulo:$('slv-sub').value.trim(),
+  reglas:$('slv-reglas').value.trim(),
+  premios:premios,
+  horaInicio:hora,
+  ganadores:cur.ganadores||[],
+  fechaSorteo:cur.fechaSorteo||null
+ };
+ await setDoc(doc(db,'config','sorteoLive'),data,{merge:true});
+ toast('✓ Configuración guardada');
+};
+window.iniciarSorteoLive=async()=>{
+ const cur=SORTEO_LIVE||{};
+ if(cur.estado==='en_vivo'||cur.estado==='finalizado')return toast('El sorteo ya está en curso o terminó','Reinicia primero si querés empezar de cero.');
+ if(!$('slv-hora').value)return toast('Definí la hora de inicio primero','');
+ await guardarSorteoLive();
+ await updateDoc(doc(db,'config','sorteoLive'),{estado:'en_vivo'});
+ toast('🔴 Sorteo iniciado · los participantes ven la cuenta regresiva');
+};
+window.ejecutarSorteoLive=async()=>{
+ const cur=SORTEO_LIVE||{};
+ if(cur.estado!=='en_vivo')return toast('Primero iniciá el sorteo','');
+ const aptos=Object.values(PART).filter(p=>p.estado==='apto');
+ if(aptos.length<5)return toast('Se necesitan al menos 5 aptos','Hay '+aptos.length+' actualmente.');
+ if(!confirm('¿Ejecutar el sorteo ahora? Se elegirán 5 ganadores al azar y se revelarán uno a uno cada 3 segundos en las apps.'))return;
+ const pool=aptos.slice();const g=[];
+ for(let i=0;i<5;i++){g.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}
+ const ganadores=g.map((p,i)=>({
+  nombre:p.nombre+' '+(p.apellido||''),
+  email:p.email||'',
+  telefono:p.telefono||'',
+  revelado:false
+ }));
+ await updateDoc(doc(db,'config','sorteoLive'),{ganadores:ganadores,fechaSorteo:new Date().toISOString()});
+ toast('🏆 Sorteo ejecutado · revelando ganadores...');
+ // Revelado escalonado cada 3 segundos
+ let idx=0;
+ if(sorteoInterval)clearInterval(sorteoInterval);
+ sorteoInterval=setInterval(async()=>{
+  const current=SORTEO_LIVE||{};
+  const list=(current.ganadores||[]).slice();
+  if(idx>=list.length){
+   clearInterval(sorteoInterval);sorteoInterval=null;
+   await updateDoc(doc(db,'config','sorteoLive'),{estado:'finalizado'});
+   // Guardar también en historial y notificar
+   await addDoc(collection(db,'sorteos'),{fecha:new Date().toISOString(),n:5,ganadores:list.map(x=>({nombre:x.nombre,email:x.email,telefono:x.telefono}))});
+   await addDoc(collection(db,'anuncios'),{titulo:'🏆 GANADORES DEL SORTEO',mensaje:list.map(x=>x.nombre).join(' · '),fecha:new Date().toISOString()});
+   toast('✓ Sorteo finalizado y notificado');
+   return;
+  }
+  list[idx].revelado=true;
+  await updateDoc(doc(db,'config','sorteoLive'),{ganadores:list});
+  idx++;
+ },3000);
+};
+window.reiniciarSorteoLive=async()=>{
+ if(!confirm('¿Reiniciar el sorteo a 0? Se borrará la configuración actual y los ganadores. Podrás empezar uno nuevo.'))return;
+ await setDoc(doc(db,'config','sorteoLive'),{
+  estado:'esperando',
+  titulo:'Sorteo final',
+  subtitulo:'Cinco elegidos · cinco premios',
+  reglas:'',
+  premios:['','','','',''],
+  horaInicio:null,
+  ganadores:[],
+  fechaSorteo:null
+ },{merge:false});
+ if(sorteoInterval){clearInterval(sorteoInterval);sorteoInterval=null;}
+ renderSorteoLiveForm();
+ toast('↻ Sorteo reiniciado');
+};
+// ===== /SORTEO EN VIVO =====
+
+function pintarHistSorteo(){$('hist-sorteo').innerHTML=(window.SORT||[]).length?(window.SORT||[]).map(s=>'<div class="card" style="margin-bottom:10px"><b>Sorteo · '+new Date(s.fecha).toLocaleString()+' · '+((s.ganadores||[]).length)+' ganador(es)</b>'+(s.ganadores||[]).map((g,i)=>'<div style="color:var(--verde);margin-top:6px;font-size:13px">'+(i+1)+'° 🏆 '+esc(g.nombre)+'</div>').join('')+'</div>').join(''):'<div class="vacio">Sin sorteos anteriores</div>';}
 window.crearAdmin=async()=>{$('eq-err').textContent='';const n=$('eq-nombre').value.trim();const e=$('eq-email').value.trim();const c=$('eq-clave').value;const r=$('eq-rol').value;
  if(!n||!e||c.length<6){$('eq-err').textContent='Completa todo y clave mín 6';return;}
  try{const sec=initializeApp(CFG,'sec'+Date.now());const sa=getAuth(sec);const cr=await createUserWithEmailAndPassword(sa,e,c);await setDoc(doc(db,'admins',cr.user.uid),{nombre:n,email:e,rol:r,clave:c});await signOut(sa);$('eq-nombre').value='';$('eq-email').value='';$('eq-clave').value='';toast('✓ '+n+' creado');}catch(err){$('eq-err').textContent='Error: '+err.code;}};
@@ -481,7 +679,7 @@ window.rzPaso2=async()=>{const ops=[];const del=col=>getDocs(collection(db,col))
  if($('rz-corazones').checked)PROG.forEach(a=>ops.push({t:'u',ref:doc(db,'programa',a.id),d:{likes:0}}));
  if($('rz-chats').checked)await setDoc(doc(db,'config','perfil'),{chatReset:new Date().toISOString()},{merge:true});
  if($('rz-anun').checked)await del('anuncios');
- if($('rz-sort').checked)await del('sorteos');
+ if($('rz-sort').checked){await del('sorteos');await setDoc(doc(db,'config','sorteoLive'),{estado:'esperando',titulo:'Sorteo final',subtitulo:'',reglas:'',premios:['','','','',''],horaInicio:null,ganadores:[],fechaSorteo:null},{merge:false});}
  if($('rz-programa').checked)await del('programa');
  if($('rz-sellos').checked)await del('simbolos');
  for(let i=0;i<ops.length;i+=450){const b=writeBatch(db);ops.slice(i,i+450).forEach(o=>{if(o.t==='u')b.update(o.ref,o.d);else b.delete(o.ref);});await b.commit();}
