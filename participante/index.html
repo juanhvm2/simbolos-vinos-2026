@@ -32,7 +32,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .pantalla{display:none;min-height:100dvh;max-width:520px;margin:0 auto;padding:28px 22px 132px;padding-top:calc(28px + env(safe-area-inset-top))}
 .pantalla.activa{display:block;animation:ap .4s ease}
 @keyframes ap{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-/* Tipografía moderna y legible (reemplaza la serif antigua) */
 .mistica{color:var(--texto2)}
 .orn{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--oro);margin:18px 0}
 .orn::before,.orn::after{content:"";height:1px;width:56px;background:var(--linea2)}
@@ -103,10 +102,9 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .frase-final-caja::before{content:"";position:absolute;inset:9px;border:1px double rgba(122,16,52,.38);border-radius:calc(var(--radio) - 7px);pointer-events:none}
 .ff-orn{color:var(--oro);font-size:22px;margin-bottom:8px}
 .ff-label{font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--texto2);text-transform:uppercase;margin-bottom:12px}
-/* Frase final con tipografía moderna y legible */
 .ff-text{font-family:var(--sys);font-weight:600;font-size:20px;color:var(--tinta);line-height:1.5;letter-spacing:-.01em}
 .frase-caja{margin-top:18px;padding:22px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);background:var(--card);text-align:center;position:relative;box-shadow:var(--sombra)}
-.frase-caja::before{content:"⚜";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--fondo);padding:0 10px;color:var(--oro);font-size:16px}
+.frase-caja::before{content:"👁";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--fondo);padding:0 10px;color:var(--oro);font-size:16px}
 .frase-caja .frag{font-family:var(--sys);font-weight:600;font-size:16px;color:var(--tinta);letter-spacing:.02em;line-height:1.8}
 .frase-caja .pista{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--texto2);text-transform:uppercase}
 #juegos-lista{display:flex;flex-direction:column;gap:12px}
@@ -121,32 +119,30 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .game-right{display:flex;align-items:center;gap:8px;flex:none}
 .game-chip{font-size:10px;font-weight:700;letter-spacing:.05em;padding:5px 10px;border-radius:999px;background:var(--tinta);color:#fff;white-space:nowrap}
 .game-chev{width:18px;height:18px;color:var(--texto3)}
-/* ===== SORTEO ===== */
-.sorteo-hero{background:linear-gradient(140deg,var(--tinta),var(--purpura));border-radius:24px;padding:24px 20px;color:#fff;text-align:center;box-shadow:0 14px 32px rgba(122,16,52,.35);margin-bottom:16px;position:relative;overflow:hidden}
-.sorteo-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,168,75,.25),transparent 60%);pointer-events:none}
-.sorteo-hero .eyebrow{font-size:10px;letter-spacing:.32em;color:rgba(255,255,255,.8);text-transform:uppercase;font-weight:600}
-.sorteo-hero h2{color:#fff;font-size:22px;letter-spacing:-.01em;margin:6px 0 4px}
-.sorteo-hero .sub{font-size:13px;color:rgba(255,255,255,.85)}
-.sorteo-cuenta{margin-top:14px;font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,.8);text-transform:uppercase;font-weight:600}
-.sorteo-num{font-size:32px;font-weight:700;letter-spacing:-.01em;margin-top:4px;color:#fff}
-.sorteo-num.live{animation:pulse 1.4s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
-.reglas-card{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);padding:20px;margin-bottom:16px;box-shadow:var(--sombra)}
-.reglas-card h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);font-weight:600;margin-bottom:12px}
-.reglas-card p{font-size:14px;line-height:1.6;color:var(--texto)}
-.premios-lista{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.premio-item{display:flex;gap:12px;align-items:center;padding:14px;background:var(--card2);border:1px solid var(--linea);border-radius:14px}
-.premio-ico{flex:none;width:40px;height:40px;border-radius:12px;background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;display:grid;place-items:center;font-size:18px;box-shadow:0 4px 10px rgba(169,123,18,.35)}
-.premio-txt{flex:1;font-size:14px;font-weight:500;line-height:1.4}
-.ganadores-lista{display:flex;flex-direction:column;gap:10px}
-.ganador-item{display:flex;gap:12px;align-items:center;padding:14px;background:var(--card);border:1px solid rgba(212,168,75,.35);border-radius:16px;box-shadow:var(--sombra);opacity:0;transform:translateY(10px);animation:ganadorIn .6s ease forwards}
+/* ===== SORTEO (App Store) ===== */
+.so-banner{width:100%;aspect-ratio:3/1;border-radius:20px;overflow:hidden;box-shadow:var(--sombra);margin-bottom:14px;background:linear-gradient(140deg,var(--tinta),var(--purpura));display:grid;place-items:center;color:#fff;position:relative}
+.so-banner img{width:100%;height:100%;object-fit:cover;display:block}
+.so-banner-fallback{text-align:center;padding:16px}
+.so-timer{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:18px;padding:16px;text-align:center;box-shadow:var(--sombra);margin-bottom:14px}
+.so-timer-label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--texto2);font-weight:600}
+.so-timer-num{font-size:28px;font-weight:700;color:var(--tinta);margin-top:4px;letter-spacing:-.01em}
+.so-timer-num.live{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.so-card{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:18px;padding:18px;box-shadow:var(--sombra);margin-bottom:12px}
+.so-h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--texto2);font-weight:700;margin-bottom:10px}
+.so-reglas{font-size:14px;line-height:1.55;color:var(--texto)}
+.so-premios{display:flex;flex-direction:column;gap:8px}
+.so-premio{display:flex;gap:10px;align-items:center;padding:10px 12px;background:var(--card2);border:1px solid var(--linea);border-radius:12px}
+.so-premio-ico{width:34px;height:34px;flex:none;border-radius:10px;background:linear-gradient(140deg,var(--oro),#a97b12);display:grid;place-items:center;font-size:16px;color:#fff}
+.so-premio-txt{flex:1;font-size:14px;font-weight:500;line-height:1.35}
+.so-ganadores{display:flex;flex-direction:column;gap:8px}
+.so-ganador{display:flex;gap:10px;align-items:center;padding:12px;background:var(--card2);border:1px solid rgba(212,168,75,.35);border-radius:14px;opacity:0;transform:translateY(8px);animation:ganadorIn .5s ease forwards}
 @keyframes ganadorIn{to{opacity:1;transform:none}}
-.ganador-ico{flex:none;width:44px;height:44px;border-radius:50%;background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;display:grid;place-items:center;font-size:20px;box-shadow:0 4px 12px rgba(169,123,18,.4)}
-.ganador-info{flex:1;min-width:0}
-.ganador-info .etiqueta{font-size:10px;letter-spacing:.14em;color:var(--texto2);text-transform:uppercase;font-weight:600}
-.ganador-info .nombre{font-size:16px;font-weight:600;margin-top:2px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sorteo-esperando{text-align:center;padding:30px 20px;color:var(--texto2);font-size:16px;line-height:1.5}
-.sorteo-esperando .orn-mini{color:var(--oro);font-size:18px;margin-bottom:8px}
+.so-ganador-ico{width:38px;height:38px;flex:none;border-radius:50%;background:linear-gradient(140deg,var(--oro),#a97b12);display:grid;place-items:center;font-size:18px;color:#fff}
+.so-ganador-info{flex:1;min-width:0}
+.so-ganador-et{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--texto2);font-weight:700}
+.so-ganador-nm{font-size:15px;font-weight:600;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.so-esperando{text-align:center;padding:18px;color:var(--texto2);font-size:14px;line-height:1.5}
 /* ===== /SORTEO ===== */
 .perfil-hero{display:flex;gap:16px;align-items:center}
 .perfil-hero .ava{width:68px;height:68px;border-radius:50%;background:linear-gradient(140deg,var(--tinta),var(--purpura));color:#fff;display:grid;place-items:center;font-size:24px;font-weight:700;overflow:hidden;flex:none;box-shadow:0 6px 18px rgba(122,16,52,.3)}
@@ -162,7 +158,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .ava-opt:active{transform:scale(.94)}
 .ava-opt img{width:100%;height:100%;object-fit:cover;display:block}
 .ava-opt.sel{border-color:var(--tinta);box-shadow:0 6px 18px rgba(122,16,52,.3)}
-/* Icono de evento del programa */
 .prog-img{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none;box-shadow:var(--sombra2)}
 .nav{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;display:flex;gap:4px;background:rgba(253,251,247,.86);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(122,16,52,.08);border-radius:26px;box-shadow:0 12px 40px rgba(92,12,38,.18);padding:8px}
 .nav button{flex:1;padding:8px 2px 6px;background:none;border:none;cursor:pointer;color:var(--texto3);font-family:var(--sys);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:18px}
@@ -218,7 +213,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .rev-card{width:100%;max-width:400px;background:var(--card);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);animation:pop .45s cubic-bezier(.34,1.4,.64,1)}
 @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
 .rev-top{background:linear-gradient(150deg,var(--tinta),var(--purpura));padding:36px 24px 28px;text-align:center;position:relative}
-.rev-top::after{content:"⚜";position:absolute;top:14px;right:18px;color:rgba(255,255,255,.25);font-size:18px}
+.rev-top::after{content:"👁";position:absolute;top:14px;right:18px;color:rgba(255,255,255,.25);font-size:18px}
 .rev-medal{width:98px;height:98px;margin:0 auto 16px;border-radius:50%;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:46px;color:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.3)}
 .rev-medal img{width:70%;height:70%;object-fit:contain}
 .rev-eyebrow{font-size:10px;letter-spacing:.3em;color:rgba(255,255,255,.72);text-transform:uppercase;font-weight:600}
@@ -241,7 +236,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 </head>
 <body>
 <div class="textura"></div>
-<div class="carga" id="carga">⚜ ABRIENDO EL GRIMORIO ⚜</div>
+<div class="carga" id="carga">👁 ABRIENDO EL GRIMORIO 👁</div>
 <div id="toasts"></div>
 
 <section class="pantalla" id="p-landing"><div>
@@ -249,7 +244,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <h1 class="titulo" id="land-titulo">SÍMBOLOS &amp; VINOS</h1>
   <div class="sub" id="land-sub">Edición Masónica · MMXXVI</div>
   <p class="lema mistica">Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.</p>
-  <div class="orn">⚜</div>
+  <div class="orn">👁</div>
   <button class="btn google" onclick="googleLogin()">
     <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
     Continuar con Google</button>
@@ -271,7 +266,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 <section class="pantalla" id="p-home">
   <div class="cab">
     <div style="display:flex;align-items:center;gap:12px;min-width:0">
-      <button class="home-ava" id="h-ava" onclick="ver('p-avatar')" aria-label="Elegir avatar">✦</button>
+      <button class="home-ava" id="h-ava" onclick="ver('p-avatar')" aria-label="Elegir avatar">👁</button>
       <div style="min-width:0"><div style="font-size:13px;color:var(--texto2)">Hola, buscador</div>
         <div class="nombre" id="h-nombre">—</div><button class="salir" onclick="salir()">cerrar sesión</button></div>
     </div>
@@ -294,7 +289,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <div class="sec-titulo">Toca un sello dorado para ver su lámina</div>
   <div class="sellos" id="h-sellos"></div>
   <div class="frase-final-caja oculto" id="frase-final-caja">
-    <div class="ff-orn">⚜</div>
+    <div class="ff-orn">👁</div>
     <div class="ff-label">La frase final revelada</div>
     <div class="ff-text" id="frase-final-texto"></div>
   </div>
@@ -313,34 +308,28 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <p class="mistica" style="text-align:center;margin:6px 0 16px">Toca para jugar · puedes repetir los completados.</p>
   <div id="juegos-lista"></div></section>
 
+<!-- ===== SORTEO (App Store) ===== -->
 <section class="pantalla" id="p-sorteo">
-  <div class="sorteo-hero">
-    <div class="eyebrow">El cáliz del destino</div>
-    <h2 id="so-titulo">Sorteo final</h2>
-    <div class="sub" id="so-sub">Cinco premios · cinco elegidos</div>
-    <div class="sorteo-cuenta" id="so-cuenta-label">El sorteo comienza en</div>
-    <div class="sorteo-num" id="so-cuenta">—</div>
+  <div class="so-banner" id="so-banner"></div>
+  <div class="so-timer">
+    <div class="so-timer-label" id="so-cuenta-label">El sorteo comienza en</div>
+    <div class="so-timer-num" id="so-cuenta">—</div>
   </div>
-  <div class="reglas-card">
-    <h3>Reglas del sorteo</h3>
-    <p id="so-reglas">El Oráculo aún no ha revelado las reglas.</p>
+  <div class="so-card">
+    <h3 class="so-h">Reglas</h3>
+    <p class="so-reglas" id="so-reglas">El Oráculo aún no ha revelado las reglas.</p>
   </div>
-  <div class="reglas-card">
-    <h3>🎁 Los premios</h3>
-    <div class="premios-lista" id="so-premios"></div>
+  <div class="so-card">
+    <h3 class="so-h">🎁 Premios</h3>
+    <div class="so-premios" id="so-premios"></div>
   </div>
-  <div class="reglas-card">
-    <h3>🏆 Ganadores</h3>
-    <div id="so-ganadores-wrap">
-      <div class="sorteo-esperando">
-        <div class="orn-mini">⚜</div>
-        El Oráculo aún no ha elegido a los cinco dignos.<br>
-        <span style="font-size:13px">Completa los 7 sellos para entrar al cáliz.</span>
-      </div>
-    </div>
+  <div class="so-card">
+    <h3 class="so-h">🏆 Ganadores</h3>
+    <div id="so-ganadores-wrap"></div>
   </div>
   <button class="btn" onclick="ver('p-juegos')">Volver al salón</button>
 </section>
+<!-- ===== /SORTEO ===== -->
 
 <section class="pantalla" id="p-voto">
   <h2 style="font-size:22px;text-align:center">Tu ranking de bodegas</h2>
@@ -364,7 +353,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 <section class="pantalla" id="p-perfil">
   <h2 style="font-size:22px;text-align:center">Mi perfil</h2>
   <div class="card perfil-hero" style="margin-top:16px">
-    <div class="ava" id="pf-ava">✦</div>
+    <div class="ava" id="pf-ava">👁</div>
     <div style="flex:1">
       <div class="nom" id="pf-nom">—</div>
       <div style="font-size:13px;color:var(--texto2)" id="pf-mail">—</div>
@@ -372,10 +361,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
       <div class="comp-bar"><i id="pf-comp"></i></div>
       <div style="font-size:11px;color:var(--texto2);margin-top:5px" id="pf-comp-txt">Completa tus datos</div>
     </div>
-  </div>
-  <div class="card" style="margin-top:12px">
-    <h3>🎨 Elige tu avatar</h3>
-    <div class="ava-grid" id="pf-avatares"></div>
   </div>
   <div class="card" style="margin-top:12px">
     <h3>⚜ Círculo de beneficios</h3>
@@ -489,7 +474,7 @@ window.toast=(t,m)=>{const d=document.createElement('div');d.className='toast';d
 let audioCtx=null;
 function chime(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();[659.25,880].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=f;g.gain.setValueAtTime(0,audioCtx.currentTime+i*.18);g.gain.linearRampToValueAtTime(.18,audioCtx.currentTime+i*.18+.02);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+i*.18+.7);o.connect(g).connect(audioCtx.destination);o.start(audioCtx.currentTime+i*.18);o.stop(audioCtx.currentTime+i*.18+.8);});navigator.vibrate&&navigator.vibrate([90,60,90]);}catch(e){}}
 document.addEventListener('touchstart',()=>{try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();}catch(e){}},{once:true});
-function scramble(el,t){let i=0;const g='⚜✦';const int=setInterval(()=>{el.textContent=t.split('').map((c,j)=>j<i?c:(c===' '?' ':g[Math.floor(Math.random()*g.length)])).join('');i+=.6;if(i>=t.length+1){el.textContent=t;clearInterval(int);}},34);}
+function scramble(el,t){let i=0;const g='👁✦';const int=setInterval(()=>{el.textContent=t.split('').map((c,j)=>j<i?c:(c===' '?' ':g[Math.floor(Math.random()*g.length)])).join('');i+=.6;if(i>=t.length+1){el.textContent=t;clearInterval(int);}},34);}
 function reportarSesion(){ const st=parseInt(localStorage.getItem('sv-sesion-start')||'0'); if(!st||!yo)return; const dur=Math.max(0,Math.round((Date.now()-st)/1000)); localStorage.setItem('sv-sesion-start',String(Date.now())); if(dur>0) updateDoc(doc(db,'participantes',yo),{tiempoSesion:increment(dur)}).catch(()=>{}); }
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'){reportarSesion();} else {localStorage.setItem('sv-sesion-start',String(Date.now()));} });
 window.addEventListener('pagehide',reportarSesion);
@@ -525,7 +510,7 @@ window.abrirQuiz=()=>{if(!QUIZ||!(QUIZ.preguntas||[]).length)return toast('El Or
 function pintarQuiz(){const qs=QUIZ.preguntas||[];$('quiz-dots').innerHTML=qs.map((_,i)=>'<span style="width:8px;height:8px;border-radius:50%;background:'+(i<quizIdx?'var(--tinta)':'var(--linea2)')+'"></span>').join('');const q=qs[quizIdx];if(!q)return;$('quiz-pregunta').textContent=q.pregunta||'';const c=$('quiz-ops');c.innerHTML='';(q.opciones||[]).forEach(o=>{const b=document.createElement('button');b.className='btn';b.style.marginTop='10px';b.textContent=o.t;b.onclick=()=>responder(q,o);c.appendChild(b);});}
 function responder(q,o){quizResp[q.categoria]=o.v;quizIdx++;if(quizIdx<(QUIZ.preguntas||[]).length)return pintarQuiz();const t=TITULOS[quizResp.Varietal]||'Buscador de Arcanos';updateDoc(doc(db,'participantes',yo),{perfil:quizResp,quiz:{completado:true,fecha:new Date().toISOString(),titulo:t}});$('quiz-caja').classList.add('oculto');$('quiz-final').classList.remove('oculto');$('qf-titulo').textContent=t;$('qf-det').innerHTML=Object.entries(quizResp).map(([k,v])=>k+': <b>'+v+'</b>').join(' · ');chime();}
 function pintarRanking(){const r=[...RANK].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,20);$('rank-lista').innerHTML=r.map((p,i)=>'<div class="rank"><span class="pos">'+(i+1)+'</span><span class="nm">'+esc(p.nombre)+' '+esc(p.apellido||'')+'</span><span class="sc">'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<p class="mistica" style="text-align:center">Sin datos aún.</p>';}
-window.unirCirculo=async()=>{await updateDoc(doc(db,'participantes',yo),{circulo:true});setFunnel('circulo');toast('⚜ Bienvenido al Círculo','');};
+window.unirCirculo=async()=>{await updateDoc(doc(db,'participantes',yo),{circulo:true});setFunnel('circulo');toast('👁 Bienvenido al Círculo','');};
 const miRank=()=> (parte&&parte.votoRank)||[];
 function setRank(arr){updateDoc(doc(db,'participantes',yo),{votoRank:arr,voto:arr[0]||''});}
 window.addRank=b=>{if(miRank().length===0)setFunnel('voto');setRank([...miRank(),b]);};
@@ -545,15 +530,13 @@ function pintarPerfil(){
  $('pf-nom').textContent=parte.nombre+' '+parte.apellido;
  $('pf-mail').textContent=(parte.email||'')+(parte.telefono?' · '+parte.telefono:'');
  const ava=$('pf-ava');
- if(parte.avatar)ava.innerHTML='<img src="'+parte.avatar+'" alt="">';else ava.textContent=(parte.nombre||'✦')[0].toUpperCase();
- let ag='';for(let i=0;i<8;i++){ag+='<div class="ava-opt'+((parte.avatar===i)?' sel':'')+'" onclick="elegirAvatarIdx('+i+')">'+(function(ii){return '<img src="'+AVATARES[ii]+'" alt="">';})(i)+'</div>';}
- $('pf-avatares').innerHTML=ag||'<p class="mistica">El Oráculo aún no preparó avatares.</p>';
- let chips='<span class="chipmini'+(parte.estado==='apto'?' on':'')+'">'+(parte.estado==='apto'?'⚜ APTO':'BUSCADOR')+'</span>';
+ if(parte.avatar)ava.innerHTML='<img src="'+parte.avatar+'" alt="">';else ava.textContent=(parte.nombre||'👁')[0].toUpperCase();
+ let chips='<span class="chipmini'+(parte.estado==='apto'?' on':'')+'">'+(parte.estado==='apto'?'👁 APTO':'BUSCADOR')+'</span>';
  if(parte.quiz&&parte.quiz.completado)chips+='<span class="chipmini on">'+esc(parte.quiz.titulo)+'</span>';
- if(parte.circulo)chips+='<span class="chipmini on">⚜ Círculo</span>';
+ if(parte.circulo)chips+='<span class="chipmini on">👁 Círculo</span>';
  if((parte.votoRank||[]).length)chips+='<span class="chipmini">★ '+(parte.votoRank.length)+' bodegas</span>';
  $('pf-chips').innerHTML=chips;
- if(parte.circulo)$('circulo-btn').textContent='⚜ Ya formas parte del Círculo';
+ if(parte.circulo)$('circulo-btn').textContent='👁 Ya formas parte del Círculo';
  const x=parte.extra||{};$('x-tel').value=parte.telefono||'';$('x-nac').value=x.nac||'';$('x-zona').value=x.zona||'';$('x-como').value=x.como||'';$('x-comp').value=x.comp||'';
  $('x-mkt').checked=!!(parte.consent&&parte.consent.mkt);
  const campos=[parte.telefono,x.nac,x.zona,x.como,x.comp,(parte.avatar?1:'')];
@@ -568,12 +551,12 @@ window.darLike=async id=>{const likes=(parte&&parte.likes)||[];if(likes.includes
  await updateDoc(doc(db,'participantes',yo),{likes:arrayUnion(id)});};
 async function registrarToken(){try{const r=await navigator.serviceWorker.ready;const t=await getToken(getMessaging(app),{vapidKey:VAPID,serviceWorkerRegistration:r});if(t)await setDoc(doc(db,'tokens',yo),{token:t,fecha:new Date().toISOString()});}catch(e){}}
 window.activarPush=async()=>{if(!('Notification' in window))return toast('Sin soporte de avisos','');const p=await Notification.requestPermission();if(p==='granted'){await registrarToken();$('btn-push').classList.add('oculto');toast(botName()+' te susurrará','');}};
-onMessage(getMessaging(app),pl=>{const n=pl.notification||{};if(pl.data&&pl.data.id)notificados.add(pl.data.id);toast('⚜ '+botName().toUpperCase(),n.body||'');chime();});
+onMessage(getMessaging(app),pl=>{const n=pl.notification||{};if(pl.data&&pl.data.id)notificados.add(pl.data.id);toast('👁 '+botName().toUpperCase(),n.body||'');chime();});
 function escucharFAQ(){onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>FAQ.push({id:d.id,...d.data()}));FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarChips();});}
 function pintarChips(){$('chat-chips').innerHTML=FAQ.map(f=>'<button class="btn" style="width:auto;padding:10px 16px;font-size:14px" onclick="preguntar(\''+f.id+'\')">'+esc(f.pregunta)+'</button>').join('')||'<p class="mistica">'+botName()+' prepara respuestas.</p>';}
 function avaEl(q){ if(q==='bot'){ if(PERFIL.avatarOraculo){const im=new Image();im.className='ava';im.src=PERFIL.avatarOraculo;return im;} const d=document.createElement('div');d.className='ava';d.innerHTML=ORACULO_SVG;return d;}
  if(parte&&parte.avatar){const im=new Image();im.className='ava';im.src=parte.avatar;return im;}
- const d=document.createElement('div');d.className='ava missing';d.textContent=(parte&&parte.nombre?parte.nombre[0].toUpperCase():'✦');return d;}
+ const d=document.createElement('div');d.className='ava missing';d.textContent=(parte&&parte.nombre?parte.nombre[0].toUpperCase():'👁');return d;}
 function addBurb(q,txt){const row=document.createElement('div');row.className='chat-row '+q;const b=document.createElement('div');b.className='burb '+q;b.textContent=txt;if(q==='bot'){const f=document.createElement('span');f.className='firma';f.textContent='· '+botName()+' ·';b.appendChild(f);row.appendChild(avaEl('bot'));row.appendChild(b);}else{row.appendChild(b);row.appendChild(avaEl('user'));}$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;return b;}
 function typeWriter(txt){const row=document.createElement('div');row.className='chat-row bot';const b=document.createElement('div');b.className='burb bot';const f=document.createElement('span');f.className='firma';f.textContent='· '+botName()+' ·';row.appendChild(avaEl('bot'));row.appendChild(b);$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;
  let i=0;const int=setInterval(()=>{i++;b.textContent=txt.slice(0,i);b.appendChild(f);$('chat-ventana').scrollTop=1e9;if(i>=txt.length)clearInterval(int);},16);}
@@ -618,9 +601,9 @@ function escucharTodo(){
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};
   if(PERFIL.tituloApp)$('land-titulo').textContent=PERFIL.tituloApp;if(PERFIL.subApp)$('land-sub').textContent=PERFIL.subApp;if(PERFIL.avatarOraculo)$('orb').innerHTML='<img src="'+PERFIL.avatarOraculo+'">';$('chat-titulo').textContent=(botName()+' RESPONDE').toUpperCase();
   const lr=localStorage.getItem('sv-chat-reset');
-  if(PERFIL.chatReset&&lr!==PERFIL.chatReset){localStorage.setItem('sv-chat-reset',PERFIL.chatReset);chatHist=[];localStorage.setItem('sv-chat','[]');renderHist();toast('🜂 El Oráculo renovó sus memorias','');}
+  if(PERFIL.chatReset&&lr!==PERFIL.chatReset){localStorage.setItem('sv-chat-reset',PERFIL.chatReset);chatHist=[];localStorage.setItem('sv-chat','[]');renderHist();toast('👁 El Oráculo renovó sus memorias','');}
   pintarPerfil();});
- onSnapshot(collection(db,'anuncios'),s=>{avisosCache=[];s.forEach(d=>avisosCache.push({id:d.id,...d.data()}));avisosCache.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));if(vistos===null){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));}const nv=avisosCache.filter(a=>!vistos.includes(a.id)&&!notificados.has(a.id));nv.forEach(a=>{notificados.add(a.id);toast('⚜ '+botName().toUpperCase()+' · '+(a.titulo||''),a.mensaje||'');});if(nv.length)chime();actualizarBadge();pintarAvisos();});
+ onSnapshot(collection(db,'anuncios'),s=>{avisosCache=[];s.forEach(d=>avisosCache.push({id:d.id,...d.data()}));avisosCache.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));if(vistos===null){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));}const nv=avisosCache.filter(a=>!vistos.includes(a.id)&&!notificados.has(a.id));nv.forEach(a=>{notificados.add(a.id);toast('👁 '+botName().toUpperCase()+' · '+(a.titulo||''),a.mensaje||'');});if(nv.length)chime();actualizarBadge();pintarAvisos();});
  onSnapshot(doc(db,'config','sorteoLive'),s=>{SORTEO_LIVE=s.exists()?s.data():null;pintarSorteo();},e=>console.warn('sorteoLive',e));
  escucharFAQ();escucharQuiz();
 }
@@ -629,19 +612,16 @@ function actualizarFraseFinal(){const ff=$('frase-final-caja');if(!ff)return;
  if(n>=7){ff.classList.remove('oculto');$('frase-final-texto').textContent=(FRASES&&FRASES.final)||DEF_FINAL;}
  else ff.classList.add('oculto');}
 function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' '+parte.apellido;
- const ha=$('h-ava');if(ha){ if(parte.avatar)ha.innerHTML='<img src="'+parte.avatar+'" alt="">'; else ha.textContent=(parte.nombre||'✦')[0].toUpperCase(); }
- const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=270.2*(1-n/7);const e=$('h-estado');e.textContent=apto?'⚜ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
+ const ha=$('h-ava');if(ha){ if(parte.avatar)ha.innerHTML='<img src="'+parte.avatar+'" alt="">'; else ha.textContent=(parte.nombre||'👁')[0].toUpperCase(); }
+ const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=270.2*(1-n/7);const e=$('h-estado');e.textContent=apto?'👁 APTO':'BUSCADOR';e.classList.toggle('apto',apto);
  const c=$('h-sellos');c.innerHTML='';
  for(let i=1;i<=7;i++){
   const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];
   const wrap=document.createElement('div');wrap.className='sello-wrap'+(ab?' abierto':'');
   const d=document.createElement('div');d.className='sello'+(ab?' abierto':'');
   let centro;
-  if(ab){
-    centro = (s&&s.img) ? '<img class="sello-img" src="'+s.img+'" alt="">' : '<span class="g">'+GLIFOS[i]+'</span>';
-  } else {
-    centro = '<span class="g" style="font-size:26px;color:var(--texto3)">✦</span>';
-  }
+  if(ab){ centro = (s&&s.img) ? '<img class="sello-img" src="'+s.img+'" alt="">' : '<span class="g">'+GLIFOS[i]+'</span>'; }
+  else { centro = '<span class="g" style="font-size:26px;color:var(--texto3)">✦</span>'; }
   d.innerHTML=centro;
   if(ab)d.onclick=()=>revelarSello(i);
   const nm=document.createElement('div');nm.className='sello-nombre';
@@ -679,6 +659,7 @@ window.cerrarRevelacion=()=>{
  navegar('p-home',homeBtn);
  if(localStorage.getItem('sv-nps-pending')==='1' && parte && parte.nps==null) mostrarNps();
 };
+// ===== SORTEO =====
 function abrirSorteo(){ver('p-sorteo');pintarSorteo();}
 function pintarSorteo(){
  const S=SORTEO_LIVE||{};
@@ -686,51 +667,22 @@ function pintarSorteo(){
  const reglas=S.reglas||'';
  const ganadores=(S.ganadores||[]).filter(g=>g&&g.revelado!==false);
  const estado=S.estado||'esperando';
- if(S.titulo)$('so-titulo').textContent=S.titulo;
- if(S.subtitulo)$('so-sub').textContent=S.subtitulo;
+ const bn=$('so-banner');
+ if(S.banner){ bn.innerHTML='<img src="'+S.banner+'" alt="">'; }
+ else { bn.innerHTML='<div class="so-banner-fallback"><div style="font-size:11px;letter-spacing:.3em;opacity:.85;text-transform:uppercase;font-weight:600">El cáliz del destino</div><div style="font-size:22px;font-weight:700;margin-top:6px">'+esc(S.titulo||'Sorteo final')+'</div></div>'; }
  $('so-reglas').textContent=reglas||'El Oráculo aún no ha revelado las reglas.';
  const pl=$('so-premios');
- if(premios.length){
-   pl.innerHTML=premios.map(p=>'<div class="premio-item"><div class="premio-ico">🎁</div><div class="premio-txt">'+esc(p)+'</div></div>').join('');
- } else {
-   pl.innerHTML='<p class="mistica" style="font-size:13px">Los premios aún no fueron revelados.</p>';
- }
- const label=$('so-cuenta-label');
- const num=$('so-cuenta');
+ if(premios.length){ pl.innerHTML=premios.map(p=>'<div class="so-premio"><div class="so-premio-ico">🎁</div><div class="so-premio-txt">'+esc(p)+'</div></div>').join(''); }
+ else { pl.innerHTML='<p style="font-size:13px;color:var(--texto2)">Los premios aún no fueron revelados.</p>'; }
+ const label=$('so-cuenta-label');const num=$('so-cuenta');
  const hora=S.horaInicio?new Date(S.horaInicio):null;
- if(estado==='finalizado' && ganadores.length){
-   label.textContent='El cáliz ha hablado';
-   num.textContent='🏆';
-   num.classList.remove('live');
- } else if(hora){
-   const ahora=new Date();
-   const falta=hora-ahora;
-   if(falta>0){
-     label.textContent='El sorteo comienza en';
-     const s=Math.floor(falta/1000);
-     num.textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s';
-     num.classList.remove('live');
-   } else {
-     label.textContent='El sorteo está en curso';
-     num.textContent='En vivo…';
-     num.classList.add('live');
-   }
- } else {
-   label.textContent='Próximamente';
-   num.textContent='—';
-   num.classList.remove('live');
- }
+ if(estado==='finalizado' && ganadores.length){ label.textContent='El cáliz ha hablado'; num.textContent='🏆'; num.classList.remove('live'); }
+ else if(hora){ const falta=hora-new Date(); if(falta>0){ label.textContent='El sorteo comienza en'; const s=Math.floor(falta/1000); num.textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s'; num.classList.remove('live'); } else { label.textContent='El sorteo está en curso'; num.textContent='En vivo…'; num.classList.add('live'); } }
+ else { label.textContent='Próximamente'; num.textContent='—'; num.classList.remove('live'); }
  const wrap=$('so-ganadores-wrap');
- if(ganadores.length){
-   wrap.innerHTML='<div class="ganadores-lista">'+ganadores.map((g,i)=>{
-     const nombre=(g&&g.nombre)||'';
-     return '<div class="ganador-item" style="animation-delay:'+(i*0.35)+'s"><div class="ganador-ico">🏆</div><div class="ganador-info"><div class="etiqueta">Ganador</div><div class="nombre">'+esc(nombre)+'</div></div></div>';
-   }).join('')+'</div>';
- } else if(estado==='finalizado'){
-   wrap.innerHTML='<p class="mistica" style="text-align:center">El sorteo terminó pero aún no hay ganadores cargados.</p>';
- } else {
-   wrap.innerHTML='<div class="sorteo-esperando"><div class="orn-mini">⚜</div>El Oráculo aún no ha elegido a los cinco dignos.<br><span style="font-size:13px">Completa los 7 sellos para entrar al cáliz.</span></div>';
- }
+ if(ganadores.length){ wrap.innerHTML='<div class="so-ganadores">'+ganadores.map((g,i)=>'<div class="so-ganador" style="animation-delay:'+(i*0.3)+'s"><div class="so-ganador-ico">🏆</div><div class="so-ganador-info"><div class="so-ganador-et">Ganador</div><div class="so-ganador-nm">'+esc(g.nombre||'')+'</div></div></div>').join('')+'</div>'; }
+ else if(estado==='finalizado'){ wrap.innerHTML='<p style="text-align:center;color:var(--texto2);font-size:13px">El sorteo terminó pero aún no hay ganadores.</p>'; }
+ else { wrap.innerHTML='<div class="so-esperando"><div style="color:var(--oro);font-size:18px;margin-bottom:6px">👁</div>El Oráculo aún no ha elegido a los cinco dignos.<br><span style="font-size:12px">Completa los 7 sellos para entrar al cáliz.</span></div>'; }
 }
 setInterval(()=>{
  if(!$('p-sorteo')||!$('p-sorteo').classList.contains('activa'))return;
@@ -739,23 +691,15 @@ setInterval(()=>{
  const hora=S.horaInicio?new Date(S.horaInicio):null;
  if(!hora)return;
  const falta=hora-new Date();
- const num=$('so-cuenta');
- const label=$('so-cuenta-label');
- if(falta>0){
-   label.textContent='El sorteo comienza en';
-   const s=Math.floor(falta/1000);
-   num.textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s';
-   num.classList.remove('live');
- } else {
-   label.textContent='El sorteo está en curso';
-   num.textContent='En vivo…';
-   num.classList.add('live');
- }
+ const num=$('so-cuenta');const label=$('so-cuenta-label');
+ if(falta>0){ label.textContent='El sorteo comienza en'; const s=Math.floor(falta/1000); num.textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s'; num.classList.remove('live'); }
+ else { label.textContent='El sorteo está en curso'; num.textContent='En vivo…'; num.classList.add('live'); }
 },1000);
+// ===== /SORTEO =====
 function pintarPrograma(){const likes=(parte&&parte.likes)||[];const asis=(parte&&parte.asistencias)||[];
  $('prog-lista').innerHTML=programa.map(a=>{const n=a.likes||0,my=likes.includes(a.id);const fue=asis.includes(a.id);const img=a.img||'';
  return '<div class="item" onclick="darLike(\''+a.id+'\')">'+(img?'<img class="prog-img" src="'+img+'" alt="">':'')+'<div class="det"><b>'+fmtF(a.fecha)+' · '+esc(a.hora)+' · '+esc(a.tema)+(fue?' <span style="color:var(--verde)">✓ asistencia</span>':'')+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div><div class="likebox"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
-function pintarAvisos(){$('avisos-lista').innerHTML=avisosCache.map(a=>{const nuevo=vistos&&!vistos.includes(a.id);return '<div class="item" style="cursor:default;'+(nuevo?'border-color:var(--oro)':'')+'"><div class="det"><b style="font-size:12px;font-weight:600;color:var(--tinta)">⚜ '+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje||'')+'</span></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin avisos.</p>';}
+function pintarAvisos(){$('avisos-lista').innerHTML=avisosCache.map(a=>{const nuevo=vistos&&!vistos.includes(a.id);return '<div class="item" style="cursor:default;'+(nuevo?'border-color:var(--oro)':'')+'"><div class="det"><b style="font-size:12px;font-weight:600;color:var(--tinta)">👁 '+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje||'')+'</span></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin avisos.</p>';}
 let hq=null,escaneando=false;
 window.navegar=(id,b)=>{ver(id);document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');if(id==='p-avisos')marcarVistos();if(id==='p-scan')iniciarScanner();else pararScanner();if(id==='p-avatar')pintarAvatarGrid();};
 async function iniciarScanner(){if(escaneando)return;escaneando=true;try{hq=hq||new Html5Qrcode("qr-reader");await hq.start({facingMode:"environment"},{fps:10,qrbox:{width:220,height:220}},t=>{pararScanner();procesar(t);},()=>{});}catch(e){toast('Cámara no responde','Usa el código manual.');}}
@@ -783,37 +727,20 @@ window.procesar=async raw=>{if(!raw)return;const tk=raw.trim();
  $('s-manual').value='';};
 </script>
 
-<!-- ===== PWA: banner de instalación ===== -->
-<div id="install-banner" class="oculto" style="position:fixed;left:14px;right:14px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:50;background:var(--tinta);color:#fff;padding:14px 16px;border-radius:16px;box-shadow:0 10px 30px rgba(122,16,52,.45);display:flex;align-items:center;gap:12px">
-  <span style="font-size:22px;line-height:1">⚜</span>
-  <div style="flex:1;min-width:0">
-    <b style="display:block;font-size:14px">Instalar la app</b>
-    <span style="display:block;opacity:.85;font-size:12px">Abrí S&amp;V como app del celular</span>
-  </div>
+<!-- ===== PWA ===== -->
+<div id="install-banner" class="oculto" style="position:fixed;left:14px;right:14px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:50;background:var(--tinta);color:#fff;padding:14px 16px;border-radius:16px;box-shadow:0 10px 30px rgba(92,12,38,.45);display:flex;align-items:center;gap:12px">
+  <span style="font-size:22px;line-height:1">👁</span>
+  <div style="flex:1;min-width:0"><b style="display:block;font-size:14px">Instalar la app</b><span style="display:block;opacity:.85;font-size:12px">Abrí S&amp;V como app del celular</span></div>
   <button id="btn-instalar" style="padding:8px 14px;border-radius:999px;background:#fff;color:var(--tinta);border:none;font-weight:600;font-size:13px;cursor:pointer;flex:none">Instalar</button>
   <button id="btn-dismiss" aria-label="Cerrar" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:18px;cursor:pointer;flex:none">✕</button>
 </div>
 <script>
-(function(){
-  var deferred=null;
-  window.addEventListener('beforeinstallprompt',function(e){
-    e.preventDefault(); deferred=e;
-    var b=document.getElementById('install-banner'); if(b) b.classList.remove('oculto');
-  });
-  document.addEventListener('click',function(e){
-    var t=e.target; if(!t) return;
-    if(t.id==='btn-instalar'&&deferred){
-      deferred.prompt();
-      deferred.userChoice.then(function(){ deferred=null; var b=document.getElementById('install-banner'); if(b) b.classList.add('oculto'); });
-    }
-    if(t.id==='btn-dismiss'){ var b=document.getElementById('install-banner'); if(b) b.classList.add('oculto'); }
-  });
-  window.addEventListener('appinstalled',function(){
-    var b=document.getElementById('install-banner'); if(b) b.classList.add('oculto');
-  });
-})();
+(function(){var deferred=null;
+ window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;var b=document.getElementById('install-banner');if(b)b.classList.remove('oculto');});
+ document.addEventListener('click',function(e){var t=e.target;if(!t)return;
+  if(t.id==='btn-instalar'&&deferred){deferred.prompt();deferred.userChoice.then(function(){deferred=null;var b=document.getElementById('install-banner');if(b)b.classList.add('oculto');});}
+  if(t.id==='btn-dismiss'){var b=document.getElementById('install-banner');if(b)b.classList.add('oculto');}});
+ window.addEventListener('appinstalled',function(){var b=document.getElementById('install-banner');if(b)b.classList.add('oculto');});})();
 </script>
-<!-- ===== /PWA ===== -->
-
 </body>
 </html>
