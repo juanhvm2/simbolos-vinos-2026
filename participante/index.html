@@ -146,9 +146,8 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .slv-section h3 svg{width:14px;height:14px;stroke:var(--oro)}
 .slv-section p{font-size:14px;line-height:1.55;color:var(--texto)}
 .slv-premios-lista{display:flex;flex-direction:column;gap:8px}
-.slv-premio{display:flex;gap:12px;align-items:center;padding:12px 14px;background:var(--card2);border:1px solid var(--linea);border-radius:12px}
-.slv-premio-ico{flex:none;width:36px;height:36px;border-radius:10px;background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;display:grid;place-items:center;font-size:16px;box-shadow:0 3px 8px rgba(169,123,18,.3)}
-.slv-premio-txt{flex:1;font-size:14px;font-weight:500;line-height:1.35;color:var(--texto)}
+.slv-premio{padding:12px 14px;background:var(--card2);border:1px solid var(--linea);border-radius:12px}
+.slv-premio-txt{font-size:14px;font-weight:500;line-height:1.35;color:var(--texto)}
 .slv-ganadores-lista{display:flex;flex-direction:column;gap:8px}
 .slv-ganador{display:flex;gap:12px;align-items:center;padding:12px 14px;background:var(--card2);border:1px solid rgba(212,168,75,.3);border-radius:12px;box-shadow:var(--sombra2);opacity:0;transform:translateY(8px);animation:slvIn .5s ease forwards}
 @keyframes slvIn{to{opacity:1;transform:none}}
@@ -325,7 +324,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <p class="mistica" style="text-align:center;margin:6px 0 16px">Toca para jugar · puedes repetir los completados.</p>
   <div id="juegos-lista"></div></section>
 
-<!-- ===== SORTEO REDISEÑADO ===== -->
+<!-- ===== SORTEO REDISEÑADO - ORDEN: BANNER → TIMER → GANADORES → REGLAS → PREMIOS ===== -->
 <section class="pantalla" id="p-sorteo">
   <div class="slv-banner" id="slv-banner">
     <div class="slv-banner-fallback" id="slv-banner-fallback">
@@ -340,14 +339,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
       <div class="num" id="so-cuenta">—</div>
     </div>
     <div class="slv-section">
-      <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Reglas del sorteo</h3>
-      <p id="so-reglas">El Oráculo aún no ha revelado las reglas.</p>
-    </div>
-    <div class="slv-section">
-      <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>Los premios</h3>
-      <div class="slv-premios-lista" id="so-premios"></div>
-    </div>
-    <div class="slv-section">
       <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>Ganadores</h3>
       <div id="so-ganadores-wrap">
         <div class="slv-esperando">
@@ -356,6 +347,14 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
           <div style="font-size:12px;margin-top:6px;opacity:.8">Completa los 7 sellos para entrar al cáliz.</div>
         </div>
       </div>
+    </div>
+    <div class="slv-section">
+      <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Reglas del sorteo</h3>
+      <p id="so-reglas">El Oráculo aún no ha revelado las reglas.</p>
+    </div>
+    <div class="slv-section">
+      <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>Los premios</h3>
+      <div class="slv-premios-lista" id="so-premios"></div>
     </div>
     <button class="btn slv-back" onclick="ver('p-juegos')">Volver al salón</button>
   </div>
@@ -546,7 +545,7 @@ const miRank=()=> (parte&&parte.votoRank)||[];
 function setRank(arr){updateDoc(doc(db,'participantes',yo),{votoRank:arr,voto:arr[0]||''});}
 window.addRank=b=>{if(miRank().length===0)setFunnel('voto');setRank([...miRank(),b]);};
 window.delRank=b=>{setRank(miRank().filter(x=>x!==b));};
-window.upRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>0){[r[i-1],r[i]]=[r[i],r[i-1]];setRank(r);}}
+window.upRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>0){[r[i-1],r[i]]=[r[i],r[i-1]];setRank(r);}};
 window.downRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>-1&&i<r.length-1){[r[i+1],r[i]]=[r[i],r[i+1]];setRank(r);}};
 function pintarVoto(){const rank=miRank();const all=EXTRA.bodegasVoto||[];
  $('voto-rank').innerHTML=rank.length?rank.map((b,i)=>'<div class="item" style="cursor:default"><span class="pos" style="width:26px">'+(i+1)+'</span><div class="det"><b>'+esc(b)+'</b></div><div class="rk-ctl"><button onclick="upRank(\''+qesc(b)+'\')">▲</button><button onclick="downRank(\''+qesc(b)+'\')">▼</button><button onclick="delRank(\''+qesc(b)+'\')">✕</button></div></div>').join(''):'<p class="mistica" style="text-align:center">Aún no has votado. Agrega bodegas abajo.</p>';
@@ -716,18 +715,20 @@ function pintarSorteo(){
  if(S.titulo)$('so-titulo').textContent=S.titulo;
  if(S.subtitulo)$('so-sub').textContent=S.subtitulo;
  $('so-reglas').textContent=reglas||'El Oráculo aún no ha revelado las reglas.';
+ // Premios SIN ícono de regalo
  const pl=$('so-premios');
  if(premios.length){
-   pl.innerHTML=premios.map(p=>'<div class="slv-premio"><div class="slv-premio-ico">🎁</div><div class="slv-premio-txt">'+esc(p)+'</div></div>').join('');
+   pl.innerHTML=premios.map(p=>'<div class="slv-premio"><div class="slv-premio-txt">'+esc(p)+'</div></div>').join('');
  } else {
    pl.innerHTML='<p class="mistica" style="font-size:13px">Los premios aún no fueron revelados.</p>';
  }
+ // Timer - frase cambiada a "Sorteo Finalizado"
  const label=$('so-cuenta-label');
  const num=$('so-cuenta');
  const hora=S.horaInicio?new Date(S.horaInicio):null;
  num.classList.remove('live','done');
  if(estado==='finalizado' && ganadores.length){
-   label.textContent='El cáliz ha hablado';
+   label.textContent='Sorteo Finalizado';
    num.textContent='🏆';
    num.classList.add('done');
  } else if(hora){
@@ -746,6 +747,7 @@ function pintarSorteo(){
    label.textContent='Próximamente';
    num.textContent='—';
  }
+ // Ganadores
  const wrap=$('so-ganadores-wrap');
  if(ganadores.length){
    wrap.innerHTML='<div class="slv-ganadores-lista">'+ganadores.map((g,i)=>{
