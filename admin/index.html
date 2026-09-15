@@ -91,7 +91,6 @@ tr:last-child td{border-bottom:none}
 .av-thumb img{width:76px;height:76px;border-radius:16px;object-fit:cover;display:block;border:1px solid var(--linea2)}
 .av-thumb button{position:absolute;top:-8px;right:-8px;padding:2px 8px;border-radius:50%}
 .edit-banner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;border:1px solid rgba(255,214,10,.4);background:rgba(255,214,10,.08);border-radius:12px;margin-bottom:14px;font-size:13px;color:var(--oro)}
-/* Banner sorteo */
 .banner-prev{width:100%;max-width:600px;aspect-ratio:1200/400;border-radius:12px;object-fit:cover;border:1px solid var(--linea2);background:var(--bg2);display:block;margin-top:10px}
 .banner-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
 @media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:28px}.titulo-sec{font-size:20px}}
@@ -153,14 +152,23 @@ tr:last-child td{border-bottom:none}
  <h2 class="titulo-sec">Salón de Juegos · Control</h2>
  <p class="sub-sec">Activa los juegos, sube sus iconos y configura contenidos, todo en un solo lugar.</p>
  <div class="card"><h3>Activar / desactivar / mostrar</h3><div id="jz-toggles"></div></div>
- <div class="card"><h3>Iconos de los juegos (imagen cuadrada)</h3>
-  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Subí una imagen por juego. Si no subís ninguna, se usa el ícono por defecto.</p>
+ <div class="card"><h3>Iconos y banners de los juegos</h3>
+  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Subí un ícono cuadrado por juego y un banner 1200×400 para el quiz y el sorteo. Si no subís ninguna imagen, se usa el diseño por defecto.</p>
   <div class="grid2">
-   <div><label>ARCANO (quiz)</label><input type="file" accept="image/*" id="gi-quiz" onchange="cargarImgJuego('quiz',this)"><img id="gi-prev-quiz" class="avatar-prev" style="visibility:hidden"></div>
-   <div><label>TABLA BUSCADORES</label><input type="file" accept="image/*" id="gi-ranking" onchange="cargarImgJuego('ranking',this)"><img id="gi-prev-ranking" class="avatar-prev" style="visibility:hidden"></div>
-   <div><label>SORTEO</label><input type="file" accept="image/*" id="gi-sorteo" onchange="cargarImgJuego('sorteo',this)"><img id="gi-prev-sorteo" class="avatar-prev" style="visibility:hidden"></div>
+   <div><label>ARCANO (quiz) · ícono cuadrado</label><input type="file" accept="image/*" id="gi-quiz" onchange="cargarImgJuego('quiz',this)"><img id="gi-prev-quiz" class="avatar-prev" style="visibility:hidden"></div>
+   <div><label>TABLA BUSCADORES · ícono cuadrado</label><input type="file" accept="image/*" id="gi-ranking" onchange="cargarImgJuego('ranking',this)"><img id="gi-prev-ranking" class="avatar-prev" style="visibility:hidden"></div>
+   <div><label>SORTEO · ícono cuadrado</label><input type="file" accept="image/*" id="gi-sorteo" onchange="cargarImgJuego('sorteo',this)"><img id="gi-prev-sorteo" class="avatar-prev" style="visibility:hidden"></div>
+   <div><label>BANNER QUIZ (1200×400)</label><input type="file" accept="image/*" id="gi-bannerQuiz" onchange="cargarImgJuego('bannerQuiz',this)"><img id="gi-prev-bannerQuiz" class="avatar-prev" style="visibility:hidden"></div>
   </div>
-  <button class="btn solido" style="margin-top:10px" onclick="guardarImgJuegos()">Guardar iconos</button>
+  <button class="btn solido" style="margin-top:10px" onclick="guardarImgJuegos()">Guardar iconos y banners</button>
+ </div>
+ <div class="card"><h3>Banner del sorteo (1200×400)</h3>
+  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Esta imagen se muestra en la parte superior de la pantalla Sorteo en las apps de los participantes.</p>
+  <input type="file" accept="image/*" id="slv-banner-input" onchange="cargarBannerSorteo(this)">
+  <img id="slv-banner-prev" class="banner-prev" style="display:none">
+  <div class="banner-actions" id="slv-banner-actions" style="display:none">
+   <button class="btn mini peligro" onclick="quitarBannerSorteo()">🗑 Quitar banner</button>
+  </div>
  </div>
  <div class="card"><h3>Contenidos</h3>
   <label>Bodegas para votar (una por línea)</label><textarea id="jz-bvoto"></textarea>
@@ -367,7 +375,7 @@ function escuchar(){
   renderBannerPrev();
   pintarSorteoLive();
  },e=>console.warn('sorteoLive',e));
- if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>{window.ADM[d.id]=d.data();});pintarAdmins();},e=>console.warn('admins',e));
+ if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>{window.ADM[d.id]=d.data());});pintarAdmins();},e=>console.warn('admins',e));
 }
 function pintarMetricas(){
  const P=Object.values(PART);const f1=P.length;
@@ -477,9 +485,12 @@ window.quitarAvatar=async i=>{const items=AVATARES.slice();items.splice(i,1);awa
 function comprimirImg(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const S=256;const cv=document.createElement('canvas');cv.width=S;cv.height=S;const x=cv.getContext('2d');const sc=Math.min(S/im.width,S/im.height);const w=im.width*sc,hh=im.height*sc;x.clearRect(0,0,S,S);x.drawImage(im,(S-w)/2,(S-hh)/2,w,hh);cb(cv.toDataURL('image/png'));};im.src=r.result;};r.readAsDataURL(file);}
 function comprimirFull(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1080,H=1350;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');const sc=Math.max(W/im.width,H/im.height);const w=im.width*sc,hh=im.height*sc;x.drawImage(im,(W-w)/2,(H-hh)/2,w,hh);cb(cv.toDataURL('image/jpeg',0.82));};im.src=r.result;};r.readAsDataURL(file);}
 function comprimirBanner(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1200,H=400;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');const sc=Math.max(W/im.width,H/im.height);const w=im.width*sc,hh=im.height*sc;x.drawImage(im,(W-w)/2,(H-hh)/2,w,hh);cb(cv.toDataURL('image/jpeg',0.88));};im.src=r.result;};r.readAsDataURL(file);}
-function renderImgJuegosPrev(){ ['quiz','ranking','sorteo'].forEach(k=>{ const url=(juegosImgPend[k]!==undefined)?juegosImgPend[k]:(JUEGOS_IMG[k]||''); const img=$('gi-prev-'+k); if(img){ if(url){img.src=url;img.style.visibility='visible';} else {img.removeAttribute('src');img.style.visibility='hidden';} } }); }
-window.cargarImgJuego=(k,input)=>{const f=input.files[0];if(!f)return; if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;} comprimirImg(f,url=>{ juegosImgPend[k]=url; renderImgJuegosPrev(); toast('Icono listo · pulsa Guardar iconos'); });};
-window.guardarImgJuegos=async()=>{ const data=Object.assign({},JUEGOS_IMG); ['quiz','ranking','sorteo'].forEach(k=>{ if(juegosImgPend[k]!==undefined) data[k]=juegosImgPend[k]; }); await setDoc(doc(db,'config','juegosImg'),data,{merge:true}); juegosImgPend={}; renderImgJuegosPrev(); toast('✓ Iconos guardados'); };
+function renderImgJuegosPrev(){ ['quiz','ranking','sorteo','bannerQuiz'].forEach(k=>{ const url=(juegosImgPend[k]!==undefined)?juegosImgPend[k]:(JUEGOS_IMG[k]||''); const img=$('gi-prev-'+k); if(img){ if(url){img.src=url;img.style.visibility='visible';} else {img.removeAttribute('src');img.style.visibility='hidden';} } }); }
+window.cargarImgJuego=(k,input)=>{const f=input.files[0];if(!f)return; if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;}
+ if(k==='bannerQuiz'){ comprimirBanner(f,url=>{ juegosImgPend[k]=url; renderImgJuegosPrev(); toast('Banner quiz listo · pulsa Guardar iconos y banners'); }); }
+ else { comprimirImg(f,url=>{ juegosImgPend[k]=url; renderImgJuegosPrev(); toast('Icono listo · pulsa Guardar iconos y banners'); }); }
+};
+window.guardarImgJuegos=async()=>{ const data=Object.assign({},JUEGOS_IMG); ['quiz','ranking','sorteo','bannerQuiz'].forEach(k=>{ if(juegosImgPend[k]!==undefined) data[k]=juegosImgPend[k]; }); await setDoc(doc(db,'config','juegosImg'),data,{merge:true}); juegosImgPend={}; renderImgJuegosPrev(); toast('✓ Iconos y banners guardados'); };
 window.cargarImgSello=(n,input)=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;}
  comprimirImg(f,url=>{window._imgPend=window._imgPend||{};window._imgPend[n]=url;const p=$('sp-'+n);if(p){p.src=url;p.style.visibility='visible';}toast('✓ Imagen botón lista · pulsa Guardar');});};
 window.quitarImgSello=n=>{window._imgPend=window._imgPend||{};window._imgPend[n]='';const p=$('sp-'+n);if(p){p.removeAttribute('src');p.style.visibility='hidden';}toast('Imagen botón quitada · pulsa Guardar');};
