@@ -80,6 +80,7 @@ tr:last-child td{border-bottom:none}
 .item-prog .det{flex:1;min-width:180px}
 .item-prog .det b{display:block;margin-bottom:2px}
 .item-prog .det span{color:var(--texto2);font-size:13px}
+.item-prog .thumb{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none}
 .tgl{display:flex;gap:10px;align-items:center;font-size:14px;margin:10px 0;cursor:pointer}
 #toasts{position:fixed;top:14px;right:14px;left:14px;z-index:80;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{background:var(--card);border:1px solid var(--linea2);border-radius:14px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:ap .35s;font-size:14px}
@@ -89,26 +90,7 @@ tr:last-child td{border-bottom:none}
 .av-thumb{position:relative;display:inline-block}
 .av-thumb img{width:76px;height:76px;border-radius:16px;object-fit:cover;display:block;border:1px solid var(--linea2)}
 .av-thumb button{position:absolute;top:-8px;right:-8px;padding:2px 8px;border-radius:50%}
-/* SORTEO EN VIVO */
-.slv-status{display:inline-block;padding:6px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
-.slv-status.esperando{background:rgba(255,214,10,.15);color:var(--oro);border:1px solid rgba(255,214,10,.3)}
-.slv-status.en_vivo{background:rgba(255,69,58,.15);color:var(--rojo);border:1px solid rgba(255,69,58,.3);animation:pulse 1.5s ease-in-out infinite}
-.slv-status.finalizado{background:rgba(48,209,88,.15);color:var(--verde);border:1px solid rgba(48,209,88,.3)}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
-.slv-premio-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.slv-premio-num{flex:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700;box-shadow:0 4px 10px rgba(169,123,18,.35)}
-.slv-premio-input{flex:1;margin:0}
-.slv-ganador{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--linea);border-radius:12px;margin-bottom:8px;background:var(--card2);opacity:.4}
-.slv-ganador.revelado{opacity:1;background:linear-gradient(140deg,rgba(255,214,10,.1),rgba(122,16,52,.1));border-color:rgba(255,214,10,.3);animation:ap .6s}
-.slv-ganador.oro.revelado{background:linear-gradient(140deg,rgba(255,214,10,.2),rgba(255,140,0,.15));border-color:var(--oro);box-shadow:0 8px 24px rgba(255,214,10,.2)}
-.slv-puesto{flex:none;width:44px;height:44px;border-radius:50%;background:var(--card);border:1.5px solid var(--linea2);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--texto2)}
-.slv-ganador.oro.revelado .slv-puesto{background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;border:none;box-shadow:0 4px 12px rgba(255,214,10,.4)}
-.slv-info{flex:1;min-width:0}
-.slv-info .pos{font-size:10px;letter-spacing:.12em;color:var(--texto2);text-transform:uppercase;font-weight:600}
-.slv-info .nm{font-size:15px;font-weight:600;margin-top:2px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.slv-preview{padding:16px;border-radius:12px;background:linear-gradient(140deg,#7a1034,#6d1f6e);color:#fff;font-size:13px;margin-top:14px}
-.slv-preview .label{font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:6px}
-.slv-preview .val{font-size:15px;font-weight:600}
+.edit-banner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;border:1px solid rgba(255,214,10,.4);background:rgba(255,214,10,.08);border-radius:12px;margin-bottom:14px;font-size:13px;color:var(--oro)}
 @media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:28px}.titulo-sec{font-size:20px}}
 </style>
 </head>
@@ -166,8 +148,17 @@ tr:last-child td{border-bottom:none}
 
 <section class="sec" id="sec-juegos">
  <h2 class="titulo-sec">Salón de Juegos · Control</h2>
- <p class="sub-sec">Activa los juegos, muestra u oculta secciones y configura contenidos, todo en un solo lugar.</p>
+ <p class="sub-sec">Activa los juegos, sube sus iconos y configura contenidos, todo en un solo lugar.</p>
  <div class="card"><h3>Activar / desactivar / mostrar</h3><div id="jz-toggles"></div></div>
+ <div class="card"><h3>Iconos de los juegos (imagen cuadrada)</h3>
+  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Subí una imagen por juego. Si no subís ninguna, se usa el ícono por defecto.</p>
+  <div class="grid2">
+   <div><label>ARCANO (quiz)</label><input type="file" accept="image/*" id="gi-quiz" onchange="cargarImgJuego('quiz',this)"><img id="gi-prev-quiz" class="avatar-prev" style="visibility:hidden"></div>
+   <div><label>TABLA BUSCADORES</label><input type="file" accept="image/*" id="gi-ranking" onchange="cargarImgJuego('ranking',this)"><img id="gi-prev-ranking" class="avatar-prev" style="visibility:hidden"></div>
+   <div><label>SORTEO</label><input type="file" accept="image/*" id="gi-sorteo" onchange="cargarImgJuego('sorteo',this)"><img id="gi-prev-sorteo" class="avatar-prev" style="visibility:hidden"></div>
+  </div>
+  <button class="btn solido" style="margin-top:10px" onclick="guardarImgJuegos()">Guardar iconos</button>
+ </div>
  <div class="card"><h3>Contenidos</h3>
   <label>Bodegas para votar (una por línea)</label><textarea id="jz-bvoto"></textarea>
   <label>Hora del sorteo (cuenta regresiva)</label><input id="jz-sorteo" type="datetime-local">
@@ -197,10 +188,15 @@ tr:last-child td{border-bottom:none}
 </section>
 
 <section class="sec" id="sec-programa"><h2 class="titulo-sec">Programa</h2>
+ <div id="prog-edit-banner" class="edit-banner oculto">✏️ Editando: <b id="prog-edit-name"></b><button class="btn mini" onclick="cancelarProgEdit()">Cancelar edición</button></div>
  <div class="form-grid" style="margin-bottom:14px">
   <div><label>FECHA</label><input id="pg-fecha" type="date"></div><div><label>HORA</label><input id="pg-hora" type="time"></div>
   <div><label>TEMA</label><input id="pg-tema"></div><div><label>DISERTANTE</label><input id="pg-dis"></div><div><label>LUGAR</label><input id="pg-lugar"></div></div>
- <button class="btn solido" onclick="guardarProg()">+ Agregar</button><div id="lista-prog" style="margin-top:20px"></div></section>
+ <label>IMAGEN DEL EVENTO (opcional)</label>
+ <input type="file" accept="image/*" id="pg-img" onchange="cargarImgProg(this)">
+ <img id="pg-img-prev" class="avatar-prev" style="visibility:hidden">
+ <button class="btn solido" id="pg-save-btn" style="margin-top:10px" onclick="guardarProg()">+ Agregar</button>
+ <div id="lista-prog" style="margin-top:20px"></div></section>
 
 <section class="sec" id="sec-oraculo"><h2 class="titulo-sec">Mensajes</h2>
  <label>TÍTULO</label><input id="an-titulo"><label>MENSAJE</label><input id="an-msg">
@@ -224,11 +220,9 @@ tr:last-child td{border-bottom:none}
   <label>FRASE FINAL (7 sellos)</label><textarea id="fr-final"></textarea>
   <button class="btn solido" style="margin-top:10px" onclick="guardarFrases()">Guardar frases</button></div></section>
 
-<!-- ===== SORTEO EN VIVO ===== -->
 <section class="sec" id="sec-sorteo">
  <h2 class="titulo-sec">Sorteo en vivo</h2>
  <p class="sub-sec">Configura el sorteo, ejecútalo frente a todos y revela los 5 ganadores en tiempo real en las apps de los participantes.</p>
-
  <div class="card">
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
    <h3 style="margin:0">Estado actual</h3>
@@ -236,25 +230,22 @@ tr:last-child td{border-bottom:none}
   </div>
   <div id="slv-stats" style="font-size:13px;color:var(--texto2)"></div>
  </div>
-
  <div class="card">
   <h3>1 · Configuración general</h3>
   <div class="form-grid" style="margin-bottom:10px">
    <div><label>TÍTULO DEL SORTEO</label><input id="slv-titulo" placeholder="Sorteo final"></div>
-   <div><label>SUBTÍTULO</label><input id="slv-sub" placeholder="Cinco elegidos · cinco premios"></div>
+   <div><label>SUBTÍTULO</label><input id="slv-sub" placeholder="Cinco premios · cinco elegidos"></div>
   </div>
   <label>REGLAS DEL SORTEO (texto visible para participantes)</label>
-  <textarea id="slv-reglas" style="min-height:100px" placeholder="Solo participan quienes completaron los 7 sellos antes del cierre. El sorteo es al azar entre todos los aptos."></textarea>
+  <textarea id="slv-reglas" style="min-height:100px" placeholder="Solo participan quienes completaron los 7 sellos antes del cierre."></textarea>
   <label>HORA DE INICIO (cuenta regresiva visible en las apps)</label>
   <input id="slv-hora" type="datetime-local">
  </div>
-
  <div class="card">
   <h3>2 · Los 5 premios</h3>
   <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Describe cada premio y cómo se retira. Los participantes verán la lista completa antes del sorteo.</p>
   <div id="slv-premios"></div>
  </div>
-
  <div class="card" id="slv-ctrl-card">
   <h3>3 · Control del sorteo</h3>
   <p style="font-size:13px;color:var(--texto2);margin-bottom:14px">Guarda la configuración primero. Después podés iniciar el sorteo (activa la cuenta regresiva en las apps) y ejecutarlo (sortea y revela los ganadores uno a uno cada 3 segundos).</p>
@@ -266,18 +257,15 @@ tr:last-child td{border-bottom:none}
   </div>
   <div class="slv-preview" id="slv-preview"></div>
  </div>
-
  <div class="card">
   <h3>4 · Ganadores revelados (en vivo)</h3>
   <div id="slv-ganadores"></div>
  </div>
-
  <div class="card">
   <h3>Historial de sorteos anteriores</h3>
   <div id="hist-sorteo"></div>
  </div>
 </section>
-<!-- ===== /SORTEO EN VIVO ===== -->
 
 <section class="sec" id="sec-equipo"><h2 class="titulo-sec">Equipo · contraseñas</h2>
  <div class="form-grid" style="margin-bottom:8px"><div><label>NOMBRE</label><input id="eq-nombre"></div><div><label>CORREO</label><input id="eq-email"></div><div><label>CLAVE TEMPORAL</label><input id="eq-clave" type="text"></div>
@@ -319,8 +307,8 @@ const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
 const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['voto','Sección VOTAR visible'],['frase','Frase oculta visible']];
 let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],AVATARES=[],SIMB={},CHATLOGS=[];
+let JUEGOS_IMG={},juegosImgPend={},progEditId=null,progImgPend=null;
 window.ANUN=[];
-let SORTEO_LIVE=null,sorteoLiveLoaded=false,sorteoInterval=null;
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],metricas:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],avatares:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
 const TABS=[['torre','Dashboard'],['metricas','Métricas'],['juegos','Juegos'],['sellos','Sellos'],['avatares','Avatares'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
@@ -346,10 +334,11 @@ function escuchar(){
   $('m-likes').textContent=P.reduce((a,p)=>a+((p.likes||[]).length),0);
   const dist=[0,0,0,0,0,0,0,0];P.forEach(p=>{dist[(p.simbolos||[]).length]++;});
   barChart($('ch-sellos'),dist.map((v,i)=>[(i===7?'7 sellos':i+' sellos'),v]));
-  pintarTabla();pintarCirculo();pintarVotoAdmin();pintarQuizRes();pintarStats();pintarRankAdmin();pintarMetricas();pintarSorteoLive();},e=>console.warn('participantes',e));
+  pintarTabla();pintarCirculo();pintarVotoAdmin();pintarQuizRes();pintarStats();pintarRankAdmin();pintarMetricas();},e=>console.warn('participantes',e));
  onSnapshot(collection(db,'simbolos'),s=>{SIMB={};s.forEach(d=>{SIMB[d.id]=d.data();});pintarSellos();pintarMetricas();},e=>console.warn('simbolos',e));
  onSnapshot(collection(db,'chatLogs'),s=>{CHATLOGS=[];s.forEach(d=>CHATLOGS.push(d.data()));pintarMetricas();},e=>console.warn('chatLogs',e));
  onSnapshot(doc(db,'config','avatares'),s=>{const d=s.exists()?s.data():{};AVATARES=d.items||[];pintarAvatares();},e=>console.warn('avatares',e));
+ onSnapshot(doc(db,'config','juegosImg'),s=>{JUEGOS_IMG=s.exists()?s.data():{};renderImgJuegosPrev();},e=>console.warn('juegosImg',e));
  onSnapshot(collection(db,'programa'),s=>{PROG=[];s.forEach(d=>{PROG.push(Object.assign({id:d.id},d.data()));});PROG.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarProg();barChart($('ch-likes'),PROG.map(a=>[a.tema||a.hora,a.likes||0]),'var(--corazon)');pintarMetricas();},e=>console.warn('programa',e));
  onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>{window.ANUN.push(Object.assign({id:d.id},d.data()));});pintarAnun();pintarMetricas();},e=>console.warn('anuncios',e));
  onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>{FAQ.push(Object.assign({id:d.id},d.data()));});FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarFAQ();},e=>console.warn('faq',e));
@@ -359,12 +348,7 @@ function escuchar(){
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};if(!juegosLoaded){juegosLoaded=true;renderToggles();}syncToggles();},e=>console.warn('juegos',e));
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};if(juegosLoaded)fillExtra();},e=>console.warn('extra',e));
  onSnapshot(collection(db,'sorteos'),s=>{window.SORT=[];s.forEach(d=>{window.SORT.push(Object.assign({id:d.id},d.data()));});pintarHistSorteo();},e=>console.warn('sorteos',e));
- // ===== SORTEO EN VIVO =====
- onSnapshot(doc(db,'config','sorteoLive'),s=>{
-  SORTEO_LIVE=s.exists()?s.data():null;
-  if(!sorteoLiveLoaded){sorteoLiveLoaded=true;renderSorteoLiveForm();}
-  pintarSorteoLive();
- },e=>console.warn('sorteoLive',e));
+ onSnapshot(doc(db,'config','sorteoLive'),s=>{SORTEO_LIVE=s.exists()?s.data():null;pintarSorteoLive();},e=>console.warn('sorteoLive',e));
  if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>{window.ADM[d.id]=d.data();});pintarAdmins();},e=>console.warn('admins',e));
 }
 function pintarMetricas(){
@@ -474,6 +458,11 @@ window.cargarAvatares=async input=>{const files=Array.from(input.files);if(!file
 window.quitarAvatar=async i=>{const items=AVATARES.slice();items.splice(i,1);await setDoc(doc(db,'config','avatares'),{items:items},{merge:true});toast('Avatar quitado');};
 function comprimirImg(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const S=256;const cv=document.createElement('canvas');cv.width=S;cv.height=S;const x=cv.getContext('2d');const sc=Math.min(S/im.width,S/im.height);const w=im.width*sc,hh=im.height*sc;x.clearRect(0,0,S,S);x.drawImage(im,(S-w)/2,(S-hh)/2,w,hh);cb(cv.toDataURL('image/png'));};im.src=r.result;};r.readAsDataURL(file);}
 function comprimirFull(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1080,H=1350;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');const sc=Math.max(W/im.width,H/im.height);const w=im.width*sc,hh=im.height*sc;x.drawImage(im,(W-w)/2,(H-hh)/2,w,hh);cb(cv.toDataURL('image/jpeg',0.82));};im.src=r.result;};r.readAsDataURL(file);}
+// ===== ICONOS DE JUEGOS =====
+function renderImgJuegosPrev(){ ['quiz','ranking','sorteo'].forEach(k=>{ const url=(juegosImgPend[k]!==undefined)?juegosImgPend[k]:(JUEGOS_IMG[k]||''); const img=$('gi-prev-'+k); if(img){ if(url){img.src=url;img.style.visibility='visible';} else {img.removeAttribute('src');img.style.visibility='hidden';} } }); }
+window.cargarImgJuego=(k,input)=>{const f=input.files[0];if(!f)return; if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;} comprimirImg(f,url=>{ juegosImgPend[k]=url; renderImgJuegosPrev(); toast('Icono listo · pulsa Guardar iconos'); });};
+window.guardarImgJuegos=async()=>{ const data=Object.assign({},JUEGOS_IMG); ['quiz','ranking','sorteo'].forEach(k=>{ if(juegosImgPend[k]!==undefined) data[k]=juegosImgPend[k]; }); await setDoc(doc(db,'config','juegosImg'),data,{merge:true}); juegosImgPend={}; renderImgJuegosPrev(); toast('✓ Iconos guardados'); };
+// ===== /ICONOS DE JUEGOS =====
 window.cargarImgSello=(n,input)=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;}
  comprimirImg(f,url=>{window._imgPend=window._imgPend||{};window._imgPend[n]=url;const p=$('sp-'+n);if(p){p.src=url;p.style.visibility='visible';}toast('✓ Imagen botón lista · pulsa Guardar');});};
 window.quitarImgSello=n=>{window._imgPend=window._imgPend||{};window._imgPend[n]='';const p=$('sp-'+n);if(p){p.removeAttribute('src');p.style.visibility='hidden';}toast('Imagen botón quitada · pulsa Guardar');};
@@ -501,12 +490,20 @@ window.genToken=async n=>{const t='SV2026-S'+n+'-'+Array.from(crypto.getRandomVa
 window.imprimirQRs=async()=>{let h='<html><body style="display:flex;flex-wrap:wrap;gap:30px;padding:30px">';
  for(let n=1;n<=7;n++){const sd=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const el=document.createElement('div');if(sd.token)new QRCode(el,{text:sd.token,width:180,height:180});const img=el.querySelector('canvas')?el.querySelector('canvas').toDataURL():'';h+='<div style="text-align:center"><img src="'+img+'" style="width:180px"><b>Sello '+n+'</b></div>';}
  h+='</body></html>';const w=window.open('');w.document.write(h);w.document.close();setTimeout(()=>w.print(),600);};
+// ===== PROGRAMA: crear / editar / imagen =====
+window.cargarImgProg=input=>{const f=input.files[0];if(!f)return; if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;} comprimirImg(f,url=>{progImgPend=url; const p=$('pg-img-prev'); p.src=url;p.style.visibility='visible';});};
+window.cancelarProgEdit=()=>{progEditId=null;progImgPend=null;['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value='');const p=$('pg-img-prev');p.removeAttribute('src');p.style.visibility='hidden';$('pg-img').value='';$('prog-edit-banner').classList.add('oculto');$('pg-save-btn').textContent='+ Agregar';};
+window.editarProg=id=>{const a=PROG.find(x=>x.id===id);if(!a)return; progEditId=id; progImgPend=null; $('pg-fecha').value=a.fecha||''; $('pg-hora').value=a.hora||''; $('pg-tema').value=a.tema||''; $('pg-dis').value=a.disertante||''; $('pg-lugar').value=a.lugar||''; const p=$('pg-img-prev'); if(a.img){p.src=a.img;p.style.visibility='visible';}else{p.removeAttribute('src');p.style.visibility='hidden';} $('prog-edit-banner').classList.remove('oculto'); $('prog-edit-name').textContent=a.tema||''; $('pg-save-btn').textContent='Guardar cambios';};
 window.guardarProg=async()=>{const h=$('pg-hora').value;if(!h||!$('pg-tema').value){toast('Completa hora y tema');return;}
- await addDoc(collection(db,'programa'),{fecha:$('pg-fecha').value||'',hora:h,tema:$('pg-tema').value.trim(),disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim(),likes:0,checkin:''});
- ['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>{$(i).value='';});toast('✓ Actividad');};
+ const fields={fecha:$('pg-fecha').value||'',hora:h,tema:$('pg-tema').value.trim(),disertante:$('pg-dis').value.trim(),lugar:$('pg-lugar').value.trim()};
+ if(progEditId){ if(progImgPend!==null) fields.img=progImgPend; await updateDoc(doc(db,'programa',progEditId),fields); toast('✓ Evento actualizado'); cancelarProgEdit(); }
+ else { fields.likes=0; fields.checkin=''; if(progImgPend!==null) fields.img=progImgPend; await addDoc(collection(db,'programa'),fields); ['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value=''); const p=$('pg-img-prev');p.removeAttribute('src');p.style.visibility='hidden';$('pg-img').value='';progImgPend=null; toast('✓ Actividad agregada'); }
+};
+window.borrarProg=async id=>{await deleteDoc(doc(db,'programa',id));};
 function pintarProg(){$('lista-prog').innerHTML=PROG.map(a=>{const asis=Object.values(PART).filter(p=>(p.asistencias||[]).indexOf(a.id)>=0).length;
  const tiene=a.checkin?'<button class="btn mini solido" data-id="'+a.id+'" onclick="verCheckin(this.dataset.id)">Ver QR</button><button class="btn mini" data-id="'+a.id+'" onclick="imprimirCheckin(this.dataset.id)">Imprimir QR</button>':'';
- return '<div class="item-prog"><span class="hora">'+esc(a.hora)+'<span style="font-size:10px;color:var(--texto2)">'+fmtF(a.fecha)+'</span></span><div class="det"><b>'+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+(a.lugar?(' · '+esc(a.lugar)):'')+' · ✓'+asis+' · ♥'+(a.likes||0)+(a.checkin?' · <span style="font-family:monospace;color:var(--oro)">'+esc(a.checkin)+'</span>':'')+'</span></div><button class="btn mini" data-id="'+a.id+'" onclick="genCheckin(this.dataset.id)">QR check-in</button>'+tiene+'<button class="btn mini peligro" data-id="'+a.id+'" onclick="borrarProg(this.dataset.id)">✕</button></div>';}).join('')||'<div class="vacio">Sin actividades</div>';
+ const img=a.img||'';
+ return '<div class="item-prog">'+(img?'<img class="thumb" src="'+img+'" alt="">':'')+'<span class="hora">'+esc(a.hora)+'<span style="font-size:10px;color:var(--texto2)">'+fmtF(a.fecha)+'</span></span><div class="det"><b>'+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+(a.lugar?(' · '+esc(a.lugar)):'')+' · ✓'+asis+' · ♥'+(a.likes||0)+(a.checkin?' · <span style="font-family:monospace;color:var(--oro)">'+esc(a.checkin)+'</span>':'')+'</span></div><button class="btn mini" data-id="'+a.id+'" onclick="editarProg(this.dataset.id)">Editar</button><button class="btn mini" data-id="'+a.id+'" onclick="genCheckin(this.dataset.id)">QR check-in</button>'+tiene+'<button class="btn mini peligro" data-id="'+a.id+'" onclick="borrarProg(this.dataset.id)">✕</button></div>';}).join('')||'<div class="vacio">Sin actividades</div>';
  $('jz-apl').textContent=PROG.reduce((s,a)=>s+(a.likes||0),0);}
 window.genCheckin=async id=>{const t='CHK-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');await updateDoc(doc(db,'programa',id),{checkin:t});toast('✓ Código check-in: '+t);};
 window.verCheckin=id=>{const a=PROG.find(x=>x.id===id);if(!a||!a.checkin){toast('Primero genera el código con "QR check-in"');return;}
@@ -517,7 +514,6 @@ window.imprimirCheckin=id=>{const a=PROG.find(x=>x.id===id);if(!a||!a.checkin){t
  const w=window.open('','_blank');
  w.document.write('<!doctype html><html><head><title>Imprimir QR · '+esc(a.tema)+'</title><style>@page{size:A6;margin:8mm}body{margin:0;font-family:-apple-system,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:12px;text-align:center;color:#1d1a17}.t{font-size:10px;letter-spacing:.14em;color:#6d1f6e;text-transform:uppercase;font-weight:600}.titulo{font-size:18px;font-weight:700;margin:4px 0}.sub{font-size:11px;color:#666;margin-bottom:14px}.qr{padding:10px;background:#fff;border:1px solid #ddd;border-radius:8px}.code{margin-top:12px;font-family:ui-monospace,monospace;font-size:14px;font-weight:600;letter-spacing:.05em;background:#f4f0e9;color:#7a1034;padding:8px 14px;border-radius:999px}</style></head><body><div class="t">Check-in de asistencia</div><div class="titulo">'+esc(a.tema)+'</div><div class="sub">'+fmtF(a.fecha)+' · '+esc(a.hora)+'</div><div class="qr" id="qr"></div><div class="code">'+esc(a.checkin)+'</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:"'+esc(a.checkin)+'",width:220,height:220,colorDark:"#000",colorLight:"#fff"});setTimeout(function(){window.print();},700);<\/script></body></html>');
  w.document.close();};
-window.borrarProg=async id=>{await deleteDoc(doc(db,'programa',id));};
 window.enviarAnuncio=async()=>{const t=$('an-titulo').value.trim();const m=$('an-msg').value.trim();if(!m){toast('Escribe el mensaje');return;}
  await addDoc(collection(db,'anuncios'),{titulo:t,mensaje:m,fecha:new Date().toISOString()});$('an-titulo').value='';$('an-msg').value='';toast('✓ Enviado');};
 function pintarAnun(){$('lista-anun').innerHTML=window.ANUN.map(a=>'<div class="item-prog"><div class="det"><b>'+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje||'')+'</span></div></div>').join('');}
@@ -534,19 +530,19 @@ window.guardarPerfil=async()=>{const dv=parseFloat($('pf-chatdelay').value);cons
  await setDoc(doc(db,'config','perfil'),{nombreOraculo:$('pf-nombre').value.trim()||'El Oráculo',tituloApp:$('pf-titulo').value.trim(),subApp:$('pf-sub').value.trim(),avatarOraculo:$('pf-url-oraculo').value.trim(),avatarUsuario:$('pf-url-usuario').value.trim(),chatDelay:delay},{merge:true});toast('✓ Perfil guardado (chat: '+delay+'s)');};
 window.guardarFrases=async()=>{const lines=$('fr-aliento').value.split('\n').map(x=>x.trim()).filter(Boolean);
  await setDoc(doc(db,'config','frases'),{aliento:lines,final:$('fr-final').value.trim()},{merge:true});toast('✓ Frases guardadas');};
-
 // ===== SORTEO EN VIVO =====
+let SORTEO_LIVE=null,sorteoLiveLoaded=false,sorteoInterval=null;
 function renderSorteoLiveForm(){
  const S=SORTEO_LIVE||{};
  $('slv-titulo').value=S.titulo||'Sorteo final';
- $('slv-sub').value=S.subtitulo||'Cinco elegidos · cinco premios';
+ $('slv-sub').value=S.subtitulo||'Cinco premios · cinco elegidos';
  $('slv-reglas').value=S.reglas||'';
  $('slv-hora').value=toLocal(S.horaInicio)||'';
  const premios=S.premios||['','','','',''];
  const cont=$('slv-premios');cont.innerHTML='';
  for(let i=0;i<5;i++){
-  const row=document.createElement('div');row.className='slv-premio-row';
-  row.innerHTML='<div class="slv-premio-num">'+(i+1)+'°</div><input class="slv-premio-input" id="slv-p'+i+'" placeholder="Premio '+(i+1)+' · descripción y forma de retiro" value="'+esc(premios[i]||'')+'">';
+  const row=document.createElement('div');row.className='slv-premio-row';row.style.cssText='display:flex;gap:8px;align-items:center;margin-bottom:8px';
+  row.innerHTML='<div style="flex:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700">'+(i+1)+'°</div><input style="flex:1;margin:0" id="slv-p'+i+'" placeholder="Premio '+(i+1)+' · descripción y forma de retiro" value="'+esc(premios[i]||'')+'">';
   cont.appendChild(row);
  }
 }
@@ -558,28 +554,23 @@ function pintarSorteoLive(){
  st.textContent=estado==='esperando'?'⏳ Esperando':estado==='en_vivo'?'🔴 En vivo':'✓ Finalizado';
  st.className='slv-status '+estado;
  const aptos=Object.values(PART).filter(p=>p.estado==='apto').length;
- const stats=$('slv-stats');
- stats.innerHTML='Participantes aptos: <b style="color:var(--verde)">'+aptos+'</b> · Ganadores revelados: <b style="color:var(--oro)">'+ganadores.length+'/5</b>';
- // Vista previa
+ $('slv-stats').innerHTML='Participantes aptos: <b style="color:var(--verde)">'+aptos+'</b> · Ganadores revelados: <b style="color:var(--oro)">'+ganadores.filter(g=>g&&g.revelado!==false).length+'/5</b>';
  const pv=$('slv-preview');
- pv.innerHTML='<div class="label">Los participantes ven ahora</div><div class="val">'+esc(S.titulo||'Sorteo final')+' · '+esc(S.subtitulo||'')+'</div>'
-  +'<div style="margin-top:6px;font-size:12px;opacity:.85">'+(ganadores.length?ganadores.length+' ganador(es) visibles':'Aún no hay ganadores revelados')+'</div>';
- // Botones
+ pv.innerHTML='<div style="font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:6px">Los participantes ven ahora</div><div style="font-size:15px;font-weight:600">'+esc(S.titulo||'Sorteo final')+' · '+esc(S.subtitulo||'')+'</div><div style="margin-top:6px;font-size:12px;opacity:.85">'+(ganadores.filter(g=>g&&g.revelado!==false).length?ganadores.filter(g=>g&&g.revelado!==false).length+' ganador(es) visibles':'Aún no hay ganadores revelados')+'</div>';
  const btnI=$('slv-iniciar'),btnE=$('slv-ejecutar'),btnR=$('slv-reiniciar');
  btnI.disabled=(estado!=='esperando');btnI.style.opacity=btnI.disabled?.5:1;
  btnE.disabled=(estado!=='en_vivo');btnE.style.opacity=btnE.disabled?.5:1;
  btnR.disabled=false;
- // Lista de ganadores
  const cont=$('slv-ganadores');
  if(!ganadores.length){
   cont.innerHTML='<div class="vacio" style="padding:20px">Aún no hay ganadores. Ejecutá el sorteo para revelarlos uno a uno.</div>';
   return;
  }
- const puestos=['1° Lugar','2° Lugar','3° Lugar','4° Lugar','5° Lugar'];
+ const puestos=['1°','2°','3°','4°','5°'];
  cont.innerHTML=ganadores.slice(0,5).map((g,i)=>{
-  const revelado=g.revelado!==false;
+  const revelado=g&&g.revelado!==false;
   const oro=i===0;
-  return '<div class="slv-ganador'+(oro?' oro':'')+(revelado?' revelado':'')+'"><div class="slv-puesto">'+(i+1)+'°</div><div class="slv-info"><div class="pos">'+puestos[i]+'</div><div class="nm">'+(revelado?esc(g.nombre):'· · · por revelar · · ·')+'</div></div></div>';
+  return '<div class="item-prog'+(revelado?'':'" style="opacity:.4')+'"'+(oro&&revelado?' style="border-color:var(--oro);background:rgba(255,214,10,.08)"':'')+'><div style="flex:none;width:44px;height:44px;border-radius:50%;background:'+(oro?'linear-gradient(140deg,var(--oro),#a97b12)':'var(--card2)')+';color:'+(oro?'#fff':'var(--texto2)')+';display:grid;place-items:center;font-size:13px;font-weight:700">'+puestos[i]+'</div><div class="det"><b>'+(revelado?esc(g.nombre):'· · · por revelar · · ·')+'</b><span>'+(revelado?(esc(g.email||'')):'')+'</span></div></div>';
  }).join('');
 }
 window.guardarSorteoLive=async()=>{
@@ -615,15 +606,9 @@ window.ejecutarSorteoLive=async()=>{
  if(!confirm('¿Ejecutar el sorteo ahora? Se elegirán 5 ganadores al azar y se revelarán uno a uno cada 3 segundos en las apps.'))return;
  const pool=aptos.slice();const g=[];
  for(let i=0;i<5;i++){g.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}
- const ganadores=g.map((p,i)=>({
-  nombre:p.nombre+' '+(p.apellido||''),
-  email:p.email||'',
-  telefono:p.telefono||'',
-  revelado:false
- }));
+ const ganadores=g.map((p)=>({nombre:p.nombre+' '+(p.apellido||''),email:p.email||'',telefono:p.telefono||'',revelado:false}));
  await updateDoc(doc(db,'config','sorteoLive'),{ganadores:ganadores,fechaSorteo:new Date().toISOString()});
  toast('🏆 Sorteo ejecutado · revelando ganadores...');
- // Revelado escalonado cada 3 segundos
  let idx=0;
  if(sorteoInterval)clearInterval(sorteoInterval);
  sorteoInterval=setInterval(async()=>{
@@ -632,7 +617,6 @@ window.ejecutarSorteoLive=async()=>{
   if(idx>=list.length){
    clearInterval(sorteoInterval);sorteoInterval=null;
    await updateDoc(doc(db,'config','sorteoLive'),{estado:'finalizado'});
-   // Guardar también en historial y notificar
    await addDoc(collection(db,'sorteos'),{fecha:new Date().toISOString(),n:5,ganadores:list.map(x=>({nombre:x.nombre,email:x.email,telefono:x.telefono}))});
    await addDoc(collection(db,'anuncios'),{titulo:'🏆 GANADORES DEL SORTEO',mensaje:list.map(x=>x.nombre).join(' · '),fecha:new Date().toISOString()});
    toast('✓ Sorteo finalizado y notificado');
@@ -645,22 +629,12 @@ window.ejecutarSorteoLive=async()=>{
 };
 window.reiniciarSorteoLive=async()=>{
  if(!confirm('¿Reiniciar el sorteo a 0? Se borrará la configuración actual y los ganadores. Podrás empezar uno nuevo.'))return;
- await setDoc(doc(db,'config','sorteoLive'),{
-  estado:'esperando',
-  titulo:'Sorteo final',
-  subtitulo:'Cinco elegidos · cinco premios',
-  reglas:'',
-  premios:['','','','',''],
-  horaInicio:null,
-  ganadores:[],
-  fechaSorteo:null
- },{merge:false});
+ await setDoc(doc(db,'config','sorteoLive'),{estado:'esperando',titulo:'Sorteo final',subtitulo:'',reglas:'',premios:['','','','',''],horaInicio:null,ganadores:[],fechaSorteo:null},{merge:false});
  if(sorteoInterval){clearInterval(sorteoInterval);sorteoInterval=null;}
  renderSorteoLiveForm();
  toast('↻ Sorteo reiniciado');
 };
 // ===== /SORTEO EN VIVO =====
-
 function pintarHistSorteo(){$('hist-sorteo').innerHTML=(window.SORT||[]).length?(window.SORT||[]).map(s=>'<div class="card" style="margin-bottom:10px"><b>Sorteo · '+new Date(s.fecha).toLocaleString()+' · '+((s.ganadores||[]).length)+' ganador(es)</b>'+(s.ganadores||[]).map((g,i)=>'<div style="color:var(--verde);margin-top:6px;font-size:13px">'+(i+1)+'° 🏆 '+esc(g.nombre)+'</div>').join('')+'</div>').join(''):'<div class="vacio">Sin sorteos anteriores</div>';}
 window.crearAdmin=async()=>{$('eq-err').textContent='';const n=$('eq-nombre').value.trim();const e=$('eq-email').value.trim();const c=$('eq-clave').value;const r=$('eq-rol').value;
  if(!n||!e||c.length<6){$('eq-err').textContent='Completa todo y clave mín 6';return;}
