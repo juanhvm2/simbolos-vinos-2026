@@ -87,6 +87,7 @@ tr:last-child td{border-bottom:none}
 .vacio{color:var(--texto3);text-align:center;padding:40px;font-size:14px}
 .rz-check{display:flex;gap:10px;align-items:center;font-size:14px;margin:12px 0;cursor:pointer}
 .avatar-prev{width:64px;height:64px;border-radius:50%;object-fit:cover;background:var(--card2);border:2px solid var(--linea2);display:block;margin-top:6px}
+.banner-prev{width:100%;max-width:600px;aspect-ratio:1200/400;object-fit:cover;border-radius:10px;border:1px solid var(--linea2);display:block;margin-top:8px;background:var(--bg2)}
 .av-thumb{position:relative;display:inline-block}
 .av-thumb img{width:76px;height:76px;border-radius:16px;object-fit:cover;display:block;border:1px solid var(--linea2)}
 .av-thumb button{position:absolute;top:-8px;right:-8px;padding:2px 8px;border-radius:50%}
@@ -226,7 +227,7 @@ tr:last-child td{border-bottom:none}
  <div class="card">
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
    <h3 style="margin:0">Estado actual</h3>
-   <span class="slv-status" id="slv-status">—</span>
+   <span id="slv-status" style="display:inline-block;padding:6px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,214,10,.15);color:var(--oro);border:1px solid rgba(255,214,10,.3)">—</span>
   </div>
   <div id="slv-stats" style="font-size:13px;color:var(--texto2)"></div>
  </div>
@@ -240,6 +241,16 @@ tr:last-child td{border-bottom:none}
   <textarea id="slv-reglas" style="min-height:100px" placeholder="Solo participan quienes completaron los 7 sellos antes del cierre."></textarea>
   <label>HORA DE INICIO (cuenta regresiva visible en las apps)</label>
   <input id="slv-hora" type="datetime-local">
+
+  <!-- ===== BANNER DEL SORTEO (nuevo) ===== -->
+  <label style="margin-top:14px">BANNER DEL SORTEO (1200×400 · visible arriba de la pantalla Sorteo en las apps)</label>
+  <p style="font-size:12px;color:var(--texto3);margin:-2px 0 6px">Subí una imagen horizontal de 1200×400px. Si no subís ninguna, las apps muestran un banner con gradiente y el título del sorteo.</p>
+  <input type="file" accept="image/*" id="slv-banner-input" onchange="cargarBannerSorteo(this)">
+  <div style="display:flex;gap:10px;align-items:flex-start;margin-top:8px;flex-wrap:wrap">
+   <img id="slv-banner-prev" class="banner-prev" style="visibility:hidden">
+   <button class="btn mini peligro" id="slv-banner-quitar" style="visibility:hidden" onclick="quitarBannerSorteo()">✕ Quitar banner</button>
+  </div>
+  <!-- ===== /BANNER DEL SORTEO ===== -->
  </div>
  <div class="card">
   <h3>2 · Los 5 premios</h3>
@@ -255,7 +266,7 @@ tr:last-child td{border-bottom:none}
    <button class="btn solido" id="slv-ejecutar" onclick="ejecutarSorteoLive()" style="background:var(--verde);border-color:var(--verde);color:#fff">🏆 Ejecutar sorteo</button>
    <button class="btn peligro" id="slv-reiniciar" onclick="reiniciarSorteoLive()">↻ Reiniciar a 0</button>
   </div>
-  <div class="slv-preview" id="slv-preview"></div>
+  <div id="slv-preview" style="padding:16px;border-radius:12px;background:linear-gradient(140deg,#7a1034,#6d1f6e);color:#fff;font-size:13px;margin-top:14px"></div>
  </div>
  <div class="card">
   <h3>4 · Ganadores revelados (en vivo)</h3>
@@ -457,12 +468,45 @@ window.cargarAvatares=async input=>{const files=Array.from(input.files);if(!file
  input.value='';};
 window.quitarAvatar=async i=>{const items=AVATARES.slice();items.splice(i,1);await setDoc(doc(db,'config','avatares'),{items:items},{merge:true});toast('Avatar quitado');};
 function comprimirImg(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const S=256;const cv=document.createElement('canvas');cv.width=S;cv.height=S;const x=cv.getContext('2d');const sc=Math.min(S/im.width,S/im.height);const w=im.width*sc,hh=im.height*sc;x.clearRect(0,0,S,S);x.drawImage(im,(S-w)/2,(S-hh)/2,w,hh);cb(cv.toDataURL('image/png'));};im.src=r.result;};r.readAsDataURL(file);}
+// Compresión específica para banner 1200x400
+function comprimirBanner(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1200,H=400;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');const sc=Math.max(W/im.width,H/im.height);const w=im.width*sc,hh=im.height*sc;x.drawImage(im,(W-w)/2,(H-hh)/2,w,hh);cb(cv.toDataURL('image/jpeg',0.85));};im.src=r.result;};r.readAsDataURL(file);}
 function comprimirFull(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1080,H=1350;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');const sc=Math.max(W/im.width,H/im.height);const w=im.width*sc,hh=im.height*sc;x.drawImage(im,(W-w)/2,(H-hh)/2,w,hh);cb(cv.toDataURL('image/jpeg',0.82));};im.src=r.result;};r.readAsDataURL(file);}
 // ===== ICONOS DE JUEGOS =====
 function renderImgJuegosPrev(){ ['quiz','ranking','sorteo'].forEach(k=>{ const url=(juegosImgPend[k]!==undefined)?juegosImgPend[k]:(JUEGOS_IMG[k]||''); const img=$('gi-prev-'+k); if(img){ if(url){img.src=url;img.style.visibility='visible';} else {img.removeAttribute('src');img.style.visibility='hidden';} } }); }
 window.cargarImgJuego=(k,input)=>{const f=input.files[0];if(!f)return; if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;} comprimirImg(f,url=>{ juegosImgPend[k]=url; renderImgJuegosPrev(); toast('Icono listo · pulsa Guardar iconos'); });};
 window.guardarImgJuegos=async()=>{ const data=Object.assign({},JUEGOS_IMG); ['quiz','ranking','sorteo'].forEach(k=>{ if(juegosImgPend[k]!==undefined) data[k]=juegosImgPend[k]; }); await setDoc(doc(db,'config','juegosImg'),data,{merge:true}); juegosImgPend={}; renderImgJuegosPrev(); toast('✓ Iconos guardados'); };
-// ===== /ICONOS DE JUEGOS =====
+// ===== BANNER DEL SORTEO =====
+let bannerSorteoPend=null;
+function renderBannerSorteoPrev(){
+ const url=(bannerSorteoPend!==undefined)?bannerSorteoPend:((SORTEO_LIVE&&SORTEO_LIVE.banner)||'');
+ const img=$('slv-banner-prev');
+ const btn=$('slv-banner-quitar');
+ if(url){
+  img.src=url;img.style.visibility='visible';
+  btn.style.visibility='visible';
+ } else {
+  img.removeAttribute('src');img.style.visibility='hidden';
+  btn.style.visibility='hidden';
+ }
+}
+window.cargarBannerSorteo=input=>{
+ const f=input.files[0];
+ if(!f)return;
+ if(f.size>8*1024*1024){toast('Imagen muy pesada (máx 8MB)');input.value='';return;}
+ comprimirBanner(f,url=>{
+  bannerSorteoPend=url;
+  renderBannerSorteoPrev();
+  toast('✓ Banner listo · pulsa Guardar configuración');
+ });
+};
+window.quitarBannerSorteo=()=>{
+ if(!confirm('¿Quitar el banner del sorteo? Las apps mostrarán el banner con gradiente por defecto.'))return;
+ bannerSorteoPend='';
+ renderBannerSorteoPrev();
+ $('slv-banner-input').value='';
+ toast('Banner quitado · pulsa Guardar configuración');
+};
+// ===== /BANNER DEL SORTEO =====
 window.cargarImgSello=(n,input)=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;}
  comprimirImg(f,url=>{window._imgPend=window._imgPend||{};window._imgPend[n]=url;const p=$('sp-'+n);if(p){p.src=url;p.style.visibility='visible';}toast('✓ Imagen botón lista · pulsa Guardar');});};
 window.quitarImgSello=n=>{window._imgPend=window._imgPend||{};window._imgPend[n]='';const p=$('sp-'+n);if(p){p.removeAttribute('src');p.style.visibility='hidden';}toast('Imagen botón quitada · pulsa Guardar');};
@@ -538,6 +582,7 @@ function renderSorteoLiveForm(){
  $('slv-sub').value=S.subtitulo||'Cinco premios · cinco elegidos';
  $('slv-reglas').value=S.reglas||'';
  $('slv-hora').value=toLocal(S.horaInicio)||'';
+ renderBannerSorteoPrev();
  const premios=S.premios||['','','','',''];
  const cont=$('slv-premios');cont.innerHTML='';
  for(let i=0;i<5;i++){
@@ -551,8 +596,10 @@ function pintarSorteoLive(){
  const estado=S.estado||'esperando';
  const ganadores=S.ganadores||[];
  const st=$('slv-status');
- st.textContent=estado==='esperando'?'⏳ Esperando':estado==='en_vivo'?'🔴 En vivo':'✓ Finalizado';
- st.className='slv-status '+estado;
+ const stMap={'esperando':['⏳ Esperando','rgba(255,214,10,.15)','var(--oro)','rgba(255,214,10,.3)'],'en_vivo':['🔴 En vivo','rgba(255,69,58,.15)','var(--rojo)','rgba(255,69,58,.3)'],'finalizado':['✓ Finalizado','rgba(48,209,88,.15)','var(--verde)','rgba(48,209,88,.3)']};
+ const stCfg=stMap[estado]||stMap['esperando'];
+ st.textContent=stCfg[0];
+ st.style.background=stCfg[1];st.style.color=stCfg[2];st.style.borderColor=stCfg[3];
  const aptos=Object.values(PART).filter(p=>p.estado==='apto').length;
  $('slv-stats').innerHTML='Participantes aptos: <b style="color:var(--verde)">'+aptos+'</b> · Ganadores revelados: <b style="color:var(--oro)">'+ganadores.filter(g=>g&&g.revelado!==false).length+'/5</b>';
  const pv=$('slv-preview');
@@ -572,11 +619,15 @@ function pintarSorteoLive(){
   const oro=i===0;
   return '<div class="item-prog'+(revelado?'':'" style="opacity:.4')+'"'+(oro&&revelado?' style="border-color:var(--oro);background:rgba(255,214,10,.08)"':'')+'><div style="flex:none;width:44px;height:44px;border-radius:50%;background:'+(oro?'linear-gradient(140deg,var(--oro),#a97b12)':'var(--card2)')+';color:'+(oro?'#fff':'var(--texto2)')+';display:grid;place-items:center;font-size:13px;font-weight:700">'+puestos[i]+'</div><div class="det"><b>'+(revelado?esc(g.nombre):'· · · por revelar · · ·')+'</b><span>'+(revelado?(esc(g.email||'')):'')+'</span></div></div>';
  }).join('');
+ renderBannerSorteoPrev();
 }
 window.guardarSorteoLive=async()=>{
  const premios=[];for(let i=0;i<5;i++){premios.push(($('slv-p'+i).value||'').trim());}
  const hora=$('slv-hora').value?new Date($('slv-hora').value).toISOString():null;
  const cur=SORTEO_LIVE||{};
+ // Banner: priorizar pendiente, si no, el que ya está guardado
+ let banner=(bannerSorteoPend!==undefined)?bannerSorteoPend:(cur.banner||null);
+ if(banner==='')banner=null; // borrado explícito
  const data={
   estado:cur.estado||'esperando',
   titulo:$('slv-titulo').value.trim()||'Sorteo final',
@@ -584,11 +635,14 @@ window.guardarSorteoLive=async()=>{
   reglas:$('slv-reglas').value.trim(),
   premios:premios,
   horaInicio:hora,
+  banner:banner,
   ganadores:cur.ganadores||[],
   fechaSorteo:cur.fechaSorteo||null
  };
  await setDoc(doc(db,'config','sorteoLive'),data,{merge:true});
- toast('✓ Configuración guardada');
+ bannerSorteoPend=null;
+ renderBannerSorteoPrev();
+ toast('✓ Configuración guardada'+(banner?' · banner incluido':''));
 };
 window.iniciarSorteoLive=async()=>{
  const cur=SORTEO_LIVE||{};
@@ -629,7 +683,8 @@ window.ejecutarSorteoLive=async()=>{
 };
 window.reiniciarSorteoLive=async()=>{
  if(!confirm('¿Reiniciar el sorteo a 0? Se borrará la configuración actual y los ganadores. Podrás empezar uno nuevo.'))return;
- await setDoc(doc(db,'config','sorteoLive'),{estado:'esperando',titulo:'Sorteo final',subtitulo:'',reglas:'',premios:['','','','',''],horaInicio:null,ganadores:[],fechaSorteo:null},{merge:false});
+ await setDoc(doc(db,'config','sorteoLive'),{estado:'esperando',titulo:'Sorteo final',subtitulo:'',reglas:'',premios:['','','','',''],horaInicio:null,banner:null,ganadores:[],fechaSorteo:null},{merge:false});
+ bannerSorteoPend=null;
  if(sorteoInterval){clearInterval(sorteoInterval);sorteoInterval=null;}
  renderSorteoLiveForm();
  toast('↻ Sorteo reiniciado');
@@ -653,7 +708,7 @@ window.rzPaso2=async()=>{const ops=[];const del=col=>getDocs(collection(db,col))
  if($('rz-corazones').checked)PROG.forEach(a=>ops.push({t:'u',ref:doc(db,'programa',a.id),d:{likes:0}}));
  if($('rz-chats').checked)await setDoc(doc(db,'config','perfil'),{chatReset:new Date().toISOString()},{merge:true});
  if($('rz-anun').checked)await del('anuncios');
- if($('rz-sort').checked){await del('sorteos');await setDoc(doc(db,'config','sorteoLive'),{estado:'esperando',titulo:'Sorteo final',subtitulo:'',reglas:'',premios:['','','','',''],horaInicio:null,ganadores:[],fechaSorteo:null},{merge:false});}
+ if($('rz-sort').checked){await del('sorteos');await setDoc(doc(db,'config','sorteoLive'),{estado:'esperando',titulo:'Sorteo final',subtitulo:'',reglas:'',premios:['','','','',''],horaInicio:null,banner:null,ganadores:[],fechaSorteo:null},{merge:false});}
  if($('rz-programa').checked)await del('programa');
  if($('rz-sellos').checked)await del('simbolos');
  for(let i=0;i<ops.length;i+=450){const b=writeBatch(db);ops.slice(i,i+450).forEach(o=>{if(o.t==='u')b.update(o.ref,o.d);else b.delete(o.ref);});await b.commit();}
