@@ -13,7 +13,6 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
 <link rel="manifest" href="manifest.webmanifest">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
 <style>
 :root{
  --fondo:#f4f0e9; --card:#fdfbf7; --card2:#ffffff;
@@ -33,7 +32,8 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .pantalla{display:none;min-height:100dvh;max-width:520px;margin:0 auto;padding:28px 22px 132px;padding-top:calc(28px + env(safe-area-inset-top))}
 .pantalla.activa{display:block;animation:ap .4s ease}
 @keyframes ap{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.mistica{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--texto2)}
+/* Tipografía moderna y legible (reemplaza la serif antigua) */
+.mistica{color:var(--texto2)}
 .orn{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--oro);margin:18px 0}
 .orn::before,.orn::after{content:"";height:1px;width:56px;background:var(--linea2)}
 #p-landing{display:none;place-items:center;text-align:center}
@@ -103,16 +103,18 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .frase-final-caja::before{content:"";position:absolute;inset:9px;border:1px double rgba(122,16,52,.38);border-radius:calc(var(--radio) - 7px);pointer-events:none}
 .ff-orn{color:var(--oro);font-size:22px;margin-bottom:8px}
 .ff-label{font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--texto2);text-transform:uppercase;margin-bottom:12px}
-.ff-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:21px;color:var(--tinta);line-height:1.5}
+/* Frase final con tipografía moderna y legible */
+.ff-text{font-family:var(--sys);font-weight:600;font-size:20px;color:var(--tinta);line-height:1.5;letter-spacing:-.01em}
 .frase-caja{margin-top:18px;padding:22px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);background:var(--card);text-align:center;position:relative;box-shadow:var(--sombra)}
 .frase-caja::before{content:"⚜";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--fondo);padding:0 10px;color:var(--oro);font-size:16px}
-.frase-caja .frag{font-size:16px;font-weight:600;color:var(--tinta);letter-spacing:.02em;line-height:1.8}
+.frase-caja .frag{font-family:var(--sys);font-weight:600;font-size:16px;color:var(--tinta);letter-spacing:.02em;line-height:1.8}
 .frase-caja .pista{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--texto2);text-transform:uppercase}
 #juegos-lista{display:flex;flex-direction:column;gap:12px}
 .game-card{display:flex;align-items:center;gap:14px;padding:16px;background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:22px;box-shadow:var(--sombra);cursor:pointer;transition:transform .18s ease;width:100%;text-align:left;font-family:var(--sys)}
 .game-card:active{transform:scale(.97)}
-.game-icon{width:54px;height:54px;flex:none;border-radius:16px;display:grid;place-items:center;box-shadow:0 6px 16px rgba(92,12,38,.28)}
+.game-icon{width:54px;height:54px;flex:none;border-radius:16px;display:grid;place-items:center;box-shadow:0 6px 16px rgba(92,12,38,.28);overflow:hidden}
 .game-icon svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.game-icon img{width:100%;height:100%;object-fit:cover;display:block}
 .game-info{flex:1;min-width:0;display:flex;flex-direction:column}
 .game-title{font-weight:600;font-size:16px;color:var(--texto);letter-spacing:-.01em}
 .game-sub{font-size:13px;color:var(--texto2);margin-top:2px}
@@ -124,7 +126,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .sorteo-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,168,75,.25),transparent 60%);pointer-events:none}
 .sorteo-hero .eyebrow{font-size:10px;letter-spacing:.32em;color:rgba(255,255,255,.8);text-transform:uppercase;font-weight:600}
 .sorteo-hero h2{color:#fff;font-size:22px;letter-spacing:-.01em;margin:6px 0 4px}
-.sorteo-hero .sub{font-size:13px;color:rgba(255,255,255,.85);font-family:'Cormorant Garamond',serif;font-style:italic}
+.sorteo-hero .sub{font-size:13px;color:rgba(255,255,255,.85)}
 .sorteo-cuenta{margin-top:14px;font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,.8);text-transform:uppercase;font-weight:600}
 .sorteo-num{font-size:32px;font-weight:700;letter-spacing:-.01em;margin-top:4px;color:#fff}
 .sorteo-num.live{animation:pulse 1.4s ease-in-out infinite}
@@ -132,12 +134,10 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .reglas-card{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);padding:20px;margin-bottom:16px;box-shadow:var(--sombra)}
 .reglas-card h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);font-weight:600;margin-bottom:12px}
 .reglas-card p{font-size:14px;line-height:1.6;color:var(--texto)}
-/* Premios: todos iguales, sin jerarquía */
 .premios-lista{display:flex;flex-direction:column;gap:10px;margin-top:8px}
 .premio-item{display:flex;gap:12px;align-items:center;padding:14px;background:var(--card2);border:1px solid var(--linea);border-radius:14px}
 .premio-ico{flex:none;width:40px;height:40px;border-radius:12px;background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;display:grid;place-items:center;font-size:18px;box-shadow:0 4px 10px rgba(169,123,18,.35)}
 .premio-txt{flex:1;font-size:14px;font-weight:500;line-height:1.4}
-/* Ganadores: todos iguales, sin puestos */
 .ganadores-lista{display:flex;flex-direction:column;gap:10px}
 .ganador-item{display:flex;gap:12px;align-items:center;padding:14px;background:var(--card);border:1px solid rgba(212,168,75,.35);border-radius:16px;box-shadow:var(--sombra);opacity:0;transform:translateY(10px);animation:ganadorIn .6s ease forwards}
 @keyframes ganadorIn{to{opacity:1;transform:none}}
@@ -145,7 +145,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .ganador-info{flex:1;min-width:0}
 .ganador-info .etiqueta{font-size:10px;letter-spacing:.14em;color:var(--texto2);text-transform:uppercase;font-weight:600}
 .ganador-info .nombre{font-size:16px;font-weight:600;margin-top:2px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sorteo-esperando{text-align:center;padding:30px 20px;color:var(--texto2);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;line-height:1.5}
+.sorteo-esperando{text-align:center;padding:30px 20px;color:var(--texto2);font-size:16px;line-height:1.5}
 .sorteo-esperando .orn-mini{color:var(--oro);font-size:18px;margin-bottom:8px}
 /* ===== /SORTEO ===== */
 .perfil-hero{display:flex;gap:16px;align-items:center}
@@ -162,6 +162,8 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .ava-opt:active{transform:scale(.94)}
 .ava-opt img{width:100%;height:100%;object-fit:cover;display:block}
 .ava-opt.sel{border-color:var(--tinta);box-shadow:0 6px 18px rgba(122,16,52,.3)}
+/* Icono de evento del programa */
+.prog-img{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none;box-shadow:var(--sombra2)}
 .nav{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;display:flex;gap:4px;background:rgba(253,251,247,.86);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(122,16,52,.08);border-radius:26px;box-shadow:0 12px 40px rgba(92,12,38,.18);padding:8px}
 .nav button{flex:1;padding:8px 2px 6px;background:none;border:none;cursor:pointer;color:var(--texto3);font-family:var(--sys);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:18px}
 .nav button .i{display:block;margin:0 auto 4px;width:max-content;position:relative}
@@ -211,8 +213,8 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 #rev-img{width:100%;height:100%;object-fit:contain;transition:padding .3s ease}
 .rev-full.con-bar #rev-img{padding-bottom:120px}
 .rev-close{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-size:18px;cursor:pointer;z-index:3}
-.rev-aliento-bar{position:absolute;left:0;right:0;bottom:0;padding:20px 22px calc(20px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(20,8,14,.94),transparent);color:#fff;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;line-height:1.4}
-.rev-aliento-bar.final{font-size:20px;font-weight:600;color:var(--oro)}
+.rev-aliento-bar{position:absolute;left:0;right:0;bottom:0;padding:20px 22px calc(20px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(20,8,14,.94),transparent);color:#fff;text-align:center;font-family:var(--sys);font-size:16px;line-height:1.4}
+.rev-aliento-bar.final{font-size:18px;font-weight:600;color:var(--oro)}
 .rev-card{width:100%;max-width:400px;background:var(--card);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);animation:pop .45s cubic-bezier(.34,1.4,.64,1)}
 @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
 .rev-top{background:linear-gradient(150deg,var(--tinta),var(--purpura));padding:36px 24px 28px;text-align:center;position:relative}
@@ -224,9 +226,9 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .rev-salon{font-size:12px;color:rgba(255,255,255,.78);margin-top:5px;letter-spacing:.14em;text-transform:uppercase}
 .rev-body{padding:26px 24px 24px}
 .rev-label{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--texto2);text-transform:uppercase;text-align:center;margin-bottom:10px}
-#rev-frag{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:25px;color:var(--purpura);text-align:center;min-height:36px;line-height:1.4}
-.rev-aliento{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--texto2);text-align:center;margin:14px 0 2px}
-.rev-aliento.final{font-size:19px;color:var(--purpura);font-weight:600}
+#rev-frag{font-family:var(--sys);font-weight:600;font-size:22px;color:var(--purpura);text-align:center;min-height:36px;line-height:1.4;letter-spacing:-.01em}
+.rev-aliento{font-family:var(--sys);font-size:16px;color:var(--texto2);text-align:center;margin:14px 0 2px}
+.rev-aliento.final{font-size:18px;color:var(--purpura);font-weight:600}
 .rev-body .btn{margin-top:20px}
 #toasts{position:fixed;top:calc(14px + env(safe-area-inset-top));left:14px;right:14px;z-index:70;display:flex;flex-direction:column;gap:10px;pointer-events:none}
 .toast{background:rgba(253,251,247,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(122,16,52,.12);border-left:4px solid var(--tinta);border-radius:16px;padding:13px 16px;box-shadow:0 10px 30px rgba(92,12,38,.15);animation:bajar .45s}
@@ -311,7 +313,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <p class="mistica" style="text-align:center;margin:6px 0 16px">Toca para jugar · puedes repetir los completados.</p>
   <div id="juegos-lista"></div></section>
 
-<!-- ===== PANTALLA SORTEO ===== -->
 <section class="pantalla" id="p-sorteo">
   <div class="sorteo-hero">
     <div class="eyebrow">El cáliz del destino</div>
@@ -340,7 +341,6 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   </div>
   <button class="btn" onclick="ver('p-juegos')">Volver al salón</button>
 </section>
-<!-- ===== /PANTALLA SORTEO ===== -->
 
 <section class="pantalla" id="p-voto">
   <h2 style="font-size:22px;text-align:center">Tu ranking de bodegas</h2>
@@ -372,6 +372,10 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
       <div class="comp-bar"><i id="pf-comp"></i></div>
       <div style="font-size:11px;color:var(--texto2);margin-top:5px" id="pf-comp-txt">Completa tus datos</div>
     </div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>🎨 Elige tu avatar</h3>
+    <div class="ava-grid" id="pf-avatares"></div>
   </div>
   <div class="card" style="margin-top:12px">
     <h3>⚜ Círculo de beneficios</h3>
@@ -461,7 +465,7 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
 const qesc=s=>esc(s).replace(/'/g,'');
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
-let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},FRASES={},QUIZ=null,JUEGOS={},EXTRA={},RANK=[],AVATARES=[];
+let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},FRASES={},QUIZ=null,JUEGOS={},JUEGOS_IMG={},EXTRA={},RANK=[],AVATARES=[];
 let quizIdx=0,quizResp={};
 let vistos=JSON.parse(localStorage.getItem('sv-avisos')||'null'),avisosCache=[],notificados=new Set();
 let chatHist=JSON.parse(localStorage.getItem('sv-chat')||'[]');
@@ -499,8 +503,10 @@ const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado};
 function pintarJuegos(){const c=$('juegos-lista');c.innerHTML='';
  JUEGOS_META.forEach((m,i)=>{ if(JUEGOS[m.key]===false)return;
   const done=DONE[m.key]&&DONE[m.key]();
+  const img=JUEGOS_IMG[m.key]||'';
+  const iconHtml=img?('<img src="'+img+'" alt="">'):('<svg viewBox="0 0 24 24">'+(GAME_ICON[m.key]||'')+'</svg>');
   const d=document.createElement('button');d.type='button';d.className='game-card';
-  d.innerHTML='<span class="game-icon" style="background:'+GAME_GRAD[i%GAME_GRAD.length]+'"><svg viewBox="0 0 24 24">'+(GAME_ICON[m.key]||'')+'</svg></span>'+
+  d.innerHTML='<span class="game-icon"'+(img?'':' style="background:'+GAME_GRAD[i%GAME_GRAD.length]+'"')+'>'+iconHtml+'</span>'+
    '<span class="game-info"><span class="game-title">'+m.t+'</span><span class="game-sub">'+m.s+'</span></span>'+
    '<span class="game-right">'+(done?'<span class="game-chip">✓ Completado</span>':'')+'<svg class="game-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>';
   d.onclick=()=>abrirJuego(m.key);
@@ -524,7 +530,7 @@ const miRank=()=> (parte&&parte.votoRank)||[];
 function setRank(arr){updateDoc(doc(db,'participantes',yo),{votoRank:arr,voto:arr[0]||''});}
 window.addRank=b=>{if(miRank().length===0)setFunnel('voto');setRank([...miRank(),b]);};
 window.delRank=b=>{setRank(miRank().filter(x=>x!==b));};
-window.upRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>0){[r[i-1],r[i]]=[r[i],r[i-1]];setRank(r);}};
+window.upRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>0){[r[i-1],r[i]]=[r[i],r[i-1]];setRank(r);}}
 window.downRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>-1&&i<r.length-1){[r[i+1],r[i]]=[r[i],r[i+1]];setRank(r);}};
 function pintarVoto(){const rank=miRank();const all=EXTRA.bodegasVoto||[];
  $('voto-rank').innerHTML=rank.length?rank.map((b,i)=>'<div class="item" style="cursor:default"><span class="pos" style="width:26px">'+(i+1)+'</span><div class="det"><b>'+esc(b)+'</b></div><div class="rk-ctl"><button onclick="upRank(\''+qesc(b)+'\')">▲</button><button onclick="downRank(\''+qesc(b)+'\')">▼</button><button onclick="delRank(\''+qesc(b)+'\')">✕</button></div></div>').join(''):'<p class="mistica" style="text-align:center">Aún no has votado. Agrega bodegas abajo.</p>';
@@ -540,6 +546,8 @@ function pintarPerfil(){
  $('pf-mail').textContent=(parte.email||'')+(parte.telefono?' · '+parte.telefono:'');
  const ava=$('pf-ava');
  if(parte.avatar)ava.innerHTML='<img src="'+parte.avatar+'" alt="">';else ava.textContent=(parte.nombre||'✦')[0].toUpperCase();
+ let ag='';for(let i=0;i<8;i++){ag+='<div class="ava-opt'+((parte.avatar===i)?' sel':'')+'" onclick="elegirAvatarIdx('+i+')">'+(function(ii){return '<img src="'+AVATARES[ii]+'" alt="">';})(i)+'</div>';}
+ $('pf-avatares').innerHTML=ag||'<p class="mistica">El Oráculo aún no preparó avatares.</p>';
  let chips='<span class="chipmini'+(parte.estado==='apto'?' on':'')+'">'+(parte.estado==='apto'?'⚜ APTO':'BUSCADOR')+'</span>';
  if(parte.quiz&&parte.quiz.completado)chips+='<span class="chipmini on">'+esc(parte.quiz.titulo)+'</span>';
  if(parte.circulo)chips+='<span class="chipmini on">⚜ Círculo</span>';
@@ -603,6 +611,7 @@ function escucharTodo(){
  onSnapshot(collection(db,'programa'),s=>{programa=[];s.forEach(d=>programa.push({id:d.id,...d.data()}));programa.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarPrograma();});
  onSnapshot(collection(db,'participantes'),s=>{RANK=[];s.forEach(d=>RANK.push({id:d.id,...d.data()}));pintarRanking();});
  onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};pintarJuegos();actualizarVotoNav();});
+ onSnapshot(doc(db,'config','juegosImg'),s=>{JUEGOS_IMG=s.exists()?s.data():{};pintarJuegos();});
  onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};pintarVoto();});
  onSnapshot(doc(db,'config','avatares'),s=>{const d=s.exists()?s.data():{};AVATARES=d.items||[];pintarAvatarGrid();checkDefaultAvatar();});
  onSnapshot(doc(db,'config','frases'),s=>{FRASES=s.exists()?s.data():{};actualizarFraseFinal();});
@@ -612,11 +621,7 @@ function escucharTodo(){
   if(PERFIL.chatReset&&lr!==PERFIL.chatReset){localStorage.setItem('sv-chat-reset',PERFIL.chatReset);chatHist=[];localStorage.setItem('sv-chat','[]');renderHist();toast('🜂 El Oráculo renovó sus memorias','');}
   pintarPerfil();});
  onSnapshot(collection(db,'anuncios'),s=>{avisosCache=[];s.forEach(d=>avisosCache.push({id:d.id,...d.data()}));avisosCache.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));if(vistos===null){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));}const nv=avisosCache.filter(a=>!vistos.includes(a.id)&&!notificados.has(a.id));nv.forEach(a=>{notificados.add(a.id);toast('⚜ '+botName().toUpperCase()+' · '+(a.titulo||''),a.mensaje||'');});if(nv.length)chime();actualizarBadge();pintarAvisos();});
- // ===== SORTEO EN VIVO =====
- onSnapshot(doc(db,'config','sorteoLive'),s=>{
-   SORTEO_LIVE=s.exists()?s.data():null;
-   pintarSorteo();
- },e=>console.warn('sorteoLive',e));
+ onSnapshot(doc(db,'config','sorteoLive'),s=>{SORTEO_LIVE=s.exists()?s.data():null;pintarSorteo();},e=>console.warn('sorteoLive',e));
  escucharFAQ();escucharQuiz();
 }
 function actualizarFraseFinal(){const ff=$('frase-final-caja');if(!ff)return;
@@ -674,7 +679,6 @@ window.cerrarRevelacion=()=>{
  navegar('p-home',homeBtn);
  if(localStorage.getItem('sv-nps-pending')==='1' && parte && parte.nps==null) mostrarNps();
 };
-// ===== SORTEO =====
 function abrirSorteo(){ver('p-sorteo');pintarSorteo();}
 function pintarSorteo(){
  const S=SORTEO_LIVE||{};
@@ -685,14 +689,12 @@ function pintarSorteo(){
  if(S.titulo)$('so-titulo').textContent=S.titulo;
  if(S.subtitulo)$('so-sub').textContent=S.subtitulo;
  $('so-reglas').textContent=reglas||'El Oráculo aún no ha revelado las reglas.';
- // Premios: lista plana, sin numeración ni jerarquía
  const pl=$('so-premios');
  if(premios.length){
    pl.innerHTML=premios.map(p=>'<div class="premio-item"><div class="premio-ico">🎁</div><div class="premio-txt">'+esc(p)+'</div></div>').join('');
  } else {
    pl.innerHTML='<p class="mistica" style="font-size:13px">Los premios aún no fueron revelados.</p>';
  }
- // Cuenta regresiva / en vivo
  const label=$('so-cuenta-label');
  const num=$('so-cuenta');
  const hora=S.horaInicio?new Date(S.horaInicio):null;
@@ -718,7 +720,6 @@ function pintarSorteo(){
    num.textContent='—';
    num.classList.remove('live');
  }
- // Ganadores: lista plana, todos iguales, sin puestos
  const wrap=$('so-ganadores-wrap');
  if(ganadores.length){
    wrap.innerHTML='<div class="ganadores-lista">'+ganadores.map((g,i)=>{
@@ -751,10 +752,9 @@ setInterval(()=>{
    num.classList.add('live');
  }
 },1000);
-// ===== /SORTEO =====
 function pintarPrograma(){const likes=(parte&&parte.likes)||[];const asis=(parte&&parte.asistencias)||[];
- $('prog-lista').innerHTML=programa.map(a=>{const n=a.likes||0,my=likes.includes(a.id);const fue=asis.includes(a.id);
- return '<div class="item" onclick="darLike(\''+a.id+'\')"><div class="det"><b>'+fmtF(a.fecha)+' · '+esc(a.hora)+' · '+esc(a.tema)+(fue?' <span style="color:var(--verde)">✓ asistencia</span>':'')+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div><div class="likebox"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
+ $('prog-lista').innerHTML=programa.map(a=>{const n=a.likes||0,my=likes.includes(a.id);const fue=asis.includes(a.id);const img=a.img||'';
+ return '<div class="item" onclick="darLike(\''+a.id+'\')">'+(img?'<img class="prog-img" src="'+img+'" alt="">':'')+'<div class="det"><b>'+fmtF(a.fecha)+' · '+esc(a.hora)+' · '+esc(a.tema)+(fue?' <span style="color:var(--verde)">✓ asistencia</span>':'')+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div><div class="likebox"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
 function pintarAvisos(){$('avisos-lista').innerHTML=avisosCache.map(a=>{const nuevo=vistos&&!vistos.includes(a.id);return '<div class="item" style="cursor:default;'+(nuevo?'border-color:var(--oro)':'')+'"><div class="det"><b style="font-size:12px;font-weight:600;color:var(--tinta)">⚜ '+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje||'')+'</span></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin avisos.</p>';}
 let hq=null,escaneando=false;
 window.navegar=(id,b)=>{ver(id);document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');if(id==='p-avisos')marcarVistos();if(id==='p-scan')iniciarScanner();else pararScanner();if(id==='p-avatar')pintarAvatarGrid();};
