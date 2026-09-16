@@ -742,7 +742,7 @@ function escucharTodo(){
  // === NUEVOS LISTENERS DE DOCUMENTOS SEPARADOS ===
  onSnapshot(doc(db,'config','bannerQuiz'),s=>{BANNER_QUIZ=s.exists()?(s.data().url||null):null;pintarQuizBanner();},e=>console.warn('bannerQuiz',e));
  onSnapshot(doc(db,'config','bannerSorteo'),s=>{BANNER_SORTEO=s.exists()?(s.data().url||null):null;pintarSorteo();},e=>console.warn('bannerSorteo',e));
- onSnapshot(doc(db,'config','bannersArcano'),s=>{BANNERS_ARCANO=s.exists()?(s.data()||{}):{};},e=>console.warn('bannersArcano',e));
+ onSnapshot(collection(db,'bannersArcano'),s=>{BANNERS_ARCANO={};s.forEach(d=>{const dat=d.data();if(dat&&dat.url)BANNERS_ARCANO['arcano_'+d.id]=dat.url;});},e=>console.warn('bannersArcano',e));
  onSnapshot(doc(db,'config','textos'),s=>{TEXTOS=s.exists()?s.data():{};aplicarTextos();},e=>console.warn('textos',e));
  escucharFAQ();escucharQuiz();
 }
