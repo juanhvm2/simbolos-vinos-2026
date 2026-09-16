@@ -8,6 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="S&V 2026">
+<script>try{if(localStorage.getItem('sv-tema')==='oscuro')document.documentElement.dataset.theme='dark';}catch(e){}</script>
 <link rel="apple-touch-icon" href="icon-192.png" data-default-href="icon-192.png">
 <title>Símbolos & Vinos · Edición Masónica</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml" data-default-href="icon.svg">
@@ -23,13 +24,25 @@
  --sys:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
  --ojo-svg:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d4a84b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0'/><path d='M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6'/></svg>");
 }
+[data-theme="dark"]{
+ color-scheme:dark;
+ --fondo:#121014;--card:#1c191e;--card2:#252127;
+ --tinta:#e7a5bd;--tinta2:#f2c2d3;--purpura:#d39ad8;--oro:#e3bd69;--corazon:#ff5f91;
+ --texto:#f5eff2;--texto2:rgba(245,239,242,.66);--texto3:rgba(245,239,242,.42);
+ --linea:rgba(255,255,255,.09);--linea2:rgba(231,165,189,.28);
+ --sombra:0 10px 30px rgba(0,0,0,.28);--sombra2:0 2px 12px rgba(0,0,0,.22);
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:var(--fondo);color:var(--texto);font-family:var(--sys);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse 90% 55% at 50% -10%,rgba(122,16,52,.06),transparent 60%)}
+[data-theme="dark"] body::before{background:radial-gradient(ellipse 90% 55% at 50% -10%,rgba(231,165,189,.09),transparent 60%)}
 h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(--texto)}
 .oculto{display:none!important}
 .textura{position:fixed;inset:0;z-index:-2;opacity:.5;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.6),transparent 55%)}
-.pantalla{display:none;min-height:100dvh;max-width:520px;margin:0 auto;padding:28px 22px 132px;padding-top:calc(28px + env(safe-area-inset-top))}
+[data-theme="dark"] .textura{opacity:.25;background:radial-gradient(ellipse at 50% 0%,rgba(231,165,189,.10),transparent 55%)}
+.tema-toggle{position:fixed;top:calc(14px + env(safe-area-inset-top));right:14px;z-index:85;width:44px;height:44px;border-radius:50%;border:1px solid var(--linea2);background:var(--card);color:var(--tinta);box-shadow:var(--sombra2);display:grid;place-items:center;cursor:pointer;font-size:19px;transition:transform .18s,background .25s,color .25s}
+.tema-toggle:active{transform:scale(.92)}
+.pantalla{display:none;min-height:100dvh;max-width:520px;margin:0 auto;padding:68px 22px 132px;padding-top:calc(68px + env(safe-area-inset-top))}
 .pantalla.activa{display:block;animation:ap .4s ease}
 @keyframes ap{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .mistica{color:var(--texto2)}
@@ -49,6 +62,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .btn.solido{background:var(--tinta);color:#fff;border-color:var(--tinta);box-shadow:0 6px 18px rgba(122,16,52,.28)}
 .btn.fantasma{color:var(--texto2);border-color:var(--linea)}
 .btn.google{background:#fff;color:var(--texto);border:1px solid rgba(0,0,0,.10);box-shadow:var(--sombra2);display:flex;align-items:center;justify-content:center;gap:10px}
+[data-theme="dark"] .btn.google{background:var(--card2);border-color:var(--linea);color:var(--texto)}
 .acc-row{display:flex;gap:10px;margin-top:12px}
 .acc-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:9px;padding:14px 16px;background:var(--card);border:1px solid var(--linea);border-radius:16px;color:var(--tinta);font-family:var(--sys);font-weight:600;font-size:14px;letter-spacing:0;cursor:pointer;box-shadow:var(--sombra2);transition:.18s;text-decoration:none}
 .acc-btn:active{transform:scale(.97)}
@@ -267,6 +281,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 <div class="carga" id="carga">👁 ABRIENDO EL GRIMORIO 👁</div>
 <script>try{const t=JSON.parse(localStorage.getItem('sv-textos-cache')||'{}')['carga-texto-html'];if(t)document.getElementById('carga').textContent=t;}catch(e){}</script>
 <div id="toasts"></div>
+<button class="tema-toggle" id="tema-toggle" onclick="toggleTema()" aria-label="Activar modo oscuro" title="Cambiar tema">☾</button>
 
 <section class="pantalla" id="p-landing"><div>
   <div class="orb" id="orb"><svg class="copa" viewBox="0 0 120 170" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M35 12 H85 C85 48 71 62 60 64 C49 62 35 48 35 12 Z"/><path d="M60 64 C38 80 74 92 56 108 C42 120 46 142 60 150"/></svg></div>
@@ -508,6 +523,14 @@ const gprov=new GoogleAuthProvider();
 const VAPID="BBsxw3cT5Drw-ZyyCNzSjls056Mr6YS8gX-dUWyn6oqOZZkNalSc7iqUE4DYEIu0WRhbm79RV88NBz-vCEpogAE";
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 const $=id=>document.getElementById(id);
+function aplicarTema(){
+ const oscuro=document.documentElement.dataset.theme==='dark';
+ const btn=$('tema-toggle');
+ if(btn){btn.textContent=oscuro?'☀':'☾';btn.setAttribute('aria-label',oscuro?'Activar modo claro':'Activar modo oscuro');}
+ const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=oscuro?'#121014':'#f4f0e9';
+}
+window.toggleTema=()=>{const oscuro=document.documentElement.dataset.theme==='dark';if(oscuro)delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme='dark';localStorage.setItem('sv-tema',oscuro?'claro':'oscuro');aplicarTema();};
+aplicarTema();
 const esc=s=>String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
 const qesc=s=>esc(s).replace(/'/g,'');
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
