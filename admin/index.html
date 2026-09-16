@@ -252,14 +252,14 @@ tbody tr:hover{background:var(--elev)}
  <div class="card">
   <div class="txt-group"><div class="g-title">Pantalla de carga (splash)</div>
    <label>Texto de carga</label><input id="tx-carga-texto" placeholder="👁 ABRIENDO EL GRIMORIO 👁">
-   <label>Logo de carga (imagen opcional)</label><input type="hidden" id="tx-carga-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('carga-logo',this)">
+   <label>Logo de carga (subir imagen)</label><input type="hidden" id="tx-carga-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('carga-logo',this)">
    <img id="tx-carga-logo-prev" class="avatar-prev" style="visibility:hidden">
-   <button class="btn mini" type="button" onclick="quitarLogoTexto('carga-logo')">Quitar logo</button>
+   <button class="btn mini peligro" type="button" onclick="quitarLogoTexto('carga-logo')">🗑 Quitar logo</button>
   </div>
   <div class="txt-group"><div class="g-title">Pantalla de registro (landing)</div>
-   <label>Logo central (imagen opcional)</label><input type="hidden" id="tx-registro-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('registro-logo',this)">
+   <label>Logo central (subir imagen)</label><input type="hidden" id="tx-registro-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('registro-logo',this)">
    <img id="tx-registro-logo-prev" class="avatar-prev" style="visibility:hidden">
-   <button class="btn mini" type="button" onclick="quitarLogoTexto('registro-logo')">Quitar logo</button>
+   <button class="btn mini peligro" type="button" onclick="quitarLogoTexto('registro-logo')">🗑 Quitar logo</button>
   </div>
   <div class="txt-group"><div class="g-title">App instalada (Android/iOS)</div>
    <label>Ícono de la app (imagen cuadrada)</label><input type="hidden" id="tx-app-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('app-logo',this)">
