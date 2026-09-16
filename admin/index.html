@@ -252,12 +252,14 @@ tbody tr:hover{background:var(--elev)}
  <div class="card">
   <div class="txt-group"><div class="g-title">Pantalla de carga (splash)</div>
    <label>Texto de carga</label><input id="tx-carga-texto" placeholder="👁 ABRIENDO EL GRIMORIO 👁">
-   <label>Logo de carga (URL imagen, opcional)</label><input id="tx-carga-logo" placeholder="https://... (reemplaza el texto)">
+   <label>Logo de carga (imagen opcional)</label><input type="hidden" id="tx-carga-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('carga-logo',this)">
    <img id="tx-carga-logo-prev" class="avatar-prev" style="visibility:hidden">
+   <button class="btn mini" type="button" onclick="quitarLogoTexto('carga-logo')">Quitar logo</button>
   </div>
   <div class="txt-group"><div class="g-title">Pantalla de registro (landing)</div>
-   <label>Logo central (URL imagen, opcional)</label><input id="tx-registro-logo" placeholder="https://... (reemplaza la copa SVG)">
+   <label>Logo central (imagen opcional)</label><input type="hidden" id="tx-registro-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('registro-logo',this)">
    <img id="tx-registro-logo-prev" class="avatar-prev" style="visibility:hidden">
+   <button class="btn mini" type="button" onclick="quitarLogoTexto('registro-logo')">Quitar logo</button>
   </div>
   <div class="txt-group"><div class="g-title">Pantalla de inicio (landing)</div>
    <label>Título principal</label><input id="tx-landing-titulo">
@@ -464,17 +466,15 @@ function cargarFormTextos(){
   const inp=$('tx-'+k),prev=$('tx-'+k+'-prev');
   if(inp&&prev){
    const v=inp.value;
-   if(v&&v.startsWith('http')){prev.src=v;prev.style.visibility='visible';}
+   if(v){prev.src=v;prev.style.visibility='visible';}
    else{prev.removeAttribute('src');prev.style.visibility='hidden';}
-   inp.oninput=()=>{
-    const v2=inp.value;
-    if(v2&&v2.startsWith('http')){prev.src=v2;prev.style.visibility='visible';}
-    else{prev.removeAttribute('src');prev.style.visibility='hidden';}
-   };
   }
  });
 }
-window.guardarTextos=async()=>{const data={};Object.keys(TEXTOS_DEF).forEach(k=>{const el=$('tx-'+k);data[k]=el?el.value:TEXTOS_DEF[k];});await setDoc(doc(db,'config','textos'),data,{merge:true});toast('✓ Textos guardados');};
+window.cargarLogoTexto=(k,input)=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');input.value='';return;}
+ comprimirImg(f,url=>{const el=$('tx-'+k),prev=$('tx-'+k+'-prev');el.value=url;prev.src=url;prev.style.visibility='visible';input.value='';toast('Logo listo · pulsa Guardar textos');});};
+window.quitarLogoTexto=k=>{const el=$('tx-'+k),prev=$('tx-'+k+'-prev');el.value='';prev.removeAttribute('src');prev.style.visibility='hidden';toast('Logo quitado · pulsa Guardar textos');};
+window.guardarTextos=async()=>{const data={};Object.keys(TEXTOS_DEF).forEach(k=>{const el=$('tx-'+k);data[k]=el?el.value:TEXTOS_DEF[k];});try{await setDoc(doc(db,'config','textos'),data,{merge:true});toast('✓ Textos y logos guardados');}catch(e){console.error(e);toast('No se pudieron guardar los textos');}};
 window.restaurarTextos=async()=>{if(!confirm('¿Restaurar todos los textos originales?'))return;await setDoc(doc(db,'config','textos'),Object.assign({},TEXTOS_DEF),{merge:true});toast('↻ Textos restaurados');};
 function pintarMetricas(){
  const P=Object.values(PART);const f1=P.length;
