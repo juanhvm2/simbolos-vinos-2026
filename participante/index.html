@@ -122,8 +122,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .game-right{display:flex;align-items:center;gap:8px;flex:none}
 .game-chip{font-size:10px;font-weight:700;letter-spacing:.05em;padding:5px 10px;border-radius:999px;background:var(--tinta);color:#fff;white-space:nowrap}
 .game-chev{width:18px;height:18px;color:var(--texto3)}
-
-/* ===== SORTEO - DISEÑO MODERNO APP STORE ===== */
+/* ===== SORTEO ===== */
 #p-sorteo{padding:0 0 132px}
 .slv-banner{width:100%;aspect-ratio:1200/400;overflow:hidden;background:linear-gradient(140deg,var(--tinta),var(--purpura));position:relative;display:grid;place-items:center}
 .slv-banner img{width:100%;height:100%;object-fit:cover;display:block}
@@ -159,15 +158,21 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 .slv-esperando svg{width:24px;height:24px;stroke:var(--oro);margin-bottom:8px;display:inline-block;vertical-align:middle}
 .slv-back{margin-top:8px}
 /* ===== /SORTEO ===== */
-
-/* ===== BANNER QUIZ ===== */
+/* ===== BANNER QUIZ + ARCANO ===== */
 .quiz-banner{width:100%;aspect-ratio:1200/400;overflow:hidden;border-radius:var(--radio);margin-bottom:16px;background:linear-gradient(140deg,var(--purpura),var(--tinta));position:relative;display:grid;place-items:center}
 .quiz-banner img{width:100%;height:100%;object-fit:cover;display:block}
 .quiz-banner-fallback{color:#fff;text-align:center;padding:20px;position:relative;z-index:1}
 .quiz-banner-fallback h3{color:#fff;font-size:20px;letter-spacing:-.01em;margin:0}
 .quiz-banner-fallback .sub{font-size:12px;color:rgba(255,255,255,.8);margin-top:4px;position:relative;z-index:2}
-/* ===== /BANNER QUIZ ===== */
-
+.arcano-banner{width:100%;aspect-ratio:1080/1350;border-radius:var(--radio);overflow:hidden;background:linear-gradient(140deg,var(--tinta),var(--purpura));margin-bottom:16px;display:grid;place-items:center;box-shadow:var(--sombra);position:relative}
+.arcano-banner img{width:100%;height:100%;object-fit:cover;display:block}
+.arcano-banner-fallback{color:#fff;text-align:center;padding:30px 22px;position:relative;z-index:1}
+.arcano-banner-fallback::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,168,75,.25),transparent 60%);pointer-events:none}
+.arcano-banner-fallback .eye{display:flex;justify-content:center;margin-bottom:10px}
+.arcano-banner-fallback .eye svg{width:40px;height:40px;stroke:var(--oro)}
+.arcano-banner-fallback h3{color:#fff;font-size:22px;letter-spacing:-.01em;margin:0 0 4px;position:relative;z-index:2}
+.arcano-banner-fallback .sub{font-size:13px;color:rgba(255,255,255,.85);position:relative;z-index:2}
+/* ===== /BANNER QUIZ + ARCANO ===== */
 .perfil-hero{display:flex;gap:16px;align-items:center}
 .perfil-hero .ava{width:68px;height:68px;border-radius:50%;background:linear-gradient(140deg,var(--tinta),var(--purpura));color:#fff;display:grid;place-items:center;font-size:24px;font-weight:700;overflow:hidden;flex:none;box-shadow:0 6px 18px rgba(122,16,52,.3)}
 .ava img{width:100%;height:100%;object-fit:cover;display:block}
@@ -377,7 +382,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 <section class="pantalla" id="p-ranking"><h2 style="font-size:22px;text-align:center">Tabla de buscadores</h2>
   <div id="rank-lista" style="margin-top:14px"></div></section>
 
-<!-- ===== QUIZ CON BANNER ===== -->
+<!-- ===== QUIZ CON BANNER + ARCANO ===== -->
 <section class="pantalla" id="p-quiz">
   <div class="quiz-banner" id="quiz-banner">
     <div class="quiz-banner-fallback" id="quiz-banner-fallback">
@@ -387,12 +392,24 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   </div>
   <div id="quiz-dots" style="display:flex;gap:6px;justify-content:center;margin:14px 0"></div>
   <div id="quiz-caja" class="card"><div id="quiz-pregunta" style="text-align:center;font-size:18px;font-weight:600;margin-bottom:12px"></div><div id="quiz-ops"></div></div>
-  <div id="quiz-final" class="card oculto" style="text-align:center">
-    <div style="font-size:11px;letter-spacing:.2em;color:var(--purpura);font-weight:600;text-transform:uppercase">El Oráculo revela</div>
-    <div id="qf-titulo" style="color:var(--tinta);font-size:22px;font-weight:700;margin:10px 0"></div>
-    <div id="qf-det" class="mistica"></div>
-    <button class="btn solido" style="margin-top:14px" onclick="ver('p-juegos')">Volver</button></div></section>
-<!-- ===== /QUIZ CON BANNER ===== -->
+  <div id="quiz-final" class="oculto">
+    <div class="arcano-banner" id="arcano-banner">
+      <img id="arcano-img" style="display:none" alt="">
+      <div class="arcano-banner-fallback" id="arcano-banner-fallback">
+        <div class="eye"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg></div>
+        <h3 id="arcano-fb-titulo">Tu Arcano</h3>
+        <div class="sub">El Oráculo revela</div>
+      </div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:11px;letter-spacing:.2em;color:var(--purpura);font-weight:600;text-transform:uppercase">El Oráculo revela</div>
+      <div id="qf-titulo" style="color:var(--tinta);font-size:22px;font-weight:700;margin:10px 0"></div>
+      <div id="qf-det" class="mistica"></div>
+      <button class="btn solido" style="margin-top:14px" onclick="ver('p-juegos')">Volver</button>
+    </div>
+  </div>
+</section>
+<!-- ===== /QUIZ CON BANNER + ARCANO ===== -->
 
 <section class="pantalla" id="p-perfil">
   <h2 style="font-size:22px;text-align:center">Mi perfil</h2>
@@ -502,6 +519,7 @@ let SORTEO_LIVE=null;
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const NOMBRES={1:'SOL',2:'LUNA',3:'MERCURIO',4:'VENUS',5:'MARTE',6:'JÚPITER',7:'SATURNO'};
 const TITULOS={'Malbec':'Guardián del Malbec','Cabernet':'Caballero del Cabernet','Torrontés':'Alma de Torrontés','Blend':'Alquimista del Blend'};
+const ARCANO_SLUG={'Guardián del Malbec':'malbec','Caballero del Cabernet':'cabernet','Alma de Torrontés':'torrontes','Alquimista del Blend':'blend'};
 const DEF_ALIENTO=['¡Felicitaciones! El primer sello despierta.','¡Bien hecho! Dos sellos ya brillan en tu camino.','¡Sigue así! La frase comienza a susurrar.','¡Vamos que falta poco! Ya cruzaste la mitad.','¡Imparable! Solo unos sellos te separan de la gloria.','¡Estás a un paso! Un solo sello para ser Digno.'];
 const DEF_FINAL='¡Has completado los siete sellos! La frase oculta se revela y tu nombre entra en el cáliz del sorteo.';
 const botName=()=>PERFIL.nombreOraculo||'El Oráculo';
@@ -565,8 +583,24 @@ function pintarQuizBanner(){
    fallback.style.display='block';
  }
 }
+function arcanoSlug(titulo){return ARCANO_SLUG[titulo]||'default';}
+function pintarArcanoFinal(titulo){
+ const slug=arcanoSlug(titulo);
+ const img=JUEGOS_IMG['arcano_'+slug]||'';
+ const imgEl=$('arcano-img');
+ const fallback=$('arcano-banner-fallback');
+ if(img){
+   imgEl.src=img;imgEl.style.display='block';
+   fallback.style.display='none';
+ } else {
+   imgEl.style.display='none';imgEl.removeAttribute('src');
+   fallback.style.display='block';
+   const fbT=$('arcano-fb-titulo');
+   if(fbT)fbT.textContent=titulo;
+ }
+}
 function pintarQuiz(){const qs=QUIZ.preguntas||[];$('quiz-dots').innerHTML=qs.map((_,i)=>'<span style="width:8px;height:8px;border-radius:50%;background:'+(i<quizIdx?'var(--tinta)':'var(--linea2)')+'"></span>').join('');const q=qs[quizIdx];if(!q)return;$('quiz-pregunta').textContent=q.pregunta||'';const c=$('quiz-ops');c.innerHTML='';(q.opciones||[]).forEach(o=>{const b=document.createElement('button');b.className='btn';b.style.marginTop='10px';b.textContent=o.t;b.onclick=()=>responder(q,o);c.appendChild(b);});}
-function responder(q,o){quizResp[q.categoria]=o.v;quizIdx++;if(quizIdx<(QUIZ.preguntas||[]).length)return pintarQuiz();const t=TITULOS[quizResp.Varietal]||'Buscador de Arcanos';updateDoc(doc(db,'participantes',yo),{perfil:quizResp,quiz:{completado:true,fecha:new Date().toISOString(),titulo:t}});$('quiz-caja').classList.add('oculto');$('quiz-final').classList.remove('oculto');$('qf-titulo').textContent=t;$('qf-det').innerHTML=Object.entries(quizResp).map(([k,v])=>k+': <b>'+v+'</b>').join(' · ');chime();}
+function responder(q,o){quizResp[q.categoria]=o.v;quizIdx++;if(quizIdx<(QUIZ.preguntas||[]).length)return pintarQuiz();const t=TITULOS[quizResp.Varietal]||'Buscador de Arcanos';updateDoc(doc(db,'participantes',yo),{perfil:quizResp,quiz:{completado:true,fecha:new Date().toISOString(),titulo:t}});$('quiz-caja').classList.add('oculto');$('quiz-final').classList.remove('oculto');$('qf-titulo').textContent=t;$('qf-det').innerHTML=Object.entries(quizResp).map(([k,v])=>k+': <b>'+v+'</b>').join(' · ');pintarArcanoFinal(t);chime();}
 function pintarRanking(){const r=[...RANK].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,20);$('rank-lista').innerHTML=r.map((p,i)=>'<div class="rank"><span class="pos">'+(i+1)+'</span><span class="nm">'+esc(p.nombre)+' '+esc(p.apellido||'')+'</span><span class="sc">'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<p class="mistica" style="text-align:center">Sin datos aún.</p>';}
 window.unirCirculo=async()=>{await updateDoc(doc(db,'participantes',yo),{circulo:true});setFunnel('circulo');toast('✓ Bienvenido al Círculo','');};
 const miRank=()=> (parte&&parte.votoRank)||[];
