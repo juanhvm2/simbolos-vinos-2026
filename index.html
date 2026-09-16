@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Símbolos &amp; Vinos</title>
+  <script>
+    const destino = new URL('./participante/', window.location.href);
+    destino.search = window.location.search;
+    destino.hash = window.location.hash;
+    window.location.replace(destino.href);
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=./participante/">
+  </noscript>
+</head>
+<body>
+  <p><a href="./participante/">Ingresar a Símbolos &amp; Vinos</a></p>
+</body>
+</html>
