@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f0e9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="S&V 2026">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Símbolos & Vinos · Edición Masónica</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{
+ --fondo:#f4f0e9; --card:#fdfbf7; --card2:#ffffff;
+ --tinta:#7a1034; --tinta2:#5c0c26; --purpura:#6d1f6e; --oro:#d4a84b; --corazon:#e0245e;
+ --texto:#1d1a17; --texto2:rgba(29,26,23,.56); --texto3:rgba(29,26,23,.34);
+ --linea:rgba(122,16,52,.10); --linea2:rgba(122,16,52,.20);
+ --sombra:0 10px 30px rgba(92,12,38,.07); --sombra2:0 2px 10px rgba(92,12,38,.05);
+ --radio:22px; --radio-sm:16px;
+ --sys:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+ --ojo-svg:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d4a84b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0'/><path d='M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6'/></svg>");
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--fondo);color:var(--texto);font-family:var(--sys);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse 90% 55% at 50% -10%,rgba(122,16,52,.06),transparent 60%)}
+h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(--texto)}
+.oculto{display:none!important}
+.textura{position:fixed;inset:0;z-index:-2;opacity:.5;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.6),transparent 55%)}
+.pantalla{display:none;min-height:100dvh;max-width:520px;margin:0 auto;padding:28px 22px 132px;padding-top:calc(28px + env(safe-area-inset-top))}
+.pantalla.activa{display:block;animation:ap .4s ease}
+@keyframes ap{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.mistica{color:var(--texto2)}
+.orn{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--oro);margin:18px 0}
+.orn::before,.orn::after{content:"";height:1px;width:56px;background:var(--linea2)}
+.orn svg{width:22px;height:22px;stroke:var(--oro);flex:none}
+#p-landing{display:none;place-items:center;text-align:center}
+#p-landing.activa{display:grid}
+.orb{width:132px;height:132px;margin:0 auto 26px;border-radius:50%;background:var(--card);border:1px solid var(--linea);display:grid;place-items:center;box-shadow:var(--sombra);overflow:hidden;position:relative}
+.orb .copa{width:56px;color:var(--tinta)}
+.orb img{width:100%;height:100%;object-fit:cover}
+.titulo{font-size:clamp(28px,8vw,40px);font-weight:700;letter-spacing:-.03em}
+.sub{font-size:11px;font-weight:600;letter-spacing:.34em;color:var(--purpura);margin-top:8px;text-transform:uppercase}
+.lema{margin:20px auto;max-width:330px;font-size:17px;line-height:1.55}
+.btn{display:block;width:100%;padding:15px 22px;margin-top:12px;cursor:pointer;font-family:var(--sys);font-weight:600;font-size:15px;letter-spacing:0;text-transform:none;color:var(--tinta);background:transparent;border:1.5px solid var(--linea2);border-radius:999px;transition:.18s}
+.btn:active{transform:scale(.97)}
+.btn.solido{background:var(--tinta);color:#fff;border-color:var(--tinta);box-shadow:0 6px 18px rgba(122,16,52,.28)}
+.btn.fantasma{color:var(--texto2);border-color:var(--linea)}
+.btn.google{background:#fff;color:var(--texto);border:1px solid rgba(0,0,0,.10);box-shadow:var(--sombra2);display:flex;align-items:center;justify-content:center;gap:10px}
+.acc-row{display:flex;gap:10px;margin-top:12px}
+.acc-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:9px;padding:14px 16px;background:var(--card);border:1px solid var(--linea);border-radius:16px;color:var(--tinta);font-family:var(--sys);font-weight:600;font-size:14px;letter-spacing:0;cursor:pointer;box-shadow:var(--sombra2);transition:.18s;text-decoration:none}
+.acc-btn:active{transform:scale(.97)}
+.acc-btn svg{width:20px;height:20px;flex:none}
+.acc-btn.ig{flex:0 0 54px;padding:14px 0;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);color:#fff;border:none;box-shadow:0 6px 18px rgba(214,41,118,.35)}
+.home-ava{width:50px;height:50px;border-radius:50%;overflow:hidden;border:2px solid var(--linea2);background:var(--card);display:grid;place-items:center;font-size:19px;font-weight:700;color:var(--tinta);cursor:pointer;flex:none;box-shadow:var(--sombra2);padding:0;transition:transform .18s}
+.home-ava:active{transform:scale(.92)}
+.home-ava img{width:100%;height:100%;object-fit:cover;display:block}
+.card{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);padding:22px;box-shadow:var(--sombra)}
+.card h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);font-weight:600;margin-bottom:12px}
+.campo{margin-bottom:12px;text-align:left}
+.campo label{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--texto2);margin-bottom:6px;text-transform:uppercase}
+.campo input{width:100%;padding:14px 16px;background:var(--card2);border:1px solid var(--linea);border-radius:14px;color:var(--texto);font-size:16px;font-family:var(--sys)}
+.campo input:focus{outline:none;border-color:var(--tinta);box-shadow:0 0 0 4px rgba(122,16,52,.12)}
+.campo select,select{width:100%;appearance:none;-webkit-appearance:none;padding:14px 38px 14px 16px;background:var(--card2) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%237a1034' stroke-width='2' fill='none'/></svg>") no-repeat right 16px center/12px;border:1px solid var(--linea);border-radius:14px;color:var(--texto);font-size:16px;font-family:var(--sys)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--texto2);margin:12px 0;text-align:left;cursor:pointer}
+.check input{width:auto;margin-top:2px;accent-color:var(--tinta)}
+.cab{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cab .nombre{font-size:19px;font-weight:700;letter-spacing:-.02em}
+.salir{background:none;border:none;color:var(--texto3);font-size:13px;cursor:pointer}
+.estado{font-size:10px;font-weight:600;letter-spacing:.12em;padding:8px 13px;border:1.5px solid var(--linea2);color:var(--tinta);border-radius:999px;white-space:nowrap;text-transform:uppercase}
+.estado.apto{background:var(--tinta);color:#fff;border-color:var(--tinta);box-shadow:0 4px 14px rgba(122,16,52,.3)}
+.cd-card{margin-top:14px;padding:18px;border-radius:20px;background:linear-gradient(140deg,var(--tinta),var(--purpura));text-align:center;color:#fff;box-shadow:0 10px 28px rgba(122,16,52,.3)}
+.cd-card .t{font-size:10px;letter-spacing:.28em;opacity:.85;text-transform:uppercase}
+.cd-card .n{font-size:26px;font-weight:700;margin-top:6px;letter-spacing:-.01em}
+.progreso{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);padding:20px;box-shadow:var(--sombra);margin-top:14px}
+.anillo{position:relative;width:96px;height:96px;flex:none}
+.anillo svg{transform:rotate(-90deg)}
+.anillo .fondo{stroke:rgba(122,16,52,.10)}
+.anillo .barra{stroke:var(--tinta);stroke-linecap:round;transition:stroke-dashoffset 1s}
+.anillo .num{position:absolute;inset:0;display:grid;place-items:center;font-size:20px;font-weight:700;color:var(--tinta)}
+.progreso .txt{flex:1;font-size:15px;color:var(--texto2)}
+.scan-cta{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;margin-top:14px;padding:18px;border:none;border-radius:999px;cursor:pointer;background:linear-gradient(135deg,var(--tinta),var(--purpura));color:#fff;font-family:var(--sys);font-weight:600;font-size:16px;letter-spacing:0;text-transform:none;box-shadow:0 10px 28px rgba(122,16,52,.35)}
+.scan-cta svg{width:24px;height:24px;stroke-width:2}
+.scan-cta:active{transform:scale(.97)}
+.sec-titulo{font-size:12px;font-weight:600;letter-spacing:.14em;color:var(--texto2);text-transform:uppercase;margin:26px 0 12px;text-align:center}
+.sellos{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sello-wrap{display:flex;flex-direction:column;align-items:center;gap:7px}
+.sello{width:100%;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--linea);box-shadow:var(--sombra2);position:relative;cursor:pointer;overflow:hidden}
+.sello .g{font-size:26px;color:var(--texto3);filter:grayscale(1)}
+.sello-img{width:70%;height:70%;object-fit:contain;border-radius:8px}
+.sello.abierto{background:linear-gradient(140deg,var(--tinta),var(--tinta2));border-color:transparent;box-shadow:0 8px 22px rgba(122,16,52,.35);animation:abrir .6s cubic-bezier(.34,1.56,.64,1)}
+.sello.abierto .g{color:#fff;filter:none}
+.sello.abierto .sello-img{filter:drop-shadow(0 0 6px rgba(255,255,255,.4))}
+.sello.abierto::after{content:"✓";position:absolute;top:-3px;right:-2px;width:20px;height:20px;border-radius:50%;background:var(--oro);color:var(--tinta2);font-size:12px;font-weight:800;display:grid;place-items:center;z-index:2}
+.sello-nombre{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--texto2);text-align:center;line-height:1.2;min-height:12px}
+.sello-wrap.abierto .sello-nombre{color:var(--tinta);font-weight:700}
+@keyframes abrir{0%{transform:scale(.5)}100%{transform:scale(1)}}
+.frase-final-caja{margin-top:18px;padding:28px 24px;border-radius:var(--radio);text-align:center;position:relative;
+ background:linear-gradient(160deg,#f8f1e3,#efe3cc);border:1px solid rgba(122,16,52,.28);
+ box-shadow:var(--sombra), inset 0 0 46px rgba(122,16,52,.07);animation:ap .6s ease}
+.frase-final-caja::before{content:"";position:absolute;inset:9px;border:1px double rgba(122,16,52,.38);border-radius:calc(var(--radio) - 7px);pointer-events:none}
+.ff-orn{display:flex;justify-content:center;margin-bottom:8px;color:var(--oro)}
+.ff-orn svg{width:22px;height:22px;stroke:var(--oro)}
+.ff-label{font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--texto2);text-transform:uppercase;margin-bottom:12px}
+.ff-text{font-family:var(--sys);font-weight:600;font-size:20px;color:var(--tinta);line-height:1.5;letter-spacing:-.01em}
+.frase-caja{margin-top:18px;padding:22px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio);background:var(--card);text-align:center;position:relative;box-shadow:var(--sombra)}
+.frase-caja::before{content:"";position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--fondo);padding:0 10px;width:28px;height:20px;background-image:var(--ojo-svg);background-repeat:no-repeat;background-position:center;background-size:contain}
+.frase-caja .frag{font-family:var(--sys);font-weight:600;font-size:16px;color:var(--tinta);letter-spacing:.02em;line-height:1.8}
+.frase-caja .pista{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--texto2);text-transform:uppercase}
+#juegos-lista{display:flex;flex-direction:column;gap:12px}
+.game-card{display:flex;align-items:center;gap:14px;padding:16px;background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:22px;box-shadow:var(--sombra);cursor:pointer;transition:transform .18s ease;width:100%;text-align:left;font-family:var(--sys)}
+.game-card:active{transform:scale(.97)}
+.game-icon{width:54px;height:54px;flex:none;border-radius:16px;display:grid;place-items:center;box-shadow:0 6px 16px rgba(92,12,38,.28);overflow:hidden}
+.game-icon svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.game-icon img{width:100%;height:100%;object-fit:cover;display:block}
+.game-info{flex:1;min-width:0;display:flex;flex-direction:column}
+.game-title{font-weight:600;font-size:16px;color:var(--texto);letter-spacing:-.01em}
+.game-sub{font-size:13px;color:var(--texto2);margin-top:2px}
+.game-right{display:flex;align-items:center;gap:8px;flex:none}
+.game-chip{font-size:10px;font-weight:700;letter-spacing:.05em;padding:5px 10px;border-radius:999px;background:var(--tinta);color:#fff;white-space:nowrap}
+.game-chev{width:18px;height:18px;color:var(--texto3)}
+/* ===== SORTEO ===== */
+#p-sorteo{padding:0 0 132px}
+.slv-banner{width:100%;aspect-ratio:1200/400;overflow:hidden;background:linear-gradient(140deg,var(--tinta),var(--purpura));position:relative;display:grid;place-items:center}
+.slv-banner img{width:100%;height:100%;object-fit:cover;display:block}
+.slv-banner-fallback{color:#fff;text-align:center;padding:30px 22px;position:relative;z-index:1}
+.slv-banner-fallback::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,168,75,.25),transparent 60%);pointer-events:none}
+.slv-banner-fallback .eye{display:flex;justify-content:center;margin-bottom:10px}
+.slv-banner-fallback .eye svg{width:40px;height:40px;stroke:var(--oro)}
+.slv-banner-fallback h2{color:#fff;font-size:22px;letter-spacing:-.01em;margin:0 0 4px;position:relative;z-index:2}
+.slv-banner-fallback .sub{font-size:13px;color:rgba(255,255,255,.85);position:relative;z-index:2}
+.slv-body{padding:20px 22px 28px}
+.slv-timer{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:20px;padding:18px 20px;margin-bottom:14px;box-shadow:var(--sombra);text-align:center;position:relative;overflow:hidden}
+.slv-timer::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--tinta),var(--oro),var(--purpura))}
+.slv-timer .label{font-size:10px;letter-spacing:.18em;color:var(--texto2);text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.slv-timer .num{font-size:28px;font-weight:700;letter-spacing:-.01em;color:var(--tinta);font-variant-numeric:tabular-nums}
+.slv-timer .num.live{color:var(--corazon);animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.slv-timer .num.done{color:var(--oro)}
+.slv-section{background:var(--card);border:1px solid rgba(122,16,52,.06);border-radius:18px;padding:18px;margin-bottom:12px;box-shadow:var(--sombra2)}
+.slv-section h3{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--texto2);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.slv-section h3 svg{width:14px;height:14px;stroke:var(--oro)}
+.slv-section p{font-size:14px;line-height:1.55;color:var(--texto)}
+.slv-premios-lista{display:flex;flex-direction:column;gap:8px}
+.slv-premio{padding:12px 14px;background:var(--card2);border:1px solid var(--linea);border-radius:12px}
+.slv-premio-txt{font-size:14px;font-weight:500;line-height:1.35;color:var(--texto)}
+.slv-ganadores-lista{display:flex;flex-direction:column;gap:8px}
+.slv-ganador{display:flex;gap:12px;align-items:center;padding:12px 14px;background:var(--card2);border:1px solid rgba(212,168,75,.3);border-radius:12px;box-shadow:var(--sombra2);opacity:0;transform:translateY(8px);animation:slvIn .5s ease forwards}
+@keyframes slvIn{to{opacity:1;transform:none}}
+.slv-ganador-ico{flex:none;width:36px;height:36px;border-radius:50%;background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;display:grid;place-items:center;font-size:16px;box-shadow:0 3px 8px rgba(169,123,18,.35)}
+.slv-ganador-info{flex:1;min-width:0}
+.slv-ganador-info .tag{font-size:9px;letter-spacing:.14em;color:var(--texto2);text-transform:uppercase;font-weight:700}
+.slv-ganador-info .name{font-size:15px;font-weight:600;margin-top:2px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--texto)}
+.slv-esperando{text-align:center;padding:20px 10px;color:var(--texto2);font-size:14px;line-height:1.5}
+.slv-esperando svg{width:24px;height:24px;stroke:var(--oro);margin-bottom:8px;display:inline-block;vertical-align:middle}
+.slv-back{margin-top:8px}
+/* ===== /SORTEO ===== */
+/* ===== BANNER QUIZ + ARCANO ===== */
+.quiz-banner{width:100%;aspect-ratio:1200/400;overflow:hidden;border-radius:var(--radio);margin-bottom:16px;background:linear-gradient(140deg,var(--purpura),var(--tinta));position:relative;display:grid;place-items:center}
+.quiz-banner img{width:100%;height:100%;object-fit:cover;display:block}
+.quiz-banner-fallback{color:#fff;text-align:center;padding:20px;position:relative;z-index:1}
+.quiz-banner-fallback h3{color:#fff;font-size:20px;letter-spacing:-.01em;margin:0}
+.quiz-banner-fallback .sub{font-size:12px;color:rgba(255,255,255,.8);margin-top:4px;position:relative;z-index:2}
+.arcano-banner{width:100%;aspect-ratio:1080/1350;border-radius:var(--radio);overflow:hidden;background:linear-gradient(140deg,var(--tinta),var(--purpura));margin-bottom:16px;display:grid;place-items:center;box-shadow:var(--sombra);position:relative}
+.arcano-banner img{width:100%;height:100%;object-fit:cover;display:block}
+.arcano-banner-fallback{color:#fff;text-align:center;padding:30px 22px;position:relative;z-index:1}
+.arcano-banner-fallback::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,168,75,.25),transparent 60%);pointer-events:none}
+.arcano-banner-fallback .eye{display:flex;justify-content:center;margin-bottom:10px}
+.arcano-banner-fallback .eye svg{width:40px;height:40px;stroke:var(--oro)}
+.arcano-banner-fallback h3{color:#fff;font-size:22px;letter-spacing:-.01em;margin:0 0 4px;position:relative;z-index:2}
+.arcano-banner-fallback .sub{font-size:13px;color:rgba(255,255,255,.85);position:relative;z-index:2}
+/* ===== /BANNER QUIZ + ARCANO ===== */
+.perfil-hero{display:flex;gap:16px;align-items:center}
+.perfil-hero .ava{width:68px;height:68px;border-radius:50%;background:linear-gradient(140deg,var(--tinta),var(--purpura));color:#fff;display:grid;place-items:center;font-size:24px;font-weight:700;overflow:hidden;flex:none;box-shadow:0 6px 18px rgba(122,16,52,.3)}
+.ava img{width:100%;height:100%;object-fit:cover;display:block}
+.perfil-hero .nom{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chipmini{font-size:10px;font-weight:600;padding:5px 11px;border-radius:999px;border:1px solid var(--linea);color:var(--texto2);background:var(--card2)}
+.chipmini.on{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.comp-bar{height:6px;background:rgba(122,16,52,.10);border-radius:3px;overflow:hidden;margin-top:12px}
+.comp-bar i{display:block;height:100%;background:var(--tinta);width:0;transition:width .4s;border-radius:3px}
+.ava-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ava-opt{border:2px solid var(--linea);border-radius:20px;overflow:hidden;cursor:pointer;background:var(--card2);aspect-ratio:1;transition:transform .15s}
+.ava-opt:active{transform:scale(.94)}
+.ava-opt img{width:100%;height:100%;object-fit:cover;display:block}
+.ava-opt.sel{border-color:var(--tinta);box-shadow:0 6px 18px rgba(122,16,52,.3)}
+.prog-img{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none;box-shadow:var(--sombra2)}
+.nav{position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;display:flex;gap:4px;background:rgba(253,251,247,.86);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(122,16,52,.08);border-radius:26px;box-shadow:0 12px 40px rgba(92,12,38,.18);padding:8px}
+.nav button{flex:1;padding:8px 2px 6px;background:none;border:none;cursor:pointer;color:var(--texto3);font-family:var(--sys);font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:18px}
+.nav button .i{display:block;margin:0 auto 4px;width:max-content;position:relative}
+.nav button .i svg{width:21px;height:21px;stroke-width:1.8}
+.nav button.act{background:var(--tinta);color:#fff;box-shadow:0 4px 14px rgba(122,16,52,.3)}
+.badge{position:absolute;top:-6px;right:-14px;min-width:16px;height:16px;border-radius:8px;background:var(--corazon);color:#fff;font-size:9px;font-weight:700;display:grid;place-items:center;padding:0 3px}
+.item{display:flex;gap:14px;padding:15px 16px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio-sm);margin-bottom:10px;background:var(--card);align-items:center;cursor:pointer;box-shadow:var(--sombra2)}
+.item .det{flex:1}
+.item .det b{display:block;font-size:15px;font-weight:600}
+.item .det span{font-size:13px;color:var(--texto2)}
+.likebox{text-align:center;min-width:44px}
+.likebox .h{font-size:22px;line-height:1;color:var(--texto3)}
+.likebox .h.on{color:var(--corazon)}
+.likebox .c{font-size:12px;color:var(--texto2)}
+.rank{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid rgba(122,16,52,.06);border-radius:var(--radio-sm);margin-bottom:8px;background:var(--card);box-shadow:var(--sombra2)}
+.rank .pos{font-size:16px;font-weight:700;color:var(--tinta);width:30px}
+.rank .nm{flex:1;font-weight:600}
+.rank .sc{font-weight:700;color:var(--purpura)}
+.rk-ctl{display:flex;gap:6px}
+.rk-ctl button{width:32px;height:32px;border-radius:50%;border:1px solid var(--linea);background:var(--card2);color:var(--tinta);font-size:13px;cursor:pointer}
+.paso{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px}
+.paso .num{flex:none;width:32px;height:32px;border-radius:50%;background:var(--tinta);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700}
+.paso .txt b{display:block;font-size:15px;font-weight:600}
+.paso .txt span{font-size:14px;color:var(--texto2)}
+.chat-row{display:flex;gap:8px;margin-bottom:10px;animation:ap .3s}
+.chat-row.user{justify-content:flex-end}
+.chat-row .ava{width:32px;height:32px;border-radius:50%;object-fit:cover;flex:none;border:1px solid var(--linea);background:var(--card2);overflow:hidden}
+.chat-row .ava.missing{display:grid;place-items:center;font-size:14px;background:var(--tinta);color:#fff;border:none}
+.burb{max-width:78%;padding:12px 16px;border-radius:18px;font-size:15px;line-height:1.5}
+.burb.bot{background:var(--card);border:1px solid rgba(122,16,52,.06);border-bottom-left-radius:6px;box-shadow:var(--sombra2)}
+.burb.user{background:var(--tinta);color:#fff;border-bottom-right-radius:6px;box-shadow:0 4px 14px rgba(122,16,52,.25)}
+.burb .firma{display:block;margin-top:5px;font-size:9px;letter-spacing:.14em;color:var(--purpura);text-transform:uppercase}
+.ld-dots{display:flex;gap:8px;justify-content:center;padding:6px 2px;--ink:var(--purpura)}
+.ld-dots i{width:10px;height:10px;border-radius:50%;background:var(--ink);animation:bounce 1.1s ease-in-out infinite}
+.ld-dots i:nth-child(2){animation-delay:.15s}
+.ld-dots i:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-12px);opacity:1}}
+.nps-modal{position:fixed;inset:0;z-index:65;display:none;place-items:center;background:rgba(29,26,23,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:20px}
+.nps-modal.activa{display:grid;animation:ap .35s}
+.nps-card{background:var(--card);border-radius:24px;padding:26px;max-width:420px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.nps-scale{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0}
+.nps-scale button{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--linea2);background:var(--card2);color:var(--tinta);font-weight:700;font-size:15px;cursor:pointer}
+.nps-scale button:active{transform:scale(.9)}
+#revelacion{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:rgba(29,26,23,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:20px;overflow-y:auto}
+#revelacion.activa{display:grid;animation:ap .35s}
+.rev-full{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#160b10}
+#rev-img{width:100%;height:100%;object-fit:contain;transition:padding .3s ease}
+.rev-full.con-bar #rev-img{padding-bottom:120px}
+.rev-close{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-size:18px;cursor:pointer;z-index:3}
+.rev-aliento-bar{position:absolute;left:0;right:0;bottom:0;padding:20px 22px calc(20px + env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(20,8,14,.94),transparent);color:#fff;text-align:center;font-family:var(--sys);font-size:16px;line-height:1.4}
+.rev-aliento-bar.final{font-size:18px;font-weight:600;color:var(--oro)}
+.rev-card{width:100%;max-width:400px;background:var(--card);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);animation:pop .45s cubic-bezier(.34,1.4,.64,1)}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.rev-top{background:linear-gradient(150deg,var(--tinta),var(--purpura));padding:36px 24px 28px;text-align:center;position:relative}
+.rev-top::after{content:"";position:absolute;top:18px;right:22px;width:18px;height:18px;background-image:var(--ojo-svg);background-repeat:no-repeat;background-position:center;background-size:contain;opacity:.6}
+.rev-medal{width:98px;height:98px;margin:0 auto 16px;border-radius:50%;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:46px;color:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.rev-medal img{width:70%;height:70%;object-fit:contain}
+.rev-eyebrow{font-size:10px;letter-spacing:.3em;color:rgba(255,255,255,.72);text-transform:uppercase;font-weight:600}
+.rev-name{font-size:27px;font-weight:700;color:#fff;letter-spacing:.06em;margin-top:6px}
+.rev-salon{font-size:12px;color:rgba(255,255,255,.78);margin-top:5px;letter-spacing:.14em;text-transform:uppercase}
+.rev-body{padding:26px 24px 24px}
+.rev-label{font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--texto2);text-transform:uppercase;text-align:center;margin-bottom:10px}
+#rev-frag{font-family:var(--sys);font-weight:600;font-size:22px;color:var(--purpura);text-align:center;min-height:36px;line-height:1.4;letter-spacing:-.01em}
+.rev-aliento{font-family:var(--sys);font-size:16px;color:var(--texto2);text-align:center;margin:14px 0 2px}
+.rev-aliento.final{font-size:18px;color:var(--purpura);font-weight:600}
+.rev-body .btn{margin-top:20px}
+#toasts{position:fixed;top:calc(14px + env(safe-area-inset-top));left:14px;right:14px;z-index:70;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{background:rgba(253,251,247,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(122,16,52,.12);border-left:4px solid var(--tinta);border-radius:16px;padding:13px 16px;box-shadow:0 10px 30px rgba(92,12,38,.15);animation:bajar .45s}
+.toast .t{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--tinta);text-transform:uppercase}
+.toast .m{font-size:14px;margin-top:4px;color:var(--texto)}
+@keyframes bajar{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+.carga{position:fixed;inset:0;background:var(--fondo);z-index:90;display:grid;place-items:center;font-weight:600;color:var(--tinta);letter-spacing:.24em;font-size:12px;transition:opacity .6s}
+.carga.fin{opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="textura"></div>
+<div class="carga" id="carga">👁 ABRIENDO EL GRIMORIO 👁</div>
+<div id="toasts"></div>
+
+<section class="pantalla" id="p-landing"><div>
+  <div class="orb" id="orb"><svg class="copa" viewBox="0 0 120 170" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M35 12 H85 C85 48 71 62 60 64 C49 62 35 48 35 12 Z"/><path d="M60 64 C38 80 74 92 56 108 C42 120 46 142 60 150"/></svg></div>
+  <h1 class="titulo" id="land-titulo">SÍMBOLOS &amp; VINOS</h1>
+  <div class="sub" id="land-sub">Edición Masónica · MMXXVI</div>
+  <p class="lema mistica" id="land-lema">Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.</p>
+  <div class="orn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg></div>
+  <button class="btn google" id="land-boton" onclick="googleLogin()">
+    <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
+    <span id="land-boton-texto">Continuar con Google</span></button>
+  <button class="btn fantasma" onclick="ver('p-instrucciones')">📜 Cómo se juega</button>
+</div></section>
+
+<section class="pantalla" id="p-instrucciones">
+  <h2 style="font-size:22px;text-align:center" id="instr-titulo">La búsqueda de los sellos</h2>
+  <div class="card" style="margin-top:16px">
+    <div class="paso"><div class="num">1</div><div class="txt"><b id="instr-p1t">Entra con Google</b><span id="instr-p1d">Sin contraseña: tu cuenta se crea sola con tu nombre y correo.</span></div></div>
+    <div class="paso"><div class="num">2</div><div class="txt"><b id="instr-p2t">Toca tu foto de perfil</b><span id="instr-p2d">Elige tu avatar entre las opciones del Oráculo.</span></div></div>
+    <div class="paso"><div class="num">3</div><div class="txt"><b id="instr-p3t">Escanea el grabado</b><span id="instr-p3d">Toca el botón Escanear y apunta al código del sello (o al QR de check-in de una charla).</span></div></div>
+    <div class="paso"><div class="num">4</div><div class="txt"><b id="instr-p4t">Despierta el sello</b><span id="instr-p4d">Cada sello se dora y revela su lámina y un fragmento de la frase.</span></div></div>
+    <div class="paso"><div class="num">5</div><div class="txt"><b id="instr-p5t">Completa los siete</b><span id="instr-p5d">Al reunirlos, la frase final se revela y entras al sorteo.</span></div></div>
+  </div>
+  <button class="btn solido" onclick="ver('p-landing')">Volver</button>
+</section>
+
+<section class="pantalla" id="p-home">
+  <div class="cab">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0">
+      <button class="home-ava" id="h-ava" onclick="ver('p-avatar')" aria-label="Elegir avatar">✦</button>
+      <div style="min-width:0"><div style="font-size:13px;color:var(--texto2)" id="h-hola">Hola, buscador</div>
+        <div class="nombre" id="h-nombre">—</div><button class="salir" onclick="salir()">cerrar sesión</button></div>
+    </div>
+    <div class="estado" id="h-estado">BUSCADOR</div>
+  </div>
+  <div class="acc-row">
+    <button class="acc-btn" onclick="ver('p-perfil')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mi perfil</button>
+    <a class="acc-btn ig" href="https://www.instagram.com/simbolosyvinos/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+  </div>
+  <button id="btn-push" class="btn solido oculto" onclick="activarPush()">🔔 Activar avisos</button>
+  <div class="cd-card oculto" id="cd-card"><div class="t">El sorteo comienza en</div><div class="n" id="cd-num">—</div></div>
+  <div class="progreso">
+    <div class="anillo"><svg width="96" height="96">
+      <circle class="fondo" cx="48" cy="48" r="42" fill="none" stroke-width="5"/>
+      <circle class="barra" id="h-barra" cx="48" cy="48" r="42" fill="none" stroke-width="5" stroke-dasharray="270.2" stroke-dashoffset="270.2"/></svg>
+      <div class="num" id="h-num">0/7</div></div>
+    <div class="txt"><span id="h-lema1">Los sellos duermen.</span><br><b style="color:var(--tinta)" id="h-lema2">Ve y despiértalos.</b></div>
+  </div>
+  <button class="scan-cta" onclick="irScan()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg><span id="h-scan">Escanear un sello</span></button>
+  <div class="sec-titulo" id="h-sec-sellos">Toca un sello dorado para ver su lámina</div>
+  <div class="sellos" id="h-sellos"></div>
+  <div class="frase-final-caja oculto" id="frase-final-caja">
+    <div class="ff-orn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg></div>
+    <div class="ff-label">La frase final revelada</div>
+    <div class="ff-text" id="frase-final-texto"></div>
+  </div>
+  <div class="frase-caja" id="frase-caja"><div class="pista" id="h-frase-titulo">La frase oculta</div>
+    <div class="frag" id="h-frase" style="margin-top:8px">· · · &nbsp; · · ·</div></div>
+</section>
+
+<section class="pantalla" id="p-avatar">
+  <h2 style="font-size:22px;text-align:center">Elige tu avatar</h2>
+  <p class="mistica" style="text-align:center;margin:6px 0 16px">Toca una opción para adoptarla al instante.</p>
+  <div class="ava-grid" id="av-grid"></div>
+  <button class="btn" onclick="ver('p-home')">Volver</button>
+</section>
+
+<section class="pantalla" id="p-juegos"><h2 style="font-size:22px;text-align:center" id="juegos-titulo">Salón de Juegos</h2>
+  <p class="mistica" style="text-align:center;margin:6px 0 16px" id="juegos-sub">Toca para jugar · puedes repetir los completados.</p>
+  <div id="juegos-lista"></div></section>
+
+<section class="pantalla" id="p-sorteo">
+  <div class="slv-banner" id="slv-banner">
+    <div class="slv-banner-fallback" id="slv-banner-fallback">
+      <div class="eye"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg></div>
+      <h2 id="so-titulo">Sorteo final</h2>
+      <div class="sub" id="so-sub">Cinco premios · cinco elegidos</div>
+    </div>
+  </div>
+  <div class="slv-body">
+    <div class="slv-timer">
+      <div class="label" id="so-cuenta-label">El sorteo comienza en</div>
+      <div class="num" id="so-cuenta">—</div>
+    </div>
+    <div class="slv-section">
+      <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>Ganadores</h3>
+      <div id="so-ganadores-wrap">
+        <div class="slv-esperando">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg>
+          <div>El Oráculo aún no ha elegido a los cinco dignos.</div>
+          <div style="font-size:12px;margin-top:6px;opacity:.8">Completa los 7 sellos para entrar al cáliz.</div>
+        </div>
+      </div>
+    </div>
+    <div class="slv-section">
+      <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Reglas del sorteo</h3>
+      <p id="so-reglas">El Oráculo aún no ha revelado las reglas.</p>
+    </div>
+    <div class="slv-section">
+      <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>Los premios</h3>
+      <div class="slv-premios-lista" id="so-premios"></div>
+    </div>
+    <button class="btn slv-back" onclick="ver('p-juegos')" id="sorteo-volver">Volver al salón</button>
+  </div>
+</section>
+
+<section class="pantalla" id="p-voto">
+  <h2 style="font-size:22px;text-align:center">Tu ranking de bodegas</h2>
+  <p class="mistica" style="text-align:center;margin:6px 0 14px">Vota por varias bodegas y ordénalas de tu favorita a la menos.</p>
+  <div class="card"><h3>⭐ Mi ranking</h3><div id="voto-rank"></div></div>
+  <div class="card"><h3>+ Agregar bodegas</h3><div id="voto-add"></div></div>
+</section>
+
+<section class="pantalla" id="p-ranking"><h2 style="font-size:22px;text-align:center">Tabla de buscadores</h2>
+  <div id="rank-lista" style="margin-top:14px"></div></section>
+
+<!-- ===== QUIZ CON BANNER + ARCANO ===== -->
+<section class="pantalla" id="p-quiz">
+  <div class="quiz-banner" id="quiz-banner">
+    <div class="quiz-banner-fallback" id="quiz-banner-fallback">
+      <h3>Tu Arcano Enológico</h3>
+      <div class="sub">4 preguntas · descubre tu perfil</div>
+    </div>
+  </div>
+  <div id="quiz-dots" style="display:flex;gap:6px;justify-content:center;margin:14px 0"></div>
+  <div id="quiz-caja" class="card"><div id="quiz-pregunta" style="text-align:center;font-size:18px;font-weight:600;margin-bottom:12px"></div><div id="quiz-ops"></div></div>
+  <div id="quiz-final" class="oculto">
+    <div class="arcano-banner" id="arcano-banner">
+      <img id="arcano-img" style="display:none" alt="">
+      <div class="arcano-banner-fallback" id="arcano-banner-fallback">
+        <div class="eye"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg></div>
+        <h3 id="arcano-fb-titulo">Tu Arcano</h3>
+        <div class="sub">El Oráculo revela</div>
+      </div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:11px;letter-spacing:.2em;color:var(--purpura);font-weight:600;text-transform:uppercase">El Oráculo revela</div>
+      <div id="qf-titulo" style="color:var(--tinta);font-size:22px;font-weight:700;margin:10px 0"></div>
+      <div id="qf-det" class="mistica"></div>
+      <button class="btn solido" style="margin-top:14px" onclick="ver('p-juegos')">Volver</button>
+    </div>
+  </div>
+</section>
+<!-- ===== /QUIZ CON BANNER + ARCANO ===== -->
+
+<section class="pantalla" id="p-perfil">
+  <h2 style="font-size:22px;text-align:center">Mi perfil</h2>
+  <div class="card perfil-hero" style="margin-top:16px">
+    <div class="ava" id="pf-ava">✦</div>
+    <div style="flex:1">
+      <div class="nom" id="pf-nom">—</div>
+      <div style="font-size:13px;color:var(--texto2)" id="pf-mail">—</div>
+      <div class="chips" id="pf-chips"></div>
+      <div class="comp-bar"><i id="pf-comp"></i></div>
+      <div style="font-size:11px;color:var(--texto2);margin-top:5px" id="pf-comp-txt">Completa tus datos</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>⚜ Círculo de beneficios</h3>
+    <p class="mistica" style="font-size:15px;margin-bottom:10px">Beneficios exclusivos en futuras ediciones.</p>
+    <button class="btn solido" id="circulo-btn" onclick="unirCirculo()">Unirme al Círculo</button>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>Mis datos</h3>
+    <div class="campo"><label>Teléfono</label><input id="x-tel" type="tel" placeholder="Ej: 11 2345 6789"></div>
+    <div class="campo"><label>Nacimiento</label><input id="x-nac" type="date"></div>
+    <div class="campo"><label>Zona / ciudad</label><input id="x-zona" placeholder="Ej: Palermo, CABA"></div>
+    <div class="campo"><label>¿Cómo te enteraste?</label><select id="x-como"><option value="">—</option><option>Instagram</option><option>Amigo / familiar</option><option>Mailing</option><option>Cartel</option><option>Otro</option></select></div>
+    <div class="campo"><label>¿Con quién asistes?</label><select id="x-comp"><option value="">—</option><option>Solo/a</option><option>Pareja</option><option>Amigos</option><option>Familia</option></select></div>
+    <label class="check"><input type="checkbox" id="x-mkt"> Quiero recibir novedades y promociones.</label>
+    <button class="btn solido" onclick="guardarExtra()">Guardar cambios</button>
+  </div>
+</section>
+
+<section class="pantalla" id="p-scan"><h2 style="font-size:22px;text-align:center">El ojo que todo lo ve</h2>
+  <div style="position:relative;max-width:420px;margin:16px auto"><div id="qr-reader" style="border-radius:20px;overflow:hidden;border:1px solid var(--linea);box-shadow:var(--sombra)"></div></div>
+  <div class="campo"><label>O escribe el código</label><input id="s-manual" placeholder="SV2026-… o código de charla"></div>
+  <button class="btn solido" onclick="procesar(document.getElementById('s-manual').value)">Validar código</button></section>
+
+<section class="pantalla" id="p-avisos"><h2 style="font-size:22px;text-align:center">Pergamino de avisos</h2>
+  <div id="avisos-lista" style="margin-top:14px"></div></section>
+
+<section class="pantalla" id="p-chat"><h2 style="font-size:22px;text-align:center" id="chat-titulo">El Oráculo responde</h2>
+  <div id="chat-ventana" style="display:flex;flex-direction:column;margin:14px 0;min-height:200px;max-height:44vh;overflow-y:auto"></div>
+  <button class="btn" onclick="resetMiChat()">↻ Reiniciar mi chat</button>
+  <div class="sec-titulo">Preguntas</div><div id="chat-chips" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center"></div></section>
+
+<section class="pantalla" id="p-prog"><h2 style="font-size:22px;text-align:center">Programa del evento</h2>
+  <div id="prog-lista" style="margin-top:14px"></div></section>
+
+<div id="nps" class="nps-modal">
+  <div class="nps-card">
+    <h3 style="font-size:19px">¿Nos recomendarías a un amigo?</h3>
+    <p class="mistica" style="margin:6px 0 0">0 = para nada · 10 = sin dudarlo</p>
+    <div class="nps-scale" id="nps-scale"></div>
+    <button class="btn" onclick="cerrarNps()">Ahora no</button>
+  </div>
+</div>
+
+<div id="revelacion">
+  <div class="rev-full" id="rev-full">
+    <img id="rev-img" alt="">
+    <div class="rev-aliento-bar oculto" id="rev-aliento-bar"><span id="rev-aliento2"></span></div>
+    <button class="rev-close" onclick="cerrarRevelacion()">✕</button>
+  </div>
+  <div class="rev-card" id="rev-card">
+    <div class="rev-top">
+      <div class="rev-medal" id="rev-medal">☉</div>
+      <div class="rev-eyebrow">Sello revelado</div>
+      <div class="rev-name" id="rev-nombre2">—</div>
+      <div class="rev-salon" id="rev-salon2">Salón · —</div>
+    </div>
+    <div class="rev-body">
+      <div class="rev-label">Fragmento de la frase</div>
+      <div id="rev-frag">· · ·</div>
+      <div id="rev-aliento" class="rev-aliento oculto"></div>
+      <button class="btn solido" onclick="cerrarRevelacion()">Sellar y continuar</button>
+    </div>
+  </div>
+</div>
+
+<nav class="nav" id="nav" style="display:none">
+  <button class="act" data-p="p-home" onclick="navegar('p-home',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>Sellos</button>
+  <button data-p="p-juegos" onclick="navegar('p-juegos',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>Juegos</button>
+  <button id="nav-voto" data-p="p-voto" onclick="navegar('p-voto',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>Votar</button>
+  <button data-p="p-chat" onclick="navegar('p-chat',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/></svg></span>Chat</button>
+  <button data-p="p-avisos" onclick="navegar('p-avisos',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge oculto" id="badge">0</span></span>Avisos</button>
+  <button data-p="p-prog" onclick="navegar('p-prog',this)"><span class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>Programa</button>
+</nav>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { initializeFirestore, persistentLocalCache, doc, setDoc, updateDoc, getDoc, onSnapshot, collection, arrayUnion, addDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
+const app=initializeApp({apiKey:"AIzaSyA-1VBoP1hTjzbLSsMvqXYealszIu0y66g",authDomain:"simbolos-vinos-2026.firebaseapp.com",projectId:"simbolos-vinos-2026",storageBucket:"simbolos-vinos-2026.firebasestorage.app",messagingSenderId:"1055775891853",appId:"1:1055775891853:web:ba134c84b0c33905aa5dc4"});
+const auth=getAuth(app),db=initializeFirestore(app,{localCache:persistentLocalCache()});
+const gprov=new GoogleAuthProvider();
+const VAPID="BBsxw3cT5Drw-ZyyCNzSjls056Mr6YS8gX-dUWyn6oqOZZkNalSc7iqUE4DYEIu0WRhbm79RV88NBz-vCEpogAE";
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+const qesc=s=>esc(s).replace(/'/g,'');
+const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
+let yo=null,parte=null,simbolos={},programa=[],FAQ=[],PERFIL={},FRASES={},QUIZ=null,JUEGOS={},JUEGOS_IMG={},EXTRA={},RANK=[],AVATARES=[];
+let quizIdx=0,quizResp={};
+let vistos=JSON.parse(localStorage.getItem('sv-avisos')||'null'),avisosCache=[],notificados=new Set();
+let chatHist=JSON.parse(localStorage.getItem('sv-chat')||'[]');
+let SORTEO_LIVE=null;
+// === NUEVOS DOCUMENTOS SEPARADOS ===
+let BANNER_QUIZ=null,BANNER_SORTEO=null,BANNERS_ARCANO={},TEXTOS={};
+const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
+const NOMBRES={1:'SOL',2:'LUNA',3:'MERCURIO',4:'VENUS',5:'MARTE',6:'JÚPITER',7:'SATURNO'};
+const TITULOS={'Malbec':'Guardián del Malbec','Cabernet':'Caballero del Cabernet','Torrontés':'Alma de Torrontés','Blend':'Alquimista del Blend'};
+const ARCANO_SLUG={'Guardián del Malbec':'malbec','Caballero del Cabernet':'cabernet','Alma de Torrontés':'torrontes','Alquimista del Blend':'blend'};
+const DEF_ALIENTO=['¡Felicitaciones! El primer sello despierta.','¡Bien hecho! Dos sellos ya brillan en tu camino.','¡Sigue así! La frase comienza a susurrar.','¡Vamos que falta poco! Ya cruzaste la mitad.','¡Imparable! Solo unos sellos te separan de la gloria.','¡Estás a un paso! Un solo sello para ser Digno.'];
+const DEF_FINAL='¡Has completado los siete sellos! La frase oculta se revela y tu nombre entra en el cáliz del sorteo.';
+const botName=()=>PERFIL.nombreOraculo||'El Oráculo';
+const ORACULO_SVG='<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#5c0c26"/><path d="M50 14 L86 82 H14 Z" fill="none" stroke="#f3d27a" stroke-width="4"/><path d="M32 62 C40 52 60 52 68 62 C60 70 40 70 32 62 Z" fill="none" stroke="#f3d27a" stroke-width="3"/><circle cx="50" cy="61" r="5" fill="#f3d27a"/></svg>';
+const GAME_ICON={
+ quiz:'<path d="M7 3h10c0 6-3 9-5 9s-5-3-5-9z"/><path d="M12 12v5"/><path d="M9 20h6"/>',
+ ranking:'<path d="M6 20v-6"/><path d="M12 20V6"/><path d="M18 20v-10"/><path d="M4 20h16"/>',
+ sorteo:'<path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 3"/><path d="M17 6h3a3 3 0 0 1-3 3"/>'};
+const GAME_GRAD=['linear-gradient(140deg,var(--tinta),var(--purpura))','linear-gradient(140deg,var(--purpura),#9b4dca)','linear-gradient(140deg,var(--oro),#a97b12)'];
+// === FUNCIÓN DE TEXTOS CON FALLBACK ===
+const TXT_DEF={
+ 'landing-titulo':'SÍMBOLOS & VINOS','landing-sub':'Edición Masónica · MMXXVI',
+ 'landing-lema':'Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.',
+ 'landing-boton':'Continuar con Google',
+ 'instr-titulo':'La búsqueda de los sellos',
+ 'instr-p1t':'Entra con Google','instr-p1d':'Sin contraseña: tu cuenta se crea sola con tu nombre y correo.',
+ 'instr-p2t':'Toca tu foto de perfil','instr-p2d':'Elige tu avatar entre las opciones del Oráculo.',
+ 'instr-p3t':'Escanea el grabado','instr-p3d':'Toca el botón Escanear y apunta al código del sello (o al QR de check-in de una charla).',
+ 'instr-p4t':'Despierta el sello','instr-p4d':'Cada sello se dora y revela su lámina y un fragmento de la frase.',
+ 'instr-p5t':'Completa los siete','instr-p5d':'Al reunirlos, la frase final se revela y entras al sorteo.',
+ 'home-hola':'Hola, buscador','home-lema1':'Los sellos duermen.','home-lema2':'Ve y despiértalos.',
+ 'home-scan':'Escanear un sello','home-sec-sellos':'Toca un sello dorado para ver su lámina','home-frase-titulo':'La frase oculta',
+ 'juegos-titulo':'Salón de Juegos','juegos-sub':'Toca para jugar · puedes repetir los completados.',
+ 'sorteo-volver':'Volver al salón'
+};
+function txt(k){const v=TEXTOS[k];return(v!==undefined&&v!=='')?v:(TXT_DEF[k]||'');}
+function aplicarTextos(){
+ const set=(id,k)=>{const el=$(id);if(el)el.textContent=txt(k);};
+ set('land-titulo','landing-titulo');
+ set('land-sub','landing-sub');
+ set('land-lema','landing-lema');
+ set('land-boton-texto','landing-boton');
+ set('instr-titulo','instr-titulo');
+ set('instr-p1t','instr-p1t');set('instr-p1d','instr-p1d');
+ set('instr-p2t','instr-p2t');set('instr-p2d','instr-p2d');
+ set('instr-p3t','instr-p3t');set('instr-p3d','instr-p3d');
+ set('instr-p4t','instr-p4t');set('instr-p4d','instr-p4d');
+ set('instr-p5t','instr-p5t');set('instr-p5d','instr-p5d');
+ set('h-hola','home-hola');
+ set('h-lema1','home-lema1');
+ set('h-lema2','home-lema2');
+ set('h-scan','home-scan');
+ set('h-sec-sellos','home-sec-sellos');
+ set('h-frase-titulo','home-frase-titulo');
+ set('juegos-titulo','juegos-titulo');
+ set('juegos-sub','juegos-sub');
+ set('sorteo-volver','sorteo-volver');
+}
+window.ver=id=>{document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));$(id).classList.add('activa');};
+window.irScan=()=>navegar('p-scan',null);
+window.googleLogin=async()=>{try{await signInWithPopup(auth,gprov);}catch(e){toast('No se pudo iniciar con Google','Autoriza el dominio en Firebase Auth → Configuración.');}};
+window.toast=(t,m)=>{const d=document.createElement('div');d.className='toast';d.innerHTML='<div class="t"></div><div class="m"></div>';d.querySelector('.t').textContent=t;d.querySelector('.m').textContent=m;$('toasts').appendChild(d);setTimeout(()=>d.remove(),6000);};
+let audioCtx=null;
+function chime(){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();[659.25,880].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=f;g.gain.setValueAtTime(0,audioCtx.currentTime+i*.18);g.gain.linearRampToValueAtTime(.18,audioCtx.currentTime+i*.18+.02);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+i*.18+.7);o.connect(g).connect(audioCtx.destination);o.start(audioCtx.currentTime+i*.18);o.stop(audioCtx.currentTime+i*.18+.8);});navigator.vibrate&&navigator.vibrate([90,60,90]);}catch(e){}}
+document.addEventListener('touchstart',()=>{try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();}catch(e){}},{once:true});
+function scramble(el,t){let i=0;const g='👁✦';const int=setInterval(()=>{el.textContent=t.split('').map((c,j)=>j<i?c:(c===' '?' ':g[Math.floor(Math.random()*g.length)])).join('');i+=.6;if(i>=t.length+1){el.textContent=t;clearInterval(int);}},34);}
+function reportarSesion(){ const st=parseInt(localStorage.getItem('sv-sesion-start')||'0'); if(!st||!yo)return; const dur=Math.max(0,Math.round((Date.now()-st)/1000)); localStorage.setItem('sv-sesion-start',String(Date.now())); if(dur>0) updateDoc(doc(db,'participantes',yo),{tiempoSesion:increment(dur)}).catch(()=>{}); }
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'){reportarSesion();} else {localStorage.setItem('sv-sesion-start',String(Date.now()));} });
+window.addEventListener('pagehide',reportarSesion);
+function setFunnel(key){ if(!yo)return; const o={}; o['funnel.'+key]=new Date().toISOString(); updateDoc(doc(db,'participantes',yo),o).catch(()=>{}); }
+const JUEGOS_META=[
+  {key:'ranking',t:'Tabla de Buscadores',s:'Ranking en vivo de la búsqueda'},
+  {key:'quiz',t:'Arcano Enológico',s:'4 preguntas · descubre tu perfil'},
+  {key:'sorteo',t:'Sorteo final',s:'Reglas, premios y ganadores en vivo'}
+];
+const DONE={quiz:()=>parte&&parte.quiz&&parte.quiz.completado};
+function pintarJuegos(){const c=$('juegos-lista');c.innerHTML='';
+ JUEGOS_META.forEach((m,i)=>{ if(JUEGOS[m.key]===false)return;
+  const done=DONE[m.key]&&DONE[m.key]();
+  const img=JUEGOS_IMG[m.key]||'';
+  const iconHtml=img?('<img src="'+img+'" alt="">'):('<svg viewBox="0 0 24 24">'+(GAME_ICON[m.key]||'')+'</svg>');
+  const d=document.createElement('button');d.type='button';d.className='game-card';
+  d.innerHTML='<span class="game-icon"'+(img?'':' style="background:'+GAME_GRAD[i%GAME_GRAD.length]+'"')+'>'+iconHtml+'</span>'+
+   '<span class="game-info"><span class="game-title">'+m.t+'</span><span class="game-sub">'+m.s+'</span></span>'+
+   '<span class="game-right">'+(done?'<span class="game-chip">✓ Completado</span>':'')+'<svg class="game-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>';
+  d.onclick=()=>abrirJuego(m.key);
+  c.appendChild(d); });
+ if(!c.children.length)c.innerHTML='<p class="mistica" style="text-align:center">El Oráculo aún no abrió los juegos.</p>';}
+function abrirJuego(k){
+  if(k==='quiz')return abrirQuiz();
+  if(k==='ranking')return ver('p-ranking');
+  if(k==='sorteo')return abrirSorteo();
+}
+function actualizarVotoNav(){const oculto=(JUEGOS.voto===false);const b=$('nav-voto');if(b)b.style.display=oculto?'none':'';
+ if(oculto&&$('p-voto').classList.contains('activa'))navegar('p-home',document.querySelector('[data-p="p-home"]'));
+ const fc=$('frase-caja');if(fc)fc.style.display=(JUEGOS.frase===false)?'none':'';}
+function escucharQuiz(){onSnapshot(doc(db,'config','quiz'),s=>{QUIZ=s.exists()?s.data():null;});}
+window.abrirQuiz=()=>{if(!QUIZ||!(QUIZ.preguntas||[]).length)return toast('El Oráculo prepara el arcano','');quizIdx=0;quizResp={};$('quiz-final').classList.add('oculto');$('quiz-caja').classList.remove('oculto');pintarQuizBanner();ver('p-quiz');pintarQuiz();};
+function pintarQuizBanner(){
+ const banner=$('quiz-banner');
+ const fallback=$('quiz-banner-fallback');
+ const url=BANNER_QUIZ||'';
+ if(url){
+   fallback.style.display='none';
+   let img=banner.querySelector('img.quiz-banner-img');
+   if(!img){img=document.createElement('img');img.className='quiz-banner-img';banner.appendChild(img);}
+   img.src=url;
+ } else {
+   const existing=banner.querySelector('img.quiz-banner-img');
+   if(existing)existing.remove();
+   fallback.style.display='block';
+ }
+}
+function arcanoSlug(titulo){return ARCANO_SLUG[titulo]||'default';}
+function pintarArcanoFinal(titulo){
+ const slug=arcanoSlug(titulo);
+ const url=(BANNERS_ARCANO&&BANNERS_ARCANO['arcano_'+slug])||'';
+ const imgEl=$('arcano-img');
+ const fallback=$('arcano-banner-fallback');
+ if(url){
+   imgEl.src=url;imgEl.style.display='block';
+   fallback.style.display='none';
+ } else {
+   imgEl.style.display='none';imgEl.removeAttribute('src');
+   fallback.style.display='block';
+   const fbT=$('arcano-fb-titulo');
+   if(fbT)fbT.textContent=titulo;
+ }
+}
+function pintarQuiz(){const qs=QUIZ.preguntas||[];$('quiz-dots').innerHTML=qs.map((_,i)=>'<span style="width:8px;height:8px;border-radius:50%;background:'+(i<quizIdx?'var(--tinta)':'var(--linea2)')+'"></span>').join('');const q=qs[quizIdx];if(!q)return;$('quiz-pregunta').textContent=q.pregunta||'';const c=$('quiz-ops');c.innerHTML='';(q.opciones||[]).forEach(o=>{const b=document.createElement('button');b.className='btn';b.style.marginTop='10px';b.textContent=o.t;b.onclick=()=>responder(q,o);c.appendChild(b);});}
+function responder(q,o){quizResp[q.categoria]=o.v;quizIdx++;if(quizIdx<(QUIZ.preguntas||[]).length)return pintarQuiz();const t=TITULOS[quizResp.Varietal]||'Buscador de Arcanos';updateDoc(doc(db,'participantes',yo),{perfil:quizResp,quiz:{completado:true,fecha:new Date().toISOString(),titulo:t}});$('quiz-caja').classList.add('oculto');$('quiz-final').classList.remove('oculto');$('qf-titulo').textContent=t;$('qf-det').innerHTML=Object.entries(quizResp).map(([k,v])=>k+': <b>'+v+'</b>').join(' · ');pintarArcanoFinal(t);chime();}
+function pintarRanking(){const r=[...RANK].filter(p=>(p.simbolos||[]).length>0).sort((a,b)=>(b.simbolos||[]).length-(a.simbolos||[]).length).slice(0,20);$('rank-lista').innerHTML=r.map((p,i)=>'<div class="rank"><span class="pos">'+(i+1)+'</span><span class="nm">'+esc(p.nombre)+' '+esc(p.apellido||'')+'</span><span class="sc">'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<p class="mistica" style="text-align:center">Sin datos aún.</p>';}
+window.unirCirculo=async()=>{await updateDoc(doc(db,'participantes',yo),{circulo:true});setFunnel('circulo');toast('✓ Bienvenido al Círculo','');};
+const miRank=()=> (parte&&parte.votoRank)||[];
+function setRank(arr){updateDoc(doc(db,'participantes',yo),{votoRank:arr,voto:arr[0]||''});}
+window.addRank=b=>{if(miRank().length===0)setFunnel('voto');setRank([...miRank(),b]);};
+window.delRank=b=>{setRank(miRank().filter(x=>x!==b));};
+window.upRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>0){[r[i-1],r[i]]=[r[i],r[i-1]];setRank(r);}};
+window.downRank=b=>{const r=[...miRank()];const i=r.indexOf(b);if(i>-1&&i<r.length-1){[r[i+1],r[i]]=[r[i],r[i+1]];setRank(r);}};
+function pintarVoto(){const rank=miRank();const all=EXTRA.bodegasVoto||[];
+ $('voto-rank').innerHTML=rank.length?rank.map((b,i)=>'<div class="item" style="cursor:default"><span class="pos" style="width:26px">'+(i+1)+'</span><div class="det"><b>'+esc(b)+'</b></div><div class="rk-ctl"><button onclick="upRank(\''+qesc(b)+'\')">▲</button><button onclick="downRank(\''+qesc(b)+'\')">▼</button><button onclick="delRank(\''+qesc(b)+'\')">✕</button></div></div>').join(''):'<p class="mistica" style="text-align:center">Aún no has votado. Agrega bodegas abajo.</p>';
+ const rest=all.filter(b=>!rank.includes(b));
+ $('voto-add').innerHTML=rest.length?rest.map(b=>'<div class="item" onclick="addRank(\''+qesc(b)+'\')"><div class="det"><b>'+esc(b)+'</b></div><span style="color:var(--tinta);font-size:22px">+</span></div>').join(''):'<p class="mistica" style="text-align:center">Todas las bodegas están en tu ranking.</p>';}
+window.elegirAvatarIdx=async idx=>{const u=AVATARES[idx];if(!u)return;await updateDoc(doc(db,'participantes',yo),{avatar:u});toast('✓ Avatar actualizado','');ver('p-home');};
+function pintarAvatarGrid(){const g=$('av-grid');if(!g)return;
+ if(!AVATARES.length){g.innerHTML='<p class="mistica" style="grid-column:1/-1;text-align:center">El Oráculo aún no preparó avatares.</p>';return;}
+ g.innerHTML=AVATARES.map((u,idx)=>'<div class="ava-opt'+((parte&&parte.avatar===u)?' sel':'')+'" onclick="elegirAvatarIdx('+idx+')"><img src="'+u+'" alt=""></div>').join('');}
+function checkDefaultAvatar(){ if(yo && parte && AVATARES.length && !parte.avatar){ updateDoc(doc(db,'participantes',yo),{avatar:AVATARES[0]}); } }
+function pintarPerfil(){
+ $('pf-nom').textContent=parte.nombre+' '+parte.apellido;
+ $('pf-mail').textContent=(parte.email||'')+(parte.telefono?' · '+parte.telefono:'');
+ const ava=$('pf-ava');
+ if(parte.avatar)ava.innerHTML='<img src="'+parte.avatar+'" alt="">';else ava.textContent=(parte.nombre||'✦')[0].toUpperCase();
+ let chips='<span class="chipmini'+(parte.estado==='apto'?' on':'')+'">'+(parte.estado==='apto'?'✓ APTO':'BUSCADOR')+'</span>';
+ if(parte.quiz&&parte.quiz.completado)chips+='<span class="chipmini on">'+esc(parte.quiz.titulo)+'</span>';
+ if(parte.circulo)chips+='<span class="chipmini on">✓ Círculo</span>';
+ if((parte.votoRank||[]).length)chips+='<span class="chipmini">★ '+(parte.votoRank.length)+' bodegas</span>';
+ $('pf-chips').innerHTML=chips;
+ if(parte.circulo)$('circulo-btn').textContent='✓ Ya formas parte del Círculo';
+ const x=parte.extra||{};$('x-tel').value=parte.telefono||'';$('x-nac').value=x.nac||'';$('x-zona').value=x.zona||'';$('x-como').value=x.como||'';$('x-comp').value=x.comp||'';
+ $('x-mkt').checked=!!(parte.consent&&parte.consent.mkt);
+ const campos=[parte.telefono,x.nac,x.zona,x.como,x.comp,(parte.avatar?1:'')];
+ const llenos=campos.filter(v=>v).length;const pct=Math.round(llenos/campos.length*100);
+ $('pf-comp').style.width=pct+'%';
+ $('pf-comp-txt').textContent=pct>=100?'✓ Perfil completo · ¡gracias!':'Perfil '+pct+'% completo · completa tus datos';}
+window.guardarExtra=async()=>{await updateDoc(doc(db,'participantes',yo),{telefono:$('x-tel').value.trim(),extra:{nac:$('x-nac').value,zona:$('x-zona').value.trim(),como:$('x-como').value,comp:$('x-comp').value},consent:{priv:true,mkt:$('x-mkt').checked}});toast('✓ Perfil actualizado','');};
+window.resetMiChat=()=>{if(!confirm('¿Reiniciar tu chat? Se borrará tu historial.'))return;chatHist=[];localStorage.setItem('sv-chat','[]');renderHist();toast('↻ Chat reiniciado','');};
+setInterval(()=>{if(!EXTRA.sorteoHora)return;const d=new Date(EXTRA.sorteoHora)-new Date();$('cd-card').classList.remove('oculto');if(d<=0){$('cd-num').textContent='🏆 EL CÁLIZ HABLA…';return;}const s=Math.floor(d/1000);$('cd-num').textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s';},1000);
+window.darLike=async id=>{const likes=(parte&&parte.likes)||[];if(likes.includes(id))return toast('Ya diste me gusta a esta actividad','');
+ await updateDoc(doc(db,'programa',id),{likes:increment(1)}).catch(async()=>{await setDoc(doc(db,'programa',id),{likes:1},{merge:true});});
+ await updateDoc(doc(db,'participantes',yo),{likes:arrayUnion(id)});};
+async function registrarToken(){try{const r=await navigator.serviceWorker.ready;const t=await getToken(getMessaging(app),{vapidKey:VAPID,serviceWorkerRegistration:r});if(t)await setDoc(doc(db,'tokens',yo),{token:t,fecha:new Date().toISOString()});}catch(e){}}
+window.activarPush=async()=>{if(!('Notification' in window))return toast('Sin soporte de avisos','');const p=await Notification.requestPermission();if(p==='granted'){await registrarToken();$('btn-push').classList.add('oculto');toast(botName()+' te susurrará','');}};
+onMessage(getMessaging(app),pl=>{const n=pl.notification||{};if(pl.data&&pl.data.id)notificados.add(pl.data.id);toast('👁 '+botName().toUpperCase(),n.body||'');chime();});
+function escucharFAQ(){onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>FAQ.push({id:d.id,...d.data()}));FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarChips();});}
+function pintarChips(){$('chat-chips').innerHTML=FAQ.map(f=>'<button class="btn" style="width:auto;padding:10px 16px;font-size:14px" onclick="preguntar(\''+f.id+'\')">'+esc(f.pregunta)+'</button>').join('')||'<p class="mistica">'+botName()+' prepara respuestas.</p>';}
+function avaEl(q){ if(q==='bot'){ if(PERFIL.avatarOraculo){const im=new Image();im.className='ava';im.src=PERFIL.avatarOraculo;return im;} const d=document.createElement('div');d.className='ava';d.innerHTML=ORACULO_SVG;return d;}
+ if(parte&&parte.avatar){const im=new Image();im.className='ava';im.src=parte.avatar;return im;}
+ const d=document.createElement('div');d.className='ava missing';d.textContent=(parte&&parte.nombre?parte.nombre[0].toUpperCase():'✦');return d;}
+function addBurb(q,txt){const row=document.createElement('div');row.className='chat-row '+q;const b=document.createElement('div');b.className='burb '+q;b.textContent=txt;if(q==='bot'){const f=document.createElement('span');f.className='firma';f.textContent='· '+botName()+' ·';b.appendChild(f);row.appendChild(avaEl('bot'));row.appendChild(b);}else{row.appendChild(b);row.appendChild(avaEl('user'));}$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;return b;}
+function typeWriter(txt){const row=document.createElement('div');row.className='chat-row bot';const b=document.createElement('div');b.className='burb bot';const f=document.createElement('span');f.className='firma';f.textContent='· '+botName()+' ·';row.appendChild(avaEl('bot'));row.appendChild(b);$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;
+ let i=0;const int=setInterval(()=>{i++;b.textContent=txt.slice(0,i);b.appendChild(f);$('chat-ventana').scrollTop=1e9;if(i>=txt.length)clearInterval(int);},16);}
+window.preguntar=id=>{const f=FAQ.find(x=>x.id===id);if(!f)return;
+ addBurb('user',f.pregunta);chatHist.push({q:f.pregunta,a:f.respuesta});localStorage.setItem('sv-chat',JSON.stringify(chatHist));
+ if(yo) addDoc(collection(db,'chatLogs'),{uid:yo,nombre:(parte?parte.nombre+' '+parte.apellido:''),pregunta:f.pregunta,ts:new Date().toISOString()}).catch(()=>{});
+ const row=document.createElement('div');row.className='chat-row bot';
+ const b=document.createElement('div');b.className='burb bot';b.innerHTML='<div class="ld-dots"><i></i><i></i><i></i></div>';
+ row.appendChild(avaEl('bot'));row.appendChild(b);$('chat-ventana').appendChild(row);$('chat-ventana').scrollTop=1e9;
+ const dv=parseFloat(PERFIL&&PERFIL.chatDelay);const delay=(isFinite(dv)&&dv>0)?dv:2;
+ setTimeout(()=>{row.remove();typeWriter(f.respuesta);}, Math.max(0.3,delay)*1000);};
+function renderHist(){$('chat-ventana').innerHTML='';chatHist.forEach(h=>{addBurb('user',h.q);addBurb('bot',h.a);});}
+function mostrarNps(){const sc=$('nps-scale');sc.innerHTML='';for(let v=0;v<=10;v++){const b=document.createElement('button');b.textContent=v;b.onclick=()=>guardarNps(v);sc.appendChild(b);}$('nps').classList.add('activa');}
+window.cerrarNps=()=>{localStorage.removeItem('sv-nps-pending');$('nps').classList.remove('activa');};
+window.guardarNps=async v=>{await updateDoc(doc(db,'participantes',yo),{nps:v,npsTs:new Date().toISOString()});localStorage.removeItem('sv-nps-pending');$('nps').classList.remove('activa');toast('✓ ¡Gracias por tu opinión!','');};
+window.salir=()=>{pararScanner();signOut(auth);};
+onAuthStateChanged(auth,async u=>{$('carga').classList.add('fin');
+ if(u){yo=u.uid;
+  const ex=await getDoc(doc(db,'participantes',yo));
+  if(!ex.exists()){const dn=u.displayName||'';const parts=dn.split(' ');
+   await setDoc(doc(db,'participantes',yo),{nombre:parts[0]||'Buscador',apellido:parts.slice(1).join(' ')||'',email:u.email||'',telefono:'',simbolos:[],estado:'iniciado',registro:new Date().toISOString(),consent:{priv:true,mkt:false},avatar:''});}
+  updateDoc(doc(db,'participantes',yo),{sesiones:increment(1),ultimaConexion:new Date().toISOString()}).catch(()=>{});
+  localStorage.setItem('sv-sesion-start',String(Date.now()));
+  escucharTodo();renderHist();$('nav').style.display='flex';ver('p-home');}
+ else{yo=null;parte=null;$('nav').style.display='none';ver('p-landing');}});
+function marcarVistos(){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));
+ let rep=JSON.parse(localStorage.getItem('sv-avisos-open')||'[]');
+ avisosCache.forEach(a=>{ if(!rep.includes(a.id)){ rep.push(a.id); updateDoc(doc(db,'anuncios',a.id),{aperturas:increment(1)}).catch(()=>{}); } });
+ localStorage.setItem('sv-avisos-open',JSON.stringify(rep));
+ actualizarBadge();pintarAvisos();}
+function actualizarBadge(){const n=vistos?avisosCache.filter(a=>!vistos.includes(a.id)).length:0;$('badge').textContent=n;$('badge').classList.toggle('oculto',n===0);}
+function escucharTodo(){
+ onSnapshot(doc(db,'participantes',yo),s=>{if(s.exists()){parte=s.data();pintarHome();pintarPerfil();pintarJuegos();pintarPrograma();pintarVoto();pintarAvatarGrid();checkDefaultAvatar();pintarSorteo();}});
+ onSnapshot(collection(db,'simbolos'),s=>{s.forEach(d=>simbolos[d.id]={...d.data(),id:d.id});pintarHome();});
+ onSnapshot(collection(db,'programa'),s=>{programa=[];s.forEach(d=>programa.push({id:d.id,...d.data()}));programa.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarPrograma();});
+ onSnapshot(collection(db,'participantes'),s=>{RANK=[];s.forEach(d=>RANK.push({id:d.id,...d.data()}));pintarRanking();});
+ onSnapshot(doc(db,'config','juegos'),s=>{JUEGOS=s.exists()?s.data():{};pintarJuegos();actualizarVotoNav();});
+ onSnapshot(doc(db,'config','juegosImg'),s=>{JUEGOS_IMG=s.exists()?s.data():{};pintarJuegos();});
+ onSnapshot(doc(db,'config','extra'),s=>{EXTRA=s.exists()?s.data():{};pintarVoto();});
+ onSnapshot(doc(db,'config','avatares'),s=>{const d=s.exists()?s.data():{};AVATARES=d.items||[];pintarAvatarGrid();checkDefaultAvatar();});
+ onSnapshot(doc(db,'config','frases'),s=>{FRASES=s.exists()?s.data():{};actualizarFraseFinal();});
+ onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};
+  if(PERFIL.tituloApp)$('land-titulo').textContent=PERFIL.tituloApp;if(PERFIL.subApp)$('land-sub').textContent=PERFIL.subApp;if(PERFIL.avatarOraculo)$('orb').innerHTML='<img src="'+PERFIL.avatarOraculo+'">';$('chat-titulo').textContent=(botName()+' RESPONDE').toUpperCase();
+  const lr=localStorage.getItem('sv-chat-reset');
+  if(PERFIL.chatReset&&lr!==PERFIL.chatReset){localStorage.setItem('sv-chat-reset',PERFIL.chatReset);chatHist=[];localStorage.setItem('sv-chat','[]');renderHist();toast('🜂 El Oráculo renovó sus memorias','');}
+  pintarPerfil();});
+ onSnapshot(collection(db,'anuncios'),s=>{avisosCache=[];s.forEach(d=>avisosCache.push({id:d.id,...d.data()}));avisosCache.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));if(vistos===null){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));}const nv=avisosCache.filter(a=>!vistos.includes(a.id)&&!notificados.has(a.id));nv.forEach(a=>{notificados.add(a.id);toast('👁 '+botName().toUpperCase()+' · '+(a.titulo||''),a.mensaje||'');});if(nv.length)chime();actualizarBadge();pintarAvisos();});
+ onSnapshot(doc(db,'config','sorteoLive'),s=>{SORTEO_LIVE=s.exists()?s.data():null;pintarSorteo();},e=>console.warn('sorteoLive',e));
+ // === NUEVOS LISTENERS DE DOCUMENTOS SEPARADOS ===
+ onSnapshot(doc(db,'config','bannerQuiz'),s=>{BANNER_QUIZ=s.exists()?(s.data().url||null):null;pintarQuizBanner();},e=>console.warn('bannerQuiz',e));
+ onSnapshot(doc(db,'config','bannerSorteo'),s=>{BANNER_SORTEO=s.exists()?(s.data().url||null):null;pintarSorteo();},e=>console.warn('bannerSorteo',e));
+ onSnapshot(collection(db,'bannersArcano'),s=>{BANNERS_ARCANO={};s.forEach(d=>{const dat=d.data();if(dat&&dat.url)BANNERS_ARCANO['arcano_'+d.id]=dat.url;});},e=>console.warn('bannersArcano',e));
+ onSnapshot(doc(db,'config','textos'),s=>{TEXTOS=s.exists()?s.data():{};aplicarTextos();},e=>console.warn('textos',e));
+ escucharFAQ();escucharQuiz();
+}
+function actualizarFraseFinal(){const ff=$('frase-final-caja');if(!ff)return;
+ const n=(parte&&parte.simbolos||[]).length;
+ if(n>=7){ff.classList.remove('oculto');$('frase-final-texto').textContent=(FRASES&&FRASES.final)||DEF_FINAL;}
+ else ff.classList.add('oculto');}
+function pintarHome(){if(!parte)return;$('h-nombre').textContent=parte.nombre+' '+parte.apellido;
+ const ha=$('h-ava');if(ha){ if(parte.avatar)ha.innerHTML='<img src="'+parte.avatar+'" alt="">'; else ha.textContent=(parte.nombre||'✦')[0].toUpperCase(); }
+ const n=(parte.simbolos||[]).length,apto=n>=7;$('h-num').textContent=n+'/7';$('h-barra').style.strokeDashoffset=270.2*(1-n/7);const e=$('h-estado');e.textContent=apto?'✓ APTO':'BUSCADOR';e.classList.toggle('apto',apto);
+ const c=$('h-sellos');c.innerHTML='';
+ for(let i=1;i<=7;i++){
+  const ab=(parte.simbolos||[]).includes(i),s=simbolos[i];
+  const wrap=document.createElement('div');wrap.className='sello-wrap'+(ab?' abierto':'');
+  const d=document.createElement('div');d.className='sello'+(ab?' abierto':'');
+  let centro;
+  if(ab){
+    centro = (s&&s.img) ? '<img class="sello-img" src="'+s.img+'" alt="">' : '<span class="g">'+GLIFOS[i]+'</span>';
+  } else {
+    centro = '<span class="g" style="font-size:26px;color:var(--texto3)">✦</span>';
+  }
+  d.innerHTML=centro;
+  if(ab)d.onclick=()=>revelarSello(i);
+  const nm=document.createElement('div');nm.className='sello-nombre';
+  nm.textContent = ab ? ((s&&s.nombre)||NOMBRES[i]) : '—';
+  wrap.appendChild(d);wrap.appendChild(nm);c.appendChild(wrap);
+ }
+ const fr=[];for(let i=1;i<=7;i++){fr.push((parte.simbolos||[]).includes(i)&&simbolos[i]&&simbolos[i].fragmento?simbolos[i].fragmento:'· · ·');}$('h-frase').textContent=fr.join('  ');
+ actualizarFraseFinal();}
+function revelarSello(i,aliento,esFinal){const s=simbolos[i]||{};
+ const alTxt=aliento||'';
+ if(s.imgFull){
+   $('rev-card').style.display='none';
+   const rf=$('rev-full');rf.style.display='flex';
+   rf.classList.toggle('con-bar',!!alTxt);
+   $('rev-img').src=s.imgFull;
+   const bar=$('rev-aliento-bar');
+   if(alTxt){$('rev-aliento2').textContent=alTxt;bar.classList.remove('oculto');bar.classList.toggle('final',!!esFinal);}else bar.classList.add('oculto');
+   $('revelacion').classList.add('activa');
+ }else{
+   $('rev-full').style.display='none';
+   $('rev-card').style.display='';
+   const medal=$('rev-medal');
+   medal.innerHTML = s.img ? '<img src="'+s.img+'" alt="">' : '<span>'+GLIFOS[i]+'</span>';
+   $('rev-nombre2').textContent=((s.nombre||NOMBRES[i]||'—')+'').toUpperCase();
+   $('rev-salon2').textContent='Salón · '+(s.salon||'—');
+   $('rev-frag').textContent='· · ·';
+   const al=$('rev-aliento');
+   if(alTxt){al.textContent=alTxt;al.classList.remove('oculto');al.classList.toggle('final',!!esFinal);}else al.classList.add('oculto');
+   $('revelacion').classList.add('activa');
+   scramble($('rev-frag'), s.fragmento||'· · ·');
+ }}
+window.cerrarRevelacion=()=>{
+ $('revelacion').classList.remove('activa');
+ const homeBtn=document.querySelector('[data-p="p-home"]');
+ navegar('p-home',homeBtn);
+ if(localStorage.getItem('sv-nps-pending')==='1' && parte && parte.nps==null) mostrarNps();
+};
+function abrirSorteo(){ver('p-sorteo');pintarSorteo();}
+function pintarSorteo(){
+ const S=SORTEO_LIVE||{};
+ const premios=(S.premios||[]).filter(p=>p&&p.trim());
+ const reglas=S.reglas||'';
+ const ganadores=(S.ganadores||[]).filter(g=>g&&g.revelado!==false);
+ const estado=S.estado||'esperando';
+ const banner=$('slv-banner');
+ const fallback=$('slv-banner-fallback');
+ // Usa BANNER_SORTEO del documento separado
+ const bannerUrl=BANNER_SORTEO||'';
+ if(bannerUrl){
+   fallback.style.display='none';
+   let img=banner.querySelector('img.slv-banner-img');
+   if(!img){img=document.createElement('img');img.className='slv-banner-img';banner.appendChild(img);}
+   img.src=bannerUrl;
+ } else {
+   const existing=banner.querySelector('img.slv-banner-img');
+   if(existing)existing.remove();
+   fallback.style.display='block';
+ }
+ if(S.titulo)$('so-titulo').textContent=S.titulo;
+ if(S.subtitulo)$('so-sub').textContent=S.subtitulo;
+ $('so-reglas').textContent=reglas||'El Oráculo aún no ha revelado las reglas.';
+ const pl=$('so-premios');
+ if(premios.length){
+   pl.innerHTML=premios.map(p=>'<div class="slv-premio"><div class="slv-premio-txt">'+esc(p)+'</div></div>').join('');
+ } else {
+   pl.innerHTML='<p class="mistica" style="font-size:13px">Los premios aún no fueron revelados.</p>';
+ }
+ const label=$('so-cuenta-label');
+ const num=$('so-cuenta');
+ const hora=S.horaInicio?new Date(S.horaInicio):null;
+ num.classList.remove('live','done');
+ if(estado==='finalizado' && ganadores.length){
+   label.textContent='Sorteo Finalizado';
+   num.textContent='🏆';
+   num.classList.add('done');
+ } else if(hora){
+   const ahora=new Date();
+   const falta=hora-ahora;
+   if(falta>0){
+     label.textContent='El sorteo comienza en';
+     const s=Math.floor(falta/1000);
+     num.textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s';
+   } else {
+     label.textContent='El sorteo está en curso';
+     num.textContent='En vivo…';
+     num.classList.add('live');
+   }
+ } else {
+   label.textContent='Próximamente';
+   num.textContent='—';
+ }
+ const wrap=$('so-ganadores-wrap');
+ if(ganadores.length){
+   wrap.innerHTML='<div class="slv-ganadores-lista">'+ganadores.map((g,i)=>{
+     const nombre=(g&&g.nombre)||'';
+     return '<div class="slv-ganador" style="animation-delay:'+(i*0.3)+'s"><div class="slv-ganador-ico">🏆</div><div class="slv-ganador-info"><div class="tag">Ganador</div><div class="name">'+esc(nombre)+'</div></div></div>';
+   }).join('')+'</div>';
+ } else if(estado==='finalizado'){
+   wrap.innerHTML='<p class="mistica" style="text-align:center;font-size:13px">El sorteo terminó pero aún no hay ganadores cargados.</p>';
+ } else {
+   wrap.innerHTML='<div class="slv-esperando"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg><div>El Oráculo aún no ha elegido a los cinco dignos.</div><div style="font-size:12px;margin-top:6px;opacity:.8">Completa los 7 sellos para entrar al cáliz.</div></div>';
+ }
+}
+setInterval(()=>{
+ if(!$('p-sorteo')||!$('p-sorteo').classList.contains('activa'))return;
+ const S=SORTEO_LIVE||{};
+ if(S.estado==='finalizado' && (S.ganadores||[]).length)return;
+ const hora=S.horaInicio?new Date(S.horaInicio):null;
+ if(!hora)return;
+ const falta=hora-new Date();
+ const num=$('so-cuenta');
+ const label=$('so-cuenta-label');
+ num.classList.remove('live','done');
+ if(falta>0){
+   label.textContent='El sorteo comienza en';
+   const s=Math.floor(falta/1000);
+   num.textContent=Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m '+(s%60)+'s';
+ } else {
+   label.textContent='El sorteo está en curso';
+   num.textContent='En vivo…';
+   num.classList.add('live');
+ }
+},1000);
+function pintarPrograma(){const likes=(parte&&parte.likes)||[];const asis=(parte&&parte.asistencias)||[];
+ $('prog-lista').innerHTML=programa.map(a=>{const n=a.likes||0,my=likes.includes(a.id);const fue=asis.includes(a.id);const img=a.img||'';
+ return '<div class="item" onclick="darLike(\''+a.id+'\')">'+(img?'<img class="prog-img" src="'+img+'" alt="">':'')+'<div class="det"><b>'+fmtF(a.fecha)+' · '+esc(a.hora)+' · '+esc(a.tema)+(fue?' <span style="color:var(--verde)">✓ asistencia</span>':'')+'</b><span>'+esc(a.disertante||'')+(a.lugar?' · '+esc(a.lugar):'')+'</span></div><div class="likebox"><div class="h'+(my?' on':'')+'">♥</div><div class="c">'+n+'</div></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin actividades.</p>';}
+function pintarAvisos(){$('avisos-lista').innerHTML=avisosCache.map(a=>{const nuevo=vistos&&!vistos.includes(a.id);return '<div class="item" style="cursor:default;'+(nuevo?'border-color:var(--oro)':'')+'"><div class="det"><b style="font-size:12px;font-weight:600;color:var(--tinta)">👁 '+esc(a.titulo||'')+'</b><span>'+esc(a.mensaje||'')+'</span></div></div>';}).join('')||'<p class="mistica" style="text-align:center">Sin avisos.</p>';}
+let hq=null,escaneando=false;
+window.navegar=(id,b)=>{ver(id);document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');if(id==='p-avisos')marcarVistos();if(id==='p-scan')iniciarScanner();else pararScanner();if(id==='p-avatar')pintarAvatarGrid();};
+async function iniciarScanner(){if(escaneando)return;escaneando=true;try{hq=hq||new Html5Qrcode("qr-reader");await hq.start({facingMode:"environment"},{fps:10,qrbox:{width:220,height:220}},t=>{pararScanner();procesar(t);},()=>{});}catch(e){toast('Cámara no responde','Usa el código manual.');}}
+function pararScanner(){escaneando=false;if(hq&&hq.isScanning)hq.stop().catch(()=>{});}
+window.procesar=async raw=>{if(!raw)return;const tk=raw.trim();
+ const prog=programa.find(a=>a.checkin && a.checkin.toUpperCase()===tk.toUpperCase());
+ if(prog){ const as=(parte.asistencias||[]);
+   if(!as.includes(prog.id)){ const o={asistencias:arrayUnion(prog.id)}; o['asistTs.'+prog.id]=new Date().toISOString(); await updateDoc(doc(db,'participantes',yo),o); toast('✓ Check-in registrado', prog.tema||''); }
+   else toast('Ya hiciste check-in aquí','');
+   $('s-manual').value=''; return; }
+ const e=Object.values(simbolos).find(s=>s.token&&s.token.toUpperCase()===tk.toUpperCase());
+ if(!e)return toast('Código no reconocido','No es un sello ni un check-in válido.');
+ const n=e.numero;if((parte.simbolos||[]).includes(n))return toast('Sello ya marcado','');
+ const nuevo=(parte.simbolos||[]).length+1; const ahora=new Date().toISOString();
+ const upd={simbolos:arrayUnion(n), estado:nuevo>=7?'apto':'iniciado', ultimoSello:n};
+ upd['sellosTs.'+n]=ahora;
+ if(nuevo===1) upd['funnel.primerSello']=ahora;
+ if(nuevo>=7){ upd['funnel.sieteSellos']=ahora; if(!parte.completadoFecha) upd.completadoFecha=ahora; localStorage.setItem('sv-nps-pending','1'); }
+ await updateDoc(doc(db,'participantes',yo),upd);
+ chime();
+ let aliento=null,esFinal=false;
+ if(nuevo>=7){aliento=(FRASES&&FRASES.final)||DEF_FINAL;esFinal=true;}
+ else{const arr=(FRASES&&FRASES.aliento&&FRASES.aliento.length?FRASES.aliento:DEF_ALIENTO);aliento=arr[nuevo-1]||DEF_ALIENTO[nuevo-1]||'¡Vamos por el próximo!';}
+ revelarSello(n,aliento,esFinal);
+ $('s-manual').value='';};
+</script>
+
+<!-- ===== PWA: banner de instalación ===== -->
+<div id="install-banner" class="oculto" style="position:fixed;left:14px;right:14px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:50;background:var(--tinta);color:#fff;padding:14px 16px;border-radius:16px;box-shadow:0 10px 30px rgba(92,12,38,.45);display:flex;align-items:center;gap:12px">
+  <span style="font-size:22px;line-height:1">👁</span>
+  <div style="flex:1;min-width:0">
+    <b style="display:block;font-size:14px">Instalar la app</b>
+    <span style="display:block;opacity:.85;font-size:12px">Abrí S&amp;V como app del celular</span>
+  </div>
+  <button id="btn-instalar" style="padding:8px 14px;border-radius:999px;background:#fff;color:var(--tinta);border:none;font-weight:600;font-size:13px;cursor:pointer;flex:none">Instalar</button>
+  <button id="btn-dismiss" aria-label="Cerrar" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:18px;cursor:pointer;flex:none">✕</button>
+</div>
+<script>
+(function(){
+  var deferred=null;
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault(); deferred=e;
+    var b=document.getElementById('install-banner'); if(b) b.classList.remove('oculto');
+  });
+  document.addEventListener('click',function(e){
+    var t=e.target; if(!t) return;
+    if(t.id==='btn-instalar'&&deferred){
+      deferred.prompt();
+      deferred.userChoice.then(function(){ deferred=null; var b=document.getElementById('install-banner'); if(b) b.classList.add('oculto'); });
+    }
+    if(t.id==='btn-dismiss'){ var b=document.getElementById('install-banner'); if(b) b.classList.add('oculto'); }
+  });
+  window.addEventListener('appinstalled',function(){
+    var b=document.getElementById('install-banner'); if(b) b.classList.add('oculto');
+  });
+})();
+</script>
+<!-- ===== /PWA ===== -->
+
+</body>
+</html>
