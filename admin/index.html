@@ -250,6 +250,15 @@ tbody tr:hover{background:var(--elev)}
  <div class="eyebrow">Contenido</div><h2 class="titulo-sec">Textos de la app</h2>
  <p class="sub-sec">Editá los textos que ven los participantes desde el inicio y guardalos fijos. Los cambios se aplican al instante.</p>
  <div class="card">
+  <div class="txt-group"><div class="g-title">Pantalla de carga (splash)</div>
+   <label>Texto de carga</label><input id="tx-carga-texto" placeholder="👁 ABRIENDO EL GRIMORIO 👁">
+   <label>Logo de carga (URL imagen, opcional)</label><input id="tx-carga-logo" placeholder="https://... (reemplaza el texto)">
+   <img id="tx-carga-logo-prev" class="avatar-prev" style="visibility:hidden">
+  </div>
+  <div class="txt-group"><div class="g-title">Pantalla de registro (landing)</div>
+   <label>Logo central (URL imagen, opcional)</label><input id="tx-registro-logo" placeholder="https://... (reemplaza la copa SVG)">
+   <img id="tx-registro-logo-prev" class="avatar-prev" style="visibility:hidden">
+  </div>
   <div class="txt-group"><div class="g-title">Pantalla de inicio (landing)</div>
    <label>Título principal</label><input id="tx-landing-titulo">
    <label>Subtítulo</label><input id="tx-landing-sub">
@@ -370,6 +379,9 @@ const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
 const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['voto','Sección VOTAR visible'],['frase','Frase oculta visible']];
 const TEXTOS_DEF={
+ 'carga-texto':'👁 ABRIENDO EL GRIMORIO 👁',
+ 'carga-logo':'',
+ 'registro-logo':'',
  'landing-titulo':'SÍMBOLOS & VINOS','landing-sub':'Edición Masónica · MMXXVI',
  'landing-lema':'Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.',
  'landing-boton':'Continuar con Google',
@@ -442,7 +454,26 @@ function escuchar(){
  },e=>console.warn('sorteoLive',e));
  if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>{window.ADM[d.id]=d.data();});pintarAdmins();},e=>console.warn('admins',e));
 }
-function cargarFormTextos(){Object.keys(TEXTOS_DEF).forEach(k=>{const el=$('tx-'+k);if(el)el.value=(TEXTOS[k]!==undefined?TEXTOS[k]:TEXTOS_DEF[k]);});}
+function cargarFormTextos(){
+ Object.keys(TEXTOS_DEF).forEach(k=>{
+  const el=$('tx-'+k);
+  if(el)el.value=(TEXTOS[k]!==undefined?TEXTOS[k]:TEXTOS_DEF[k]);
+ });
+ // Mostrar previews de logos
+ ['carga-logo','registro-logo'].forEach(k=>{
+  const inp=$('tx-'+k),prev=$('tx-'+k+'-prev');
+  if(inp&&prev){
+   const v=inp.value;
+   if(v&&v.startsWith('http')){prev.src=v;prev.style.visibility='visible';}
+   else{prev.removeAttribute('src');prev.style.visibility='hidden';}
+   inp.oninput=()=>{
+    const v2=inp.value;
+    if(v2&&v2.startsWith('http')){prev.src=v2;prev.style.visibility='visible';}
+    else{prev.removeAttribute('src');prev.style.visibility='hidden';}
+   };
+  }
+ });
+}
 window.guardarTextos=async()=>{const data={};Object.keys(TEXTOS_DEF).forEach(k=>{const el=$('tx-'+k);data[k]=el?el.value:TEXTOS_DEF[k];});await setDoc(doc(db,'config','textos'),data,{merge:true});toast('✓ Textos guardados');};
 window.restaurarTextos=async()=>{if(!confirm('¿Restaurar todos los textos originales?'))return;await setDoc(doc(db,'config','textos'),Object.assign({},TEXTOS_DEF),{merge:true});toast('↻ Textos restaurados');};
 function pintarMetricas(){
