@@ -154,7 +154,7 @@ tr:last-child td{border-bottom:none}
  <p class="sub-sec">Activa los juegos, sube sus iconos y configura contenidos, todo en un solo lugar.</p>
  <div class="card"><h3>Activar / desactivar / mostrar</h3><div id="jz-toggles"></div></div>
  <div class="card"><h3>Iconos y banners de los juegos</h3>
-  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Subí un ícono cuadrado por juego y un banner 1200×400 para el quiz y el sorteo. Si no subís ninguna imagen, se usa el diseño por defecto.</p>
+  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Subí un ícono cuadrado por juego y un banner 1200×400 para el quiz. Si no subís ninguna imagen, se usa el diseño por defecto.</p>
   <div class="grid2">
    <div><label>ARCANO (quiz) · ícono cuadrado</label><input type="file" accept="image/*" id="gi-quiz" onchange="cargarImgJuego('quiz',this)"><img id="gi-prev-quiz" class="avatar-prev" style="visibility:hidden"></div>
    <div><label>TABLA BUSCADORES · ícono cuadrado</label><input type="file" accept="image/*" id="gi-ranking" onchange="cargarImgJuego('ranking',this)"><img id="gi-prev-ranking" class="avatar-prev" style="visibility:hidden"></div>
@@ -165,9 +165,9 @@ tr:last-child td{border-bottom:none}
  </div>
  <div class="card"><h3>Banner del sorteo (1200×400)</h3>
   <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Esta imagen se muestra en la parte superior de la pantalla Sorteo en las apps de los participantes.</p>
-  <input type="file" accept="image/*" id="slv-banner-input" onchange="cargarBannerSorteo(this)">
-  <img id="slv-banner-prev" class="banner-prev" style="display:none">
-  <div class="banner-actions" id="slv-banner-actions" style="display:none">
+  <input type="file" accept="image/*" id="slv-banner-input2" onchange="cargarBannerSorteo(this)">
+  <img id="slv-banner-prev2" class="banner-prev" style="display:none">
+  <div class="banner-actions" id="slv-banner-actions2" style="display:none">
    <button class="btn mini peligro" onclick="quitarBannerSorteo()">🗑 Quitar banner</button>
   </div>
  </div>
@@ -250,9 +250,9 @@ tr:last-child td{border-bottom:none}
  <div class="card">
   <h3>0 · Banner del sorteo (1200×400)</h3>
   <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Esta imagen se muestra en la parte superior de la pantalla Sorteo en las apps de los participantes. Si no subís ninguna, se ve el diseño por defecto con gradiente.</p>
-  <input type="file" accept="image/*" id="slv-banner-input2" onchange="cargarBannerSorteo(this)">
-  <img id="slv-banner-prev2" class="banner-prev" style="display:none">
-  <div class="banner-actions" id="slv-banner-actions2" style="display:none">
+  <input type="file" accept="image/*" id="slv-banner-input" onchange="cargarBannerSorteo(this)">
+  <img id="slv-banner-prev" class="banner-prev" style="display:none">
+  <div class="banner-actions" id="slv-banner-actions" style="display:none">
    <button class="btn mini peligro" onclick="quitarBannerSorteo()">🗑 Quitar banner</button>
   </div>
  </div>
@@ -335,6 +335,7 @@ const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['voto
 let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],AVATARES=[],SIMB={},CHATLOGS=[];
 let JUEGOS_IMG={},juegosImgPend={},progEditId=null,progImgPend=null,arcanoPend={};
 const ARCANOS=[{slug:'malbec',titulo:'Guardián del Malbec'},{slug:'cabernet',titulo:'Caballero del Cabernet'},{slug:'torrontes',titulo:'Alma de Torrontés'},{slug:'blend',titulo:'Alquimista del Blend'},{slug:'default',titulo:'Buscador de Arcanos (por defecto)'}];
+let SORTEO_LIVE=null,sorteoLiveLoaded=false,sorteoInterval=null,sorteoBannerPend=null;
 window.ANUN=[];
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const PERM={torre:['maestro','configurador','monitor'],metricas:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],avatares:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
@@ -532,14 +533,6 @@ window.genToken=async n=>{const t='SV2026-S'+n+'-'+Array.from(crypto.getRandomVa
 window.imprimirQRs=async()=>{let h='<html><body style="display:flex;flex-wrap:wrap;gap:30px;padding:30px">';
  for(let n=1;n<=7;n++){const sd=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const el=document.createElement('div');if(sd.token)new QRCode(el,{text:sd.token,width:180,height:180});const img=el.querySelector('canvas')?el.querySelector('canvas').toDataURL():'';h+='<div style="text-align:center"><img src="'+img+'" style="width:180px"><b>Sello '+n+'</b></div>';}
  h+='</body></html>';const w=window.open('');w.document.write(h);w.document.close();setTimeout(()=>w.print(),600);};
-window.cargarBannerSorteo=input=>{const f=input.files[0];if(!f)return; if(f.size>8*1024*1024){toast('Imagen muy pesada (máx 8MB)');return;} comprimirBanner(f,url=>{ sorteoBannerPend=url; renderBannerPrev(); toast('✓ Banner listo · pulsa Guardar configuración'); });};
-window.quitarBannerSorteo=()=>{ sorteoBannerPend=''; renderBannerPrev(); toast('Banner quitado · pulsa Guardar configuración para aplicar'); };
-function renderBannerPrev(){
- const prev=$('slv-banner-prev');const acts=$('slv-banner-actions');const inp=$('slv-banner-input');
- const url=(sorteoBannerPend!==null)?sorteoBannerPend:(SORTEO_LIVE&&SORTEO_LIVE.banner?SORTEO_LIVE.banner:null);
- if(url){prev.src=url;prev.style.display='block';acts.style.display='flex';}
- else{prev.removeAttribute('src');prev.style.display='none';acts.style.display='none';}
- inp.value='';}
 window.cargarImgProg=input=>{const f=input.files[0];if(!f)return; if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;} comprimirImg(f,url=>{progImgPend=url; const p=$('pg-img-prev'); p.src=url;p.style.visibility='visible';});};
 window.cancelarProgEdit=()=>{progEditId=null;progImgPend=null;['pg-fecha','pg-hora','pg-tema','pg-dis','pg-lugar'].forEach(i=>$(i).value='');const p=$('pg-img-prev');p.removeAttribute('src');p.style.visibility='hidden';$('pg-img').value='';$('prog-edit-banner').classList.add('oculto');$('pg-save-btn').textContent='+ Agregar';};
 window.editarProg=id=>{const a=PROG.find(x=>x.id===id);if(!a)return; progEditId=id; progImgPend=null; $('pg-fecha').value=a.fecha||''; $('pg-hora').value=a.hora||''; $('pg-tema').value=a.tema||''; $('pg-dis').value=a.disertante||''; $('pg-lugar').value=a.lugar||''; const p=$('pg-img-prev'); if(a.img){p.src=a.img;p.style.visibility='visible';}else{p.removeAttribute('src');p.style.visibility='hidden';} $('prog-edit-banner').classList.remove('oculto'); $('prog-edit-name').textContent=a.tema||''; $('pg-save-btn').textContent='Guardar cambios';};
@@ -594,6 +587,15 @@ function renderSorteoLiveForm(){
  }
  renderBannerPrev();
 }
+function renderBannerPrev(){
+ const prev=$('slv-banner-prev');const acts=$('slv-banner-actions');const inp=$('slv-banner-input');
+ const url=(sorteoBannerPend!==null)?sorteoBannerPend:(SORTEO_LIVE&&SORTEO_LIVE.banner?SORTEO_LIVE.banner:null);
+ if(url){prev.src=url;prev.style.display='block';acts.style.display='flex';}
+ else{prev.removeAttribute('src');prev.style.display='none';acts.style.display='none';}
+ inp.value='';
+}
+window.cargarBannerSorteo=input=>{const f=input.files[0];if(!f)return; if(f.size>8*1024*1024){toast('Imagen muy pesada (máx 8MB)');return;} comprimirBanner(f,url=>{ sorteoBannerPend=url; renderBannerPrev(); toast('✓ Banner listo · pulsa Guardar configuración'); });};
+window.quitarBannerSorteo=()=>{ sorteoBannerPend=''; renderBannerPrev(); toast('Banner quitado · pulsa Guardar configuración para aplicar'); };
 function pintarSorteoLive(){
  const S=SORTEO_LIVE||{};
  const estado=S.estado||'esperando';
