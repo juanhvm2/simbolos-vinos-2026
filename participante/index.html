@@ -8,13 +8,15 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="S&V 2026">
-<script>try{if(localStorage.getItem('sv-tema')==='oscuro')document.documentElement.dataset.theme='dark';}catch(e){}</script>
+<meta name="color-scheme" content="light">
+<script>try{if(localStorage.getItem('sv-tema')==='oscuro'){document.documentElement.dataset.theme='dark';document.querySelector('meta[name="color-scheme"]').content='dark';}}catch(e){}</script>
 <link rel="apple-touch-icon" href="icon-192.png" data-default-href="icon-192.png">
 <title>Símbolos & Vinos · Edición Masónica</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml" data-default-href="icon.svg">
 <link rel="manifest" href="manifest.webmanifest" data-default-href="manifest.webmanifest">
 <style>
 :root{
+ color-scheme:only light;
  --fondo:#f4f0e9; --card:#fdfbf7; --card2:#ffffff;
  --tinta:#7a1034; --tinta2:#5c0c26; --purpura:#6d1f6e; --oro:#d4a84b; --corazon:#e0245e;
  --texto:#1d1a17; --texto2:rgba(29,26,23,.56); --texto3:rgba(29,26,23,.34);
@@ -35,6 +37,7 @@
  --acento-solido:#9f3159;--sobre-acento:#fff;--verde:#62d98b;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--fondo)}
 body{background:var(--fondo);color:var(--texto);font-family:var(--sys);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse 90% 55% at 50% -10%,rgba(122,16,52,.06),transparent 60%)}
 [data-theme="dark"] body::before{background:radial-gradient(ellipse 90% 55% at 50% -10%,rgba(231,165,189,.09),transparent 60%)}
@@ -281,6 +284,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 [data-theme="dark"] .anillo .fondo{stroke:rgba(255,255,255,.12)}
 [data-theme="dark"] .comp-bar{background:rgba(255,255,255,.10)}
 [data-theme="dark"] .sello.abierto{background:linear-gradient(140deg,var(--acento-solido),#65285f)}
+[data-theme="dark"] .cd-card{background:linear-gradient(135deg,var(--acento-solido),#71306f);color:var(--sobre-acento);box-shadow:0 10px 28px rgba(0,0,0,.38)}
 [data-theme="dark"] .sello.abierto::after{color:#241419}
 [data-theme="dark"] .game-icon svg{stroke:#fff}
 [data-theme="dark"] .chipmini.on,[data-theme="dark"] .paso .num,[data-theme="dark"] .chat-row .ava.missing{background:var(--acento-solido);color:var(--sobre-acento)}
@@ -545,6 +549,7 @@ function aplicarTema(){
  const btn=$('tema-toggle');
  if(btn){btn.textContent=oscuro?'☀':'☾';btn.setAttribute('aria-label',oscuro?'Activar modo claro':'Activar modo oscuro');}
  const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=oscuro?'#121014':'#f4f0e9';
+ const esquema=document.querySelector('meta[name="color-scheme"]');if(esquema)esquema.content=oscuro?'dark':'light';
 }
 window.toggleTema=()=>{const oscuro=document.documentElement.dataset.theme==='dark';if(oscuro)delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme='dark';localStorage.setItem('sv-tema',oscuro?'claro':'oscuro');aplicarTema();};
 aplicarTema();
