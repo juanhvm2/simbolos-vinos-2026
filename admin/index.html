@@ -360,13 +360,15 @@ tbody tr:hover{background:var(--elev)}
 <section class="sec" id="sec-reinicio"><div class="eyebrow">Peligro</div><h2 class="titulo-sec">Reinicio del evento</h2><p class="sub-sec">Acciones destructivas con doble confirmación.</p>
  <div class="card" style="border-color:rgba(255,69,58,.3)">
   <label class="rz-check"><input type="checkbox" id="rz-prog" checked> Progreso sellos → 0/7</label>
-  <label class="rz-check"><input type="checkbox" id="rz-chats"> Chats del Oráculo (historial)</label>
-  <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones</label>
-  <label class="rz-check"><input type="checkbox" id="rz-sort" checked> Sorteos</label>
-  <label class="rz-check"><input type="checkbox" id="rz-juegos"> Datos de juegos (voto/ranking, círculo, me gusta)</label>
-  <label class="rz-check"><input type="checkbox" id="rz-corazones"> Contador de corazones</label>
-  <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa</label>
-  <label class="rz-check"><input type="checkbox" id="rz-sellos"> Sellos y QRs</label>
+  <label class="rz-check"><input type="checkbox" id="rz-juegos"> Datos de juegos (voto/ranking, círculo, me gusta, NPS, asistencias)</label>
+  <label class="rz-check"><input type="checkbox" id="rz-quiz"> Quiz y perfil del arcano completado</label>
+  <label class="rz-check"><input type="checkbox" id="rz-avatares"> Avatares elegidos por participantes</label>
+  <label class="rz-check"><input type="checkbox" id="rz-chats"> Chats del Oráculo (historial y reset)</label>
+  <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones y avisos</label>
+  <label class="rz-check"><input type="checkbox" id="rz-corazones"> Contador de corazones (likes charlas)</label>
+  <label class="rz-check"><input type="checkbox" id="rz-sort" checked> Sorteos (historial y estado en vivo)</label>
+  <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa (borrar todas las charlas)</label>
+  <label class="rz-check"><input type="checkbox" id="rz-sellos"> Sellos y QRs (⚠ marca también "Progreso sellos")</label>
   <button class="btn peligro" style="margin-top:12px" onclick="rzPaso1()">Reiniciar evento</button>
   <div id="rz-paso2" class="oculto" style="margin-top:12px"><p style="color:var(--red);font-size:13px">⚠ Confirmación 1 de 2.</p>
   <button class="btn peligro" onclick="rzPaso2()">Confirmación 2 de 2 — Ejecutar</button><button class="btn mini" onclick="rzCancelar()">Cancelar</button></div></div></section>
@@ -479,7 +481,6 @@ function cargarFormTextos(){
  });
  const cargaInput=$('tx-carga-texto');
  if(cargaInput)cargaInput.placeholder=TEXTOS['carga-texto-placeholder']||TEXTOS_DEF['carga-texto-placeholder'];
- // Mostrar previews de logos
  LOGOS_TEXTO.forEach(k=>{
   const inp=$('tx-'+k),prev=$('tx-'+k+'-prev');
   if(inp&&prev){
@@ -830,17 +831,110 @@ window.cambiarRol=async(id,r)=>{await updateDoc(doc(db,'admins',id),{rol:r});toa
 window.revocar=async id=>{if(confirm('¿Eliminar este admin?'))await deleteDoc(doc(db,'admins',id));};
 window.rzPaso1=()=>{$('rz-paso2').classList.remove('oculto');};
 window.rzCancelar=()=>{$('rz-paso2').classList.add('oculto');};
-window.rzPaso2=async()=>{const ops=[];const del=col=>getDocs(collection(db,col)).then(s=>s.forEach(d=>ops.push({t:'d',ref:d.ref})));
- if($('rz-prog').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{simbolos:[],estado:'iniciado'}}));
- if($('rz-juegos').checked)Object.values(PART).forEach(p=>ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{voto:deleteField(),votoRank:deleteField(),circulo:deleteField(),likes:deleteField()}}));
- if($('rz-corazones').checked)PROG.forEach(a=>ops.push({t:'u',ref:doc(db,'programa',a.id),d:{likes:0}}));
- if($('rz-chats').checked)await setDoc(doc(db,'config','perfil'),{chatReset:new Date().toISOString()},{merge:true});
- if($('rz-anun').checked)await del('anuncios');
- if($('rz-sort').checked){await del('sorteos');await setDoc(doc(db,'config','sorteoLive'),{estado:'esperando',titulo:'Sorteo final',subtitulo:'',reglas:'',premios:['','','','',''],horaInicio:null,ganadores:[],fechaSorteo:null},{merge:false});}
- if($('rz-programa').checked)await del('programa');
- if($('rz-sellos').checked)await del('simbolos');
- for(let i=0;i<ops.length;i+=450){const b=writeBatch(db);ops.slice(i,i+450).forEach(o=>{if(o.t==='u')b.update(o.ref,o.d);else b.delete(o.ref);});await b.commit();}
- $('rz-paso2').classList.add('oculto');toast('✓ Evento reiniciado');};
+window.rzPaso2=async()=>{
+ if($('rz-sellos').checked && !$('rz-prog').checked){
+  toast('⚠ Para borrar sellos, marcá también "Progreso sellos"','');
+  return;
+ }
+ const ops=[];
+ const del=col=>getDocs(collection(db,col)).then(s=>s.forEach(d=>ops.push({t:'d',ref:d.ref})));
+
+ if($('rz-prog').checked){
+  Object.values(PART).forEach(p=>{
+   ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{
+    simbolos:[],
+    estado:'iniciado',
+    ultimoSello:deleteField(),
+    sellosTs:deleteField(),
+    completadoFecha:deleteField(),
+    'funnel.primerSello':deleteField(),
+    'funnel.sieteSellos':deleteField()
+   }});
+  });
+ }
+
+ if($('rz-juegos').checked){
+  Object.values(PART).forEach(p=>{
+   ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{
+    voto:deleteField(),
+    votoRank:deleteField(),
+    circulo:deleteField(),
+    likes:deleteField(),
+    nps:deleteField(),
+    npsTs:deleteField(),
+    asistencias:deleteField(),
+    asistTs:deleteField(),
+    'funnel.circulo':deleteField(),
+    'funnel.voto':deleteField()
+   }});
+  });
+ }
+
+ if($('rz-quiz').checked){
+  Object.values(PART).forEach(p=>{
+   ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{
+    quiz:deleteField(),
+    perfil:deleteField()
+   }});
+  });
+ }
+
+ if($('rz-avatares').checked){
+  Object.values(PART).forEach(p=>{
+   ops.push({t:'u',ref:doc(db,'participantes',p.id),d:{avatar:''}});
+  });
+ }
+
+ if($('rz-corazones').checked){
+  PROG.forEach(a=>ops.push({t:'u',ref:doc(db,'programa',a.id),d:{likes:0}}));
+ }
+
+ if($('rz-chats').checked){
+  await del('chatLogs');
+  await setDoc(doc(db,'config','perfil'),{chatReset:new Date().toISOString()},{merge:true});
+ }
+
+ if($('rz-anun').checked){
+  await del('anuncios');
+  await del('tokens');
+ }
+
+ if($('rz-sort').checked){
+  await del('sorteos');
+  await setDoc(doc(db,'config','sorteoLive'),{
+   estado:'esperando',
+   titulo:'Sorteo final',
+   subtitulo:'',
+   reglas:'',
+   premios:['','','','',''],
+   horaInicio:null,
+   ganadores:[],
+   fechaSorteo:null
+  },{merge:false});
+ }
+
+ if($('rz-programa').checked){
+  await del('programa');
+ }
+
+ if($('rz-sellos').checked){
+  await del('simbolos');
+ }
+
+ if(ops.length>0){
+  for(let i=0;i<ops.length;i+=450){
+   const b=writeBatch(db);
+   ops.slice(i,i+450).forEach(o=>{
+    if(o.t==='u')b.update(o.ref,o.d);
+    else b.delete(o.ref);
+   });
+   await b.commit();
+  }
+ }
+
+ $('rz-paso2').classList.add('oculto');
+ toast('✓ Evento reiniciado · '+ops.length+' operaciones');
+};
 </script>
 </body>
 </html>
