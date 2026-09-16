@@ -265,6 +265,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
 <body>
 <div class="textura"></div>
 <div class="carga" id="carga">👁 ABRIENDO EL GRIMORIO 👁</div>
+<script>try{const t=JSON.parse(localStorage.getItem('sv-textos-cache')||'{}')['carga-texto-html'];if(t)document.getElementById('carga').textContent=t;}catch(e){}</script>
 <div id="toasts"></div>
 
 <section class="pantalla" id="p-landing"><div>
@@ -533,6 +534,9 @@ const GAME_GRAD=['linear-gradient(140deg,var(--tinta),var(--purpura))','linear-g
 // === FUNCIÓN DE TEXTOS CON FALLBACK ===
 const TXT_DEF={
  'carga-texto':'👁 ABRIENDO EL GRIMORIO 👁',
+ 'carga-texto-html':'👁 ABRIENDO EL GRIMORIO 👁',
+ 'carga-texto-placeholder':'👁 ABRIENDO EL GRIMORIO 👁',
+ 'carga-texto-default':'👁 ABRIENDO EL GRIMORIO 👁',
  'carga-logo':'',
  'registro-logo':'',
  'app-logo':'',
@@ -566,11 +570,12 @@ function aplicarTextos(){
  // Pantalla de carga (splash)
  const cargaEl=$('carga');
  const cargaLogo=txt('carga-logo');
+ const cargaTexto=TEXTOS['carga-texto']||TEXTOS['carga-texto-default']||TXT_DEF['carga-texto-default'];
  if(cargaEl){
   if(cargaLogo){
-   cargaEl.innerHTML='<img src="'+cargaLogo+'" style="max-width:180px;max-height:180px;object-fit:contain;display:block;margin:0 auto 16px">'+esc(txt('carga-texto'));
+   cargaEl.innerHTML='<img src="'+cargaLogo+'" style="max-width:180px;max-height:180px;object-fit:contain;display:block;margin:0 auto 16px">'+esc(cargaTexto);
   } else {
-   cargaEl.textContent=txt('carga-texto');
+   cargaEl.textContent=cargaTexto;
   }
  }
  // Logo en landing (registro con Google)
@@ -743,7 +748,7 @@ window.guardarNps=async v=>{await updateDoc(doc(db,'participantes',yo),{nps:v,np
 window.salir=()=>{pararScanner();signOut(auth);};
 let resolverTextos;
 const textosListos=new Promise(resolve=>{resolverTextos=resolve;});
-onSnapshot(doc(db,'config','textos'),s=>{TEXTOS=s.exists()?s.data():{};aplicarTextos();resolverTextos();},e=>{console.warn('textos',e);resolverTextos();});
+onSnapshot(doc(db,'config','textos'),s=>{TEXTOS=s.exists()?s.data():{};localStorage.setItem('sv-textos-cache',JSON.stringify(TEXTOS));aplicarTextos();resolverTextos();},e=>{console.warn('textos',e);resolverTextos();});
 onAuthStateChanged(auth,async u=>{await Promise.race([textosListos,new Promise(resolve=>setTimeout(resolve,1500))]);$('carga').classList.add('fin');
  if(u){yo=u.uid;
   const ex=await getDoc(doc(db,'participantes',yo));
