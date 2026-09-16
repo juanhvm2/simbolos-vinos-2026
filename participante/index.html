@@ -391,8 +391,8 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
       <div id="so-ganadores-wrap">
         <div class="slv-esperando">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg>
-          <div>El Oráculo aún no ha elegido a los cinco dignos.</div>
-          <div style="font-size:12px;margin-top:6px;opacity:.8">Completa los 7 sellos para entrar al cáliz.</div>
+          <div id="so-esp-1">El Oráculo aún no ha elegido a los cinco dignos.</div>
+          <div id="so-esp-2" style="font-size:12px;margin-top:6px;opacity:.8">Completa los 7 sellos para entrar al cáliz.</div>
         </div>
       </div>
     </div>
@@ -597,7 +597,9 @@ const TXT_DEF={
  'home-hola':'Hola, buscador','home-lema1':'Los sellos duermen.','home-lema2':'Ve y despiértalos.',
  'home-scan':'Escanear un sello','home-sec-sellos':'Toca un sello dorado para ver su lámina','home-frase-titulo':'La frase oculta',
  'juegos-titulo':'Salón de Juegos','juegos-sub':'Toca para jugar · puedes repetir los completados.',
- 'sorteo-volver':'Volver al salón'
+ 'sorteo-volver':'Volver al salón',
+ 'sorteo-esperando-1':'El Oráculo aún no ha elegido a los cinco dignos.',
+ 'sorteo-esperando-2':'Completa los 7 sellos para entrar al cáliz.'
 };
 function txt(k){const v=TEXTOS[k];return(v!==undefined&&v!=='')?v:(TXT_DEF[k]||'');}
 function aplicarTextos(){
@@ -653,6 +655,8 @@ function aplicarTextos(){
  set('juegos-titulo','juegos-titulo');
  set('juegos-sub','juegos-sub');
  set('sorteo-volver','sorteo-volver');
+ set('so-esp-1','sorteo-esperando-1');
+ set('so-esp-2','sorteo-esperando-2');
 }
 window.ver=id=>{document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));$(id).classList.add('activa');};
 window.irScan=()=>navegar('p-scan',null);
@@ -950,7 +954,7 @@ function pintarSorteo(){
  } else if(estado==='finalizado'){
    wrap.innerHTML='<p class="mistica" style="text-align:center;font-size:13px">El sorteo terminó pero aún no hay ganadores cargados.</p>';
  } else {
-   wrap.innerHTML='<div class="slv-esperando"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg><div>El Oráculo aún no ha elegido a los cinco dignos.</div><div style="font-size:12px;margin-top:6px;opacity:.8">Completa los 7 sellos para entrar al cáliz.</div></div>';
+   wrap.innerHTML='<div class="slv-esperando"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg><div id="so-esp-1">'+esc(txt('sorteo-esperando-1'))+'</div><div id="so-esp-2" style="font-size:12px;margin-top:6px;opacity:.8">'+esc(txt('sorteo-esperando-2'))+'</div></div>';
  }
 }
 setInterval(()=>{
