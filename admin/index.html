@@ -296,6 +296,8 @@ tbody tr:hover{background:var(--elev)}
    <label>Título Salón de Juegos</label><input id="tx-juegos-titulo">
    <label>Subtítulo Salón de Juegos</label><input id="tx-juegos-sub">
    <label>Botón volver al salón</label><input id="tx-sorteo-volver">
+   <label>Sorteo · mensaje "aún no hay ganadores" (línea 1)</label><input id="tx-sorteo-esperando-1">
+   <label>Sorteo · mensaje "aún no hay ganadores" (línea 2)</label><input id="tx-sorteo-esperando-2">
   </div>
   <button class="btn solido" style="margin-top:14px" onclick="guardarTextos()">💾 Guardar textos</button>
   <button class="btn" style="margin-top:14px" onclick="restaurarTextos()">↻ Restaurar originales</button>
@@ -411,7 +413,9 @@ const TEXTOS_DEF={
  'home-hola':'Hola, buscador','home-lema1':'Los sellos duermen.','home-lema2':'Ve y despiértalos.',
  'home-scan':'Escanear un sello','home-sec-sellos':'Toca un sello dorado para ver su lámina','home-frase-titulo':'La frase oculta',
  'juegos-titulo':'Salón de Juegos','juegos-sub':'Toca para jugar · puedes repetir los completados.',
- 'sorteo-volver':'Volver al salón'
+ 'sorteo-volver':'Volver al salón',
+ 'sorteo-esperando-1':'El Oráculo aún no ha elegido a los cinco dignos.',
+ 'sorteo-esperando-2':'Completa los 7 sellos para entrar al cáliz.'
 };
 let TEXTOS={};
 const LOGOS_TEXTO=['carga-logo','registro-logo','app-logo'];
