@@ -251,7 +251,10 @@ tbody tr:hover{background:var(--elev)}
  <p class="sub-sec">Editá los textos que ven los participantes desde el inicio y guardalos fijos. Los cambios se aplican al instante.</p>
  <div class="card">
   <div class="txt-group"><div class="g-title">Pantalla de carga (splash)</div>
-   <label>Texto de carga</label><input id="tx-carga-texto" placeholder="👁 ABRIENDO EL GRIMORIO 👁">
+   <label>1 · Participante — texto visible de la pantalla de carga</label><input id="tx-carga-texto" placeholder="Texto principal del splash">
+   <label>2 · Participante — texto inicial antes de conectar con Firebase</label><input id="tx-carga-texto-html" placeholder="Se usa durante los primeros instantes de carga">
+   <label>3 · Administrador — texto de ejemplo del campo de carga</label><input id="tx-carga-texto-placeholder" placeholder="Ayuda que se muestra en el administrador">
+   <label>4 · Participante — texto de respaldo si el principal está vacío</label><input id="tx-carga-texto-default" placeholder="Fallback de la pantalla de carga">
    <label>Logo de carga (subir imagen)</label><input type="hidden" id="tx-carga-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('carga-logo',this)">
    <img id="tx-carga-logo-prev" class="avatar-prev" style="visibility:hidden">
    <button class="btn mini peligro" type="button" onclick="quitarLogoTexto('carga-logo')">🗑 Quitar logo</button>
@@ -388,6 +391,9 @@ const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué u
 const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['voto','Sección VOTAR visible'],['frase','Frase oculta visible']];
 const TEXTOS_DEF={
  'carga-texto':'👁 ABRIENDO EL GRIMORIO 👁',
+ 'carga-texto-html':'👁 ABRIENDO EL GRIMORIO 👁',
+ 'carga-texto-placeholder':'👁 ABRIENDO EL GRIMORIO 👁',
+ 'carga-texto-default':'👁 ABRIENDO EL GRIMORIO 👁',
  'carga-logo':'',
  'registro-logo':'',
  'app-logo':'',
@@ -471,6 +477,8 @@ function cargarFormTextos(){
   if(LOGOS_TEXTO.includes(k)&&logosTextoModificados.has(k))return;
   if(el)el.value=(TEXTOS[k]!==undefined?TEXTOS[k]:TEXTOS_DEF[k]);
  });
+ const cargaInput=$('tx-carga-texto');
+ if(cargaInput)cargaInput.placeholder=TEXTOS['carga-texto-placeholder']||TEXTOS_DEF['carga-texto-placeholder'];
  // Mostrar previews de logos
  LOGOS_TEXTO.forEach(k=>{
   const inp=$('tx-'+k),prev=$('tx-'+k+'-prev');
