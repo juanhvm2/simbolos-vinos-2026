@@ -8,11 +8,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="S&V 2026">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png" data-default-href="icon-192.png">
 <title>Símbolos & Vinos · Edición Masónica</title>
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
-<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml" data-default-href="icon.svg">
+<link rel="manifest" href="manifest.webmanifest" data-default-href="manifest.webmanifest">
 <style>
 :root{
  --fondo:#f4f0e9; --card:#fdfbf7; --card2:#ffffff;
@@ -536,6 +535,7 @@ const TXT_DEF={
  'carga-texto':'👁 ABRIENDO EL GRIMORIO 👁',
  'carga-logo':'',
  'registro-logo':'',
+ 'app-logo':'',
  'landing-titulo':'SÍMBOLOS & VINOS','landing-sub':'Edición Masónica · MMXXVI',
  'landing-lema':'Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.',
  'landing-boton':'Continuar con Google',
@@ -553,6 +553,16 @@ const TXT_DEF={
 function txt(k){const v=TEXTOS[k];return(v!==undefined&&v!=='')?v:(TXT_DEF[k]||'');}
 function aplicarTextos(){
  const set=(id,k)=>{const el=$(id);if(el)el.textContent=txt(k);};
+ const appLogo=txt('app-logo');
+ if(appLogo){
+  document.querySelectorAll('link[rel="icon"],link[rel="apple-touch-icon"]').forEach(el=>el.href=appLogo);
+  const manifest={name:'Símbolos & Vinos · Edición Masónica',short_name:'S&V 2026',description:'La búsqueda de los 7 sellos enológicos de Símbolos & Vinos.',start_url:'./',scope:'./',display:'standalone',orientation:'portrait',background_color:'#f4f0e9',theme_color:'#7a1034',lang:'es',icons:[{src:appLogo,sizes:'256x256',type:'image/png',purpose:'any maskable'}]};
+  const link=document.querySelector('link[rel="manifest"]');
+  if(link){if(link.dataset.objectUrl)URL.revokeObjectURL(link.dataset.objectUrl);const url=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'}));link.href=url;link.dataset.objectUrl=url;}
+ }else{
+  document.querySelectorAll('link[data-default-href]').forEach(el=>el.href=el.dataset.defaultHref);
+  const link=document.querySelector('link[rel="manifest"]');if(link&&link.dataset.objectUrl){URL.revokeObjectURL(link.dataset.objectUrl);delete link.dataset.objectUrl;}
+ }
  // Pantalla de carga (splash)
  const cargaEl=$('carga');
  const cargaLogo=txt('carga-logo');

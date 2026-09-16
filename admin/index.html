@@ -261,6 +261,12 @@ tbody tr:hover{background:var(--elev)}
    <img id="tx-registro-logo-prev" class="avatar-prev" style="visibility:hidden">
    <button class="btn mini" type="button" onclick="quitarLogoTexto('registro-logo')">Quitar logo</button>
   </div>
+  <div class="txt-group"><div class="g-title">App instalada (Android/iOS)</div>
+   <label>Ícono de la app (imagen cuadrada)</label><input type="hidden" id="tx-app-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('app-logo',this)">
+   <img id="tx-app-logo-prev" class="avatar-prev" style="visibility:hidden">
+   <button class="btn mini" type="button" onclick="quitarLogoTexto('app-logo')">Quitar ícono</button>
+   <p style="color:var(--txt3);font-size:11px;margin-top:6px">Para ver el cambio en una app ya instalada, desinstálala y vuelve a instalarla.</p>
+  </div>
   <div class="txt-group"><div class="g-title">Pantalla de inicio (landing)</div>
    <label>Título principal</label><input id="tx-landing-titulo">
    <label>Subtítulo</label><input id="tx-landing-sub">
@@ -384,6 +390,7 @@ const TEXTOS_DEF={
  'carga-texto':'👁 ABRIENDO EL GRIMORIO 👁',
  'carga-logo':'',
  'registro-logo':'',
+ 'app-logo':'',
  'landing-titulo':'SÍMBOLOS & VINOS','landing-sub':'Edición Masónica · MMXXVI',
  'landing-lema':'Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.',
  'landing-boton':'Continuar con Google',
@@ -399,6 +406,8 @@ const TEXTOS_DEF={
  'sorteo-volver':'Volver al salón'
 };
 let TEXTOS={};
+const LOGOS_TEXTO=['carga-logo','registro-logo','app-logo'];
+const logosTextoModificados=new Set();
 let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],AVATARES=[],SIMB={},CHATLOGS=[];
 let JUEGOS_IMG={},juegosImgPend={},progEditId=null,progImgPend=null,arcanoPend={};
 const ARCANOS=[{slug:'malbec',titulo:'Guardián del Malbec'},{slug:'cabernet',titulo:'Caballero del Cabernet'},{slug:'torrontes',titulo:'Alma de Torrontés'},{slug:'blend',titulo:'Alquimista del Blend'},{slug:'default',titulo:'Buscador de Arcanos (por defecto)'}];
@@ -459,10 +468,11 @@ function escuchar(){
 function cargarFormTextos(){
  Object.keys(TEXTOS_DEF).forEach(k=>{
   const el=$('tx-'+k);
+  if(LOGOS_TEXTO.includes(k)&&logosTextoModificados.has(k))return;
   if(el)el.value=(TEXTOS[k]!==undefined?TEXTOS[k]:TEXTOS_DEF[k]);
  });
  // Mostrar previews de logos
- ['carga-logo','registro-logo'].forEach(k=>{
+ LOGOS_TEXTO.forEach(k=>{
   const inp=$('tx-'+k),prev=$('tx-'+k+'-prev');
   if(inp&&prev){
    const v=inp.value;
@@ -472,9 +482,9 @@ function cargarFormTextos(){
  });
 }
 window.cargarLogoTexto=(k,input)=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');input.value='';return;}
- comprimirImg(f,url=>{const el=$('tx-'+k),prev=$('tx-'+k+'-prev');el.value=url;prev.src=url;prev.style.visibility='visible';input.value='';toast('Logo listo · pulsa Guardar textos');});};
-window.quitarLogoTexto=k=>{const el=$('tx-'+k),prev=$('tx-'+k+'-prev');el.value='';prev.removeAttribute('src');prev.style.visibility='hidden';toast('Logo quitado · pulsa Guardar textos');};
-window.guardarTextos=async()=>{const data={};Object.keys(TEXTOS_DEF).forEach(k=>{const el=$('tx-'+k);data[k]=el?el.value:TEXTOS_DEF[k];});try{await setDoc(doc(db,'config','textos'),data,{merge:true});toast('✓ Textos y logos guardados');}catch(e){console.error(e);toast('No se pudieron guardar los textos');}};
+ comprimirImg(f,url=>{const el=$('tx-'+k),prev=$('tx-'+k+'-prev');el.value=url;prev.src=url;prev.style.visibility='visible';logosTextoModificados.add(k);input.value='';toast('Logo listo · pulsa Guardar textos');});};
+window.quitarLogoTexto=k=>{const el=$('tx-'+k),prev=$('tx-'+k+'-prev');el.value='';prev.removeAttribute('src');prev.style.visibility='hidden';logosTextoModificados.add(k);toast('Logo quitado · pulsa Guardar textos');};
+window.guardarTextos=async()=>{const data={};Object.keys(TEXTOS_DEF).forEach(k=>{if(LOGOS_TEXTO.includes(k))return;const el=$('tx-'+k);data[k]=el?el.value:TEXTOS_DEF[k];});LOGOS_TEXTO.forEach(k=>{if(logosTextoModificados.has(k))data[k]=$('tx-'+k).value;});try{await setDoc(doc(db,'config','textos'),data,{merge:true});logosTextoModificados.clear();toast('✓ Textos y logos guardados');}catch(e){console.error(e);toast('No se pudieron guardar los textos: '+(e.code||e.message||'error'));}};
 window.restaurarTextos=async()=>{if(!confirm('¿Restaurar todos los textos originales?'))return;await setDoc(doc(db,'config','textos'),Object.assign({},TEXTOS_DEF),{merge:true});toast('↻ Textos restaurados');};
 function pintarMetricas(){
  const P=Object.values(PART);const f1=P.length;
