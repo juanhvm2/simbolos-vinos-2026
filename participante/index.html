@@ -533,6 +533,9 @@ const GAME_ICON={
 const GAME_GRAD=['linear-gradient(140deg,var(--tinta),var(--purpura))','linear-gradient(140deg,var(--purpura),#9b4dca)','linear-gradient(140deg,var(--oro),#a97b12)'];
 // === FUNCIÓN DE TEXTOS CON FALLBACK ===
 const TXT_DEF={
+ 'carga-texto':'👁 ABRIENDO EL GRIMORIO 👁',
+ 'carga-logo':'',
+ 'registro-logo':'',
  'landing-titulo':'SÍMBOLOS & VINOS','landing-sub':'Edición Masónica · MMXXVI',
  'landing-lema':'Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.',
  'landing-boton':'Continuar con Google',
@@ -550,6 +553,27 @@ const TXT_DEF={
 function txt(k){const v=TEXTOS[k];return(v!==undefined&&v!=='')?v:(TXT_DEF[k]||'');}
 function aplicarTextos(){
  const set=(id,k)=>{const el=$(id);if(el)el.textContent=txt(k);};
+ // Pantalla de carga (splash)
+ const cargaEl=$('carga');
+ const cargaLogo=txt('carga-logo');
+ if(cargaEl){
+  if(cargaLogo&&cargaLogo.startsWith('http')){
+   cargaEl.innerHTML='<img src="'+cargaLogo+'" style="max-width:180px;max-height:180px;object-fit:contain;display:block;margin:0 auto 16px">'+esc(txt('carga-texto'));
+  } else {
+   cargaEl.textContent=txt('carga-texto');
+  }
+ }
+ // Logo en landing (registro con Google)
+ const orbEl=$('orb');
+ const regLogo=txt('registro-logo');
+ if(orbEl){
+  if(regLogo&&regLogo.startsWith('http')){
+   orbEl.innerHTML='<img src="'+regLogo+'" style="width:100%;height:100%;object-fit:cover;display:block">';
+  } else {
+   orbEl.innerHTML='<svg class="copa" viewBox="0 0 120 170" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M35 12 H85 C85 48 71 62 60 64 C49 62 35 48 35 12 Z"/><path d="M60 64 C38 80 74 92 56 108 C42 120 46 142 60 150"/></svg>';
+  }
+ }
+ // Resto de textos
  set('land-titulo','landing-titulo');
  set('land-sub','landing-sub');
  set('land-lema','landing-lema');
