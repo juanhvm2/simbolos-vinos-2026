@@ -424,7 +424,7 @@ function escuchar(){
  onSnapshot(doc(db,'config','juegosImg'),s=>{JUEGOS_IMG=s.exists()?s.data():{};renderImgJuegosPrev();},e=>console.warn('juegosImg',e));
  onSnapshot(doc(db,'config','bannerQuiz'),s=>{BANNER_QUIZ=s.exists()?(s.data().url||null):null;renderBannerQuizPrev();},e=>console.warn('bannerQuiz',e));
  onSnapshot(doc(db,'config','bannerSorteo'),s=>{BANNER_SORTEO=s.exists()?(s.data().url||null):null;renderBannerSorteoPrev();},e=>console.warn('bannerSorteo',e));
- onSnapshot(doc(db,'config','bannersArcano'),s=>{BANNERS_ARCANO=s.exists()?(s.data()||{}):{};renderArcanoBanners();},e=>console.warn('bannersArcano',e));
+ onSnapshot(collection(db,'bannersArcano'),s=>{BANNERS_ARCANO={};s.forEach(d=>{const dat=d.data();if(dat&&dat.url)BANNERS_ARCANO['arcano_'+d.id]=dat.url;});renderArcanoBanners();},e=>console.warn('bannersArcano',e));
  onSnapshot(doc(db,'config','textos'),s=>{TEXTOS=s.exists()?s.data():{};cargarFormTextos();},e=>console.warn('textos',e));
  onSnapshot(collection(db,'programa'),s=>{PROG=[];s.forEach(d=>{PROG.push(Object.assign({id:d.id},d.data()));});PROG.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarProg();barChart($('ch-likes'),PROG.map(a=>[a.tema||a.hora,a.likes||0]),'var(--pink)');pintarMetricas();},e=>console.warn('programa',e));
  onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>{window.ANUN.push(Object.assign({id:d.id},d.data()));});pintarAnun();pintarMetricas();},e=>console.warn('anuncios',e));
@@ -581,7 +581,22 @@ window.cargarBannerSorteo=input=>{const f=input.files[0];if(!f)return; if(f.size
 window.quitarBannerSorteo=()=>{ bannerSorteoPend=''; renderBannerSorteoPrev(); toast('Banner sorteo quitado · pulsa Guardar para aplicar'); };
 window.guardarBannerSorteo=async()=>{ const url=(bannerSorteoPend!==null)?(bannerSorteoPend||null):BANNER_SORTEO; await setDoc(doc(db,'config','bannerSorteo'),{url:url,fecha:new Date().toISOString()},{merge:true}); bannerSorteoPend=null; renderBannerSorteoPrev(); toast('✓ Banner sorteo guardado'); };
 window.cargarBannerArcano=(slug,input)=>{const f=input.files[0];if(!f)return; if(f.size>6*1024*1024){toast('Imagen muy pesada (máx 6MB)');return;} comprimirBannerArcano(f,url=>{ arcanoPend['arcano_'+slug]=url; const p=$('ab-prev-'+slug); if(p){p.src=url;p.style.visibility='visible';} toast('Banner listo · pulsa Guardar banners'); });};
-window.guardarBannerArcano=async()=>{ const data=Object.assign({},BANNERS_ARCANO); Object.keys(arcanoPend).forEach(k=>{data[k]=arcanoPend[k];}); await setDoc(doc(db,'config','bannersArcano'),data,{merge:true}); arcanoPend={}; renderArcanoBanners(); toast('✓ Banners del arcano guardados'); };
+window.guardarBannerArcano=async()=>{
+ const keys=Object.keys(arcanoPend);
+ if(!keys.length){toast('No hay cambios para guardar');return;}
+ for(const k of keys){
+  const slug=k.replace('arcano_','');
+  const url=arcanoPend[k];
+  if(url){
+   await setDoc(doc(db,'bannersArcano',slug),{url:url,fecha:new Date().toISOString()},{merge:true});
+  } else {
+   await deleteDoc(doc(db,'bannersArcano',slug)).catch(()=>{});
+  }
+ }
+ arcanoPend={};
+ renderArcanoBanners();
+ toast('✓ Banners del arcano guardados');
+};
 window.cargarImgSello=(n,input)=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;}
  comprimirImg(f,url=>{window._imgPend=window._imgPend||{};window._imgPend[n]=url;const p=$('sp-'+n);if(p){p.src=url;p.style.visibility='visible';}toast('✓ Imagen botón lista · pulsa Guardar');});};
 window.quitarImgSello=n=>{window._imgPend=window._imgPend||{};window._imgPend[n]='';const p=$('sp-'+n);if(p){p.removeAttribute('src');p.style.visibility='hidden';}toast('Imagen botón quitada · pulsa Guardar');};
