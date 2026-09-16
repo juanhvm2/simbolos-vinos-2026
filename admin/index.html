@@ -252,14 +252,14 @@ tbody tr:hover{background:var(--elev)}
  <div class="card">
   <div class="txt-group"><div class="g-title">Pantalla de carga (splash)</div>
    <label>Texto de carga</label><input id="tx-carga-texto" placeholder="👁 ABRIENDO EL GRIMORIO 👁">
-   <label>Logo de carga (imagen opcional)</label><input type="hidden" id="tx-carga-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('carga-logo',this)">
+   <label>Logo de carga (subir imagen)</label><input type="file" accept="image/*" id="tx-carga-logo-input" onchange="cargarLogoCarga(this)">
    <img id="tx-carga-logo-prev" class="avatar-prev" style="visibility:hidden">
-   <button class="btn mini" type="button" onclick="quitarLogoTexto('carga-logo')">Quitar logo</button>
+   <button class="btn mini peligro oculto" id="tx-carga-logo-quitar" onclick="quitarLogoCarga()">🗑 Quitar logo</button>
   </div>
   <div class="txt-group"><div class="g-title">Pantalla de registro (landing)</div>
-   <label>Logo central (imagen opcional)</label><input type="hidden" id="tx-registro-logo"><input type="file" accept="image/*" onchange="cargarLogoTexto('registro-logo',this)">
+   <label>Logo central (subir imagen)</label><input type="file" accept="image/*" id="tx-registro-logo-input" onchange="cargarLogoRegistro(this)">
    <img id="tx-registro-logo-prev" class="avatar-prev" style="visibility:hidden">
-   <button class="btn mini" type="button" onclick="quitarLogoTexto('registro-logo')">Quitar logo</button>
+   <button class="btn mini peligro oculto" id="tx-registro-logo-quitar" onclick="quitarLogoRegistro()">🗑 Quitar logo</button>
   </div>
   <div class="txt-group"><div class="g-title">Pantalla de inicio (landing)</div>
    <label>Título principal</label><input id="tx-landing-titulo">
@@ -401,6 +401,7 @@ const TEXTOS_DEF={
 let TEXTOS={};
 let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],AVATARES=[],SIMB={},CHATLOGS=[];
 let JUEGOS_IMG={},juegosImgPend={},progEditId=null,progImgPend=null,arcanoPend={};
+let logosTextosPend={};
 const ARCANOS=[{slug:'malbec',titulo:'Guardián del Malbec'},{slug:'cabernet',titulo:'Caballero del Cabernet'},{slug:'torrontes',titulo:'Alma de Torrontés'},{slug:'blend',titulo:'Alquimista del Blend'},{slug:'default',titulo:'Buscador de Arcanos (por defecto)'}];
 let SORTEO_LIVE=null,sorteoLiveLoaded=false,sorteoInterval=null;
 let bannerQuizPend=null,bannerSorteoPend=null,BANNER_QUIZ=null,BANNER_SORTEO=null;
@@ -461,20 +462,28 @@ function cargarFormTextos(){
   const el=$('tx-'+k);
   if(el)el.value=(TEXTOS[k]!==undefined?TEXTOS[k]:TEXTOS_DEF[k]);
  });
- // Mostrar previews de logos
+ // Mostrar previews de logos si existen
  ['carga-logo','registro-logo'].forEach(k=>{
-  const inp=$('tx-'+k),prev=$('tx-'+k+'-prev');
-  if(inp&&prev){
-   const v=inp.value;
-   if(v){prev.src=v;prev.style.visibility='visible';}
-   else{prev.removeAttribute('src');prev.style.visibility='hidden';}
+  const prev=$('tx-'+k+'-prev');
+  const quitarBtn=$('tx-'+k+'-quitar');
+  if(prev&&quitarBtn){
+   const v=TEXTOS[k]||'';
+   if(v&&v.startsWith('data:')){prev.src=v;prev.style.visibility='visible';quitarBtn.classList.remove('oculto');}
+   else{prev.removeAttribute('src');prev.style.visibility='hidden';quitarBtn.classList.add('oculto');}
   }
  });
 }
-window.cargarLogoTexto=(k,input)=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');input.value='';return;}
- comprimirImg(f,url=>{const el=$('tx-'+k),prev=$('tx-'+k+'-prev');el.value=url;prev.src=url;prev.style.visibility='visible';input.value='';toast('Logo listo · pulsa Guardar textos');});};
-window.quitarLogoTexto=k=>{const el=$('tx-'+k),prev=$('tx-'+k+'-prev');el.value='';prev.removeAttribute('src');prev.style.visibility='hidden';toast('Logo quitado · pulsa Guardar textos');};
-window.guardarTextos=async()=>{const data={};Object.keys(TEXTOS_DEF).forEach(k=>{const el=$('tx-'+k);data[k]=el?el.value:TEXTOS_DEF[k];});try{await setDoc(doc(db,'config','textos'),data,{merge:true});toast('✓ Textos y logos guardados');}catch(e){console.error(e);toast('No se pudieron guardar los textos');}};
+window.cargarLogoCarga=input=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;}
+ comprimirImg(f,url=>{logosTextosPend['carga-logo']=url;const p=$('tx-carga-logo-prev');const q=$('tx-carga-logo-quitar');if(p){p.src=url;p.style.visibility='visible';}if(q)q.classList.remove('oculto');toast('✓ Logo de carga listo · pulsa Guardar textos');});};
+window.quitarLogoCarga=()=>{logosTextosPend['carga-logo']='';const p=$('tx-carga-logo-prev');const q=$('tx-carga-logo-quitar');if(p){p.removeAttribute('src');p.style.visibility='hidden';}if(q)q.classList.add('oculto');toast('Logo de carga quitado · pulsa Guardar para aplicar');};
+window.cargarLogoRegistro=input=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;}
+ comprimirImg(f,url=>{logosTextosPend['registro-logo']=url;const p=$('tx-registro-logo-prev');const q=$('tx-registro-logo-quitar');if(p){p.src=url;p.style.visibility='visible';}if(q)q.classList.remove('oculto');toast('✓ Logo de registro listo · pulsa Guardar textos');});};
+window.quitarLogoRegistro=()=>{logosTextosPend['registro-logo']='';const p=$('tx-registro-logo-prev');const q=$('tx-registro-logo-quitar');if(p){p.removeAttribute('src');p.style.visibility='hidden';}if(q)q.classList.add('oculto');toast('Logo de registro quitado · pulsa Guardar para aplicar');};
+window.guardarTextos=async()=>{const data={};Object.keys(TEXTOS_DEF).forEach(k=>{const el=$('tx-'+k);data[k]=el?el.value:TEXTOS_DEF[k];});
+ Object.keys(logosTextosPend).forEach(k=>{data[k]=logosTextosPend[k];});
+ await setDoc(doc(db,'config','textos'),data,{merge:true});
+ logosTextosPend={};
+ toast('✓ Textos y logos guardados');};
 window.restaurarTextos=async()=>{if(!confirm('¿Restaurar todos los textos originales?'))return;await setDoc(doc(db,'config','textos'),Object.assign({},TEXTOS_DEF),{merge:true});toast('↻ Textos restaurados');};
 function pintarMetricas(){
  const P=Object.values(PART);const f1=P.length;
