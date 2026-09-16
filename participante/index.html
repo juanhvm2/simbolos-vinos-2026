@@ -272,22 +272,22 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <div class="orb" id="orb"><svg class="copa" viewBox="0 0 120 170" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M35 12 H85 C85 48 71 62 60 64 C49 62 35 48 35 12 Z"/><path d="M60 64 C38 80 74 92 56 108 C42 120 46 142 60 150"/></svg></div>
   <h1 class="titulo" id="land-titulo">SÍMBOLOS &amp; VINOS</h1>
   <div class="sub" id="land-sub">Edición Masónica · MMXXVI</div>
-  <p class="lema mistica">Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.</p>
+  <p class="lema mistica" id="land-lema">Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.</p>
   <div class="orn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg></div>
-  <button class="btn google" onclick="googleLogin()">
+  <button class="btn google" id="land-boton" onclick="googleLogin()">
     <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
-    Continuar con Google</button>
+    <span id="land-boton-texto">Continuar con Google</span></button>
   <button class="btn fantasma" onclick="ver('p-instrucciones')">📜 Cómo se juega</button>
 </div></section>
 
 <section class="pantalla" id="p-instrucciones">
-  <h2 style="font-size:22px;text-align:center">La búsqueda de los sellos</h2>
+  <h2 style="font-size:22px;text-align:center" id="instr-titulo">La búsqueda de los sellos</h2>
   <div class="card" style="margin-top:16px">
-    <div class="paso"><div class="num">1</div><div class="txt"><b>Entra con Google</b><span>Sin contraseña: tu cuenta se crea sola con tu nombre y correo.</span></div></div>
-    <div class="paso"><div class="num">2</div><div class="txt"><b>Toca tu foto de perfil</b><span>Elige tu avatar entre las opciones del Oráculo.</span></div></div>
-    <div class="paso"><div class="num">3</div><div class="txt"><b>Escanea el grabado</b><span>Toca el botón Escanear y apunta al código del sello (o al QR de check-in de una charla).</span></div></div>
-    <div class="paso"><div class="num">4</div><div class="txt"><b>Despierta el sello</b><span>Cada sello se dora y revela su lámina y un fragmento de la frase.</span></div></div>
-    <div class="paso"><div class="num">5</div><div class="txt"><b>Completa los siete</b><span>Al reunirlos, la frase final se revela y entras al sorteo.</span></div></div>
+    <div class="paso"><div class="num">1</div><div class="txt"><b id="instr-p1t">Entra con Google</b><span id="instr-p1d">Sin contraseña: tu cuenta se crea sola con tu nombre y correo.</span></div></div>
+    <div class="paso"><div class="num">2</div><div class="txt"><b id="instr-p2t">Toca tu foto de perfil</b><span id="instr-p2d">Elige tu avatar entre las opciones del Oráculo.</span></div></div>
+    <div class="paso"><div class="num">3</div><div class="txt"><b id="instr-p3t">Escanea el grabado</b><span id="instr-p3d">Toca el botón Escanear y apunta al código del sello (o al QR de check-in de una charla).</span></div></div>
+    <div class="paso"><div class="num">4</div><div class="txt"><b id="instr-p4t">Despierta el sello</b><span id="instr-p4d">Cada sello se dora y revela su lámina y un fragmento de la frase.</span></div></div>
+    <div class="paso"><div class="num">5</div><div class="txt"><b id="instr-p5t">Completa los siete</b><span id="instr-p5d">Al reunirlos, la frase final se revela y entras al sorteo.</span></div></div>
   </div>
   <button class="btn solido" onclick="ver('p-landing')">Volver</button>
 </section>
@@ -296,7 +296,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <div class="cab">
     <div style="display:flex;align-items:center;gap:12px;min-width:0">
       <button class="home-ava" id="h-ava" onclick="ver('p-avatar')" aria-label="Elegir avatar">✦</button>
-      <div style="min-width:0"><div style="font-size:13px;color:var(--texto2)">Hola, buscador</div>
+      <div style="min-width:0"><div style="font-size:13px;color:var(--texto2)" id="h-hola">Hola, buscador</div>
         <div class="nombre" id="h-nombre">—</div><button class="salir" onclick="salir()">cerrar sesión</button></div>
     </div>
     <div class="estado" id="h-estado">BUSCADOR</div>
@@ -312,10 +312,10 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
       <circle class="fondo" cx="48" cy="48" r="42" fill="none" stroke-width="5"/>
       <circle class="barra" id="h-barra" cx="48" cy="48" r="42" fill="none" stroke-width="5" stroke-dasharray="270.2" stroke-dashoffset="270.2"/></svg>
       <div class="num" id="h-num">0/7</div></div>
-    <div class="txt" id="h-lema">Los sellos duermen.<br><b style="color:var(--tinta)">Ve y despiértalos.</b></div>
+    <div class="txt"><span id="h-lema1">Los sellos duermen.</span><br><b style="color:var(--tinta)" id="h-lema2">Ve y despiértalos.</b></div>
   </div>
-  <button class="scan-cta" onclick="irScan()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg>Escanear un sello</button>
-  <div class="sec-titulo">Toca un sello dorado para ver su lámina</div>
+  <button class="scan-cta" onclick="irScan()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M4 12h16"/></svg><span id="h-scan">Escanear un sello</span></button>
+  <div class="sec-titulo" id="h-sec-sellos">Toca un sello dorado para ver su lámina</div>
   <div class="sellos" id="h-sellos"></div>
   <div class="frase-final-caja oculto" id="frase-final-caja">
     <div class="ff-orn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg></div>
@@ -333,8 +333,8 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
   <button class="btn" onclick="ver('p-home')">Volver</button>
 </section>
 
-<section class="pantalla" id="p-juegos"><h2 style="font-size:22px;text-align:center">Salón de Juegos</h2>
-  <p class="mistica" style="text-align:center;margin:6px 0 16px">Toca para jugar · puedes repetir los completados.</p>
+<section class="pantalla" id="p-juegos"><h2 style="font-size:22px;text-align:center" id="juegos-titulo">Salón de Juegos</h2>
+  <p class="mistica" style="text-align:center;margin:6px 0 16px" id="juegos-sub">Toca para jugar · puedes repetir los completados.</p>
   <div id="juegos-lista"></div></section>
 
 <section class="pantalla" id="p-sorteo">
@@ -368,7 +368,7 @@ h1,h2,h3{font-family:var(--sys);font-weight:700;letter-spacing:-.02em;color:var(
       <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>Los premios</h3>
       <div class="slv-premios-lista" id="so-premios"></div>
     </div>
-    <button class="btn slv-back" onclick="ver('p-juegos')">Volver al salón</button>
+    <button class="btn slv-back" onclick="ver('p-juegos')" id="sorteo-volver">Volver al salón</button>
   </div>
 </section>
 
@@ -516,6 +516,8 @@ let quizIdx=0,quizResp={};
 let vistos=JSON.parse(localStorage.getItem('sv-avisos')||'null'),avisosCache=[],notificados=new Set();
 let chatHist=JSON.parse(localStorage.getItem('sv-chat')||'[]');
 let SORTEO_LIVE=null;
+// === NUEVOS DOCUMENTOS SEPARADOS ===
+let BANNER_QUIZ=null,BANNER_SORTEO=null,BANNERS_ARCANO={},TEXTOS={};
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
 const NOMBRES={1:'SOL',2:'LUNA',3:'MERCURIO',4:'VENUS',5:'MARTE',6:'JÚPITER',7:'SATURNO'};
 const TITULOS={'Malbec':'Guardián del Malbec','Cabernet':'Caballero del Cabernet','Torrontés':'Alma de Torrontés','Blend':'Alquimista del Blend'};
@@ -529,6 +531,45 @@ const GAME_ICON={
  ranking:'<path d="M6 20v-6"/><path d="M12 20V6"/><path d="M18 20v-10"/><path d="M4 20h16"/>',
  sorteo:'<path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 3"/><path d="M17 6h3a3 3 0 0 1-3 3"/>'};
 const GAME_GRAD=['linear-gradient(140deg,var(--tinta),var(--purpura))','linear-gradient(140deg,var(--purpura),#9b4dca)','linear-gradient(140deg,var(--oro),#a97b12)'];
+// === FUNCIÓN DE TEXTOS CON FALLBACK ===
+const TXT_DEF={
+ 'landing-titulo':'SÍMBOLOS & VINOS','landing-sub':'Edición Masónica · MMXXVI',
+ 'landing-lema':'Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.',
+ 'landing-boton':'Continuar con Google',
+ 'instr-titulo':'La búsqueda de los sellos',
+ 'instr-p1t':'Entra con Google','instr-p1d':'Sin contraseña: tu cuenta se crea sola con tu nombre y correo.',
+ 'instr-p2t':'Toca tu foto de perfil','instr-p2d':'Elige tu avatar entre las opciones del Oráculo.',
+ 'instr-p3t':'Escanea el grabado','instr-p3d':'Toca el botón Escanear y apunta al código del sello (o al QR de check-in de una charla).',
+ 'instr-p4t':'Despierta el sello','instr-p4d':'Cada sello se dora y revela su lámina y un fragmento de la frase.',
+ 'instr-p5t':'Completa los siete','instr-p5d':'Al reunirlos, la frase final se revela y entras al sorteo.',
+ 'home-hola':'Hola, buscador','home-lema1':'Los sellos duermen.','home-lema2':'Ve y despiértalos.',
+ 'home-scan':'Escanear un sello','home-sec-sellos':'Toca un sello dorado para ver su lámina','home-frase-titulo':'La frase oculta',
+ 'juegos-titulo':'Salón de Juegos','juegos-sub':'Toca para jugar · puedes repetir los completados.',
+ 'sorteo-volver':'Volver al salón'
+};
+function txt(k){const v=TEXTOS[k];return(v!==undefined&&v!=='')?v:(TXT_DEF[k]||'');}
+function aplicarTextos(){
+ const set=(id,k)=>{const el=$(id);if(el)el.textContent=txt(k);};
+ set('land-titulo','landing-titulo');
+ set('land-sub','landing-sub');
+ set('land-lema','landing-lema');
+ set('land-boton-texto','landing-boton');
+ set('instr-titulo','instr-titulo');
+ set('instr-p1t','instr-p1t');set('instr-p1d','instr-p1d');
+ set('instr-p2t','instr-p2t');set('instr-p2d','instr-p2d');
+ set('instr-p3t','instr-p3t');set('instr-p3d','instr-p3d');
+ set('instr-p4t','instr-p4t');set('instr-p4d','instr-p4d');
+ set('instr-p5t','instr-p5t');set('instr-p5d','instr-p5d');
+ set('h-hola','home-hola');
+ set('h-lema1','home-lema1');
+ set('h-lema2','home-lema2');
+ set('h-scan','home-scan');
+ set('h-sec-sellos','home-sec-sellos');
+ set('h-frase-titulo','home-frase-titulo');
+ set('juegos-titulo','juegos-titulo');
+ set('juegos-sub','juegos-sub');
+ set('sorteo-volver','sorteo-volver');
+}
 window.ver=id=>{document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));$(id).classList.add('activa');};
 window.irScan=()=>navegar('p-scan',null);
 window.googleLogin=async()=>{try{await signInWithPopup(auth,gprov);}catch(e){toast('No se pudo iniciar con Google','Autoriza el dominio en Firebase Auth → Configuración.');}};
@@ -572,11 +613,12 @@ window.abrirQuiz=()=>{if(!QUIZ||!(QUIZ.preguntas||[]).length)return toast('El Or
 function pintarQuizBanner(){
  const banner=$('quiz-banner');
  const fallback=$('quiz-banner-fallback');
- if(JUEGOS_IMG.bannerQuiz){
+ const url=BANNER_QUIZ||'';
+ if(url){
    fallback.style.display='none';
    let img=banner.querySelector('img.quiz-banner-img');
    if(!img){img=document.createElement('img');img.className='quiz-banner-img';banner.appendChild(img);}
-   img.src=JUEGOS_IMG.bannerQuiz;
+   img.src=url;
  } else {
    const existing=banner.querySelector('img.quiz-banner-img');
    if(existing)existing.remove();
@@ -586,11 +628,11 @@ function pintarQuizBanner(){
 function arcanoSlug(titulo){return ARCANO_SLUG[titulo]||'default';}
 function pintarArcanoFinal(titulo){
  const slug=arcanoSlug(titulo);
- const img=JUEGOS_IMG['arcano_'+slug]||'';
+ const url=(BANNERS_ARCANO&&BANNERS_ARCANO['arcano_'+slug])||'';
  const imgEl=$('arcano-img');
  const fallback=$('arcano-banner-fallback');
- if(img){
-   imgEl.src=img;imgEl.style.display='block';
+ if(url){
+   imgEl.src=url;imgEl.style.display='block';
    fallback.style.display='none';
  } else {
    imgEl.style.display='none';imgEl.removeAttribute('src');
@@ -697,6 +739,11 @@ function escucharTodo(){
   pintarPerfil();});
  onSnapshot(collection(db,'anuncios'),s=>{avisosCache=[];s.forEach(d=>avisosCache.push({id:d.id,...d.data()}));avisosCache.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));if(vistos===null){vistos=avisosCache.map(a=>a.id);localStorage.setItem('sv-avisos',JSON.stringify(vistos));}const nv=avisosCache.filter(a=>!vistos.includes(a.id)&&!notificados.has(a.id));nv.forEach(a=>{notificados.add(a.id);toast('👁 '+botName().toUpperCase()+' · '+(a.titulo||''),a.mensaje||'');});if(nv.length)chime();actualizarBadge();pintarAvisos();});
  onSnapshot(doc(db,'config','sorteoLive'),s=>{SORTEO_LIVE=s.exists()?s.data():null;pintarSorteo();},e=>console.warn('sorteoLive',e));
+ // === NUEVOS LISTENERS DE DOCUMENTOS SEPARADOS ===
+ onSnapshot(doc(db,'config','bannerQuiz'),s=>{BANNER_QUIZ=s.exists()?(s.data().url||null):null;pintarQuizBanner();},e=>console.warn('bannerQuiz',e));
+ onSnapshot(doc(db,'config','bannerSorteo'),s=>{BANNER_SORTEO=s.exists()?(s.data().url||null):null;pintarSorteo();},e=>console.warn('bannerSorteo',e));
+ onSnapshot(doc(db,'config','bannersArcano'),s=>{BANNERS_ARCANO=s.exists()?(s.data()||{}):{};},e=>console.warn('bannersArcano',e));
+ onSnapshot(doc(db,'config','textos'),s=>{TEXTOS=s.exists()?s.data():{};aplicarTextos();},e=>console.warn('textos',e));
  escucharFAQ();escucharQuiz();
 }
 function actualizarFraseFinal(){const ff=$('frase-final-caja');if(!ff)return;
@@ -763,11 +810,13 @@ function pintarSorteo(){
  const estado=S.estado||'esperando';
  const banner=$('slv-banner');
  const fallback=$('slv-banner-fallback');
- if(S.banner){
+ // Usa BANNER_SORTEO del documento separado
+ const bannerUrl=BANNER_SORTEO||'';
+ if(bannerUrl){
    fallback.style.display='none';
    let img=banner.querySelector('img.slv-banner-img');
    if(!img){img=document.createElement('img');img.className='slv-banner-img';banner.appendChild(img);}
-   img.src=S.banner;
+   img.src=bannerUrl;
  } else {
    const existing=banner.querySelector('img.slv-banner-img');
    if(existing)existing.remove();
