@@ -3,113 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#050506">
 <title>S&V · Panel de Control</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#000;--bg2:#0a0a0b;--card:#1c1c1e;--card2:#2c2c2e;--card-hover:#3a3a3c;--linea:rgba(255,255,255,.08);--linea2:rgba(255,255,255,.14);--texto:#fff;--texto2:#8e8e93;--texto3:#636366;--accent:#007aff;--verde:#30d158;--rojo:#ff453a;--corazon:#e0245e;--oro:#ffd60a;--radius:14px;--radius-sm:10px;--font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',sans-serif}
+:root{
+ --bg:#050506; --surface:#0e0e10; --elev:#161618; --elev2:#1d1d20;
+ --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.12);
+ --txt:#f5f5f7; --txt2:#98989d; --txt3:#6e6e73;
+ --accent:#0a84ff; --green:#30d158; --red:#ff453a; --gold:#ffd60a; --pink:#ff375f;
+ --r-lg:18px; --r-md:12px; --r-sm:9px;
+ --font:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;
+ --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--texto);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+html{color-scheme:dark}
+body{background:var(--bg);color:var(--txt);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(1200px 500px at 50% -10%,rgba(10,132,255,.06),transparent 60%)}
 h1,h2,h3{font-weight:600;letter-spacing:-.02em}
 .oculto{display:none!important}
+::selection{background:rgba(10,132,255,.3)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--elev2);border-radius:6px}
+::-webkit-scrollbar-track{background:transparent}
+
+/* LOGIN */
 #s-login{min-height:100dvh;display:grid;place-items:center;padding:24px}
-.caja-login{width:100%;max-width:400px;text-align:center;background:var(--card);border:1px solid var(--linea);border-radius:20px;padding:44px 32px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.caja-login .escudo{font-size:48px;margin-bottom:10px}
-.caja-login h1{font-size:24px;margin-bottom:4px}
-.caja-login p{color:var(--texto2);font-size:14px;margin-bottom:28px}
-input,select,textarea{width:100%;padding:13px 16px;background:var(--card2);border:1px solid var(--linea);border-radius:var(--radius-sm);color:var(--texto);font-family:var(--font);font-size:15px;margin-bottom:10px}
+.caja-login{width:100%;max-width:380px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:36px 30px;box-shadow:var(--shadow);text-align:center}
+.caja-login .mark{width:52px;height:52px;margin:0 auto 14px;border-radius:14px;background:linear-gradient(140deg,#0a84ff,#5e5ce6);display:grid;place-items:center;font-size:24px}
+.caja-login h1{font-size:21px;margin-bottom:4px}
+.caja-login p{color:var(--txt2);font-size:13px;margin-bottom:24px}
+
+/* CONTROLES BASE */
+input,select,textarea{width:100%;padding:10px 12px;background:var(--elev);border:1px solid var(--line);border-radius:var(--r-sm);color:var(--txt);font-family:var(--font);font-size:14px;margin-bottom:8px;transition:border-color .15s,box-shadow .15s}
 input[type=date],input[type=datetime-local]{color-scheme:dark}
-input[type=file]{padding:10px;background:var(--bg2);border:1px dashed var(--linea2);border-radius:var(--radius-sm);color:var(--texto2);font-size:13px;cursor:pointer}
-textarea{min-height:80px;resize:vertical}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
-input::placeholder,textarea::placeholder{color:var(--texto3)}
+input[type=file]{padding:9px;background:var(--elev);border:1px dashed var(--line2);border-radius:var(--r-sm);color:var(--txt2);font-size:12px;cursor:pointer}
+textarea{min-height:76px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(10,132,255,.18)}
+input::placeholder,textarea::placeholder{color:var(--txt3)}
 input[type=checkbox]{width:auto;margin:0;accent-color:var(--accent)}
-label{font-size:12px;font-weight:500;color:var(--texto2);display:block;margin:10px 0 6px;text-align:left}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 18px;cursor:pointer;font-family:var(--font);font-weight:500;font-size:14px;color:var(--texto);background:var(--card2);border:1px solid var(--linea2);border-radius:var(--radius-sm);transition:.18s}
-.btn:hover{background:var(--card-hover)}
+label{font-size:11px;font-weight:500;color:var(--txt2);display:block;margin:8px 0 5px;text-align:left;letter-spacing:.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;cursor:pointer;font-family:var(--font);font-weight:500;font-size:13px;color:var(--txt);background:var(--elev2);border:1px solid var(--line2);border-radius:999px;transition:.15s}
+.btn:hover{background:#26262a}
 .btn:active{transform:scale(.97)}
 .btn.solido{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
-.btn.peligro{background:rgba(255,69,58,.1);border-color:rgba(255,69,58,.3);color:var(--rojo)}
-.btn.mini{padding:7px 12px;font-size:12px}
-.err{color:var(--rojo);font-size:13px;min-height:18px;margin-top:10px}
-header{position:sticky;top:0;z-index:30;background:rgba(0,0,0,.72);backdrop-filter:blur(20px);border-bottom:1px solid var(--linea);padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-header .marca{font-weight:600;font-size:16px}
-header .rol{font-size:11px;padding:5px 11px;border-radius:20px;background:var(--card2);color:var(--texto2);border:1px solid var(--linea)}
+.btn.solido:hover{background:#0071e3}
+.btn.peligro{background:rgba(255,69,58,.12);border-color:rgba(255,69,58,.35);color:var(--red)}
+.btn.mini{padding:6px 11px;font-size:12px}
+.err{color:var(--red);font-size:12px;min-height:16px;margin-top:8px}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:40;background:rgba(5,5,6,.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header .logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(140deg,#0a84ff,#5e5ce6);display:grid;place-items:center;font-size:15px;flex:none}
+header .marca{font-weight:600;font-size:15px;letter-spacing:-.01em}
+header .rol{font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--elev2);color:var(--txt2);border:1px solid var(--line);text-transform:uppercase;letter-spacing:.06em}
 header .esp{flex:1}
-header #h-user{color:var(--texto2);font-size:13px}
-.tabs{display:flex;gap:4px;overflow-x:auto;padding:12px 20px;border-bottom:1px solid var(--linea);position:sticky;top:57px;z-index:29;background:rgba(0,0,0,.72);backdrop-filter:blur(20px);scrollbar-width:none}
+header #h-user{color:var(--txt2);font-size:12px}
+
+/* TABS (segmented) */
+.tabs{display:flex;gap:2px;overflow-x:auto;padding:10px 20px;border-bottom:1px solid var(--line);position:sticky;top:55px;z-index:39;background:rgba(5,5,6,.8);backdrop-filter:blur(20px);scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tabs button{flex:none;padding:8px 15px;background:transparent;border:none;border-radius:8px;color:var(--texto2);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap}
-.tabs button.act{background:var(--accent);color:#fff}
-main{max-width:1200px;margin:0 auto;padding:24px 20px 100px}
-.sec{display:none}.sec.act{display:block;animation:ap .35s}
-@keyframes ap{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:22px}
-.metric{background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:18px;text-align:center}
-.metric .n{font-size:34px;font-weight:700;line-height:1}
-.metric .t{font-size:11px;color:var(--texto2);margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
-.metric.apto .n{color:var(--verde)}
-.metric.oro .n{color:var(--oro)}
-.metric.cor .n{color:var(--corazon)}
-.buscador{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tabs button{flex:none;padding:7px 14px;background:transparent;border:none;border-radius:999px;color:var(--txt2);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:.15s}
+.tabs button:hover{color:var(--txt);background:var(--elev)}
+.tabs button.act{background:var(--txt);color:#000;font-weight:600}
+
+main{max-width:1180px;margin:0 auto;padding:26px 20px 110px}
+.sec{display:none}.sec.act{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.titulo-sec{font-size:22px;letter-spacing:-.02em;margin-bottom:4px}
+.sub-sec{color:var(--txt2);font-size:13px;margin-bottom:22px}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3);margin-bottom:6px}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card h3{font-size:12px;font-weight:600;color:var(--txt2);letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.metric{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow)}
+.metric .n{font-size:30px;font-weight:600;letter-spacing:-.03em;line-height:1.1}
+.metric .t{font-size:11px;color:var(--txt2);margin-top:4px;font-weight:500}
+.metric.apto .n{color:var(--green)}
+.metric.oro .n{color:var(--gold)}
+.metric.cor .n{color:var(--pink)}
+
+/* TABLA */
+.buscador{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .buscador input{flex:1;min-width:200px;margin:0}
-.chip{padding:8px 14px;border:1px solid var(--linea);border-radius:20px;background:transparent;color:var(--texto2);font-size:12px;cursor:pointer}
-.chip.act{background:var(--texto);color:#000}
-.tabla-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--linea);border-radius:16px}
+.chip{padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--txt2);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;transition:.15s}
+.chip:hover{color:var(--txt);border-color:var(--line2)}
+.chip.act{background:var(--txt);color:#000;border-color:var(--txt);font-weight:600}
+.tabla-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
 table{width:100%;border-collapse:collapse;min-width:920px}
-th{font-size:11px;font-weight:600;color:var(--texto2);text-align:left;padding:14px 16px;border-bottom:1px solid var(--linea);text-transform:uppercase;background:rgba(255,255,255,.02)}
-td{padding:14px 16px;border-bottom:1px solid var(--linea);font-size:14px;vertical-align:middle}
+th{font-size:10px;font-weight:600;color:var(--txt3);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);text-transform:uppercase;letter-spacing:.06em}
+td{padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
 tr:last-child td{border-bottom:none}
-.barra{width:90px;height:4px;background:var(--card2);border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle}
+tbody tr:hover{background:var(--elev)}
+.barra{width:80px;height:4px;background:var(--elev2);border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle}
 .barra i{display:block;height:100%;background:var(--accent)}
-.tag{font-size:10px;font-weight:600;padding:4px 10px;border-radius:6px;border:1px solid var(--linea);color:var(--texto2);white-space:nowrap;text-transform:uppercase}
-.tag.apto{background:rgba(48,209,88,.15);border-color:rgba(48,209,88,.3);color:var(--verde)}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.card{background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px;margin-bottom:16px}
-.card h3{font-size:13px;color:var(--texto2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
-.sello-card{background:var(--card);border:1px solid var(--linea);border-radius:16px;padding:20px}
-.sello-card input{margin-bottom:10px}
-.qr-zone{display:flex;gap:14px;align-items:center;margin-top:14px;padding:14px;background:var(--bg2);border-radius:var(--radius-sm)}
-.qr-zone .qr{background:#fff;padding:8px;border-radius:8px;width:120px;height:120px;display:grid;place-items:center;flex:none}
-.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.form-grid input,.form-grid select{margin:0}
-.titulo-sec{font-size:24px;margin-bottom:6px}
-.sub-sec{color:var(--texto2);font-size:14px;margin-bottom:22px}
-.item-prog{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--linea);border-radius:var(--radius);margin-bottom:8px;background:var(--card);flex-wrap:wrap}
-.item-prog .hora{font-weight:600;color:var(--accent);font-size:15px;min-width:64px}
-.item-prog .det{flex:1;min-width:180px}
-.item-prog .det b{display:block;margin-bottom:2px}
-.item-prog .det span{color:var(--texto2);font-size:13px}
-.item-prog .thumb{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none}
-.tgl{display:flex;gap:10px;align-items:center;font-size:14px;margin:10px 0;cursor:pointer}
-#toasts{position:fixed;top:14px;right:14px;left:14px;z-index:80;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--card);border:1px solid var(--linea2);border-radius:14px;padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:ap .35s;font-size:14px}
-.vacio{color:var(--texto3);text-align:center;padding:40px;font-size:14px}
-.rz-check{display:flex;gap:10px;align-items:center;font-size:14px;margin:12px 0;cursor:pointer}
-.avatar-prev{width:64px;height:64px;border-radius:50%;object-fit:cover;background:var(--card2);border:2px solid var(--linea2);display:block;margin-top:6px}
+.tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--txt2);white-space:nowrap;text-transform:uppercase;letter-spacing:.04em}
+.tag.apto{background:rgba(48,209,88,.14);border-color:rgba(48,209,88,.35);color:var(--green)}
+
+/* ITEMS / LISTAS */
+.item-prog{display:flex;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-md);margin-bottom:8px;background:var(--elev);flex-wrap:wrap;transition:.15s}
+.item-prog:hover{border-color:var(--line2)}
+.item-prog .hora{font-weight:600;color:var(--accent);font-size:14px;min-width:56px}
+.item-prog .det{flex:1;min-width:170px}
+.item-prog .det b{display:block;margin-bottom:2px;font-size:13px}
+.item-prog .det span{color:var(--txt2);font-size:12px}
+.item-prog .thumb{width:42px;height:42px;border-radius:10px;object-fit:cover;flex:none}
+.tgl{display:flex;gap:10px;align-items:center;font-size:13px;margin:8px 0;cursor:pointer;color:var(--txt)}
+.vacio{color:var(--txt3);text-align:center;padding:32px;font-size:13px}
+.rz-check{display:flex;gap:10px;align-items:center;font-size:13px;margin:10px 0;cursor:pointer;color:var(--txt)}
+.avatar-prev{width:56px;height:56px;border-radius:12px;object-fit:cover;background:var(--elev);border:1px solid var(--line);display:block;margin-top:6px}
 .av-thumb{position:relative;display:inline-block}
-.av-thumb img{width:76px;height:76px;border-radius:16px;object-fit:cover;display:block;border:1px solid var(--linea2)}
-.av-thumb button{position:absolute;top:-8px;right:-8px;padding:2px 8px;border-radius:50%}
-.edit-banner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;border:1px solid rgba(255,214,10,.4);background:rgba(255,214,10,.08);border-radius:12px;margin-bottom:14px;font-size:13px;color:var(--oro)}
-.banner-prev{width:100%;max-width:600px;aspect-ratio:1200/400;border-radius:12px;object-fit:cover;border:1px solid var(--linea2);background:var(--bg2);display:block;margin-top:10px}
+.av-thumb img{width:70px;height:70px;border-radius:14px;object-fit:cover;display:block;border:1px solid var(--line)}
+.av-thumb button{position:absolute;top:-7px;right:-7px;padding:2px 7px;border-radius:50%}
+.edit-banner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;border:1px solid rgba(255,214,10,.35);background:rgba(255,214,10,.08);border-radius:var(--r-md);margin-bottom:12px;font-size:12px;color:var(--gold)}
+.banner-prev{width:100%;max-width:560px;aspect-ratio:1200/400;border-radius:var(--r-md);object-fit:cover;border:1px solid var(--line);background:var(--elev);display:block;margin-top:8px}
+.banner-arcano-prev{width:104px;aspect-ratio:1080/1350;border-radius:10px;object-fit:cover;border:1px solid var(--line);background:var(--elev);display:block;margin-top:6px}
 .banner-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
-.banner-arcano-prev{width:120px;aspect-ratio:1080/1350;border-radius:10px;object-fit:cover;border:1px solid var(--linea2);background:var(--bg2);display:block;margin-top:6px}
-@media(max-width:640px){main{padding:18px 14px 100px}.metric .n{font-size:28px}.titulo-sec{font-size:20px}}
+.qr-zone{display:flex;gap:12px;align-items:center;margin-top:12px;padding:12px;background:var(--elev);border-radius:var(--r-md)}
+.qr-zone .qr{background:#fff;padding:7px;border-radius:8px;width:110px;height:110px;display:grid;place-items:center;flex:none}
+.sello-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;box-shadow:var(--shadow)}
+.sello-card input{margin-bottom:8px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.form-grid input,.form-grid select{margin:0}
+/* TEXTOS tab */
+.txt-group{margin-bottom:8px}
+.txt-group .g-title{font-size:12px;font-weight:600;color:var(--txt);margin:14px 0 4px;display:flex;align-items:center;gap:8px}
+.txt-group .g-title::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+#toasts{position:fixed;top:14px;right:14px;left:14px;z-index:90;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--elev);border:1px solid var(--line2);border-radius:var(--r-md);padding:12px 16px;box-shadow:var(--shadow);animation:fade .3s;font-size:13px;backdrop-filter:blur(20px)}
+@media(max-width:640px){main{padding:18px 14px 110px}.metric .n{font-size:26px}.titulo-sec{font-size:19px}}
 </style>
 </head>
 <body>
 <div id="toasts"></div>
-<section id="s-login"><div class="caja-login"><div class="escudo">⚙️</div><h1>Panel de Control</h1><p>Símbolos &amp; Vinos · MMXXVI</p>
-<label>CORREO</label><input id="l-email" type="email"><label>CLAVE</label><input id="l-clave" type="password">
-<button class="btn solido" style="width:100%;margin-top:14px" onclick="login()">Iniciar sesión</button><div class="err" id="l-err"></div></div></section>
-<section id="s-noperm" class="oculto" style="min-height:100dvh;display:grid;place-items:center;padding:24px"><div style="text-align:center;max-width:380px;background:var(--card);padding:40px;border-radius:20px"><div style="font-size:48px">🔒</div><h2 style="margin:14px 0 8px">Acceso restringido</h2><button class="btn" style="margin-top:20px" onclick="salir()">Salir</button></div></section>
+<section id="s-login"><div class="caja-login"><div class="mark">⚙️</div><h1>Panel de Control</h1><p>Símbolos &amp; Vinos · MMXXVI</p>
+<label>CORREO</label><input id="l-email" type="email" placeholder="admin@…"><label>CLAVE</label><input id="l-clave" type="password" placeholder="••••••••">
+<button class="btn solido" style="width:100%;margin-top:12px" onclick="login()">Iniciar sesión</button><div class="err" id="l-err"></div></div></section>
+<section id="s-noperm" class="oculto" style="min-height:100dvh;display:grid;place-items:center;padding:24px"><div style="text-align:center;max-width:360px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:36px"><div style="font-size:40px">🔒</div><h2 style="margin:12px 0 6px">Acceso restringido</h2><p style="color:var(--txt2);font-size:13px">Tu cuenta no tiene permisos de admin.</p><button class="btn" style="margin-top:18px" onclick="salir()">Salir</button></div></section>
 
 <div id="s-app" class="oculto">
-<header><span class="marca">S&amp;V Panel</span><span class="rol" id="h-rol">—</span><span class="esp"></span><span id="h-user"></span><button class="btn mini" onclick="salir()">Salir</button></header>
+<header><span class="logo">⚜</span><span class="marca">S&amp;V Panel</span><span class="rol" id="h-rol">—</span><span class="esp"></span><span id="h-user"></span><button class="btn mini" onclick="salir()">Salir</button></header>
 <div class="tabs" id="tabs"></div>
 <main>
 
 <section class="sec" id="sec-torre">
+ <div class="eyebrow">Resumen</div><h2 class="titulo-sec">Dashboard</h2><p class="sub-sec">Estado del evento en tiempo real.</p>
  <div class="metrics">
   <div class="metric"><div class="n" id="m-total">0</div><div class="t">Participantes</div></div>
   <div class="metric"><div class="n" id="m-iniciados">0</div><div class="t">Iniciaron</div></div>
@@ -122,21 +165,20 @@ tr:last-child td{border-bottom:none}
   <div class="card"><h3>Sellos por participante</h3><div id="ch-sellos"></div></div>
   <div class="card"><h3>♥ Me gusta por charla</h3><div id="ch-likes"></div></div>
  </div>
- <div class="buscador"><input id="q" placeholder="Buscar…" oninput="pintarTabla()">
+ <div class="buscador"><input id="q" placeholder="Buscar participante…" oninput="pintarTabla()">
   <button class="chip act" onclick="filtro('todos',this)">Todos</button>
   <button class="chip" onclick="filtro('iniciado',this)">Iniciaron</button>
   <button class="chip" onclick="filtro('apto',this)">Aptos</button>
-  <button class="btn mini solido oculto" id="btn-xlsx" onclick="exportar()">⬇ Excel completo</button></div>
+  <button class="btn mini solido oculto" id="btn-xlsx" onclick="exportar()"> Excel</button></div>
  <div class="tabla-wrap"><table><thead><tr><th>Nombre</th><th>Avatar</th><th>Contacto</th><th>Progreso</th><th>Estado</th><th>Perfil/Quiz</th><th>Consent.</th><th>Acciones</th></tr></thead><tbody id="tb"></tbody></table></div>
- <div class="grid2" style="margin-top:16px">
+ <div class="grid2" style="margin-top:14px">
   <div class="card"><h3>⚜ Círculo de beneficios · miembros</h3><div id="lista-circulo"></div></div>
   <div class="card"><h3>★ Ranking de bodegas · puntos</h3><div id="jz-votores"></div></div>
  </div>
 </section>
 
 <section class="sec" id="sec-metricas">
- <h2 class="titulo-sec">Métricas del evento</h2>
- <p class="sub-sec">Embudo, mapa de calor, contenido, NPS, apertura, asistencia y retención, todo en vivo.</p>
+ <div class="eyebrow">Analítica</div><h2 class="titulo-sec">Métricas del evento</h2><p class="sub-sec">Embudo, mapa de calor, contenido, NPS, apertura, asistencia y retención.</p>
  <div class="grid2">
   <div class="card"><h3>Embudo de conversión</h3><div id="m-funnel"></div></div>
   <div class="card"><h3>Mapa de calor · escaneos por salón</h3><div id="m-heat"></div></div>
@@ -150,168 +192,189 @@ tr:last-child td{border-bottom:none}
 </section>
 
 <section class="sec" id="sec-juegos">
- <h2 class="titulo-sec">Salón de Juegos · Control</h2>
- <p class="sub-sec">Activa los juegos, sube sus iconos y configura contenidos, todo en un solo lugar.</p>
+ <div class="eyebrow">Configuración</div><h2 class="titulo-sec">Salón de Juegos</h2><p class="sub-sec">Activa juegos, sube iconos y banners, y configura contenidos.</p>
  <div class="card"><h3>Activar / desactivar / mostrar</h3><div id="jz-toggles"></div></div>
  <div class="card"><h3>Iconos y banners de los juegos</h3>
-  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Subí un ícono cuadrado por juego y un banner 1200×400 para el quiz. Si no subís ninguna imagen, se usa el diseño por defecto.</p>
+  <p style="font-size:12px;color:var(--txt2);margin-bottom:10px">Ícono cuadrado por juego y banner 1200×400 para el quiz.</p>
   <div class="grid2">
-   <div><label>ARCANO (quiz) · ícono cuadrado</label><input type="file" accept="image/*" id="gi-quiz" onchange="cargarImgJuego('quiz',this)"><img id="gi-prev-quiz" class="avatar-prev" style="visibility:hidden"></div>
-   <div><label>TABLA BUSCADORES · ícono cuadrado</label><input type="file" accept="image/*" id="gi-ranking" onchange="cargarImgJuego('ranking',this)"><img id="gi-prev-ranking" class="avatar-prev" style="visibility:hidden"></div>
-   <div><label>SORTEO · ícono cuadrado</label><input type="file" accept="image/*" id="gi-sorteo" onchange="cargarImgJuego('sorteo',this)"><img id="gi-prev-sorteo" class="avatar-prev" style="visibility:hidden"></div>
+   <div><label>ARCANO · ícono</label><input type="file" accept="image/*" id="gi-quiz" onchange="cargarImgJuego('quiz',this)"><img id="gi-prev-quiz" class="avatar-prev" style="visibility:hidden"></div>
+   <div><label>TABLA BUSCADORES · ícono</label><input type="file" accept="image/*" id="gi-ranking" onchange="cargarImgJuego('ranking',this)"><img id="gi-prev-ranking" class="avatar-prev" style="visibility:hidden"></div>
+   <div><label>SORTEO · ícono</label><input type="file" accept="image/*" id="gi-sorteo" onchange="cargarImgJuego('sorteo',this)"><img id="gi-prev-sorteo" class="avatar-prev" style="visibility:hidden"></div>
    <div><label>BANNER QUIZ (1200×400)</label><input type="file" accept="image/*" id="gi-bannerQuiz" onchange="cargarImgJuego('bannerQuiz',this)"><img id="gi-prev-bannerQuiz" class="avatar-prev" style="visibility:hidden"></div>
   </div>
-  <button class="btn solido" style="margin-top:10px" onclick="guardarImgJuegos()">Guardar iconos y banners</button>
+  <button class="btn solido" style="margin-top:8px" onclick="guardarImgJuegos()">Guardar iconos y banners</button>
  </div>
  <div class="card"><h3>Banner del sorteo (1200×400)</h3>
-  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Esta imagen se muestra en la parte superior de la pantalla Sorteo en las apps de los participantes.</p>
-  <input type="file" accept="image/*" id="slv-banner-input2" onchange="cargarBannerSorteo(this)">
-  <img id="slv-banner-prev2" class="banner-prev" style="display:none">
-  <div class="banner-actions" id="slv-banner-actions2" style="display:none">
-   <button class="btn mini peligro" onclick="quitarBannerSorteo()">🗑 Quitar banner</button>
-  </div>
+  <input type="file" accept="image/*" id="slv-banner-input" onchange="cargarBannerSorteo(this)">
+  <img id="slv-banner-prev" class="banner-prev" style="display:none">
+  <div class="banner-actions" id="slv-banner-actions" style="display:none"><button class="btn mini peligro" onclick="quitarBannerSorteo()">🗑 Quitar banner</button></div>
  </div>
  <div class="card"><h3>Contenidos</h3>
   <label>Bodegas para votar (una por línea)</label><textarea id="jz-bvoto"></textarea>
   <label>Hora del sorteo (cuenta regresiva)</label><input id="jz-sorteo" type="datetime-local">
-  <button class="btn solido" style="margin-top:10px" onclick="guardarJuegos()">Guardar contenidos</button></div>
+  <button class="btn solido" style="margin-top:8px" onclick="guardarJuegos()">Guardar contenidos</button></div>
  <div class="card"><h3>Quiz Arcano · editor</h3>
   <label class="tgl"><input type="checkbox" id="qz-activo" onchange="toggleQuiz()"> Quiz activo</label>
   <div id="qz-form"></div>
-  <button class="btn solido" style="margin-top:14px" onclick="guardarQuiz()">Guardar quiz</button></div>
+  <button class="btn solido" style="margin-top:12px" onclick="guardarQuiz()">Guardar quiz</button></div>
  <div class="card"><h3>Banners del Arcano (1080×1350)</h3>
-  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Subí un banner vertical por cada arcano. Se muestra al revelar el resultado del quiz en la app de participantes.</p>
+  <p style="font-size:12px;color:var(--txt2);margin-bottom:10px">Banner vertical por cada arcano, visible al revelar el resultado del quiz.</p>
   <div id="arcano-banners-form"></div>
-  <button class="btn solido" style="margin-top:10px" onclick="guardarBannerArcano()">Guardar banners del arcano</button>
+  <button class="btn solido" style="margin-top:8px" onclick="guardarBannerArcano()">Guardar banners del arcano</button>
  </div>
  <div class="card"><h3>Quiz · resultados en vivo</h3><div id="qz-res"></div></div>
  <div class="grid2">
-  <div class="card"><h3>♥ Corazones en vivo</h3><div style="font-size:40px;font-weight:700;color:var(--corazon)" id="jz-apl">0</div><button class="btn mini peligro" style="margin-top:10px" onclick="resetCorazones()">Reiniciar corazones</button></div>
-  <div class="card"><h3>Estadísticas en vivo</h3><div id="jz-stats" style="font-size:14px;color:var(--texto2)"></div></div>
+  <div class="card"><h3>♥ Corazones en vivo</h3><div style="font-size:34px;font-weight:600;color:var(--pink)" id="jz-apl">0</div><button class="btn mini peligro" style="margin-top:8px" onclick="resetCorazones()">Reiniciar</button></div>
+  <div class="card"><h3>Estadísticas en vivo</h3><div id="jz-stats" style="font-size:13px;color:var(--txt2)"></div></div>
  </div>
  <div class="card"><h3>Ranking de buscadores en vivo</h3><div id="jz-rank"></div></div>
 </section>
 
-<section class="sec" id="sec-sellos"><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento, QR, imagen del botón e imagen de revelado 1080×1350.</p><div class="grid2" id="grid-sellos"></div></section>
+<section class="sec" id="sec-sellos"><div class="eyebrow">Contenido</div><h2 class="titulo-sec">Los 7 Sellos</h2><p class="sub-sec">Nombre, salón, fragmento, QR, imagen del botón e imagen de revelado 1080×1350.</p><div class="grid2" id="grid-sellos"></div></section>
 
 <section class="sec" id="sec-avatares">
- <h2 class="titulo-sec">Avatares de participantes</h2>
- <p class="sub-sec">Sube las imágenes que los participantes podrán elegir como avatar.</p>
+ <div class="eyebrow">Contenido</div><h2 class="titulo-sec">Avatares de participantes</h2><p class="sub-sec">Imágenes que los participantes pueden elegir como avatar.</p>
  <div class="card">
   <label>AGREGAR AVATARES (PNG / JPG)</label>
   <input type="file" accept="image/*" id="av-input" multiple onchange="cargarAvatares(this)">
-  <div id="av-list" style="display:flex;flex-wrap:wrap;gap:14px;margin-top:16px"></div>
+  <div id="av-list" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:14px"></div>
  </div>
 </section>
 
-<section class="sec" id="sec-programa"><h2 class="titulo-sec">Programa</h2>
- <div id="prog-edit-banner" class="edit-banner oculto">✏️ Editando: <b id="prog-edit-name"></b><button class="btn mini" onclick="cancelarProgEdit()">Cancelar edición</button></div>
- <div class="form-grid" style="margin-bottom:14px">
-  <div><label>FECHA</label><input id="pg-fecha" type="date"></div><div><label>HORA</label><input id="pg-hora" type="time"></div>
-  <div><label>TEMA</label><input id="pg-tema"></div><div><label>DISERTANTE</label><input id="pg-dis"></div><div><label>LUGAR</label><input id="pg-lugar"></div></div>
- <label>IMAGEN DEL EVENTO (opcional)</label>
- <input type="file" accept="image/*" id="pg-img" onchange="cargarImgProg(this)">
- <img id="pg-img-prev" class="avatar-prev" style="visibility:hidden">
- <button class="btn solido" id="pg-save-btn" style="margin-top:10px" onclick="guardarProg()">+ Agregar</button>
- <div id="lista-prog" style="margin-top:20px"></div></section>
+<section class="sec" id="sec-programa"><div class="eyebrow">Contenido</div><h2 class="titulo-sec">Programa</h2><p class="sub-sec">Charlas, disertantes y check-in de asistencia.</p>
+ <div id="prog-edit-banner" class="edit-banner oculto">✏️ Editando: <b id="prog-edit-name"></b><button class="btn mini" onclick="cancelarProgEdit()">Cancelar</button></div>
+ <div class="card">
+  <div class="form-grid" style="margin-bottom:10px">
+   <div><label>FECHA</label><input id="pg-fecha" type="date"></div><div><label>HORA</label><input id="pg-hora" type="time"></div>
+   <div><label>TEMA</label><input id="pg-tema"></div><div><label>DISERTANTE</label><input id="pg-dis"></div><div><label>LUGAR</label><input id="pg-lugar"></div></div>
+  <label>IMAGEN DEL EVENTO (opcional)</label>
+  <input type="file" accept="image/*" id="pg-img" onchange="cargarImgProg(this)">
+  <img id="pg-img-prev" class="avatar-prev" style="visibility:hidden">
+  <button class="btn solido" id="pg-save-btn" style="margin-top:8px" onclick="guardarProg()">+ Agregar</button>
+ </div>
+ <div id="lista-prog"></div></section>
 
-<section class="sec" id="sec-oraculo"><h2 class="titulo-sec">Mensajes</h2>
- <label>TÍTULO</label><input id="an-titulo"><label>MENSAJE</label><input id="an-msg">
- <button class="btn solido" onclick="enviarAnuncio()">Enviar</button><div id="lista-anun" style="margin-top:20px"></div></section>
+<section class="sec" id="sec-oraculo"><div class="eyebrow">Comunicación</div><h2 class="titulo-sec">Mensajes</h2><p class="sub-sec">Avisos push y en-app para todos los participantes.</p>
+ <div class="card"><label>TÍTULO</label><input id="an-titulo"><label>MENSAJE</label><input id="an-msg">
+ <button class="btn solido" onclick="enviarAnuncio()">Enviar</button></div>
+ <div id="lista-anun"></div></section>
 
-<section class="sec" id="sec-chat"><h2 class="titulo-sec">Chat del Oráculo</h2>
+<section class="sec" id="sec-chat"><div class="eyebrow">Contenido</div><h2 class="titulo-sec">Chat del Oráculo</h2><p class="sub-sec">Preguntas frecuentes con respuesta automática.</p>
  <div class="card"><label>PREGUNTA</label><input id="fq-p"><label>RESPUESTA</label><textarea id="fq-r"></textarea>
  <button class="btn solido" onclick="guardarFAQ()">Guardar</button><button class="btn oculto" id="fq-cancel" onclick="cancelarFAQ()">Cancelar</button></div>
  <div id="lista-faq"></div></section>
 
-<section class="sec" id="sec-perfil"><h2 class="titulo-sec">Perfil del Oráculo</h2>
+<!-- ===== NUEVA PESTAÑA TEXTOS ===== -->
+<section class="sec" id="sec-textos">
+ <div class="eyebrow">Contenido</div><h2 class="titulo-sec">Textos de la app</h2>
+ <p class="sub-sec">Editá los textos que ven los participantes desde el inicio y guardalos fijos. Los cambios se aplican al instante en la app.</p>
+ <div class="card">
+  <div class="txt-group"><div class="g-title">Pantalla de inicio (landing)</div>
+   <label>Título principal</label><input id="tx-landing-titulo">
+   <label>Subtítulo</label><input id="tx-landing-sub">
+   <label>Lema / descripción</label><textarea id="tx-landing-lema"></textarea>
+   <label>Botón Google</label><input id="tx-landing-boton">
+  </div>
+  <div class="txt-group"><div class="g-title">Cómo se juega (instrucciones)</div>
+   <label>Título de sección</label><input id="tx-instr-titulo">
+   <label>Paso 1 · título</label><input id="tx-instr-p1t"><label>Paso 1 · detalle</label><input id="tx-instr-p1d">
+   <label>Paso 2 · título</label><input id="tx-instr-p2t"><label>Paso 2 · detalle</label><input id="tx-instr-p2d">
+   <label>Paso 3 · título</label><input id="tx-instr-p3t"><label>Paso 3 · detalle</label><input id="tx-instr-p3d">
+   <label>Paso 4 · título</label><input id="tx-instr-p4t"><label>Paso 4 · detalle</label><input id="tx-instr-p4d">
+   <label>Paso 5 · título</label><input id="tx-instr-p5t"><label>Paso 5 · detalle</label><input id="tx-instr-p5d">
+  </div>
+  <div class="txt-group"><div class="g-title">Pantalla principal (sellos)</div>
+   <label>Saludo</label><input id="tx-home-hola">
+   <label>Lema línea 1</label><input id="tx-home-lema1">
+   <label>Lema línea 2</label><input id="tx-home-lema2">
+   <label>Botón escanear</label><input id="tx-home-scan">
+   <label>Título sección sellos</label><input id="tx-home-sec-sellos">
+   <label>Título caja frase oculta</label><input id="tx-home-frase-titulo">
+  </div>
+  <div class="txt-group"><div class="g-title">Juegos y sorteo</div>
+   <label>Título Salón de Juegos</label><input id="tx-juegos-titulo">
+   <label>Subtítulo Salón de Juegos</label><input id="tx-juegos-sub">
+   <label>Botón volver al salón</label><input id="tx-sorteo-volver">
+  </div>
+  <button class="btn solido" style="margin-top:14px" onclick="guardarTextos()">💾 Guardar textos</button>
+  <button class="btn" style="margin-top:14px" onclick="restaurarTextos()">↻ Restaurar originales</button>
+ </div>
+</section>
+<!-- ===== /TEXTOS ===== -->
+
+<section class="sec" id="sec-perfil"><div class="eyebrow">Marca</div><h2 class="titulo-sec">Perfil del Oráculo</h2><p class="sub-sec">Identidad del asistente y frases del juego.</p>
  <div class="card"><div class="form-grid">
   <div><label>NOMBRE ORÁCULO</label><input id="pf-nombre"></div><div><label>TÍTULO APP</label><input id="pf-titulo"></div><div><label>SUBTÍTULO</label><input id="pf-sub"></div></div>
-  <div class="form-grid" style="margin-top:12px">
+  <div class="form-grid" style="margin-top:10px">
   <div><label>LINK AVATAR ORÁCULO</label><input id="pf-url-oraculo" oninput="prevAvatar('oraculo')"><img id="pf-img-oraculo" class="avatar-prev" style="visibility:hidden"></div>
   <div><label>LINK AVATAR PARTICIPANTE</label><input id="pf-url-usuario" oninput="prevAvatar('usuario')"><img id="pf-img-usuario" class="avatar-prev" style="visibility:hidden"></div>
   <div><label>ANIMACIÓN CHAT (SEG)</label><input id="pf-chatdelay" type="number" min="0.5" step="0.5" value="2"></div></div>
- <button class="btn solido" style="margin-top:14px" onclick="guardarPerfil()">Guardar perfil</button></div>
+ <button class="btn solido" style="margin-top:12px" onclick="guardarPerfil()">Guardar perfil</button></div>
  <div class="card"><h3>Frases de aliento y frase final</h3>
-  <label>FRASES DE ALIENTO (una por línea)</label><textarea id="fr-aliento" style="min-height:150px"></textarea>
+  <label>FRASES DE ALIENTO (una por línea)</label><textarea id="fr-aliento" style="min-height:140px"></textarea>
   <label>FRASE FINAL (7 sellos)</label><textarea id="fr-final"></textarea>
-  <button class="btn solido" style="margin-top:10px" onclick="guardarFrases()">Guardar frases</button></div></section>
+  <button class="btn solido" style="margin-top:8px" onclick="guardarFrases()">Guardar frases</button></div></section>
 
 <section class="sec" id="sec-sorteo">
- <h2 class="titulo-sec">Sorteo en vivo</h2>
- <p class="sub-sec">Configura el sorteo, sube el banner, ejecútalo frente a todos y revela los 5 ganadores en tiempo real en las apps de los participantes.</p>
+ <div class="eyebrow">En vivo</div><h2 class="titulo-sec">Sorteo en vivo</h2><p class="sub-sec">Configurá, iniciá y ejecutá el sorteo con revelado en tiempo real.</p>
  <div class="card">
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
    <h3 style="margin:0">Estado actual</h3>
-   <span class="slv-status" id="slv-status" style="display:inline-block;padding:6px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase">—</span>
+   <span id="slv-status" style="display:inline-block;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">—</span>
   </div>
-  <div id="slv-stats" style="font-size:13px;color:var(--texto2)"></div>
+  <div id="slv-stats" style="font-size:12px;color:var(--txt2)"></div>
  </div>
  <div class="card">
   <h3>0 · Banner del sorteo (1200×400)</h3>
-  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Esta imagen se muestra en la parte superior de la pantalla Sorteo en las apps de los participantes. Si no subís ninguna, se ve el diseño por defecto con gradiente.</p>
-  <input type="file" accept="image/*" id="slv-banner-input" onchange="cargarBannerSorteo(this)">
-  <img id="slv-banner-prev" class="banner-prev" style="display:none">
-  <div class="banner-actions" id="slv-banner-actions" style="display:none">
-   <button class="btn mini peligro" onclick="quitarBannerSorteo()">🗑 Quitar banner</button>
-  </div>
+  <input type="file" accept="image/*" id="slv-banner-input2" onchange="cargarBannerSorteo(this)">
+  <img id="slv-banner-prev2" class="banner-prev" style="display:none">
+  <div class="banner-actions" id="slv-banner-actions2" style="display:none"><button class="btn mini peligro" onclick="quitarBannerSorteo()">🗑 Quitar banner</button></div>
  </div>
  <div class="card">
   <h3>1 · Configuración general</h3>
-  <div class="form-grid" style="margin-bottom:10px">
+  <div class="form-grid" style="margin-bottom:8px">
    <div><label>TÍTULO DEL SORTEO</label><input id="slv-titulo" placeholder="Sorteo final"></div>
    <div><label>SUBTÍTULO</label><input id="slv-sub" placeholder="Cinco premios · cinco elegidos"></div>
   </div>
-  <label>REGLAS DEL SORTEO (texto visible para participantes)</label>
-  <textarea id="slv-reglas" style="min-height:100px" placeholder="Solo participan quienes completaron los 7 sellos antes del cierre."></textarea>
-  <label>HORA DE INICIO (cuenta regresiva visible en las apps)</label>
-  <input id="slv-hora" type="datetime-local">
+  <label>REGLAS DEL SORTEO</label><textarea id="slv-reglas" style="min-height:90px"></textarea>
+  <label>HORA DE INICIO</label><input id="slv-hora" type="datetime-local">
  </div>
  <div class="card">
   <h3>2 · Los 5 premios</h3>
-  <p style="font-size:13px;color:var(--texto2);margin-bottom:12px">Describe cada premio y cómo se retira. Los participantes verán la lista completa antes del sorteo.</p>
   <div id="slv-premios"></div>
  </div>
- <div class="card" id="slv-ctrl-card">
+ <div class="card">
   <h3>3 · Control del sorteo</h3>
-  <p style="font-size:13px;color:var(--texto2);margin-bottom:14px">Guarda la configuración primero. Después podés iniciar el sorteo (activa la cuenta regresiva en las apps) y ejecutarlo (sortea y revela los ganadores uno a uno cada 3 segundos).</p>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
-   <button class="btn solido" onclick="guardarSorteoLive()">💾 Guardar configuración</button>
-   <button class="btn solido" id="slv-iniciar" onclick="iniciarSorteoLive()" style="background:var(--oro);border-color:var(--oro);color:#1d1a17">▶ Iniciar sorteo</button>
-   <button class="btn solido" id="slv-ejecutar" onclick="ejecutarSorteoLive()" style="background:var(--verde);border-color:var(--verde);color:#fff">🏆 Ejecutar sorteo</button>
-   <button class="btn peligro" id="slv-reiniciar" onclick="reiniciarSorteoLive()">↻ Reiniciar a 0</button>
+   <button class="btn solido" onclick="guardarSorteoLive()">💾 Guardar</button>
+   <button class="btn solido" id="slv-iniciar" onclick="iniciarSorteoLive()" style="background:var(--gold);border-color:var(--gold);color:#000">▶ Iniciar</button>
+   <button class="btn solido" id="slv-ejecutar" onclick="ejecutarSorteoLive()" style="background:var(--green);border-color:var(--green);color:#000">🏆 Ejecutar</button>
+   <button class="btn peligro" id="slv-reiniciar" onclick="reiniciarSorteoLive()">↻ Reiniciar</button>
   </div>
-  <div style="margin-top:14px;padding:12px 16px;border-radius:12px;background:var(--bg2);border:1px solid var(--linea)" id="slv-preview"></div>
+  <div style="margin-top:12px;padding:10px 14px;border-radius:var(--r-md);background:var(--elev);border:1px solid var(--line)" id="slv-preview"></div>
  </div>
- <div class="card">
-  <h3>4 · Ganadores revelados (en vivo)</h3>
-  <div id="slv-ganadores"></div>
- </div>
- <div class="card">
-  <h3>Historial de sorteos anteriores</h3>
-  <div id="hist-sorteo"></div>
- </div>
+ <div class="card"><h3>4 · Ganadores revelados (en vivo)</h3><div id="slv-ganadores"></div></div>
+ <div class="card"><h3>Historial de sorteos</h3><div id="hist-sorteo"></div></div>
 </section>
 
-<section class="sec" id="sec-equipo"><h2 class="titulo-sec">Equipo · contraseñas</h2>
- <div class="form-grid" style="margin-bottom:8px"><div><label>NOMBRE</label><input id="eq-nombre"></div><div><label>CORREO</label><input id="eq-email"></div><div><label>CLAVE TEMPORAL</label><input id="eq-clave" type="text"></div>
+<section class="sec" id="sec-equipo"><div class="eyebrow">Seguridad</div><h2 class="titulo-sec">Equipo · contraseñas</h2><p class="sub-sec">Creá y gestioná cuentas de admin con roles.</p>
+ <div class="card"><div class="form-grid" style="margin-bottom:6px"><div><label>NOMBRE</label><input id="eq-nombre"></div><div><label>CORREO</label><input id="eq-email"></div><div><label>CLAVE TEMPORAL</label><input id="eq-clave" type="text"></div>
  <div><label>ROL</label><select id="eq-rol"><option value="monitor">Monitor</option><option value="configurador">Configurador</option><option value="maestro">Maestro</option></select></div></div>
- <button class="btn solido" onclick="crearAdmin()">Crear admin</button><div class="err" id="eq-err"></div>
- <div class="card" style="margin-top:16px"><h3>Admins y sus contraseñas</h3><div id="lista-admins"></div></div></section>
+ <button class="btn solido" onclick="crearAdmin()">Crear admin</button><div class="err" id="eq-err"></div></div>
+ <div class="card"><h3>Admins y sus contraseñas</h3><div id="lista-admins"></div></div></section>
 
-<section class="sec" id="sec-reinicio"><h2 class="titulo-sec">Reinicio del evento</h2>
- <p class="sub-sec">Todos los reinicios se ejecutan desde aquí, con doble confirmación.</p>
- <div class="card" style="border-color:rgba(255,69,58,.25)">
+<section class="sec" id="sec-reinicio"><div class="eyebrow">Peligro</div><h2 class="titulo-sec">Reinicio del evento</h2><p class="sub-sec">Acciones destructivas con doble confirmación.</p>
+ <div class="card" style="border-color:rgba(255,69,58,.3)">
   <label class="rz-check"><input type="checkbox" id="rz-prog" checked> Progreso sellos → 0/7</label>
-  <label class="rz-check"><input type="checkbox" id="rz-chats"> Chats del Oráculo (historial de todos)</label>
+  <label class="rz-check"><input type="checkbox" id="rz-chats"> Chats del Oráculo (historial)</label>
   <label class="rz-check"><input type="checkbox" id="rz-anun" checked> Notificaciones</label>
   <label class="rz-check"><input type="checkbox" id="rz-sort" checked> Sorteos</label>
   <label class="rz-check"><input type="checkbox" id="rz-juegos"> Datos de juegos (voto/ranking, círculo, me gusta)</label>
-  <label class="rz-check"><input type="checkbox" id="rz-corazones"> Contador de corazones (me gusta)</label>
+  <label class="rz-check"><input type="checkbox" id="rz-corazones"> Contador de corazones</label>
   <label class="rz-check"><input type="checkbox" id="rz-programa"> Programa</label>
   <label class="rz-check"><input type="checkbox" id="rz-sellos"> Sellos y QRs</label>
-  <button class="btn peligro" style="margin-top:14px" onclick="rzPaso1()">Reiniciar evento</button>
-  <div id="rz-paso2" class="oculto" style="margin-top:14px"><p style="color:var(--rojo)">⚠ Confirmación 1 de 2.</p>
+  <button class="btn peligro" style="margin-top:12px" onclick="rzPaso1()">Reiniciar evento</button>
+  <div id="rz-paso2" class="oculto" style="margin-top:12px"><p style="color:var(--red);font-size:13px">⚠ Confirmación 1 de 2.</p>
   <button class="btn peligro" onclick="rzPaso2()">Confirmación 2 de 2 — Ejecutar</button><button class="btn mini" onclick="rzCancelar()">Cancelar</button></div></div></section>
 
 </main></div>
@@ -326,20 +389,37 @@ const CFG={apiKey:"AIzaSyA-1VBoP1hTjzbLSsMvqXYealszIu0y66g",authDomain:"simbolos
 const app=initializeApp(CFG),auth=getAuth(app),db=getFirestore(app);
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
-const toast=m=>{const d=document.createElement('div');d.className='toast';d.textContent=m;$('toasts').appendChild(d);setTimeout(()=>d.remove(),5000);};
+const toast=m=>{const d=document.createElement('div');d.className='toast';d.textContent=m;$('toasts').appendChild(d);setTimeout(()=>d.remove(),4000);};
 const hoyISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 const fmtF=f=>{if(!f)return'HOY';return new Date(f+'T12:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'});};
 const toLocal=iso=>{if(!iso)return'';const d=new Date(iso);const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());};
 const QUIZ_DEF={activo:false,preguntas:[{categoria:'Varietal',pregunta:'¿Qué uva te llama?',opciones:[{t:'Malbec',v:'Malbec'},{t:'Cabernet',v:'Cabernet'},{t:'Torrontés',v:'Torrontés'},{t:'Blend',v:'Blend'}]},{categoria:'Estilo',pregunta:'¿Tu copa ideal?',opciones:[{t:'Joven',v:'Joven'},{t:'Crianza',v:'Crianza'},{t:'Espumante',v:'Espumante'},{t:'Dulce',v:'Dulce'}]},{categoria:'Frecuencia',pregunta:'¿Cuándo descorchas?',opciones:[{t:'Semanal',v:'Semanal'},{t:'Mensual',v:'Mensual'},{t:'Ocasiones',v:'Ocasiones'},{t:'Primera vez',v:'Primera vez'}]},{categoria:'Interes',pregunta:'¿Qué quieres recibir?',opciones:[{t:'Invitaciones',v:'Invitaciones'},{t:'Ofertas',v:'Ofertas'},{t:'Cursos',v:'Cursos'},{t:'Todo',v:'Todo'}]}]};
 const JG_META=[['quiz','Arcano (quiz)'],['ranking','Tabla de buscadores'],['voto','Sección VOTAR visible'],['frase','Frase oculta visible']];
+// Textos por defecto de la app de participantes
+const TEXTOS_DEF={
+ 'landing-titulo':'SÍMBOLOS & VINOS','landing-sub':'Edición Masónica · MMXXVI',
+ 'landing-lema':'Siete sellos guardan la frase oculta. Recorre los salones, escanea sus marcas y demuestra que eres digno.',
+ 'landing-boton':'Continuar con Google',
+ 'instr-titulo':'La búsqueda de los sellos',
+ 'instr-p1t':'Entra con Google','instr-p1d':'Sin contraseña: tu cuenta se crea sola con tu nombre y correo.',
+ 'instr-p2t':'Toca tu foto de perfil','instr-p2d':'Elige tu avatar entre las opciones del Oráculo.',
+ 'instr-p3t':'Escanea el grabado','instr-p3d':'Toca el botón Escanear y apunta al código del sello (o al QR de check-in de una charla).',
+ 'instr-p4t':'Despierta el sello','instr-p4d':'Cada sello se dora y revela su lámina y un fragmento de la frase.',
+ 'instr-p5t':'Completa los siete','instr-p5d':'Al reunirlos, la frase final se revela y entras al sorteo.',
+ 'home-hola':'Hola, buscador','home-lema1':'Los sellos duermen.','home-lema2':'Ve y despiértalos.',
+ 'home-scan':'Escanear un sello','home-sec-sellos':'Toca un sello dorado para ver su lámina','home-frase-titulo':'La frase oculta',
+ 'juegos-titulo':'Salón de Juegos','juegos-sub':'Toca para jugar · puedes repetir los completados.',
+ 'sorteo-volver':'Volver al salón'
+};
+let TEXTOS={};
 let yo=null,miRol=null,PART={},filtroAct='todos',FAQ=[],fqEdit=null,PERFIL={},perfilLoaded=false,frasesLoaded=false,QUIZ=null,quizFormLoaded=false,JUEGOS={},juegosLoaded=false,EXTRA={},PROG=[],AVATARES=[],SIMB={},CHATLOGS=[];
 let JUEGOS_IMG={},juegosImgPend={},progEditId=null,progImgPend=null,arcanoPend={};
 const ARCANOS=[{slug:'malbec',titulo:'Guardián del Malbec'},{slug:'cabernet',titulo:'Caballero del Cabernet'},{slug:'torrontes',titulo:'Alma de Torrontés'},{slug:'blend',titulo:'Alquimista del Blend'},{slug:'default',titulo:'Buscador de Arcanos (por defecto)'}];
 let SORTEO_LIVE=null,sorteoLiveLoaded=false,sorteoInterval=null,sorteoBannerPend=null;
 window.ANUN=[];
 const GLIFOS={1:'☉',2:'☽',3:'☿',4:'♀',5:'♂',6:'♃',7:'♄'};
-const PERM={torre:['maestro','configurador','monitor'],metricas:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],avatares:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
-const TABS=[['torre','Dashboard'],['metricas','Métricas'],['juegos','Juegos'],['sellos','Sellos'],['avatares','Avatares'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
+const PERM={torre:['maestro','configurador','monitor'],metricas:['maestro','configurador','monitor'],juegos:['maestro','configurador'],sellos:['maestro','configurador'],avatares:['maestro','configurador'],programa:['maestro','configurador'],oraculo:['maestro','configurador'],chat:['maestro'],perfil:['maestro'],textos:['maestro','configurador'],sorteo:['maestro'],equipo:['maestro'],reinicio:['maestro']};
+const TABS=[['torre','Dashboard'],['metricas','Métricas'],['juegos','Juegos'],['sellos','Sellos'],['avatares','Avatares'],['programa','Programa'],['oraculo','Mensajes'],['chat','Chat'],['textos','Textos'],['perfil','Perfil'],['sorteo','Sorteo'],['equipo','Equipo'],['reinicio','Reinicio']];
 window.login=async()=>{try{await signInWithEmailAndPassword(auth,$('l-email').value.trim(),$('l-clave').value);}catch(e){$('l-err').textContent='Credenciales incorrectas';}};
 window.salir=()=>signOut(auth);
 onAuthStateChanged(auth,async u=>{if(!u){yo=null;miRol=null;$('s-app').classList.add('oculto');$('s-noperm').classList.add('oculto');$('s-login').style.display='grid';return;}
@@ -351,7 +431,7 @@ onAuthStateChanged(auth,async u=>{if(!u){yo=null;miRol=null;$('s-app').classList
  if(miRol==='maestro')$('btn-xlsx').classList.remove('oculto');escuchar();});
 function irSec(k,b){document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('act'));b&&b.classList.add('act');document.querySelectorAll('.sec').forEach(s=>s.classList.remove('act'));$('sec-'+k).classList.add('act');}
 function barChart(el,entries,color){if(!el)return;const max=Math.max(1,...entries.map(e=>e[1]));
- el.innerHTML=entries.filter(e=>e[1]>0).map(([l,v])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:12px"><span style="width:120px;color:var(--texto2)">'+esc(l)+'</span><span style="flex:1;height:8px;background:var(--card2);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(v/max*100)+'%;background:'+(color||'var(--accent)')+'"></i></span><b>'+v+'</b></div>').join('')||'<div class="vacio">Sin datos aún</div>';}
+ el.innerHTML=entries.filter(e=>e[1]>0).map(([l,v])=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:12px"><span style="width:120px;color:var(--txt2)">'+esc(l)+'</span><span style="flex:1;height:6px;background:var(--elev2);border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(v/max*100)+'%;background:'+(color||'var(--accent)')+'"></i></span><b>'+v+'</b></div>').join('')||'<div class="vacio">Sin datos aún</div>';}
 function escuchar(){
  onSnapshot(collection(db,'participantes'),s=>{PART={};s.forEach(d=>{PART[d.id]=Object.assign({id:d.id},d.data());});
   const P=Object.values(PART);
@@ -367,7 +447,8 @@ function escuchar(){
  onSnapshot(collection(db,'chatLogs'),s=>{CHATLOGS=[];s.forEach(d=>CHATLOGS.push(d.data()));pintarMetricas();},e=>console.warn('chatLogs',e));
  onSnapshot(doc(db,'config','avatares'),s=>{const d=s.exists()?s.data():{};AVATARES=d.items||[];pintarAvatares();},e=>console.warn('avatares',e));
  onSnapshot(doc(db,'config','juegosImg'),s=>{JUEGOS_IMG=s.exists()?s.data():{};renderImgJuegosPrev();renderArcanoBanners();},e=>console.warn('juegosImg',e));
- onSnapshot(collection(db,'programa'),s=>{PROG=[];s.forEach(d=>{PROG.push(Object.assign({id:d.id},d.data()));});PROG.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarProg();barChart($('ch-likes'),PROG.map(a=>[a.tema||a.hora,a.likes||0]),'var(--corazon)');pintarMetricas();},e=>console.warn('programa',e));
+ onSnapshot(doc(db,'config','textos'),s=>{TEXTOS=s.exists()?s.data():{};cargarFormTextos();},e=>console.warn('textos',e));
+ onSnapshot(collection(db,'programa'),s=>{PROG=[];s.forEach(d=>{PROG.push(Object.assign({id:d.id},d.data()));});PROG.sort((a,b)=>((a.fecha||'')+(a.hora||'')).localeCompare((b.fecha||'')+(b.hora||'')));pintarProg();barChart($('ch-likes'),PROG.map(a=>[a.tema||a.hora,a.likes||0]),'var(--pink)');pintarMetricas();},e=>console.warn('programa',e));
  onSnapshot(collection(db,'anuncios'),s=>{window.ANUN=[];s.forEach(d=>{window.ANUN.push(Object.assign({id:d.id},d.data()));});pintarAnun();pintarMetricas();},e=>console.warn('anuncios',e));
  onSnapshot(collection(db,'faq'),s=>{FAQ=[];s.forEach(d=>{FAQ.push(Object.assign({id:d.id},d.data()));});FAQ.sort((a,b)=>(a.orden||0)-(b.orden||0));pintarFAQ();},e=>console.warn('faq',e));
  onSnapshot(doc(db,'config','perfil'),s=>{PERFIL=s.exists()?s.data():{};setPrev('oraculo',PERFIL.avatarOraculo);setPrev('usuario',PERFIL.avatarUsuario);if(!perfilLoaded){perfilLoaded=true;$('pf-nombre').value=PERFIL.nombreOraculo||'';$('pf-titulo').value=PERFIL.tituloApp||'';$('pf-sub').value=PERFIL.subApp||'';$('pf-url-oraculo').value=PERFIL.avatarOraculo||'';$('pf-url-usuario').value=PERFIL.avatarUsuario||'';$('pf-chatdelay').value=(PERFIL.chatDelay!=null?PERFIL.chatDelay:2);}},e=>console.warn('perfil',e));
@@ -384,6 +465,11 @@ function escuchar(){
  },e=>console.warn('sorteoLive',e));
  if(miRol==='maestro')onSnapshot(collection(db,'admins'),s=>{window.ADM={};s.forEach(d=>{window.ADM[d.id]=d.data();});pintarAdmins();},e=>console.warn('admins',e));
 }
+/* ===== TEXTOS ===== */
+function cargarFormTextos(){Object.keys(TEXTOS_DEF).forEach(k=>{const el=$('tx-'+k);if(el)el.value=(TEXTOS[k]!==undefined?TEXTOS[k]:TEXTOS_DEF[k]);});}
+window.guardarTextos=async()=>{const data={};Object.keys(TEXTOS_DEF).forEach(k=>{const el=$('tx-'+k);data[k]=el?el.value:TEXTOS_DEF[k];});await setDoc(doc(db,'config','textos'),data,{merge:true});toast('✓ Textos guardados');};
+window.restaurarTextos=async()=>{if(!confirm('¿Restaurar todos los textos originales?'))return;await setDoc(doc(db,'config','textos'),Object.assign({},TEXTOS_DEF),{merge:true});toast('↻ Textos restaurados');};
+/* ===== /TEXTOS ===== */
 function pintarMetricas(){
  const P=Object.values(PART);const f1=P.length;
  const f2=P.filter(p=>(p.simbolos||[]).length>=1).length;
@@ -392,45 +478,45 @@ function pintarMetricas(){
  const f5=P.filter(p=>(p.votoRank||[]).length>0).length;
  const elF=$('m-funnel');
  if(elF){const funnel=[['Registrados',f1],['1er sello',f2],['7 sellos',f3],['Círculo',f4],['Voto',f5]];
-  elF.innerHTML=funnel.map(row=>{const l=row[0],v=row[1];const pct=f1?Math.round(v/f1*100):0;return '<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-size:12px"><span>'+l+'</span><b>'+v+' ('+pct+'%)</b></div><div style="height:8px;background:var(--card2);border-radius:4px;overflow:hidden;margin-top:4px"><i style="display:block;height:100%;width:'+pct+'%;background:linear-gradient(90deg,var(--tinta),var(--purpura))"></i></div></div>';}).join('');}
+  elF.innerHTML=funnel.map(row=>{const l=row[0],v=row[1];const pct=f1?Math.round(v/f1*100):0;return '<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-size:12px"><span>'+l+'</span><b>'+v+' ('+pct+'%)</b></div><div style="height:6px;background:var(--elev2);border-radius:3px;overflow:hidden;margin-top:4px"><i style="display:block;height:100%;width:'+pct+'%;background:linear-gradient(90deg,var(--accent),#5e5ce6)"></i></div></div>';}).join('');}
  const heat={};P.forEach(p=>{(p.simbolos||[]).forEach(n=>{const s=SIMB[n];const salon=(s&&s.salon)||('Sello '+n);heat[salon]=(heat[salon]||0)+1;});});
  const elH=$('m-heat');
  if(elH){const vals=Object.values(heat);const mx=Math.max.apply(null,[1].concat(vals));
-  elH.innerHTML=Object.keys(heat).map(k=>[k,heat[k]]).sort((a,b)=>b[1]-a[1]).map(row=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:12px"><span style="width:130px;color:var(--texto2)">'+esc(row[0])+'</span><span style="flex:1;height:8px;background:var(--card2);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(row[1]/mx*100)+'%;background:linear-gradient(90deg,var(--oro),var(--corazon))"></i></span><b>'+row[1]+'</b></div>').join('')||'<div class="vacio">Sin escaneos aún</div>';}
+  elH.innerHTML=Object.keys(heat).map(k=>[k,heat[k]]).sort((a,b)=>b[1]-a[1]).map(row=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:12px"><span style="width:130px;color:var(--txt2)">'+esc(row[0])+'</span><span style="flex:1;height:6px;background:var(--elev2);border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(row[1]/mx*100)+'%;background:linear-gradient(90deg,var(--gold),var(--pink))"></i></span><b>'+row[1]+'</b></div>').join('')||'<div class="vacio">Sin escaneos aún</div>';}
  const cq={};CHATLOGS.forEach(c=>{cq[c.pregunta]=(cq[c.pregunta]||0)+1;});
  const elC=$('m-chat');
- if(elC){elC.innerHTML=Object.keys(cq).map(k=>[k,cq[k]]).sort((a,b)=>b[1]-a[1]).slice(0,8).map(row=>'<div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;margin:6px 0"><span style="color:var(--texto2)">'+esc(row[0])+'</span><b>'+row[1]+'</b></div>').join('')||'<div class="vacio">Sin preguntas aún</div>';}
+ if(elC){elC.innerHTML=Object.keys(cq).map(k=>[k,cq[k]]).sort((a,b)=>b[1]-a[1]).slice(0,8).map(row=>'<div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;margin:6px 0"><span style="color:var(--txt2)">'+esc(row[0])+'</span><b>'+row[1]+'</b></div>').join('')||'<div class="vacio">Sin preguntas aún</div>';}
  const nps=P.filter(p=>p.nps!=null);const elN=$('m-nps');
  if(elN){ if(nps.length){const avg=(nps.reduce((a,p)=>a+p.nps,0)/nps.length).toFixed(1);const prom=nps.filter(p=>p.nps>=9).length;const pas=nps.filter(p=>p.nps>=7&&p.nps<=8).length;const det=nps.filter(p=>p.nps<=6).length;const score=Math.round((prom-det)/nps.length*100);
-   elN.innerHTML='<div style="font-size:34px;font-weight:700">'+avg+'<span style="font-size:14px;color:var(--texto2)">/10</span></div><div style="font-size:12px;color:var(--texto2);margin:6px 0">NPS: <b style="color:'+(score>=0?'var(--verde)':'var(--rojo)')+'">'+(score>0?'+':'')+score+'</b> · '+nps.length+' respuestas</div><div style="font-size:12px;color:var(--texto2)">Promotores '+prom+' · Pasivos '+pas+' · Detractores '+det+'</div>';
+   elN.innerHTML='<div style="font-size:30px;font-weight:600">'+avg+'<span style="font-size:13px;color:var(--txt2)">/10</span></div><div style="font-size:12px;color:var(--txt2);margin:6px 0">NPS: <b style="color:'+(score>=0?'var(--green)':'var(--red)')+'">'+(score>0?'+':'')+score+'</b> · '+nps.length+' respuestas</div><div style="font-size:12px;color:var(--txt2)">Promotores '+prom+' · Pasivos '+pas+' · Detractores '+det+'</div>';
   } else {elN.innerHTML='<div class="vacio">Sin respuestas NPS</div>';}}
  const elA=$('m-avisos');
- if(elA){elA.innerHTML=window.ANUN.map(a=>{const ap=a.aperturas||0;const pct=f1?Math.round(ap/f1*100):0;return '<div style="margin:6px 0;font-size:12px"><div style="display:flex;justify-content:space-between"><span>'+esc(a.titulo||'Aviso')+'</span><b>'+ap+' ('+pct+'%)</b></div><div style="height:6px;background:var(--card2);border-radius:3px;overflow:hidden;margin-top:4px"><i style="display:block;height:100%;width:'+Math.min(100,pct)+'%;background:var(--accent)"></i></div></div>';}).join('')||'<div class="vacio">Sin avisos</div>';}
+ if(elA){elA.innerHTML=window.ANUN.map(a=>{const ap=a.aperturas||0;const pct=f1?Math.round(ap/f1*100):0;return '<div style="margin:6px 0;font-size:12px"><div style="display:flex;justify-content:space-between"><span>'+esc(a.titulo||'Aviso')+'</span><b>'+ap+' ('+pct+'%)</b></div><div style="height:5px;background:var(--elev2);border-radius:3px;overflow:hidden;margin-top:4px"><i style="display:block;height:100%;width:'+Math.min(100,pct)+'%;background:var(--accent)"></i></div></div>';}).join('')||'<div class="vacio">Sin avisos</div>';}
  const elAs=$('m-asist');
- if(elAs){elAs.innerHTML=PROG.map(a=>{const asis=P.filter(p=>(p.asistencias||[]).indexOf(a.id)>=0).length;const likes=a.likes||0;return '<div style="margin:8px 0;font-size:12px"><b>'+esc(a.tema)+'</b><div style="display:flex;gap:12px;margin-top:4px;color:var(--texto2)"><span>✓ asistencia: <b style="color:var(--verde)">'+asis+'</b></span><span>♥ likes: <b style="color:var(--corazon)">'+likes+'</b></span></div></div>';}).join('')||'<div class="vacio">Sin actividades</div>';}
+ if(elAs){elAs.innerHTML=PROG.map(a=>{const asis=P.filter(p=>(p.asistencias||[]).indexOf(a.id)>=0).length;const likes=a.likes||0;return '<div style="margin:8px 0;font-size:12px"><b>'+esc(a.tema)+'</b><div style="display:flex;gap:12px;margin-top:4px;color:var(--txt2)"><span>✓ asistencia: <b style="color:var(--green)">'+asis+'</b></span><span>♥ likes: <b style="color:var(--pink)">'+likes+'</b></span></div></div>';}).join('')||'<div class="vacio">Sin actividades</div>';}
  const ses=P.filter(p=>p.sesiones);const avgSes=ses.length?(ses.reduce((a,p)=>a+p.sesiones,0)/ses.length).toFixed(1):'0';
  const tsec=P.filter(p=>p.tiempoSesion);const avgT=tsec.length?Math.round(tsec.reduce((a,p)=>a+p.tiempoSesion,0)/tsec.length/60):0;
  const act24=P.filter(p=>p.ultimaConexion&&(Date.now()-new Date(p.ultimaConexion).getTime())<86400000).length;
  const elS=$('m-ses');if(elS){elS.innerHTML='Aperturas promedio: <b>'+avgSes+'</b><br>Tiempo en app promedio: <b>'+avgT+' min</b><br>Activos últimas 24h: <b>'+act24+'</b>';}
  const dist=[0,0,0,0,0,0,0,0];P.forEach(p=>{dist[(p.simbolos||[]).length]++;});
- const elD=$('m-drop');if(elD){const mx=Math.max.apply(null,[1].concat(dist));elD.innerHTML=dist.map((v,i)=>'<div style="display:flex;gap:8px;align-items:center;margin:5px 0;font-size:12px"><span style="width:70px;color:var(--texto2)">'+i+' sellos</span><span style="flex:1;height:8px;background:var(--card2);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(v/mx*100)+'%;background:'+(i===7?'var(--verde)':'var(--oro)')+'"></i></span><b>'+v+'</b></div>').join('');}
+ const elD=$('m-drop');if(elD){const mx=Math.max.apply(null,[1].concat(dist));elD.innerHTML=dist.map((v,i)=>'<div style="display:flex;gap:8px;align-items:center;margin:5px 0;font-size:12px"><span style="width:70px;color:var(--txt2)">'+i+' sellos</span><span style="flex:1;height:6px;background:var(--elev2);border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(v/mx*100)+'%;background:'+(i===7?'var(--green)':'var(--gold)')+'"></i></span><b>'+v+'</b></div>').join('');}
 }
 window.filtro=(f,b)=>{filtroAct=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('act'));b.classList.add('act');pintarTabla();};
 function pintarCirculo(){const m=Object.values(PART).filter(p=>p.circulo);
  $('lista-circulo').innerHTML=m.map(p=>'<div class="item-prog"><div class="det"><b>⚜ '+esc(p.nombre)+' '+esc(p.apellido||'')+'</b><span>'+esc(p.email||'')+' · '+esc(p.telefono||'')+'</span></div></div>').join('')||'<div class="vacio">Aún no hay miembros</div>';}
 function pintarVotoAdmin(){const pts={},cnt={};
  Object.values(PART).forEach(p=>{const r=p.votoRank||[];r.forEach((b,i)=>{pts[b]=(pts[b]||0)+(r.length-i);cnt[b]=(cnt[b]||0)+1;});});
- $('jz-votores').innerHTML=Object.keys(pts).map(k=>[k,pts[k],cnt[k]]).sort((a,b)=>b[1]-a[1]).map(row=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px"><span style="flex:1;color:var(--texto2)">'+esc(row[0])+'</span><b style="color:var(--oro)">'+row[1]+' pts</b><span style="color:var(--texto3)">('+row[2]+')</span></div>').join('')||'<div class="vacio">Sin votos aún</div>';}
+ $('jz-votores').innerHTML=Object.keys(pts).map(k=>[k,pts[k],cnt[k]]).sort((a,b)=>b[1]-a[1]).map(row=>'<div style="display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px"><span style="flex:1;color:var(--txt2)">'+esc(row[0])+'</span><b style="color:var(--gold)">'+row[1]+' pts</b><span style="color:var(--txt3)">('+row[2]+')</span></div>').join('')||'<div class="vacio">Sin votos aún</div>';}
 window.pintarTabla=()=>{const q=($('q').value||'').toLowerCase();
  const rows=Object.values(PART).filter(p=>{if(filtroAct==='apto'&&p.estado!=='apto')return false;if(filtroAct==='iniciado'&&(p.simbolos||[]).length===0)return false;return((p.nombre||'')+' '+(p.apellido||'')+' '+(p.email||'')).toLowerCase().indexOf(q)>=0;}).sort((a,b)=>(b.registro||'').localeCompare(a.registro||''));
  $('tb').innerHTML=rows.length?rows.map(p=>{const n=(p.simbolos||[]).length;const pf=p.perfil||{};const qh=p.quiz&&p.quiz.completado;
   return '<tr><td><b>'+esc(p.nombre)+' '+esc(p.apellido)+'</b></td>'
-  +'<td>'+(p.avatar?'<img src="'+p.avatar+'" style="width:36px;height:36px;border-radius:50%;object-fit:cover;display:block">':'<span style="color:var(--texto3)">—</span>')+'</td>'
-  +'<td style="color:var(--texto2);font-size:13px">'+esc(p.email)+'<br>'+esc(p.telefono||'')+'</td>'
+  +'<td>'+(p.avatar?'<img src="'+p.avatar+'" style="width:32px;height:32px;border-radius:50%;object-fit:cover;display:block">':'<span style="color:var(--txt3)">—</span>')+'</td>'
+  +'<td style="color:var(--txt2);font-size:12px">'+esc(p.email)+'<br>'+esc(p.telefono||'')+'</td>'
   +'<td><span class="barra"><i style="width:'+(n/7*100)+'%"></i></span> '+n+'/7</td>'
   +'<td><span class="tag'+(p.estado==='apto'?' apto':'')+'">'+(p.estado==='apto'?'Apto':'Buscando')+'</span></td>'
-  +'<td style="color:var(--texto2);font-size:12px">'+(qh?'⚜ '+esc(p.quiz.titulo)+'<br>'+esc(pf.Varietal||''):'—')+'</td>'
-  +'<td style="font-size:11px;color:var(--texto2)">Priv:'+((p.consent&&p.consent.priv)?'SI':'NO')+'<br>Mkt:'+((p.consent&&p.consent.mkt)?'SI':'NO')+'</td>'
+  +'<td style="color:var(--txt2);font-size:12px">'+(qh?'⚜ '+esc(p.quiz.titulo)+'<br>'+esc(pf.Varietal||''):'—')+'</td>'
+  +'<td style="font-size:11px;color:var(--txt2)">Priv:'+((p.consent&&p.consent.priv)?'SI':'NO')+'<br>Mkt:'+((p.consent&&p.consent.mkt)?'SI':'NO')+'</td>'
   +'<td>'+(qh?'<button class="btn mini peligro" data-uid="'+p.id+'" onclick="resetearQuiz(this.dataset.uid)">Reset quiz</button>':'—')+'</td></tr>';}).join(''):'<tr><td colspan="8" class="vacio">Sin participantes</td></tr>';};
 window.resetearQuiz=async id=>{if(!confirm('¿Resetear quiz de este participante?'))return;await updateDoc(doc(db,'participantes',id),{quiz:deleteField(),perfil:deleteField()});toast('✓ Quiz reseteado');};
 window.exportar=()=>{const wb=XLSX.utils.book_new();
@@ -469,15 +555,15 @@ function pintarRankAdmin(){const r=Object.values(PART).filter(p=>(p.simbolos||[]
  $('jz-rank').innerHTML=r.map((p,i)=>'<div class="item-prog"><span class="hora">#'+(i+1)+'</span><div class="det"><b>'+esc(p.nombre)+' '+esc(p.apellido||'')+'</b></div><span>'+(p.simbolos||[]).length+'/7</span></div>').join('')||'<div class="vacio">Sin datos</div>';}
 function renderQuizForm(){const qs=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;
  $('qz-form').innerHTML=qs.map((q,i)=>{let ops=(q.opciones||[]).map((o,j)=>'<div class="form-grid" style="margin-top:6px"><div><label>OPCION '+(j+1)+'</label><input id="qz-o'+i+'-'+j+'t" value="'+esc(o.t)+'"></div><div><label>DATO</label><input id="qz-o'+i+'-'+j+'v" value="'+esc(o.v)+'"></div></div>').join('');
-  return '<div style="border-top:1px solid var(--linea);margin-top:14px;padding-top:10px"><div class="form-grid"><div><label>CATEGORIA</label><input id="qz-c'+i+'" value="'+esc(q.categoria)+'"></div><div style="grid-column:1/-1"><label>PREGUNTA '+(i+1)+'</label><input id="qz-p'+i+'" value="'+esc(q.pregunta)+'"></div></div>'+ops+'</div>';}).join('');}
+  return '<div style="border-top:1px solid var(--line);margin-top:12px;padding-top:10px"><div class="form-grid"><div><label>CATEGORIA</label><input id="qz-c'+i+'" value="'+esc(q.categoria)+'"></div><div style="grid-column:1/-1"><label>PREGUNTA '+(i+1)+'</label><input id="qz-p'+i+'" value="'+esc(q.pregunta)+'"></div></div>'+ops+'</div>';}).join('');}
 window.guardarQuiz=async()=>{const b=(QUIZ&&QUIZ.preguntas)||QUIZ_DEF.preguntas;
  const qs=b.map((q,i)=>({categoria:$('qz-c'+i).value.trim(),pregunta:$('qz-p'+i).value.trim(),opciones:(q.opciones||[]).map((o,j)=>({t:$('qz-o'+i+'-'+j+'t').value.trim(),v:$('qz-o'+i+'-'+j+'v').value.trim()}))}));
  await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked,preguntas:qs},{merge:true});toast('✓ Quiz guardado');};
 window.toggleQuiz=async()=>{await setDoc(doc(db,'config','quiz'),{activo:$('qz-activo').checked},{merge:true});};
 function pintarQuizRes(){const qs=(QUIZ&&QUIZ.preguntas)||[];const done=Object.values(PART).filter(p=>p.quiz&&p.quiz.completado);
- let h='<p style="color:var(--texto2);font-size:13px">Completaron: <b style="color:var(--verde)">'+done.length+'</b></p>';
+ let h='<p style="color:var(--txt2);font-size:13px">Completaron: <b style="color:var(--green)">'+done.length+'</b></p>';
  qs.forEach(q=>{const c={};done.forEach(p=>{const v=(p.perfil||{})[q.categoria];if(v)c[v]=(c[v]||0)+1;});const t=done.length||1;
-  h+='<b style="font-size:13px">'+esc(q.pregunta)+'</b>'+Object.keys(c).map(k=>[k,c[k]]).sort((a,b)=>b[1]-a[1]).map(row=>'<div style="display:flex;gap:8px;margin:5px 0;font-size:12px"><span style="width:110px;color:var(--texto2)">'+esc(row[0])+'</span><span style="flex:1;height:6px;background:var(--card2)"><i style="display:block;height:100%;width:'+Math.round(row[1]/t*100)+'%;background:var(--accent)"></i></span><span>'+row[1]+'</span></div>').join('');});
+  h+='<b style="font-size:13px">'+esc(q.pregunta)+'</b>'+Object.keys(c).map(k=>[k,c[k]]).sort((a,b)=>b[1]-a[1]).map(row=>'<div style="display:flex;gap:8px;margin:5px 0;font-size:12px"><span style="width:110px;color:var(--txt2)">'+esc(row[0])+'</span><span style="flex:1;height:5px;background:var(--elev2)"><i style="display:block;height:100%;width:'+Math.round(row[1]/t*100)+'%;background:var(--accent)"></i></span><span>'+row[1]+'</span></div>').join('');});
  $('qz-res').innerHTML=h;}
 function pintarAvatares(){const el=$('av-list');if(!el)return;
  el.innerHTML=AVATARES.map((u,i)=>'<span class="av-thumb"><img src="'+u+'" alt=""><button class="btn mini peligro" data-i="'+i+'" onclick="quitarAvatar(Number(this.dataset.i))">✕</button></span>').join('')||'<p class="vacio">Sin avatares aún · sube imágenes arriba</p>';}
@@ -497,13 +583,13 @@ function renderImgJuegosPrev(){ ['quiz','ranking','sorteo','bannerQuiz'].forEach
 function renderArcanoBanners(){const cont=$('arcano-banners-form');if(!cont)return;
  cont.innerHTML=ARCANOS.map(a=>{
   const url=(arcanoPend['arcano_'+a.slug]!==undefined)?arcanoPend['arcano_'+a.slug]:(JUEGOS_IMG['arcano_'+a.slug]||'');
-  return '<div style="margin-bottom:16px"><label>'+a.titulo+'</label><input type="file" accept="image/*" id="ab-'+a.slug+'" onchange="cargarBannerArcano(\''+a.slug+'\',this)"><img id="ab-prev-'+a.slug+'" class="banner-arcano-prev" style="visibility:'+(url?'visible':'hidden')+'" '+(url?'src="'+url+'"':'')+'></div>';
+  return '<div style="margin-bottom:14px"><label>'+a.titulo+'</label><input type="file" accept="image/*" id="ab-'+a.slug+'" onchange="cargarBannerArcano(\''+a.slug+'\',this)"><img id="ab-prev-'+a.slug+'" class="banner-arcano-prev" style="visibility:'+(url?'visible':'hidden')+'" '+(url?'src="'+url+'"':'')+'></div>';
  }).join('');}
 window.cargarImgJuego=(k,input)=>{const f=input.files[0];if(!f)return; if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;}
- if(k==='bannerQuiz'){ comprimirBanner(f,url=>{ juegosImgPend[k]=url; renderImgJuegosPrev(); toast('Banner quiz listo · pulsa Guardar iconos y banners'); }); }
- else { comprimirImg(f,url=>{ juegosImgPend[k]=url; renderImgJuegosPrev(); toast('Icono listo · pulsa Guardar iconos y banners'); }); }
+ if(k==='bannerQuiz'){ comprimirBanner(f,url=>{ juegosImgPend[k]=url; renderImgJuegosPrev(); toast('Banner quiz listo · pulsa Guardar'); }); }
+ else { comprimirImg(f,url=>{ juegosImgPend[k]=url; renderImgJuegosPrev(); toast('Icono listo · pulsa Guardar'); }); }
 };
-window.cargarBannerArcano=(slug,input)=>{const f=input.files[0];if(!f)return; if(f.size>8*1024*1024){toast('Imagen muy pesada (máx 8MB)');return;} comprimirBannerArcano(f,url=>{ arcanoPend['arcano_'+slug]=url; const p=$('ab-prev-'+slug); if(p){p.src=url;p.style.visibility='visible';} toast('Banner listo · pulsa Guardar banners del arcano'); });};
+window.cargarBannerArcano=(slug,input)=>{const f=input.files[0];if(!f)return; if(f.size>8*1024*1024){toast('Imagen muy pesada (máx 8MB)');return;} comprimirBannerArcano(f,url=>{ arcanoPend['arcano_'+slug]=url; const p=$('ab-prev-'+slug); if(p){p.src=url;p.style.visibility='visible';} toast('Banner listo · pulsa Guardar banners'); });};
 window.guardarImgJuegos=async()=>{ const data=Object.assign({},JUEGOS_IMG); ['quiz','ranking','sorteo','bannerQuiz'].forEach(k=>{ if(juegosImgPend[k]!==undefined) data[k]=juegosImgPend[k]; }); await setDoc(doc(db,'config','juegosImg'),data,{merge:true}); juegosImgPend={}; renderImgJuegosPrev(); toast('✓ Iconos y banners guardados'); };
 window.guardarBannerArcano=async()=>{ const data=Object.assign({},JUEGOS_IMG); Object.keys(arcanoPend).forEach(k=>{data[k]=arcanoPend[k];}); await setDoc(doc(db,'config','juegosImg'),data,{merge:true}); arcanoPend={}; renderArcanoBanners(); toast('✓ Banners del arcano guardados'); };
 window.cargarImgSello=(n,input)=>{const f=input.files[0];if(!f)return;if(f.size>4*1024*1024){toast('Imagen muy pesada (máx 4MB)');return;}
@@ -514,16 +600,16 @@ window.cargarImgFull=(n,input)=>{const f=input.files[0];if(!f)return;if(f.size>8
 window.quitarImgFull=n=>{window._imgPendFull=window._imgPendFull||{};window._imgPendFull[n]='';const p=$('spfull-'+n);if(p){p.removeAttribute('src');p.style.visibility='hidden';}toast('Imagen revelado quitada · pulsa Guardar');};
 async function pintarSellos(){const g=$('grid-sellos');g.innerHTML='';
  for(let n=1;n<=7;n++){const sd=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};const c=document.createElement('div');c.className='sello-card';
-  c.innerHTML='<div style="display:flex;gap:12px;align-items:center;margin-bottom:10px"><span style="font-size:26px">'+GLIFOS[n]+'</span><b>Sello '+n+'</b></div>'
+  c.innerHTML='<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><span style="font-size:22px">'+GLIFOS[n]+'</span><b>Sello '+n+'</b></div>'
   +'<label>NOMBRE</label><input id="sn-'+n+'" value="'+esc(sd.nombre||'')+'"><label>SALON</label><input id="ss-'+n+'" value="'+esc(sd.salon||'')+'"><label>FRAGMENTO</label><input id="sf-'+n+'" value="'+esc(sd.fragmento||'')+'">'
   +'<label>IMAGEN PNG DEL SIMBOLO (boton)</label><input type="file" accept="image/png,image/*" id="si-'+n+'" onchange="cargarImgSello('+n+',this)">'
-  +'<div style="display:flex;gap:10px;align-items:center;margin:4px 0 10px"><img id="sp-'+n+'" style="width:48px;height:48px;object-fit:contain;background:var(--bg2);border-radius:10px;visibility:'+(sd.img?'visible':'hidden')+'" '+(sd.img?('src="'+sd.img+'"'):'')+'><button class="btn mini peligro" onclick="quitarImgSello('+n+')">Quitar</button></div>'
+  +'<div style="display:flex;gap:10px;align-items:center;margin:4px 0 8px"><img id="sp-'+n+'" style="width:44px;height:44px;object-fit:contain;background:var(--elev);border-radius:10px;visibility:'+(sd.img?'visible':'hidden')+'" '+(sd.img?('src="'+sd.img+'"'):'')+'><button class="btn mini peligro" onclick="quitarImgSello('+n+')">Quitar</button></div>'
   +'<label>IMAGEN REVELADO (1080x1350)</label><input type="file" accept="image/*" id="sfull-'+n+'" onchange="cargarImgFull('+n+',this)">'
-  +'<div style="display:flex;gap:10px;align-items:center;margin:4px 0 10px"><img id="spfull-'+n+'" style="width:48px;height:60px;object-fit:cover;background:var(--bg2);border-radius:8px;visibility:'+(sd.imgFull?'visible':'hidden')+'" '+(sd.imgFull?('src="'+sd.imgFull+'"'):'')+'><button class="btn mini peligro" onclick="quitarImgFull('+n+')">Quitar</button></div>'
-  +'<div style="display:flex;gap:8px"><button class="btn mini solido" onclick="guardarSello('+n+')">Guardar</button><button class="btn mini" onclick="genToken('+n+')">QR</button><button class="btn mini" onclick="imprimirQRs()">Imprimir</button></div>'
-  +'<div class="qr-zone"><div class="qr" id="qr-'+n+'"></div><b id="tk-'+n+'" style="font-family:monospace;font-size:12px">'+esc(sd.token||'—')+'</b></div>';
+  +'<div style="display:flex;gap:10px;align-items:center;margin:4px 0 8px"><img id="spfull-'+n+'" style="width:44px;height:55px;object-fit:cover;background:var(--elev);border-radius:8px;visibility:'+(sd.imgFull?'visible':'hidden')+'" '+(sd.imgFull?('src="'+sd.imgFull+'"'):'')+'><button class="btn mini peligro" onclick="quitarImgFull('+n+')">Quitar</button></div>'
+  +'<div style="display:flex;gap:6px"><button class="btn mini solido" onclick="guardarSello('+n+')">Guardar</button><button class="btn mini" onclick="genToken('+n+')">QR</button><button class="btn mini" onclick="imprimirQRs()">Imprimir</button></div>'
+  +'<div class="qr-zone"><div class="qr" id="qr-'+n+'"></div><b id="tk-'+n+'" style="font-family:monospace;font-size:11px">'+esc(sd.token||'—')+'</b></div>';
   g.appendChild(c);
-  if(sd.token)new QRCode($('qr-'+n),{text:sd.token,width:104,height:104,colorDark:'#000',colorLight:'#fff'});}}
+  if(sd.token)new QRCode($('qr-'+n),{text:sd.token,width:100,height:100,colorDark:'#000',colorLight:'#fff'});}}
 window.guardarSello=async n=>{const cur=(await getDoc(doc(db,'simbolos',String(n)))).data()||{};
  const pend=window._imgPend||{};const pendF=window._imgPendFull||{};
  const img=(n in pend)?pend[n]:(cur.img||'');
@@ -543,18 +629,18 @@ window.guardarProg=async()=>{const h=$('pg-hora').value;if(!h||!$('pg-tema').val
 };
 window.borrarProg=async id=>{await deleteDoc(doc(db,'programa',id));};
 function pintarProg(){$('lista-prog').innerHTML=PROG.map(a=>{const asis=Object.values(PART).filter(p=>(p.asistencias||[]).indexOf(a.id)>=0).length;
- const tiene=a.checkin?'<button class="btn mini solido" data-id="'+a.id+'" onclick="verCheckin(this.dataset.id)">Ver QR</button><button class="btn mini" data-id="'+a.id+'" onclick="imprimirCheckin(this.dataset.id)">Imprimir QR</button>':'';
+ const tiene=a.checkin?'<button class="btn mini solido" data-id="'+a.id+'" onclick="verCheckin(this.dataset.id)">Ver QR</button><button class="btn mini" data-id="'+a.id+'" onclick="imprimirCheckin(this.dataset.id)">Imprimir</button>':'';
  const img=a.img||'';
- return '<div class="item-prog">'+(img?'<img class="thumb" src="'+img+'" alt="">':'')+'<span class="hora">'+esc(a.hora)+'<span style="font-size:10px;color:var(--texto2)">'+fmtF(a.fecha)+'</span></span><div class="det"><b>'+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+(a.lugar?(' · '+esc(a.lugar)):'')+' · ✓'+asis+' · ♥'+(a.likes||0)+(a.checkin?' · <span style="font-family:monospace;color:var(--oro)">'+esc(a.checkin)+'</span>':'')+'</span></div><button class="btn mini" data-id="'+a.id+'" onclick="editarProg(this.dataset.id)">Editar</button><button class="btn mini" data-id="'+a.id+'" onclick="genCheckin(this.dataset.id)">QR check-in</button>'+tiene+'<button class="btn mini peligro" data-id="'+a.id+'" onclick="borrarProg(this.dataset.id)">✕</button></div>';}).join('')||'<div class="vacio">Sin actividades</div>';
+ return '<div class="item-prog">'+(img?'<img class="thumb" src="'+img+'" alt="">':'')+'<span class="hora">'+esc(a.hora)+'<span style="font-size:10px;color:var(--txt2)">'+fmtF(a.fecha)+'</span></span><div class="det"><b>'+esc(a.tema)+'</b><span>'+esc(a.disertante||'')+(a.lugar?(' · '+esc(a.lugar)):'')+' · ✓'+asis+' · ♥'+(a.likes||0)+(a.checkin?' · <span style="font-family:monospace;color:var(--gold)">'+esc(a.checkin)+'</span>':'')+'</span></div><button class="btn mini" data-id="'+a.id+'" onclick="editarProg(this.dataset.id)">Editar</button><button class="btn mini" data-id="'+a.id+'" onclick="genCheckin(this.dataset.id)">QR check-in</button>'+tiene+'<button class="btn mini peligro" data-id="'+a.id+'" onclick="borrarProg(this.dataset.id)">✕</button></div>';}).join('')||'<div class="vacio">Sin actividades</div>';
  $('jz-apl').textContent=PROG.reduce((s,a)=>s+(a.likes||0),0);}
 window.genCheckin=async id=>{const t='CHK-'+Array.from(crypto.getRandomValues(new Uint8Array(4))).map(b=>'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b%31]).join('');await updateDoc(doc(db,'programa',id),{checkin:t});toast('✓ Código check-in: '+t);};
 window.verCheckin=id=>{const a=PROG.find(x=>x.id===id);if(!a||!a.checkin){toast('Primero genera el código con "QR check-in"');return;}
  const w=window.open('','_blank','width=520,height=640');
- w.document.write('<!doctype html><html><head><title>QR Check-in · '+esc(a.tema)+'</title><style>body{margin:0;background:#fff;font-family:-apple-system,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center;color:#1d1a17}.t{font-size:11px;letter-spacing:.14em;color:#6d1f6e;text-transform:uppercase;font-weight:600;margin-bottom:6px}.titulo{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.02em}.sub{font-size:13px;color:#666;margin-bottom:24px}.qr{background:#fff;padding:16px;border:1px solid #eee;border-radius:12px;display:inline-block}.code{margin-top:18px;font-family:ui-monospace,monospace;font-size:16px;font-weight:600;letter-spacing:.06em;background:#f4f0e9;color:#7a1034;padding:10px 18px;border-radius:999px}.pie{margin-top:24px;font-size:12px;color:#999}</style></head><body><div class="t">Check-in de asistencia</div><div class="titulo">'+esc(a.tema)+'</div><div class="sub">'+fmtF(a.fecha)+' · '+esc(a.hora)+(a.lugar?' · '+esc(a.lugar):'')+'</div><div class="qr" id="qr"></div><div class="code">'+esc(a.checkin)+'</div><div class="pie">Escaneá este código al ingresar a la charla</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:"'+esc(a.checkin)+'",width:280,height:280,colorDark:"#000",colorLight:"#fff"});<\/script></body></html>');
+ w.document.write('<!doctype html><html><head><title>QR Check-in · '+esc(a.tema)+'</title><style>body{margin:0;background:#fff;font-family:-apple-system,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center;color:#1d1a17}.t{font-size:11px;letter-spacing:.14em;color:#6d1f6e;text-transform:uppercase;font-weight:600;margin-bottom:6px}.titulo{font-size:22px;font-weight:700;margin-bottom:4px}.sub{font-size:13px;color:#666;margin-bottom:24px}.qr{background:#fff;padding:16px;border:1px solid #eee;border-radius:12px;display:inline-block}.code{margin-top:18px;font-family:ui-monospace,monospace;font-size:16px;font-weight:600;background:#f4f0e9;color:#7a1034;padding:10px 18px;border-radius:999px}.pie{margin-top:24px;font-size:12px;color:#999}</style></head><body><div class="t">Check-in de asistencia</div><div class="titulo">'+esc(a.tema)+'</div><div class="sub">'+fmtF(a.fecha)+' · '+esc(a.hora)+(a.lugar?' · '+esc(a.lugar):'')+'</div><div class="qr" id="qr"></div><div class="code">'+esc(a.checkin)+'</div><div class="pie">Escaneá este código al ingresar</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:"'+esc(a.checkin)+'",width:280,height:280,colorDark:"#000",colorLight:"#fff"});<\/script></body></html>');
  w.document.close();};
 window.imprimirCheckin=id=>{const a=PROG.find(x=>x.id===id);if(!a||!a.checkin){toast('Primero genera el código con "QR check-in"');return;}
  const w=window.open('','_blank');
- w.document.write('<!doctype html><html><head><title>Imprimir QR · '+esc(a.tema)+'</title><style>@page{size:A6;margin:8mm}body{margin:0;font-family:-apple-system,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:12px;text-align:center;color:#1d1a17}.t{font-size:10px;letter-spacing:.14em;color:#6d1f6e;text-transform:uppercase;font-weight:600}.titulo{font-size:18px;font-weight:700;margin:4px 0}.sub{font-size:11px;color:#666;margin-bottom:14px}.qr{padding:10px;background:#fff;border:1px solid #ddd;border-radius:8px}.code{margin-top:12px;font-family:ui-monospace,monospace;font-size:14px;font-weight:600;letter-spacing:.05em;background:#f4f0e9;color:#7a1034;padding:8px 14px;border-radius:999px}</style></head><body><div class="t">Check-in de asistencia</div><div class="titulo">'+esc(a.tema)+'</div><div class="sub">'+fmtF(a.fecha)+' · '+esc(a.hora)+'</div><div class="qr" id="qr"></div><div class="code">'+esc(a.checkin)+'</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:"'+esc(a.checkin)+'",width:220,height:220,colorDark:"#000",colorLight:"#fff"});setTimeout(function(){window.print();},700);<\/script></body></html>');
+ w.document.write('<!doctype html><html><head><title>Imprimir QR · '+esc(a.tema)+'</title><style>@page{size:A6;margin:8mm}body{margin:0;font-family:-apple-system,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:12px;text-align:center;color:#1d1a17}.t{font-size:10px;letter-spacing:.14em;color:#6d1f6e;text-transform:uppercase;font-weight:600}.titulo{font-size:18px;font-weight:700;margin:4px 0}.sub{font-size:11px;color:#666;margin-bottom:14px}.qr{padding:10px;background:#fff;border:1px solid #ddd;border-radius:8px}.code{margin-top:12px;font-family:ui-monospace,monospace;font-size:14px;font-weight:600;background:#f4f0e9;color:#7a1034;padding:8px 14px;border-radius:999px}</style></head><body><div class="t">Check-in</div><div class="titulo">'+esc(a.tema)+'</div><div class="sub">'+fmtF(a.fecha)+' · '+esc(a.hora)+'</div><div class="qr" id="qr"></div><div class="code">'+esc(a.checkin)+'</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:"'+esc(a.checkin)+'",width:220,height:220,colorDark:"#000",colorLight:"#fff"});setTimeout(function(){window.print();},700);<\/script></body></html>');
  w.document.close();};
 window.enviarAnuncio=async()=>{const t=$('an-titulo').value.trim();const m=$('an-msg').value.trim();if(!m){toast('Escribe el mensaje');return;}
  await addDoc(collection(db,'anuncios'),{titulo:t,mensaje:m,fecha:new Date().toISOString()});$('an-titulo').value='';$('an-msg').value='';toast('✓ Enviado');};
@@ -582,49 +668,51 @@ function renderSorteoLiveForm(){
  const cont=$('slv-premios');cont.innerHTML='';
  for(let i=0;i<5;i++){
   const row=document.createElement('div');row.style.cssText='display:flex;gap:8px;align-items:center;margin-bottom:8px';
-  row.innerHTML='<div style="flex:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(140deg,var(--oro),#a97b12);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700">'+(i+1)+'°</div><input style="flex:1;margin:0" id="slv-p'+i+'" placeholder="Premio '+(i+1)+' · descripción y forma de retiro" value="'+esc(premios[i]||'')+'">';
+  row.innerHTML='<div style="flex:none;width:32px;height:32px;border-radius:50%;background:linear-gradient(140deg,var(--gold),#b8860b);color:#000;display:grid;place-items:center;font-size:11px;font-weight:700">'+(i+1)+'°</div><input style="flex:1;margin:0" id="slv-p'+i+'" placeholder="Premio '+(i+1)+' · descripción y retiro" value="'+esc(premios[i]||'')+'">';
   cont.appendChild(row);
  }
  renderBannerPrev();
 }
 function renderBannerPrev(){
- const prev=$('slv-banner-prev');const acts=$('slv-banner-actions');const inp=$('slv-banner-input');
- const url=(sorteoBannerPend!==null)?sorteoBannerPend:(SORTEO_LIVE&&SORTEO_LIVE.banner?SORTEO_LIVE.banner:null);
- if(url){prev.src=url;prev.style.display='block';acts.style.display='flex';}
- else{prev.removeAttribute('src');prev.style.display='none';acts.style.display='none';}
- inp.value='';
+ [['slv-banner-prev','slv-banner-actions','slv-banner-input'],['slv-banner-prev2','slv-banner-actions2','slv-banner-input2']].forEach(([pi,ai,ii])=>{
+  const prev=$(pi),acts=$(ai),inp=$(ii);if(!prev||!acts||!inp)return;
+  const url=(sorteoBannerPend!==null)?sorteoBannerPend:(SORTEO_LIVE&&SORTEO_LIVE.banner?SORTEO_LIVE.banner:null);
+  if(url){prev.src=url;prev.style.display='block';acts.style.display='flex';}
+  else{prev.removeAttribute('src');prev.style.display='none';acts.style.display='none';}
+  inp.value='';
+ });
 }
-window.cargarBannerSorteo=input=>{const f=input.files[0];if(!f)return; if(f.size>8*1024*1024){toast('Imagen muy pesada (máx 8MB)');return;} comprimirBanner(f,url=>{ sorteoBannerPend=url; renderBannerPrev(); toast('✓ Banner listo · pulsa Guardar configuración'); });};
-window.quitarBannerSorteo=()=>{ sorteoBannerPend=''; renderBannerPrev(); toast('Banner quitado · pulsa Guardar configuración para aplicar'); };
+window.cargarBannerSorteo=input=>{const f=input.files[0];if(!f)return; if(f.size>8*1024*1024){toast('Imagen muy pesada (máx 8MB)');return;} comprimirBanner(f,url=>{ sorteoBannerPend=url; renderBannerPrev(); toast('✓ Banner listo · pulsa Guardar'); });};
+window.quitarBannerSorteo=()=>{ sorteoBannerPend=''; renderBannerPrev(); toast('Banner quitado · pulsa Guardar para aplicar'); };
 function pintarSorteoLive(){
  const S=SORTEO_LIVE||{};
  const estado=S.estado||'esperando';
  const ganadores=S.ganadores||[];
  const st=$('slv-status');
- const colorMap={esperando:'var(--oro)',en_vivo:'var(--rojo)',finalizado:'var(--verde)'};
+ const colorMap={esperando:'var(--gold)',en_vivo:'var(--red)',finalizado:'var(--green)'};
  const labelMap={esperando:'⏳ Esperando',en_vivo:'🔴 En vivo',finalizado:'✓ Finalizado'};
  st.textContent=labelMap[estado]||'—';
- st.style.background=(colorMap[estado]||'var(--texto2)')+'22';
- st.style.color=colorMap[estado]||'var(--texto2)';
- st.style.borderColor=(colorMap[estado]||'var(--texto2)')+'44';
+ st.style.background=(colorMap[estado]||'var(--txt2)')+'22';
+ st.style.color=colorMap[estado]||'var(--txt2)';
+ st.style.border='1px solid '+(colorMap[estado]||'var(--txt2)')+'44';
  const aptos=Object.values(PART).filter(p=>p.estado==='apto').length;
- $('slv-stats').innerHTML='Participantes aptos: <b style="color:var(--verde)">'+aptos+'</b> · Ganadores revelados: <b style="color:var(--oro)">'+ganadores.filter(g=>g&&g.revelado!==false).length+'/5</b>';
+ $('slv-stats').innerHTML='Participantes aptos: <b style="color:var(--green)">'+aptos+'</b> · Ganadores revelados: <b style="color:var(--gold)">'+ganadores.filter(g=>g&&g.revelado!==false).length+'/5</b>';
  const pv=$('slv-preview');
- pv.innerHTML='<div style="font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:6px">Los participantes ven ahora</div><div style="font-size:15px;font-weight:600">'+esc(S.titulo||'Sorteo final')+' · '+esc(S.subtitulo||'')+'</div><div style="margin-top:6px;font-size:12px;opacity:.85">'+(S.banner?'📷 Banner visible':'Sin banner (diseño por defecto)')+' · '+(ganadores.filter(g=>g&&g.revelado!==false).length?ganadores.filter(g=>g&&g.revelado!==false).length+' ganador(es) visibles':'Aún no hay ganadores revelados')+'</div>';
+ pv.innerHTML='<div style="font-size:10px;letter-spacing:.1em;color:var(--txt3);text-transform:uppercase;margin-bottom:5px">Los participantes ven ahora</div><div style="font-size:14px;font-weight:600">'+esc(S.titulo||'Sorteo final')+' · '+esc(S.subtitulo||'')+'</div><div style="margin-top:5px;font-size:12px;color:var(--txt2)">'+(S.banner?'📷 Banner visible':'Sin banner (diseño por defecto)')+' · '+(ganadores.filter(g=>g&&g.revelado!==false).length?ganadores.filter(g=>g&&g.revelado!==false).length+' ganador(es) visibles':'Aún no hay ganadores')+'</div>';
  const btnI=$('slv-iniciar'),btnE=$('slv-ejecutar'),btnR=$('slv-reiniciar');
  btnI.disabled=(estado!=='esperando');btnI.style.opacity=btnI.disabled?0.5:1;
  btnE.disabled=(estado!=='en_vivo');btnE.style.opacity=btnE.disabled?0.5:1;
  btnR.disabled=false;
  const cont=$('slv-ganadores');
  if(!ganadores.length){
-  cont.innerHTML='<div class="vacio" style="padding:20px">Aún no hay ganadores. Ejecutá el sorteo para revelarlos uno a uno.</div>';
+  cont.innerHTML='<div class="vacio" style="padding:16px">Aún no hay ganadores. Ejecutá el sorteo para revelarlos.</div>';
   return;
  }
  const puestos=['1°','2°','3°','4°','5°'];
  cont.innerHTML=ganadores.slice(0,5).map((g,i)=>{
   const revelado=g&&g.revelado!==false;
   const oro=i===0;
-  return '<div class="item-prog" style="'+(revelado?'':'opacity:.4;')+(oro&&revelado?'border-color:var(--oro);background:rgba(255,214,10,.08)':'')+'"><div style="flex:none;width:44px;height:44px;border-radius:50%;background:'+(oro?'linear-gradient(140deg,var(--oro),#a97b12)':'var(--card2)')+';color:'+(oro?'#fff':'var(--texto2)')+';display:grid;place-items:center;font-size:13px;font-weight:700">'+puestos[i]+'</div><div class="det"><b>'+(revelado?esc(g.nombre):'· · · por revelar · · ·')+'</b><span>'+(revelado?(esc(g.email||'')):'')+'</span></div></div>';
+  return '<div class="item-prog" style="'+(revelado?'':'opacity:.4;')+(oro&&revelado?'border-color:var(--gold);background:rgba(255,214,10,.06)':'')+'"><div style="flex:none;width:40px;height:40px;border-radius:50%;background:'+(oro?'linear-gradient(140deg,var(--gold),#b8860b)':'var(--elev2)')+';color:'+(oro?'#000':'var(--txt2)')+';display:grid;place-items:center;font-size:12px;font-weight:700">'+puestos[i]+'</div><div class="det"><b>'+(revelado?esc(g.nombre):'· · · por revelar · · ·')+'</b><span>'+(revelado?(esc(g.email||'')):'')+'</span></div></div>';
  }).join('');
 }
 window.guardarSorteoLive=async()=>{
@@ -650,18 +738,18 @@ window.guardarSorteoLive=async()=>{
 };
 window.iniciarSorteoLive=async()=>{
  const cur=SORTEO_LIVE||{};
- if(cur.estado==='en_vivo'||cur.estado==='finalizado')return toast('El sorteo ya está en curso o terminó','Reinicia primero si querés empezar de cero.');
+ if(cur.estado==='en_vivo'||cur.estado==='finalizado')return toast('El sorteo ya está en curso o terminó','Reinicia primero.');
  if(!$('slv-hora').value)return toast('Definí la hora de inicio primero','');
  await guardarSorteoLive();
  await updateDoc(doc(db,'config','sorteoLive'),{estado:'en_vivo'});
- toast('🔴 Sorteo iniciado · los participantes ven la cuenta regresiva');
+ toast('🔴 Sorteo iniciado · cuenta regresiva activa');
 };
 window.ejecutarSorteoLive=async()=>{
  const cur=SORTEO_LIVE||{};
  if(cur.estado!=='en_vivo')return toast('Primero iniciá el sorteo','');
  const aptos=Object.values(PART).filter(p=>p.estado==='apto');
- if(aptos.length<5)return toast('Se necesitan al menos 5 aptos','Hay '+aptos.length+' actualmente.');
- if(!confirm('¿Ejecutar el sorteo ahora? Se elegirán 5 ganadores al azar y se revelarán uno a uno cada 3 segundos en las apps.'))return;
+ if(aptos.length<5)return toast('Se necesitan al menos 5 aptos','Hay '+aptos.length+'.');
+ if(!confirm('¿Ejecutar el sorteo ahora? Se revelarán 5 ganadores uno a uno cada 3 segundos.'))return;
  const pool=aptos.slice();const g=[];
  for(let i=0;i<5;i++){g.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);}
  const ganadores=g.map((p)=>({nombre:p.nombre+' '+(p.apellido||''),email:p.email||'',telefono:p.telefono||'',revelado:false}));
@@ -686,21 +774,21 @@ window.ejecutarSorteoLive=async()=>{
  },3000);
 };
 window.reiniciarSorteoLive=async()=>{
- if(!confirm('¿Reiniciar el sorteo a 0? Se borrará la configuración actual y los ganadores. Podrás empezar uno nuevo.'))return;
+ if(!confirm('¿Reiniciar el sorteo a 0? Se borrará configuración y ganadores.'))return;
  await setDoc(doc(db,'config','sorteoLive'),{estado:'esperando',titulo:'Sorteo final',subtitulo:'',reglas:'',premios:['','','','',''],horaInicio:null,ganadores:[],fechaSorteo:null,banner:null},{merge:false});
  if(sorteoInterval){clearInterval(sorteoInterval);sorteoInterval=null;}
  sorteoBannerPend=null;
  renderSorteoLiveForm();
  toast('↻ Sorteo reiniciado');
 };
-function pintarHistSorteo(){$('hist-sorteo').innerHTML=(window.SORT||[]).length?(window.SORT||[]).map(s=>'<div class="card" style="margin-bottom:10px"><b>Sorteo · '+new Date(s.fecha).toLocaleString()+' · '+((s.ganadores||[]).length)+' ganador(es)</b>'+(s.ganadores||[]).map((g,i)=>'<div style="color:var(--verde);margin-top:6px;font-size:13px">'+(i+1)+'° 🏆 '+esc(g.nombre)+'</div>').join('')+'</div>').join(''):'<div class="vacio">Sin sorteos anteriores</div>';}
+function pintarHistSorteo(){$('hist-sorteo').innerHTML=(window.SORT||[]).length?(window.SORT||[]).map(s=>'<div class="card" style="margin-bottom:10px"><b>Sorteo · '+new Date(s.fecha).toLocaleString()+' · '+((s.ganadores||[]).length)+' ganador(es)</b>'+(s.ganadores||[]).map((g,i)=>'<div style="color:var(--green);margin-top:5px;font-size:12px">'+(i+1)+'° 🏆 '+esc(g.nombre)+'</div>').join('')+'</div>').join(''):'<div class="vacio">Sin sorteos anteriores</div>';}
 window.crearAdmin=async()=>{$('eq-err').textContent='';const n=$('eq-nombre').value.trim();const e=$('eq-email').value.trim();const c=$('eq-clave').value;const r=$('eq-rol').value;
  if(!n||!e||c.length<6){$('eq-err').textContent='Completa todo y clave mín 6';return;}
  try{const sec=initializeApp(CFG,'sec'+Date.now());const sa=getAuth(sec);const cr=await createUserWithEmailAndPassword(sa,e,c);await setDoc(doc(db,'admins',cr.user.uid),{nombre:n,email:e,rol:r,clave:c});await signOut(sa);$('eq-nombre').value='';$('eq-email').value='';$('eq-clave').value='';toast('✓ '+n+' creado');}catch(err){$('eq-err').textContent='Error: '+err.code;}};
 function pintarAdmins(){const ADM=window.ADM||{};
  $('lista-admins').innerHTML=Object.keys(ADM).map(id=>{const a=ADM[id];
   const ctrl=(id===yo)?'<span class="tag apto">Tú</span>':('<select style="width:auto" data-id="'+id+'" onchange="cambiarRol(this.dataset.id,this.value)">'+['maestro','configurador','monitor'].map(r=>'<option'+((r===a.rol)?' selected':'')+'>'+r+'</option>').join('')+'</select><button class="btn mini peligro" data-id="'+id+'" onclick="revocar(this.dataset.id)">✕</button>');
-  return '<div class="item-prog"><div class="det"><b>'+esc(a.nombre)+'</b><span>'+esc(a.email)+'</span></div><span style="font-family:monospace;font-size:12px;color:var(--oro)">clave: '+esc(a.clave||'—')+'</span>'+ctrl+'</div>';}).join('');}
+  return '<div class="item-prog"><div class="det"><b>'+esc(a.nombre)+'</b><span>'+esc(a.email)+'</span></div><span style="font-family:monospace;font-size:11px;color:var(--gold)">clave: '+esc(a.clave||'—')+'</span>'+ctrl+'</div>';}).join('');}
 window.cambiarRol=async(id,r)=>{await updateDoc(doc(db,'admins',id),{rol:r});toast('Rol actualizado');};
 window.revocar=async id=>{if(confirm('¿Eliminar este admin?'))await deleteDoc(doc(db,'admins',id));};
 window.rzPaso1=()=>{$('rz-paso2').classList.remove('oculto');};
